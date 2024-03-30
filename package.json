@@ -1,0 +1,70 @@
+{
+  "name": "aerial-launcher",
+  "productName": "Aerial Launcher",
+  "description": "A Windows desktop application (based on Potato Launcher) to manage things on STW",
+  "version": "1.0.0",
+  "author": {
+    "name": "YoJellyfish",
+    "email": "165499511+YoJellyfish@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YoJellyfish/Aerial-Launcher"
+  },
+  "license": "MIT",
+  "keywords": [
+    "fortnite",
+    "stw",
+    "launcher",
+    "manage",
+    "accounts",
+    "desktop",
+    "application"
+  ],
+  "main": ".vite/build/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx ."
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "lucide-react": "^0.363.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7",
+    "update-electron-app": "^3.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.3.1",
+    "@electron-forge/maker-deb": "^7.3.1",
+    "@electron-forge/maker-rpm": "^7.3.1",
+    "@electron-forge/maker-squirrel": "^7.3.1",
+    "@electron-forge/maker-zip": "^7.3.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
+    "@electron-forge/plugin-fuses": "^7.3.1",
+    "@electron-forge/plugin-vite": "^7.3.1",
+    "@electron-forge/publisher-github": "^7.3.1",
+    "@electron/fuses": "^1.8.0",
+    "@types/node": "^20.12.2",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "autoprefixer": "^10.4.19",
+    "electron": "29.1.6",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.7"
+  }
+}
