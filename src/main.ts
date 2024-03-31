@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { app, BrowserWindow, Menu } from 'electron'
-import { updateElectronApp } from 'update-electron-app'
+// import { updateElectronApp } from 'update-electron-app'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -43,7 +43,7 @@ function createWindow() {
 }
 
 Menu.setApplicationMenu(null)
-updateElectronApp()
+// updateElectronApp()
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
