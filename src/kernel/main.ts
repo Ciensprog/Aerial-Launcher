@@ -4,6 +4,8 @@ import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 
 import { electronAPIEventKeys } from '../config/constants/main-process'
 
+import { AccountsManager } from './startup/accounts'
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit()
@@ -53,11 +55,15 @@ Menu.setApplicationMenu(null)
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+  const currentWindow = await createWindow()
+
   ipcMain.on(electronAPIEventKeys.openExternalURL, (_, url: string) => {
     shell.openExternal(url)
   })
 
-  await createWindow()
+  ipcMain.on(electronAPIEventKeys.requestAccounts, async () => {
+    await AccountsManager.load(currentWindow)
+  })
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

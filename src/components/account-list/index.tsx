@@ -1,7 +1,6 @@
 import { Check, ChevronsUpDown, PlusCircle } from 'lucide-react'
-import { useState } from 'react'
 
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 import {
   Command,
   CommandEmpty,
@@ -9,17 +8,17 @@ import {
   CommandInput,
   CommandItem,
   CommandListWithScrollArea,
-} from './ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
-import { Separator } from './ui/separator'
+} from '../ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { Separator } from '../ui/separator'
 
-import { type Item, accounts } from '../accounts'
+import { useAccountList } from './hooks'
 
-import { cn } from '../lib/utils'
+import { getStatusProvider } from '../../lib/statuses'
+import { cn } from '../../lib/utils'
 
 export function AccountList() {
-  const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState<Item | null>(null)
+  const { accounts, onSelect, open, selected, setOpen } = useAccountList()
 
   return (
     <Popover
@@ -40,7 +39,7 @@ export function AccountList() {
                 {selected.displayName}
               </span>
               <span className="block text-muted-foreground text-xs truncate">
-                {selected.antiCheat}
+                {getStatusProvider(selected.provider)}
               </span>
             </span>
           ) : (
@@ -50,14 +49,14 @@ export function AccountList() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-52">
-        {accounts.size > 0 ? (
+        {accounts.length > 0 ? (
           <>
             <Command>
-              {accounts.size > 1 && (
+              {accounts.length > 1 && (
                 <CommandInput
-                  placeholder={`Search on ${accounts.size} accounts...`}
+                  placeholder={`Search on ${accounts.length} accounts...`}
                   className="select-none"
-                  disabled={accounts.size <= 1}
+                  disabled={accounts.length <= 1}
                 />
               )}
               <CommandListWithScrollArea>
@@ -67,20 +66,7 @@ export function AccountList() {
                     <CommandItem
                       key={account.accountId}
                       value={account.displayName}
-                      onSelect={(currentValue) => {
-                        const current =
-                          accounts.find(
-                            ({ displayName }) =>
-                              displayName === currentValue
-                          ) ?? null
-
-                        setSelected(
-                          current?.displayName === selected?.displayName
-                            ? null
-                            : current
-                        )
-                        setOpen(false)
-                      }}
+                      onSelect={onSelect(account)}
                     >
                       <Check
                         className={cn(
@@ -93,7 +79,7 @@ export function AccountList() {
                       <div className="">
                         <div className="">{account.displayName}</div>
                         <div className="text-muted-foreground text-xs">
-                          {account.antiCheat}
+                          {getStatusProvider(account.provider)}
                         </div>
                       </div>
                     </CommandItem>

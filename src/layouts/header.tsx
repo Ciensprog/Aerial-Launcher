@@ -8,8 +8,8 @@ import {
   SheetTrigger,
 } from '../components/ui/sheet'
 
-import { SidebarMenu } from '../components/menu/sidebar'
 import { AccountList } from '../components/account-list'
+import { SidebarMenu } from '../components/menu/sidebar'
 
 export function Header() {
   return (
