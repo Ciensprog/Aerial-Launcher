@@ -1,9 +1,9 @@
 import type { ForgeConfig } from '@electron-forge/shared-types'
-import { FuseV1Options, FuseVersion } from '@electron/fuses'
 
 import { MakerSquirrel } from '@electron-forge/maker-squirrel'
-import { VitePlugin } from '@electron-forge/plugin-vite'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
+import { VitePlugin } from '@electron-forge/plugin-vite'
+import { FuseV1Options, FuseVersion } from '@electron/fuses'
 
 import packageJson from './package.json'
 
@@ -27,11 +27,11 @@ const config: ForgeConfig = {
       build: [
         {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
-          entry: 'src/main.ts',
+          entry: 'src/kernel/main.ts',
           config: 'vite.main.config.ts',
         },
         {
-          entry: 'src/preload.ts',
+          entry: 'src/kernel/preload.ts',
           config: 'vite.preload.config.ts',
         },
       ],

@@ -1,3 +1,5 @@
+import { availableElectronAPIs } from './src/kernel/preload'
+
 export {} // Make this a module
 
 declare global {
@@ -21,6 +23,10 @@ declare global {
   interface VitePluginRuntimeKeys {
     VITE_DEV_SERVER_URL: `${string}_VITE_DEV_SERVER_URL`
     VITE_NAME: `${string}_VITE_NAME`
+  }
+
+  interface Window {
+    electronAPI: typeof availableElectronAPIs
   }
 }
 

@@ -1,13 +1,15 @@
 import path from 'node:path'
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 // import { updateElectronApp } from 'update-electron-app'
+
+import { electronAPIEventKeys } from '../config/constants/main-process'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
 
-function createWindow() {
+async function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     center: true,
@@ -18,8 +20,8 @@ function createWindow() {
     minWidth: 600,
     webPreferences: {
       devTools: !app.isPackaged,
-      spellcheck: false,
       preload: path.join(__dirname, 'preload.js'),
+      spellcheck: false,
     },
   })
 
@@ -31,15 +33,17 @@ function createWindow() {
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
+    await mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
   } else {
-    mainWindow.loadFile(
+    await mainWindow.loadFile(
       path.join(
         __dirname,
         `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`
       )
     )
   }
+
+  return mainWindow
 }
 
 Menu.setApplicationMenu(null)
@@ -48,7 +52,13 @@ Menu.setApplicationMenu(null)
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', async () => {
+  ipcMain.on(electronAPIEventKeys.openExternalURL, (_, url: string) => {
+    shell.openExternal(url)
+  })
+
+  await createWindow()
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

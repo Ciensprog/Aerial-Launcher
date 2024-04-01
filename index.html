@@ -2,16 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'sha256-8Fo0C8Uvc4enoztBzhzq55x75Fr6psQtQh7KQcmQbgo=' 'sha256-vGQdhYJbTuF+M8iCn1IZCHpdkiICocWHDq4qnQF4Rjw=' 'sha256-4Pb0uqwK2a76BSE5NPl25w5XWLVaqeMn7z6ugJMjZ6M='; script-src 'self'"
+    />
     <title>Aerial Launcher</title>
   </head>
   <body>
     <div
       id="app"
-      class="grid min-h-screen place-content-center"
+      class="min-h-screen"
     ></div>
     <script
       type="module"
-      src="/src/renderer.ts"
+      src="/src/kernel/renderer.ts"
     ></script>
   </body>
 </html>
