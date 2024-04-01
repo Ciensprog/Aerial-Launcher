@@ -1,5 +1,7 @@
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 
+import packageJson from '../../../package.json'
+
 import { repositoryURL } from '../../config/about/links'
 
 import { Button } from '../ui/button'
@@ -17,7 +19,7 @@ import { cn } from '../../lib/utils'
 export function SidebarMenu() {
   return (
     <ScrollArea className="h-full max-h-[calc(100vh - 3.5rem)]">
-      <div className="flex-1 mt-4-">
+      <div className="flex-1">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4">
           <OptionWithComingSoonTooltip text="STW Operations" />
           <OptionWithComingSoonTooltip text="Account Management" />
@@ -44,6 +46,23 @@ export function SidebarMenu() {
             </Button>
           </div>
         </nav>
+        <div className="px-5 text-xs text-muted-foreground/60">
+          <p className="">
+            Release v{packageJson.version} -{' '}
+            <a
+              href={`${repositoryURL}/releases`}
+              className="underline"
+              onClick={(event) => {
+                event.preventDefault()
+                window.electronAPI.openExternalURL(
+                  `${repositoryURL}/releases`
+                )
+              }}
+            >
+              All Releases
+            </a>
+          </p>
+        </div>
       </div>
     </ScrollArea>
   )
