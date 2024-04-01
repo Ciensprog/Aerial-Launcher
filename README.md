@@ -1,6 +1,6 @@
 # Aerial Launcher
 
-A Windows desktop application (based on Potato Launcher) to manage things on STW.
+A Windows desktop application (based on Potato Launcher) to manage things on Fortnite STW.
 
 > [!IMPORTANT]
 >
