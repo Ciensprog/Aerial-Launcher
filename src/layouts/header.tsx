@@ -1,4 +1,5 @@
 import { Menu, X } from 'lucide-react'
+import { useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { Button } from '../components/ui/button'
@@ -15,6 +16,7 @@ import { SidebarMenu } from '../components/menu/sidebar'
 import { useAccountListStore } from '../state/accounts/list'
 
 export function Header() {
+  const [open, setOpen] = useState(false)
   const { selected } = useAccountListStore(
     useShallow((state) => ({
       selected: state.getSelected(),
@@ -24,7 +26,10 @@ export function Header() {
 
   return (
     <header className="app-draggable-region bg-muted/40 flex h-14 items-center gap-1.5 border-b px-1.5">
-      <Sheet>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+      >
         <SheetTrigger asChild>
           <Button
             size="icon"
@@ -47,7 +52,7 @@ export function Header() {
                 <span className="sr-only">Close navigation menu</span>
               </SheetClose>
             </div>
-            <SidebarMenu />
+            <SidebarMenu onOpenChange={setOpen} />
           </div>
         </SheetContent>
       </Sheet>

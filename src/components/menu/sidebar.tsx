@@ -29,12 +29,19 @@ const currentClassNameHover =
   'hover:opacity-75 dark:opacity-100 dark:hover:text-white'
 const activeClassName = 'opacity-75 dark:text-white'
 
-export function SidebarMenu() {
+export function SidebarMenu({
+  onOpenChange,
+}: {
+  onOpenChange?: (open: boolean) => void
+}) {
   const accounts = useAccountListStore((state) => state.accounts)
   const total = Object.keys(accounts).length
   const areThereAccounts = total > 0
   const totalInText = new Intl.NumberFormat().format(total)
 
+  const goToPage = () => {
+    onOpenChange?.(false)
+  }
   const goToRepositoryURL: MouseEventHandler<HTMLButtonElement> = (
     event
   ) => {
@@ -71,6 +78,7 @@ export function SidebarMenu() {
                   activeProps={{
                     className: cn(activeClassName),
                   }}
+                  onClick={goToPage}
                 >
                   Authorization Code
                 </Link>
@@ -83,6 +91,7 @@ export function SidebarMenu() {
                   activeProps={{
                     className: cn(activeClassName),
                   }}
+                  onClick={goToPage}
                 >
                   Exchange Code
                 </Link>
@@ -95,6 +104,7 @@ export function SidebarMenu() {
                   activeProps={{
                     className: cn(activeClassName),
                   }}
+                  onClick={goToPage}
                 >
                   Device Auth
                 </Link>
@@ -112,6 +122,7 @@ export function SidebarMenu() {
                     }),
                   }}
                   disabled={!areThereAccounts}
+                  onClick={goToPage}
                 >
                   Remove Account
                 </Link>
