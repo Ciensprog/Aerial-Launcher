@@ -1,4 +1,5 @@
 import { Menu, X } from 'lucide-react'
+import { useShallow } from 'zustand/react/shallow'
 
 import { Button } from '../components/ui/button'
 import {
@@ -11,9 +12,18 @@ import {
 import { AccountList } from '../components/account-list'
 import { SidebarMenu } from '../components/menu/sidebar'
 
+import { useAccountListStore } from '../state/accounts/list'
+
 export function Header() {
+  const { selected } = useAccountListStore(
+    useShallow((state) => ({
+      selected: state.getSelected(),
+      selectedId: state.selected,
+    }))
+  )
+
   return (
-    <header className="app-draggable-region flex h-14 items-center gap-1.5 border-b bg-muted/40 px-1.5">
+    <header className="app-draggable-region bg-muted/40 flex h-14 items-center gap-1.5 border-b px-1.5">
       <Sheet>
         <SheetTrigger asChild>
           <Button
@@ -45,7 +55,7 @@ export function Header() {
       <Button
         size="lg"
         variant="outline"
-        disabled
+        disabled={selected === null}
       >
         Launch Game
       </Button>

@@ -3,6 +3,7 @@ import type { ConfigEnv, Plugin, UserConfig } from 'vite'
 
 import { builtinModules } from 'node:module'
 import path from 'node:path'
+import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 
 import packageJson from './package.json'
@@ -36,7 +37,7 @@ export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
       minify: command === 'build',
     },
     clearScreen: false,
-    plugins: [react()],
+    plugins: [react(), TanStackRouterVite()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
@@ -65,17 +66,20 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
     .filter(({ name }) => Boolean(name))
     .map(({ name }) => name) as Array<string>
   const defineKeys = getDefineKeys(names)
-  const define = Object.entries(defineKeys).reduce((acc, [name, keys]) => {
-    const { VITE_DEV_SERVER_URL, VITE_NAME } = keys
-    const def = {
-      [VITE_DEV_SERVER_URL]:
-        command === 'serve'
-          ? JSON.stringify(process.env[VITE_DEV_SERVER_URL])
-          : undefined,
-      [VITE_NAME]: JSON.stringify(name),
-    }
-    return { ...acc, ...def }
-  }, {} as Record<string, unknown>)
+  const define = Object.entries(defineKeys).reduce(
+    (acc, [name, keys]) => {
+      const { VITE_DEV_SERVER_URL, VITE_NAME } = keys
+      const def = {
+        [VITE_DEV_SERVER_URL]:
+          command === 'serve'
+            ? JSON.stringify(process.env[VITE_DEV_SERVER_URL])
+            : undefined,
+        [VITE_NAME]: JSON.stringify(name),
+      }
+      return { ...acc, ...def }
+    },
+    {} as Record<string, unknown>
+  )
 
   return define
 }
@@ -93,9 +97,8 @@ export function pluginExposeRenderer(name: string): Plugin {
       server.httpServer?.once('listening', () => {
         const addressInfo = server.httpServer?.address() as AddressInfo
         // Expose env constant for main process use.
-        process.env[
-          VITE_DEV_SERVER_URL
-        ] = `http://localhost:${addressInfo?.port}`
+        process.env[VITE_DEV_SERVER_URL] =
+          `http://localhost:${addressInfo?.port}`
       })
     },
   }

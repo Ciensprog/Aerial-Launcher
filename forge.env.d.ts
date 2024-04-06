@@ -1,4 +1,5 @@
 import { availableElectronAPIs } from './src/kernel/preload'
+import { router } from './src/app'
 
 export {} // Make this a module
 
@@ -32,10 +33,17 @@ declare global {
 
 declare module 'vite' {
   interface ConfigEnv<
-    K extends keyof VitePluginConfig = keyof VitePluginConfig
+    K extends keyof VitePluginConfig = keyof VitePluginConfig,
   > {
     root: string
     forgeConfig: VitePluginConfig
     forgeConfigSelf: VitePluginConfig[K][number]
+  }
+}
+
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
   }
 }
