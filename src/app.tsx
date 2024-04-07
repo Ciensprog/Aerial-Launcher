@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 
 import { LoadAccounts } from './bootstrap/components/load-accounts'
 
+import { Toaster } from './components/ui/sonner'
 import { ThemeProvider } from './components/theme-provider'
 
 import { routeTree } from './routeTree.gen'
@@ -14,6 +15,7 @@ root.render(
   <ThemeProvider>
     <LoadAccounts />
     <RouterProvider router={router} />
+    <Toaster position="bottom-center" />
   </ThemeProvider>
 )
 
