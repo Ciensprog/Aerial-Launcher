@@ -56,8 +56,8 @@ export function SidebarMenu({
   }
 
   return (
-    <ScrollArea className="h-full max-h-[calc(100vh - 3.5rem)]">
-      <div className="flex-1">
+    <ScrollArea className="h-full max-h-[calc(100vh-3.5rem)]">
+      <div className="flex-1 pb-6">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
           <OptionWithComingSoonTooltip text="STW Operations" />
           <OptionWithComingSoonTooltip text="Account Management" />

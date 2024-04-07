@@ -58,6 +58,13 @@
   }
 }
 
+:root {
+  --header-height: 3.5rem;
+
+  --sidebar-width-md: 13.75rem;
+  --sidebar-width-lg: 17.5rem;
+}
+
 .app-draggable-region {
   -webkit-app-region: drag;
 

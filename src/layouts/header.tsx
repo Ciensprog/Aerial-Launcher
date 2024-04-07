@@ -25,7 +25,7 @@ export function Header() {
   )
 
   return (
-    <header className="app-draggable-region bg-muted/40 flex h-14 items-center gap-1.5 border-b px-1.5">
+    <header className="app-draggable-region bg-muted/40 flex h-[var(--header-height)] items-center gap-1.5 border-b px-1.5">
       <Sheet
         open={open}
         onOpenChange={setOpen}
