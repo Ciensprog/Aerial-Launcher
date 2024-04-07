@@ -5,6 +5,7 @@ import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 import { electronAPIEventKeys } from '../config/constants/main-process'
 
 import { AccountsManager } from './startup/accounts'
+import { DataDirectory } from './startup/data-directory'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -27,14 +28,12 @@ async function createWindow() {
     },
   })
 
-  if (!app.isPackaged) {
+  // and load the index.html of the app.
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.webContents.openDevTools({
       mode: 'undocked',
     })
-  }
 
-  // and load the index.html of the app.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     await mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
   } else {
     await mainWindow.loadFile(
@@ -55,6 +54,8 @@ Menu.setApplicationMenu(null)
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+  await DataDirectory.createDataFiles()
+
   const currentWindow = await createWindow()
 
   ipcMain.on(electronAPIEventKeys.openExternalURL, (_, url: string) => {

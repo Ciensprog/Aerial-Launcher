@@ -1,21 +1,15 @@
-import type {
-  AccountInformationDetailed,
-  AccountListDetailed,
-} from '../../types/accounts'
+import type { AccountData, AccountDataRecord } from '../../types/accounts'
 
 import { create } from 'zustand'
 
 export type AccountListState = {
-  accounts: AccountListDetailed
+  accounts: AccountDataRecord
   selected: string | null
 
-  addOrUpdate: (
-    accountId: string,
-    account: AccountInformationDetailed
-  ) => void
+  addOrUpdate: (accountId: string, account: AccountData) => void
   changeSelected: (accountId: string | null) => void
-  getSelected: () => AccountInformationDetailed | null
-  register: (accounts: AccountListDetailed) => void
+  getSelected: () => AccountData | null
+  register: (accounts: AccountDataRecord) => void
 }
 
 export const useAccountListStore = create<AccountListState>()(
@@ -38,9 +32,7 @@ export const useAccountListStore = create<AccountListState>()(
         }))
       }
 
-      const current = get().accounts[accountId] as
-        | AccountInformationDetailed
-        | undefined
+      const current = get().accounts[accountId] as AccountData | undefined
 
       set(() => ({
         selected: current?.accountId ?? null,

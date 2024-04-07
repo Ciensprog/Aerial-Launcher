@@ -1,17 +1,16 @@
-export type AccountInformation = {
-  accountId: string
-  deviceId: string
-  displayName: string
-  secret: string
-}
+import { z } from 'zod'
 
-export type AccountInformationDetailed = AccountInformation & {
-  provider?: string | null
-}
+import {
+  accountBasicInformationSchema,
+  accountDataListSchema,
+  accountDataSchema,
+  accountListSchema,
+} from '../lib/validations/schemas/accounts'
 
-export type AccountList = Record<string, AccountInformation>
-
-export type AccountListDetailed = Record<
-  string,
-  AccountInformationDetailed
+export type AccountBasicInfo = z.infer<
+  typeof accountBasicInformationSchema
 >
+export type AccountData = z.infer<typeof accountDataSchema>
+export type AccountList = z.infer<typeof accountListSchema>
+export type AccountDataList = z.infer<typeof accountDataListSchema>
+export type AccountDataRecord = Record<string, AccountData>

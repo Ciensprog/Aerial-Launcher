@@ -1,8 +1,6 @@
-import type { AccountInformationDetailed } from '../types/accounts'
+import type { AccountData } from '../types/accounts'
 
-export function getStatusProvider(
-  provider: AccountInformationDetailed['provider']
-) {
+export function getStatusProvider(provider: AccountData['provider']) {
   const statusProvider = {
     null: 'Unknown Provider',
     undefined: 'Loading...',

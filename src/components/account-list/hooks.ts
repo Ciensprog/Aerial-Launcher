@@ -1,4 +1,4 @@
-import type { AccountInformationDetailed } from '../../types/accounts'
+import type { AccountData } from '../../types/accounts'
 
 import { useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
@@ -16,14 +16,13 @@ export function useAccountList() {
   const [open, setOpen] = useState(false)
   const accounts = Object.values(accountList)
 
-  const onSelect =
-    (account: AccountInformationDetailed) => (displayName: string) => {
-      if (displayName !== selected?.displayName) {
-        changeSelected(account.accountId)
-      }
-
-      setOpen(false)
+  const onSelect = (account: AccountData) => (displayName: string) => {
+    if (displayName !== selected?.displayName) {
+      changeSelected(account.accountId)
     }
+
+    setOpen(false)
+  }
 
   return {
     accounts,

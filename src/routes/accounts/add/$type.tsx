@@ -1,4 +1,6 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { Link, createRoute } from '@tanstack/react-router'
+
+import { Route as RootRoute } from '../../__root'
 
 import {
   Breadcrumb,
@@ -28,7 +30,9 @@ const availableTypes = {
   },
 }
 
-export const Route = createFileRoute('/accounts/add/$type')({
+export const Route = createRoute({
+  getParentRoute: () => RootRoute,
+  path: '/accounts/add/$type',
   component: ComponentRoute,
 })
 

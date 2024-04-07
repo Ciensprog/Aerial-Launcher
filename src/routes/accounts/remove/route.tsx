@@ -1,4 +1,6 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { Link, createRoute } from '@tanstack/react-router'
+
+import { Route as RootRoute } from '../../__root'
 
 import {
   Breadcrumb,
@@ -9,7 +11,9 @@ import {
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
 
-export const Route = createFileRoute('/accounts/remove')({
+export const Route = createRoute({
+  getParentRoute: () => RootRoute,
+  path: '/accounts/remove',
   component: () => {
     return (
       <>

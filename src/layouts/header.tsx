@@ -23,6 +23,8 @@ export function Header() {
       selectedId: state.selected,
     }))
   )
+  const isButtonDisabled =
+    selected === null || selected.token === undefined
 
   return (
     <header className="app-draggable-region bg-muted/40 flex h-[var(--header-height)] items-center gap-1.5 border-b px-1.5">
@@ -60,7 +62,7 @@ export function Header() {
       <Button
         size="lg"
         variant="outline"
-        disabled={selected === null}
+        disabled={isButtonDisabled}
       >
         Launch Game
       </Button>

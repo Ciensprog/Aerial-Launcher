@@ -1,7 +1,7 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import type { AccountListDetailed } from '../types/accounts'
+import type { AccountDataRecord } from '../types/accounts'
 
 import { contextBridge, ipcRenderer } from 'electron'
 
@@ -25,7 +25,7 @@ export const availableElectronAPIs = {
    */
 
   onAccountsLoaded: (
-    callback: (values: AccountListDetailed) => Promise<void>
+    callback: (values: AccountDataRecord) => Promise<void>
   ) => {
     ipcRenderer.on(electronAPIEventKeys.onAccountsLoaded, (_, values) => {
       callback(values).catch(() => {})

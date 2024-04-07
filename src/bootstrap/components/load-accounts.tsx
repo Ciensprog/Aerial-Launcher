@@ -1,10 +1,13 @@
-import type { AccountInformationDetailed } from '../../types/accounts'
+import type { AccountData } from '../../types/accounts'
 
 import { useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
+/**
+ * [START] Temp functionality
+ */
 const wait = async () => {
   const timers = Array.from(Array(10), (_, index) => 1000 + 200 * index)
   const current = timers[Math.floor(Math.random() * timers.length)]
@@ -12,17 +15,23 @@ const wait = async () => {
   await new Promise((resolve) => setTimeout(resolve, current))
 }
 
-const requestProvider = async (account: AccountInformationDetailed) => {
+const requestData = async (account: AccountData) => {
   await wait()
 
   const providers = ['BattlEye', 'EasyAntiCheatEOS', null] as const
-  const current = providers[Math.floor(Math.random() * providers.length)]
+  const provider = providers[Math.floor(Math.random() * providers.length)]
+  const tokens = ['8tfvc1t24d5g', '28utyg185g4y', null] as const
+  const token = tokens[Math.floor(Math.random() * tokens.length)]
 
   return {
+    provider,
+    token,
     accountId: account.accountId,
-    provider: current,
   }
 }
+/**
+ * [END] Temp functionality
+ */
 
 export function LoadAccounts() {
   const { addOrUpdate, changeSelected, register } = useAccountListStore(
@@ -44,17 +53,19 @@ export function LoadAccounts() {
       }
 
       Object.values(accounts).forEach((account) => {
-        requestProvider(account)
+        requestData(account)
           .then((response) => {
             addOrUpdate(response.accountId, {
               ...account,
               provider: response.provider ?? null,
+              token: response.token ?? null,
             })
           })
           .catch(() => {
             addOrUpdate(account.accountId, {
               ...account,
               provider: null,
+              token: null,
             })
           })
       })
