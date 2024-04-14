@@ -5,6 +5,8 @@ import {
   useRemoveSelectedAccount,
 } from '../../../hooks/accounts'
 
+import { toast } from '../../../lib/notifications'
+
 export function useHandleRemove() {
   const navigate = useNavigate()
   const { selected } = useGetSelectedAccount()
@@ -16,7 +18,10 @@ export function useHandleRemove() {
     }
 
     window.electronAPI.onRemoveAccount(selected.accountId)
+
     const total = Object.values(removeAccount(selected.accountId)).length
+
+    toast(`Account ${selected.displayName} was removed`)
 
     if (total <= 0) {
       navigate({ to: '/' })
