@@ -10,6 +10,10 @@ export class DataDirectory {
     `${process.env.APPDATA}`,
     'aerial-launcher-data'
   )
+  private static accountsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'accounts.json'
+  )
 
   /**
    * Create data directory and accounts.json
@@ -38,6 +42,27 @@ export class DataDirectory {
   }
 
   /**
+   * Update accounts.json
+   */
+  static async updateAccountsFile(data: AccountList) {
+    if (!data) {
+      return
+    }
+
+    try {
+      await writeFile(
+        DataDirectory.accountsFilePath,
+        JSON.stringify(data ?? [], null, 2),
+        {
+          encoding: 'utf8',
+        }
+      )
+    } catch (error) {
+      //
+    }
+  }
+
+  /**
    * Creating data directory
    */
   private static async checkOrCreateDataDirectory() {
@@ -56,12 +81,8 @@ export class DataDirectory {
    * Creating accounts.json
    */
   private static async getOrCreateJsonFile() {
-    const accountsFilePath = path.join(
-      DataDirectory.dataDirectoryPath,
-      'accounts.json'
-    )
     const checkAccountsFile = () =>
-      readFile(accountsFilePath, {
+      readFile(DataDirectory.accountsFilePath, {
         encoding: 'utf8',
       })
     let result: string | undefined
@@ -69,9 +90,13 @@ export class DataDirectory {
     try {
       result = await checkAccountsFile()
     } catch (error) {
-      await writeFile(accountsFilePath, JSON.stringify([], null, 2), {
-        encoding: 'utf8',
-      })
+      await writeFile(
+        DataDirectory.accountsFilePath,
+        JSON.stringify([], null, 2),
+        {
+          encoding: 'utf8',
+        }
+      )
       result = await checkAccountsFile()
     }
 

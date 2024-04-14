@@ -31,6 +31,14 @@ export const availableElectronAPIs = {
       callback(values).catch(() => {})
     })
   },
+
+  onRemoveAccount: (accountId: string) => {
+    if (typeof accountId !== 'string') {
+      return
+    }
+
+    ipcRenderer.send(electronAPIEventKeys.onRemoveAccount, accountId)
+  },
 } as const
 
 contextBridge.exposeInMainWorld('electronAPI', availableElectronAPIs)

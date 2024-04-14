@@ -33,4 +33,13 @@ export class AccountsManager {
       accountList
     )
   }
+
+  static async remove(accountId: string) {
+    const result = await DataDirectory.getAccountsFile()
+    const accounts = result.accounts.filter(
+      (account) => account.accountId !== accountId
+    )
+
+    await DataDirectory.updateAccountsFile(accounts)
+  }
 }

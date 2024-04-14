@@ -19,6 +19,7 @@ import {
 } from '../../../components/ui/card'
 
 import { useGetSelectedAccount } from '../../../hooks/accounts'
+import { useHandleRemove } from './-actions'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -51,6 +52,7 @@ export const Route = createRoute({
 
 function Content() {
   const { selected } = useGetSelectedAccount()
+  const { handleRemove } = useHandleRemove()
 
   return (
     <div className="flex flex-grow">
@@ -64,7 +66,10 @@ function Content() {
             </CardDescription>
           </CardContent>
           <CardFooter className="space-x-6">
-            <Button className="w-full">
+            <Button
+              className="w-full"
+              onClick={handleRemove}
+            >
               Yes, remove account selected
             </Button>
           </CardFooter>

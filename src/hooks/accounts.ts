@@ -12,3 +12,9 @@ export function useGetSelectedAccount() {
 
   return { selected }
 }
+
+export function useRemoveSelectedAccount() {
+  const removeAccount = useAccountListStore((state) => state.remove)
+
+  return { removeAccount }
+}

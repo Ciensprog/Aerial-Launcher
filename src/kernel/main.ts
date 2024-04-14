@@ -65,6 +65,13 @@ app.on('ready', async () => {
   ipcMain.on(electronAPIEventKeys.requestAccounts, async () => {
     await AccountsManager.load(currentWindow)
   })
+
+  ipcMain.on(
+    electronAPIEventKeys.onRemoveAccount,
+    async (_, accountId: string) => {
+      await AccountsManager.remove(accountId)
+    }
+  )
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

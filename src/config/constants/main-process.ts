@@ -12,4 +12,5 @@ export const electronAPIEventKeys = {
    */
 
   onAccountsLoaded: 'on:accounts-loaded',
+  onRemoveAccount: 'on:account-remove',
 }

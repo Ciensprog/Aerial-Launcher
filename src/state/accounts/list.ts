@@ -10,6 +10,7 @@ export type AccountListState = {
   changeSelected: (accountId: string | null) => void
   getSelected: () => AccountData | null
   register: (accounts: AccountDataRecord) => void
+  remove: (accountId: string) => AccountDataRecord
 }
 
 export const useAccountListStore = create<AccountListState>()(
@@ -54,6 +55,20 @@ export const useAccountListStore = create<AccountListState>()(
           ...accounts,
         },
       }))
+    },
+    remove: (accountId) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [accountId]: _current, ...accounts } = get().accounts
+      const newSelected = Object.values(accounts)[0] as
+        | AccountData
+        | undefined
+
+      set({
+        selected: newSelected?.accountId ?? null,
+        accounts,
+      })
+
+      return accounts
     },
   })
 )
