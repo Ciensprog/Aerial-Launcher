@@ -1,30 +1,20 @@
 import { Menu, X } from 'lucide-react'
-import { useState } from 'react'
-import { useShallow } from 'zustand/react/shallow'
 
-import { Button } from '../components/ui/button'
+import { Button } from '../../components/ui/button'
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetTrigger,
-} from '../components/ui/sheet'
+} from '../../components/ui/sheet'
 
-import { AccountList } from '../components/account-list'
-import { SidebarMenu } from '../components/menu/sidebar'
+import { AccountList } from '../../components/account-list'
+import { SidebarMenu } from '../../components/menu/sidebar'
 
-import { useAccountListStore } from '../state/accounts/list'
+import { useAttributesStates } from './hooks'
 
 export function Header() {
-  const [open, setOpen] = useState(false)
-  const { selected } = useAccountListStore(
-    useShallow((state) => ({
-      selected: state.getSelected(),
-      selectedId: state.selected,
-    }))
-  )
-  const isButtonDisabled =
-    selected === null || selected.token === undefined
+  const { isButtonDisabled, open, setOpen } = useAttributesStates()
 
   return (
     <header className="app-draggable-region bg-muted/40 flex h-[var(--header-height)] items-center gap-1.5 border-b px-1.5">

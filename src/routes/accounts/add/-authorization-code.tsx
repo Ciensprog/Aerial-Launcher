@@ -1,5 +1,3 @@
-import type { MouseEventHandler } from 'react'
-
 import { ExternalLinkIcon } from '@radix-ui/react-icons'
 
 import { exampleCode } from '../../../config/constants/examples'
@@ -25,13 +23,10 @@ import {
 import { Input } from '../../../components/ui/input'
 import { Label } from '../../../components/ui/label'
 
+import { useHandlers } from './hooks'
+
 export function AuthorizationCodePage() {
-  const goToAuthorizationCodeURL: MouseEventHandler<HTMLAnchorElement> = (
-    event
-  ) => {
-    event.preventDefault()
-    window.electronAPI.openExternalURL(epicGamesAuthorizationCodeURL)
-  }
+  const { goToAuthorizationCodeURL } = useHandlers()
 
   return (
     <Card className="max-w-sm w-full">

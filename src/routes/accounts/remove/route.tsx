@@ -18,7 +18,7 @@ import {
   CardFooter,
 } from '../../../components/ui/card'
 
-import { useGetAccount } from './hooks'
+import { useGetSelectedAccount } from '../../../hooks/accounts'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -50,7 +50,7 @@ export const Route = createRoute({
 })
 
 function Content() {
-  const { selected } = useGetAccount()
+  const { selected } = useGetSelectedAccount()
 
   return (
     <div className="flex flex-grow">

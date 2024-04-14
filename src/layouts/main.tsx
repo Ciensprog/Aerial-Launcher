@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react'
 
 import { Link } from '@tanstack/react-router'
 
-import { Header } from '../layouts/header'
+import { Header } from './header'
 
 import { SidebarMenu } from '../components/menu/sidebar'
 
