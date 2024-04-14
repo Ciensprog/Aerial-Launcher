@@ -10,6 +10,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
+import { Button } from '../../../components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from '../../../components/ui/card'
+
+import { useGetAccount } from './hooks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -17,35 +26,50 @@ export const Route = createRoute({
   component: () => {
     return (
       <>
-        <NavigationContent />
-        <div className="flex flex-grow">
-          <div className="flex items-center justify-center w-full">
-            Remove Account
-          </div>
-        </div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>My Accounts</BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Remove Account</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Content />
       </>
     )
   },
 })
 
-function NavigationContent() {
+function Content() {
+  const { selected } = useGetAccount()
+
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link to="/">Home</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>My Accounts</BreadcrumbPage>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Remove Account</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <div className="flex flex-grow">
+      <div className="flex items-center justify-center w-full">
+        <Card className="max-w-sm w-full">
+          <CardContent className="grid gap-4 pt-6">
+            <CardDescription>
+              Do you want to remove{' '}
+              <span className="font-bold">{selected?.displayName}</span>{' '}
+              account?
+            </CardDescription>
+          </CardContent>
+          <CardFooter className="space-x-6">
+            <Button className="w-full">
+              Yes, remove account selected
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   )
 }
