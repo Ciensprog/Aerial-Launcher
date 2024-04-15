@@ -11,9 +11,9 @@ import {
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
 
-import { AuthorizationCodePage } from './-authorization-code'
-import { DeviceAuthPage } from './-device-auth'
-import { ExchangeCodePage } from './-exchange-code'
+import { AuthorizationCodePage } from './(authorization-code)/-page'
+import { DeviceAuthPage } from './(device-auth)/-page'
+import { ExchangeCodePage } from './(exchange-code)/-page'
 
 const availableTypes = {
   'authorization-code': {
