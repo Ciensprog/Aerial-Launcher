@@ -105,6 +105,32 @@ export const availableElectronAPIs = {
         ),
     }
   },
+
+  createAuthWithDevice: (data: {
+    accountId: string
+    deviceId: string
+    secret: string
+  }) => {
+    ipcRenderer.send(electronAPIEventKeys.createAuthWithDevice, data)
+  },
+  responseAuthWithDevice: (callback: AuthCallbackFunction) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const customCallback = (_: IpcRendererEvent, values: any) => {
+      callback(values).catch(() => {})
+    }
+    const rendererInstance = ipcRenderer.on(
+      electronAPIEventKeys.responseAuthWithDevice,
+      customCallback
+    )
+
+    return {
+      removeListener: () =>
+        rendererInstance.removeListener(
+          electronAPIEventKeys.responseAuthWithDevice,
+          customCallback
+        ),
+    }
+  },
 } as const
 
 contextBridge.exposeInMainWorld('electronAPI', availableElectronAPIs)

@@ -87,6 +87,20 @@ app.on('ready', async () => {
       await Authentication.authorization(currentWindow, code)
     }
   )
+
+  ipcMain.on(
+    electronAPIEventKeys.createAuthWithDevice,
+    async (
+      _,
+      data: {
+        accountId: string
+        deviceId: string
+        secret: string
+      }
+    ) => {
+      await Authentication.device(currentWindow, data)
+    }
+  )
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

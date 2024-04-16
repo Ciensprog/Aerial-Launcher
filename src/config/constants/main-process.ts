@@ -23,4 +23,7 @@ export const electronAPIEventKeys = {
 
   createAuthWithAuthorization: 'auth:create:authorization',
   responseAuthWithAuthorization: 'auth:create:authorization:response',
+
+  createAuthWithDevice: 'auth:create:device',
+  responseAuthWithDevice: 'auth:create:device:response',
 }

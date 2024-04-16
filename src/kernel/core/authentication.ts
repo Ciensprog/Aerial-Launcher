@@ -10,6 +10,7 @@ import { DataDirectory } from '../startup/data-directory'
 import {
   createDeviceAuthCredentials,
   getAccessTokenUsingAuthorizationCode,
+  getAccessTokenUsingDeviceAuth,
   getAccessTokenUsingExchangeCode,
 } from '../../services/endpoints/oauth'
 import { AccountsManager } from '../startup/accounts'
@@ -46,6 +47,37 @@ export class Authentication {
       Authentication.responseError({
         currentWindow,
         key: electronAPIEventKeys.responseAuthWithAuthorization,
+        error,
+      })
+    }
+  }
+
+  static async device(
+    currentWindow: BrowserWindow,
+    data: {
+      accountId: string
+      deviceId: string
+      secret: string
+    }
+  ) {
+    try {
+      const responseExchange = await getAccessTokenUsingDeviceAuth(data)
+
+      await Authentication.registerAccount(
+        currentWindow,
+        electronAPIEventKeys.responseAuthWithDevice,
+        {
+          accessToken: responseExchange.data.access_token,
+          accountId: responseExchange.data.account_id,
+          deviceId: data.deviceId,
+          displayName: responseExchange.data.displayName,
+          secret: data.secret,
+        }
+      )
+    } catch (error) {
+      Authentication.responseError({
+        currentWindow,
+        key: electronAPIEventKeys.responseAuthWithDevice,
         error,
       })
     }
