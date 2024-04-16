@@ -80,6 +80,31 @@ export const availableElectronAPIs = {
         ),
     }
   },
+
+  createAuthWithAuthorization: (code: string) => {
+    ipcRenderer.send(
+      electronAPIEventKeys.createAuthWithAuthorization,
+      code
+    )
+  },
+  responseAuthWithAuthorization: (callback: AuthCallbackFunction) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const customCallback = (_: IpcRendererEvent, values: any) => {
+      callback(values).catch(() => {})
+    }
+    const rendererInstance = ipcRenderer.on(
+      electronAPIEventKeys.responseAuthWithAuthorization,
+      customCallback
+    )
+
+    return {
+      removeListener: () =>
+        rendererInstance.removeListener(
+          electronAPIEventKeys.responseAuthWithAuthorization,
+          customCallback
+        ),
+    }
+  },
 } as const
 
 contextBridge.exposeInMainWorld('electronAPI', availableElectronAPIs)

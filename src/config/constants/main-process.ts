@@ -20,4 +20,7 @@ export const electronAPIEventKeys = {
 
   createAuthWithExchange: 'auth:create:exchange',
   responseAuthWithExchange: 'auth:create:exchange:response',
+
+  createAuthWithAuthorization: 'auth:create:authorization',
+  responseAuthWithAuthorization: 'auth:create:authorization:response',
 }

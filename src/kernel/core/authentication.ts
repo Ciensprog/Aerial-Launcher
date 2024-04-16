@@ -9,11 +9,48 @@ import { DataDirectory } from '../startup/data-directory'
 
 import {
   createDeviceAuthCredentials,
+  getAccessTokenUsingAuthorizationCode,
   getAccessTokenUsingExchangeCode,
 } from '../../services/endpoints/oauth'
 import { AccountsManager } from '../startup/accounts'
 
 export class Authentication {
+  static async authorization(currentWindow: BrowserWindow, code: string) {
+    try {
+      const responseExchange =
+        await getAccessTokenUsingAuthorizationCode(code)
+      const responseDevice =
+        await Authentication.generateDeviceAuthCredencials(
+          currentWindow,
+          electronAPIEventKeys.responseAuthWithAuthorization,
+          {
+            accessToken: responseExchange.data.access_token,
+            accountId: responseExchange.data.account_id,
+          }
+        )
+
+      if (responseDevice) {
+        await Authentication.registerAccount(
+          currentWindow,
+          electronAPIEventKeys.responseAuthWithAuthorization,
+          {
+            accessToken: responseExchange.data.access_token,
+            accountId: responseExchange.data.account_id,
+            deviceId: responseDevice.deviceId,
+            displayName: responseExchange.data.displayName,
+            secret: responseDevice.secret,
+          }
+        )
+      }
+    } catch (error) {
+      Authentication.responseError({
+        currentWindow,
+        key: electronAPIEventKeys.responseAuthWithAuthorization,
+        error,
+      })
+    }
+  }
+
   static async exchange(currentWindow: BrowserWindow, code: string) {
     try {
       const responseExchange = await getAccessTokenUsingExchangeCode(code)
@@ -28,13 +65,17 @@ export class Authentication {
         )
 
       if (responseDevice) {
-        await Authentication.registerAccount(currentWindow, {
-          accessToken: responseExchange.data.access_token,
-          accountId: responseExchange.data.account_id,
-          deviceId: responseDevice.deviceId,
-          displayName: responseExchange.data.displayName,
-          secret: responseDevice.secret,
-        })
+        await Authentication.registerAccount(
+          currentWindow,
+          electronAPIEventKeys.responseAuthWithExchange,
+          {
+            accessToken: responseExchange.data.access_token,
+            accountId: responseExchange.data.account_id,
+            deviceId: responseDevice.deviceId,
+            displayName: responseExchange.data.displayName,
+            secret: responseDevice.secret,
+          }
+        )
       }
     } catch (error) {
       Authentication.responseError({
@@ -47,6 +88,7 @@ export class Authentication {
 
   private static async registerAccount(
     currentWindow: BrowserWindow,
+    eventKey: string,
     data: {
       accessToken: string
       accountId: string
@@ -79,17 +121,14 @@ export class Authentication {
       return accumulator
     }, {} as AccountDataRecord)
 
-    currentWindow.webContents.send(
-      electronAPIEventKeys.responseAuthWithExchange,
-      {
-        data: {
-          currentAccount: newData,
-          accounts: accountList,
-        },
-        accessToken: data.accessToken,
-        error: null,
-      }
-    )
+    currentWindow.webContents.send(eventKey, {
+      data: {
+        currentAccount: newData,
+        accounts: accountList,
+      },
+      accessToken: data.accessToken,
+      error: null,
+    })
   }
 
   private static async generateDeviceAuthCredencials(
