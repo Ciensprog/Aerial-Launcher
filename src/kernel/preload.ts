@@ -1,7 +1,8 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import type { AccountDataRecord } from '../types/accounts'
+import type { IpcRendererEvent } from 'electron'
+import type { AccountData, AccountDataRecord } from '../types/accounts'
 
 import { contextBridge, ipcRenderer } from 'electron'
 
@@ -9,7 +10,7 @@ import { electronAPIEventKeys } from '../config/constants/main-process'
 
 export const availableElectronAPIs = {
   /**
-   * Methods
+   * General Methods
    */
 
   openExternalURL: (url: string) => {
@@ -38,6 +39,52 @@ export const availableElectronAPIs = {
     }
 
     ipcRenderer.send(electronAPIEventKeys.onRemoveAccount, accountId)
+  },
+
+  /**
+   * Authentication
+   */
+
+  createAuthWithExchange: (code: string) => {
+    ipcRenderer.send(electronAPIEventKeys.createAuthWithExchange, code)
+  },
+  responseAuthWithExchange: (
+    callback: (
+      response:
+        | {
+            accessToken: string
+            data: {
+              currentAccount: AccountData
+              accounts: AccountDataRecord
+            }
+            error: null
+          }
+        | {
+            accessToken: null
+            data: null
+            error: string
+          }
+    ) => Promise<void>
+  ) => {
+    const customCallback = (
+      _: IpcRendererEvent,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      values: any
+    ) => {
+      callback(values).catch(() => {})
+    }
+    const rendererInstance = ipcRenderer.on(
+      electronAPIEventKeys.responseAuthWithExchange,
+      customCallback
+    )
+
+    return {
+      removeListener: () =>
+        rendererInstance.removeListener(
+          electronAPIEventKeys.responseAuthWithExchange,
+          customCallback
+        ),
+    }
   },
 } as const
 

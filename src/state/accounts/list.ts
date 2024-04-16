@@ -20,10 +20,10 @@ export const useAccountListStore = create<AccountListState>()(
 
     addOrUpdate: (accountId, account) => {
       set((state) => ({
-        accounts: {
+        accounts: sortAccounts({
           ...state.accounts,
           [accountId]: account,
-        },
+        }),
       }))
     },
     changeSelected: (accountId) => {
@@ -50,10 +50,10 @@ export const useAccountListStore = create<AccountListState>()(
     },
     register: (accounts) => {
       set((state) => ({
-        accounts: {
+        accounts: sortAccounts({
           ...state.accounts,
           ...accounts,
-        },
+        }),
       }))
     },
     remove: (accountId) => {
@@ -72,3 +72,18 @@ export const useAccountListStore = create<AccountListState>()(
     },
   })
 )
+
+function sortAccounts(data: AccountDataRecord) {
+  const result = Object.values(data)
+  const accounts = result.toSorted((itemA, itemB) =>
+    itemA.displayName.localeCompare(itemB.displayName)
+  )
+
+  const accountList = accounts.reduce((accumulator, current) => {
+    accumulator[current.accountId] = current
+
+    return accumulator
+  }, {} as AccountDataRecord)
+
+  return accountList
+}

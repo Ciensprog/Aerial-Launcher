@@ -6,6 +6,7 @@ import { electronAPIEventKeys } from '../config/constants/main-process'
 
 import { AccountsManager } from './startup/accounts'
 import { DataDirectory } from './startup/data-directory'
+import { Authentication } from './core/authentication'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -70,6 +71,13 @@ app.on('ready', async () => {
     electronAPIEventKeys.onRemoveAccount,
     async (_, accountId: string) => {
       await AccountsManager.remove(accountId)
+    }
+  )
+
+  ipcMain.on(
+    electronAPIEventKeys.createAuthWithExchange,
+    async (_, code: string) => {
+      await Authentication.exchange(currentWindow, code)
     }
   )
 })

@@ -15,7 +15,7 @@ const wait = async () => {
   await new Promise((resolve) => setTimeout(resolve, current))
 }
 
-const requestData = async (account: AccountData) => {
+export const requestData = async (account: AccountData) => {
   await wait()
 
   const providers = ['BattlEye', 'EasyAntiCheatEOS', null] as const

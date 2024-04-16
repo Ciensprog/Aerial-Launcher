@@ -1,6 +1,6 @@
 export const electronAPIEventKeys = {
   /**
-   * Methods
+   * General Methods
    */
 
   openExternalURL: 'open-external-url',
@@ -13,4 +13,11 @@ export const electronAPIEventKeys = {
 
   onAccountsLoaded: 'on:accounts-loaded',
   onRemoveAccount: 'on:account-remove',
+
+  /**
+   * Authentication
+   */
+
+  createAuthWithExchange: 'auth:create:exchange',
+  responseAuthWithExchange: 'auth:create:exchange:response',
 }
