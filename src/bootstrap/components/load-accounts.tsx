@@ -43,35 +43,41 @@ export function LoadAccounts() {
   )
 
   useEffect(() => {
-    window.electronAPI.onAccountsLoaded(async (accounts) => {
-      const accountsToArray = Object.values(accounts)
+    const listener = window.electronAPI.onAccountsLoaded(
+      async (accounts) => {
+        const accountsToArray = Object.values(accounts)
 
-      register(accounts)
+        register(accounts)
 
-      if (accountsToArray[0]) {
-        changeSelected(accountsToArray[0].accountId)
+        if (accountsToArray[0]) {
+          changeSelected(accountsToArray[0].accountId)
+        }
+
+        Object.values(accounts).forEach((account) => {
+          requestData(account)
+            .then((response) => {
+              addOrUpdate(response.accountId, {
+                ...account,
+                provider: response.provider ?? null,
+                token: response.token ?? null,
+              })
+            })
+            .catch(() => {
+              addOrUpdate(account.accountId, {
+                ...account,
+                provider: null,
+                token: null,
+              })
+            })
+        })
       }
-
-      Object.values(accounts).forEach((account) => {
-        requestData(account)
-          .then((response) => {
-            addOrUpdate(response.accountId, {
-              ...account,
-              provider: response.provider ?? null,
-              token: response.token ?? null,
-            })
-          })
-          .catch(() => {
-            addOrUpdate(account.accountId, {
-              ...account,
-              provider: null,
-              token: null,
-            })
-          })
-      })
-    })
+    )
 
     window.electronAPI.requestAccounts()
+
+    return () => {
+      listener.removeListener()
+    }
   }, [])
 
   return null

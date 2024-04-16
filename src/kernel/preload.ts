@@ -28,9 +28,22 @@ export const availableElectronAPIs = {
   onAccountsLoaded: (
     callback: (values: AccountDataRecord) => Promise<void>
   ) => {
-    ipcRenderer.on(electronAPIEventKeys.onAccountsLoaded, (_, values) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const customCallback = (_: IpcRendererEvent, values: any) => {
       callback(values).catch(() => {})
-    })
+    }
+    const rendererInstance = ipcRenderer.on(
+      electronAPIEventKeys.onAccountsLoaded,
+      customCallback
+    )
+
+    return {
+      removeListener: () =>
+        rendererInstance.removeListener(
+          electronAPIEventKeys.onAccountsLoaded,
+          customCallback
+        ),
+    }
   },
 
   onRemoveAccount: (accountId: string) => {
@@ -66,11 +79,8 @@ export const availableElectronAPIs = {
           }
     ) => Promise<void>
   ) => {
-    const customCallback = (
-      _: IpcRendererEvent,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      values: any
-    ) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const customCallback = (_: IpcRendererEvent, values: any) => {
       callback(values).catch(() => {})
     }
     const rendererInstance = ipcRenderer.on(
