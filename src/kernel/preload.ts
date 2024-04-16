@@ -2,7 +2,8 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 import type { IpcRendererEvent } from 'electron'
-import type { AccountData, AccountDataRecord } from '../types/accounts'
+import type { AccountDataRecord } from '../types/accounts'
+import type { AuthCallbackFunction } from '../types/preload'
 
 import { contextBridge, ipcRenderer } from 'electron'
 
@@ -61,24 +62,7 @@ export const availableElectronAPIs = {
   createAuthWithExchange: (code: string) => {
     ipcRenderer.send(electronAPIEventKeys.createAuthWithExchange, code)
   },
-  responseAuthWithExchange: (
-    callback: (
-      response:
-        | {
-            accessToken: string
-            data: {
-              currentAccount: AccountData
-              accounts: AccountDataRecord
-            }
-            error: null
-          }
-        | {
-            accessToken: null
-            data: null
-            error: string
-          }
-    ) => Promise<void>
-  ) => {
+  responseAuthWithExchange: (callback: AuthCallbackFunction) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const customCallback = (_: IpcRendererEvent, values: any) => {
       callback(values).catch(() => {})
