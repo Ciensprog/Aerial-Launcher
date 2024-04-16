@@ -1,3 +1,5 @@
+import type { AuthenticationByDeviceProperties } from '../types/authentication'
+
 import path from 'node:path'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 // import { updateElectronApp } from 'update-electron-app'
@@ -90,14 +92,7 @@ app.on('ready', async () => {
 
   ipcMain.on(
     electronAPIEventKeys.createAuthWithDevice,
-    async (
-      _,
-      data: {
-        accountId: string
-        deviceId: string
-        secret: string
-      }
-    ) => {
+    async (_, data: AuthenticationByDeviceProperties) => {
       await Authentication.device(currentWindow, data)
     }
   )

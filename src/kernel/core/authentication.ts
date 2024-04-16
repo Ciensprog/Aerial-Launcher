@@ -1,10 +1,12 @@
-import type { AccountData, AccountDataRecord } from '../../types/accounts'
 import type { AuthorizationError } from '../../types/services/authorizations'
+import type { AccountData, AccountDataRecord } from '../../types/accounts'
+import type { AuthenticationByDeviceProperties } from '../../types/authentication'
 
 import { BrowserWindow } from 'electron'
 
 import { electronAPIEventKeys } from '../../config/constants/main-process'
 
+import { AccountsManager } from '../startup/accounts'
 import { DataDirectory } from '../startup/data-directory'
 
 import {
@@ -13,7 +15,6 @@ import {
   getAccessTokenUsingDeviceAuth,
   getAccessTokenUsingExchangeCode,
 } from '../../services/endpoints/oauth'
-import { AccountsManager } from '../startup/accounts'
 
 export class Authentication {
   static async authorization(currentWindow: BrowserWindow, code: string) {
@@ -54,11 +55,7 @@ export class Authentication {
 
   static async device(
     currentWindow: BrowserWindow,
-    data: {
-      accountId: string
-      deviceId: string
-      secret: string
-    }
+    data: AuthenticationByDeviceProperties
   ) {
     try {
       const responseExchange = await getAccessTokenUsingDeviceAuth(data)

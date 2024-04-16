@@ -3,7 +3,11 @@
 
 import type { IpcRendererEvent } from 'electron'
 import type { AccountDataRecord } from '../types/accounts'
-import type { AuthCallbackFunction } from '../types/preload'
+import type { AuthenticationByDeviceProperties } from '../types/authentication'
+import type {
+  AuthCallbackFunction,
+  AuthCallbackResponseParam,
+} from '../types/preload'
 
 import { contextBridge, ipcRenderer } from 'electron'
 
@@ -29,8 +33,10 @@ export const availableElectronAPIs = {
   onAccountsLoaded: (
     callback: (values: AccountDataRecord) => Promise<void>
   ) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const customCallback = (_: IpcRendererEvent, values: any) => {
+    const customCallback = (
+      _: IpcRendererEvent,
+      values: AccountDataRecord
+    ) => {
       callback(values).catch(() => {})
     }
     const rendererInstance = ipcRenderer.on(
@@ -63,8 +69,10 @@ export const availableElectronAPIs = {
     ipcRenderer.send(electronAPIEventKeys.createAuthWithExchange, code)
   },
   responseAuthWithExchange: (callback: AuthCallbackFunction) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const customCallback = (_: IpcRendererEvent, values: any) => {
+    const customCallback = (
+      _: IpcRendererEvent,
+      values: AuthCallbackResponseParam
+    ) => {
       callback(values).catch(() => {})
     }
     const rendererInstance = ipcRenderer.on(
@@ -88,8 +96,10 @@ export const availableElectronAPIs = {
     )
   },
   responseAuthWithAuthorization: (callback: AuthCallbackFunction) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const customCallback = (_: IpcRendererEvent, values: any) => {
+    const customCallback = (
+      _: IpcRendererEvent,
+      values: AuthCallbackResponseParam
+    ) => {
       callback(values).catch(() => {})
     }
     const rendererInstance = ipcRenderer.on(
@@ -106,16 +116,14 @@ export const availableElectronAPIs = {
     }
   },
 
-  createAuthWithDevice: (data: {
-    accountId: string
-    deviceId: string
-    secret: string
-  }) => {
+  createAuthWithDevice: (data: AuthenticationByDeviceProperties) => {
     ipcRenderer.send(electronAPIEventKeys.createAuthWithDevice, data)
   },
   responseAuthWithDevice: (callback: AuthCallbackFunction) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const customCallback = (_: IpcRendererEvent, values: any) => {
+    const customCallback = (
+      _: IpcRendererEvent,
+      values: AuthCallbackResponseParam
+    ) => {
       callback(values).catch(() => {})
     }
     const rendererInstance = ipcRenderer.on(
