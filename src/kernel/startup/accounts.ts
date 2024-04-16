@@ -7,7 +7,7 @@ import type {
 
 import { BrowserWindow } from 'electron'
 
-import { electronAPIEventKeys } from '../../config/constants/main-process'
+import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { DataDirectory } from './data-directory'
 
@@ -31,7 +31,7 @@ export class AccountsManager {
     }, {} as AccountDataRecord)
 
     currentWindow.webContents.send(
-      electronAPIEventKeys.onAccountsLoaded,
+      ElectronAPIEventKeys.OnAccountsLoaded,
       accountList
     )
   }

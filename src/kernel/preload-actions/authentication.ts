@@ -7,14 +7,14 @@ import type {
 
 import { ipcRenderer } from 'electron'
 
-import { electronAPIEventKeys } from '../../config/constants/main-process'
+import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 /**
  * Authentication
  */
 
 export function createAuthWithExchange(code: string) {
-  ipcRenderer.send(electronAPIEventKeys.createAuthWithExchange, code)
+  ipcRenderer.send(ElectronAPIEventKeys.CreateAuthWithExchange, code)
 }
 
 export function responseAuthWithExchange(callback: AuthCallbackFunction) {
@@ -25,21 +25,21 @@ export function responseAuthWithExchange(callback: AuthCallbackFunction) {
     callback(values).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
-    electronAPIEventKeys.responseAuthWithExchange,
+    ElectronAPIEventKeys.ResponseAuthWithExchange,
     customCallback
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
-        electronAPIEventKeys.responseAuthWithExchange,
+        ElectronAPIEventKeys.ResponseAuthWithExchange,
         customCallback
       ),
   }
 }
 
 export function createAuthWithAuthorization(code: string) {
-  ipcRenderer.send(electronAPIEventKeys.createAuthWithAuthorization, code)
+  ipcRenderer.send(ElectronAPIEventKeys.CreateAuthWithAuthorization, code)
 }
 
 export function responseAuthWithAuthorization(
@@ -52,14 +52,14 @@ export function responseAuthWithAuthorization(
     callback(values).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
-    electronAPIEventKeys.responseAuthWithAuthorization,
+    ElectronAPIEventKeys.ResponseAuthWithAuthorization,
     customCallback
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
-        electronAPIEventKeys.responseAuthWithAuthorization,
+        ElectronAPIEventKeys.ResponseAuthWithAuthorization,
         customCallback
       ),
   }
@@ -68,7 +68,7 @@ export function responseAuthWithAuthorization(
 export function createAuthWithDevice(
   data: AuthenticationByDeviceProperties
 ) {
-  ipcRenderer.send(electronAPIEventKeys.createAuthWithDevice, data)
+  ipcRenderer.send(ElectronAPIEventKeys.CreateAuthWithDevice, data)
 }
 
 export function responseAuthWithDevice(callback: AuthCallbackFunction) {
@@ -79,14 +79,14 @@ export function responseAuthWithDevice(callback: AuthCallbackFunction) {
     callback(values).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
-    electronAPIEventKeys.responseAuthWithDevice,
+    ElectronAPIEventKeys.ResponseAuthWithDevice,
     customCallback
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
-        electronAPIEventKeys.responseAuthWithDevice,
+        ElectronAPIEventKeys.ResponseAuthWithDevice,
         customCallback
       ),
   }

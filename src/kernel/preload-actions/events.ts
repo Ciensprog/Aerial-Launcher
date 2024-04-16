@@ -3,7 +3,7 @@ import type { AccountDataRecord } from '../../types/accounts'
 
 import { ipcRenderer } from 'electron'
 
-import { electronAPIEventKeys } from '../../config/constants/main-process'
+import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 /**
  * Events
@@ -19,14 +19,14 @@ export function onAccountsLoaded(
     callback(values).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
-    electronAPIEventKeys.onAccountsLoaded,
+    ElectronAPIEventKeys.OnAccountsLoaded,
     customCallback
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
-        electronAPIEventKeys.onAccountsLoaded,
+        ElectronAPIEventKeys.OnAccountsLoaded,
         customCallback
       ),
   }
@@ -37,5 +37,5 @@ export function onRemoveAccount(accountId: string) {
     return
   }
 
-  ipcRenderer.send(electronAPIEventKeys.onRemoveAccount, accountId)
+  ipcRenderer.send(ElectronAPIEventKeys.OnRemoveAccount, accountId)
 }

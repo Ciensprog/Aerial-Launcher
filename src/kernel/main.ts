@@ -4,7 +4,7 @@ import path from 'node:path'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 // import { updateElectronApp } from 'update-electron-app'
 
-import { electronAPIEventKeys } from '../config/constants/main-process'
+import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
 import { AccountsManager } from './startup/accounts'
 import { DataDirectory } from './startup/data-directory'
@@ -61,37 +61,37 @@ app.on('ready', async () => {
 
   const currentWindow = await createWindow()
 
-  ipcMain.on(electronAPIEventKeys.openExternalURL, (_, url: string) => {
+  ipcMain.on(ElectronAPIEventKeys.OpenExternalURL, (_, url: string) => {
     shell.openExternal(url)
   })
 
-  ipcMain.on(electronAPIEventKeys.requestAccounts, async () => {
+  ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
     await AccountsManager.load(currentWindow)
   })
 
   ipcMain.on(
-    electronAPIEventKeys.onRemoveAccount,
+    ElectronAPIEventKeys.OnRemoveAccount,
     async (_, accountId: string) => {
       await AccountsManager.remove(accountId)
     }
   )
 
   ipcMain.on(
-    electronAPIEventKeys.createAuthWithExchange,
+    ElectronAPIEventKeys.CreateAuthWithExchange,
     async (_, code: string) => {
       await Authentication.exchange(currentWindow, code)
     }
   )
 
   ipcMain.on(
-    electronAPIEventKeys.createAuthWithAuthorization,
+    ElectronAPIEventKeys.CreateAuthWithAuthorization,
     async (_, code: string) => {
       await Authentication.authorization(currentWindow, code)
     }
   )
 
   ipcMain.on(
-    electronAPIEventKeys.createAuthWithDevice,
+    ElectronAPIEventKeys.CreateAuthWithDevice,
     async (_, data: AuthenticationByDeviceProperties) => {
       await Authentication.device(currentWindow, data)
     }

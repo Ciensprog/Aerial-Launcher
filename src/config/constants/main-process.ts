@@ -1,29 +1,29 @@
-export const electronAPIEventKeys = {
+export enum ElectronAPIEventKeys {
   /**
    * General Methods
    */
 
-  openExternalURL: 'open-external-url',
+  OpenExternalURL = 'open-external-url',
 
-  requestAccounts: 'request:accounts',
+  RequestAccounts = 'request:accounts',
 
   /**
    * Events
    */
 
-  onAccountsLoaded: 'on:accounts-loaded',
-  onRemoveAccount: 'on:account-remove',
+  OnAccountsLoaded = 'on:accounts-loaded',
+  OnRemoveAccount = 'on:account-remove',
 
   /**
    * Authentication
    */
 
-  createAuthWithExchange: 'auth:create:exchange',
-  responseAuthWithExchange: 'auth:create:exchange:response',
+  CreateAuthWithExchange = 'auth:create:exchange',
+  ResponseAuthWithExchange = 'auth:create:exchange:response',
 
-  createAuthWithAuthorization: 'auth:create:authorization',
-  responseAuthWithAuthorization: 'auth:create:authorization:response',
+  CreateAuthWithAuthorization = 'auth:create:authorization',
+  ResponseAuthWithAuthorization = 'auth:create:authorization:response',
 
-  createAuthWithDevice: 'auth:create:device',
-  responseAuthWithDevice: 'auth:create:device:response',
+  CreateAuthWithDevice = 'auth:create:device',
+  ResponseAuthWithDevice = 'auth:create:device:response',
 }
