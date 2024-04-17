@@ -1,6 +1,7 @@
 import type { AxiosRequestConfig } from 'axios'
 import type {
   AuthorizationCodeResponse,
+  CreateExchangeCodeResponse,
   DeviceAuthResponse,
   ExchangeCodeResponse,
 } from '../../types/services/authorizations'
@@ -36,6 +37,14 @@ export function getAccessTokenUsingDeviceAuth({
     grant_type: 'device_auth',
     account_id: accountId,
     device_id: deviceId,
+  })
+}
+
+export function getExchangeCodeAccessToken(accessToken: string) {
+  return oauthService.get<CreateExchangeCodeResponse>('/exchange', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   })
 }
 

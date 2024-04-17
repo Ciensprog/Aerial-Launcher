@@ -3,14 +3,16 @@
 
 import { contextBridge } from 'electron'
 
-import * as generalActions from './preload-actions/general'
-import * as eventActions from './preload-actions/events'
 import * as authenticationActions from './preload-actions/authentication'
+import * as eventActions from './preload-actions/events'
+import * as generalActions from './preload-actions/general'
+import * as requestActions from './preload-actions/requests'
 
 export const availableElectronAPIs = {
-  ...generalActions,
-  ...eventActions,
   ...authenticationActions,
+  ...eventActions,
+  ...generalActions,
+  ...requestActions,
 } as const
 
 contextBridge.exposeInMainWorld('electronAPI', availableElectronAPIs)

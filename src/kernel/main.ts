@@ -1,3 +1,4 @@
+import type { AccountData } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 
 import path from 'node:path'
@@ -61,6 +62,10 @@ app.on('ready', async () => {
 
   const currentWindow = await createWindow()
 
+  /**
+   * General Methods
+   */
+
   ipcMain.on(ElectronAPIEventKeys.OpenExternalURL, (_, url: string) => {
     shell.openExternal(url)
   })
@@ -69,12 +74,34 @@ app.on('ready', async () => {
     await AccountsManager.load(currentWindow)
   })
 
+  /**
+   * Events
+   */
+
   ipcMain.on(
     ElectronAPIEventKeys.OnRemoveAccount,
     async (_, accountId: string) => {
       await AccountsManager.remove(accountId)
     }
   )
+
+  /**
+   * Requests
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.RequestProviderAndAccessTokenOnStartup,
+    async (_, account: AccountData) => {
+      await Authentication.requestProviderAndAccessToken(
+        currentWindow,
+        account
+      )
+    }
+  )
+
+  /**
+   * Authentication
+   */
 
   ipcMain.on(
     ElectronAPIEventKeys.CreateAuthWithExchange,

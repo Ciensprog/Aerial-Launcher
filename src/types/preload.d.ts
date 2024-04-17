@@ -15,6 +15,17 @@ export type AuthCallbackResponseParam =
       error: string
     }
 
-export type AuthCallbackFunction = (
-  response: AuthCallbackResponseParam
-) => Promise<void>
+export type AntiCheatProviderCallbackResponseParam =
+  | {
+      account: AccountData
+      data: {
+        accessToken: string
+        provider: string | null
+      }
+      error: null
+    }
+  | {
+      account: AccountData
+      data: null
+      error: string
+    }

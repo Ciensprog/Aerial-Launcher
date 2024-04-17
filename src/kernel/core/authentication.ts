@@ -1,4 +1,4 @@
-import type { AuthorizationError } from '../../types/services/authorizations'
+import type { CommonErrorResponse } from '../../types/services/errors'
 import type { AccountData, AccountDataRecord } from '../../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
 
@@ -9,25 +9,27 @@ import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { AccountsManager } from '../startup/accounts'
 import { DataDirectory } from '../startup/data-directory'
 
+import { getAntiCheatProvider } from '../../services/endpoints/caldera'
 import {
   createDeviceAuthCredentials,
   getAccessTokenUsingAuthorizationCode,
   getAccessTokenUsingDeviceAuth,
   getAccessTokenUsingExchangeCode,
+  getExchangeCodeAccessToken,
 } from '../../services/endpoints/oauth'
 
 export class Authentication {
   static async authorization(currentWindow: BrowserWindow, code: string) {
     try {
-      const responseExchange =
+      const responseAuthorization =
         await getAccessTokenUsingAuthorizationCode(code)
       const responseDevice =
         await Authentication.generateDeviceAuthCredencials(
           currentWindow,
           ElectronAPIEventKeys.ResponseAuthWithAuthorization,
           {
-            accessToken: responseExchange.data.access_token,
-            accountId: responseExchange.data.account_id,
+            accessToken: responseAuthorization.data.access_token,
+            accountId: responseAuthorization.data.account_id,
           }
         )
 
@@ -36,10 +38,10 @@ export class Authentication {
           currentWindow,
           ElectronAPIEventKeys.ResponseAuthWithAuthorization,
           {
-            accessToken: responseExchange.data.access_token,
-            accountId: responseExchange.data.account_id,
+            accessToken: responseAuthorization.data.access_token,
+            accountId: responseAuthorization.data.account_id,
             deviceId: responseDevice.deviceId,
-            displayName: responseExchange.data.displayName,
+            displayName: responseAuthorization.data.displayName,
             secret: responseDevice.secret,
           }
         )
@@ -58,16 +60,16 @@ export class Authentication {
     data: AuthenticationByDeviceProperties
   ) {
     try {
-      const responseExchange = await getAccessTokenUsingDeviceAuth(data)
+      const responseDevice = await getAccessTokenUsingDeviceAuth(data)
 
       await Authentication.registerAccount(
         currentWindow,
         ElectronAPIEventKeys.ResponseAuthWithDevice,
         {
-          accessToken: responseExchange.data.access_token,
-          accountId: responseExchange.data.account_id,
+          accessToken: responseDevice.data.access_token,
+          accountId: responseDevice.data.account_id,
           deviceId: data.deviceId,
-          displayName: responseExchange.data.displayName,
+          displayName: responseDevice.data.displayName,
           secret: data.secret,
         }
       )
@@ -112,6 +114,46 @@ export class Authentication {
         key: ElectronAPIEventKeys.ResponseAuthWithExchange,
         error,
       })
+    }
+  }
+
+  static async requestProviderAndAccessToken(
+    currentWindow: BrowserWindow,
+    account: AccountData
+  ) {
+    try {
+      const responseDevice = await getAccessTokenUsingDeviceAuth(account)
+      const responseExchange = await getExchangeCodeAccessToken(
+        responseDevice.data.access_token
+      )
+      const responseACProvider = await getAntiCheatProvider({
+        accountId: account.accountId,
+        exchangeCode: responseExchange.data.code,
+      })
+
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
+        {
+          account,
+          data: {
+            accessToken: responseDevice.data.access_token,
+            provider: responseACProvider.data.provider ?? null,
+          },
+          error: null,
+        }
+      )
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
+        {
+          account,
+          data: null,
+          error: (error.response?.data as CommonErrorResponse)
+            .errorMessage,
+        }
+      )
     }
   }
 
@@ -202,7 +244,7 @@ export class Authentication {
     currentWindow.webContents.send(key, {
       accessToken: null,
       data: null,
-      error: (error.response?.data as AuthorizationError).errorMessage,
+      error: (error.response?.data as CommonErrorResponse).errorMessage,
     })
   }
 }

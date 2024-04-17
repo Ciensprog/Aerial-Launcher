@@ -27,6 +27,12 @@ export type AuthorizationCodeResponse = AuthorizationCommonResponse<{
 
 export type ExchangeCodeResponse = AuthorizationCommonResponse
 
+export type CreateExchangeCodeResponse = {
+  expiresInSeconds: number
+  code: string
+  creatingClientId: string
+}
+
 export type DeviceAuthResponse = {
   deviceId: string
   accountId: string

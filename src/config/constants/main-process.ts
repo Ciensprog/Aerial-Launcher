@@ -15,6 +15,13 @@ export enum ElectronAPIEventKeys {
   OnRemoveAccount = 'on:account-remove',
 
   /**
+   * Requests
+   */
+
+  RequestProviderAndAccessTokenOnStartup = 'request:provider-with-access-token:on-startup',
+  ResponseProviderAndAccessTokenOnStartup = 'request:provider-with-access-token:on-startup:response',
+
+  /**
    * Authentication
    */
 
