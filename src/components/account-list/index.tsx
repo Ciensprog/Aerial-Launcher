@@ -17,7 +17,8 @@ import { getStatusProvider } from '../../lib/statuses'
 import { cn } from '../../lib/utils'
 
 export function AccountList() {
-  const { accounts, onSelect, open, selected, setOpen } = useAccountList()
+  const { accounts, customFilter, onSelect, open, selected, setOpen } =
+    useAccountList()
 
   return (
     <Popover
@@ -60,7 +61,7 @@ export function AccountList() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-52">
-        <Command>
+        <Command filter={customFilter}>
           {accounts.length > 1 && (
             <CommandInput
               placeholder={`Search on ${accounts.length} accounts...`}

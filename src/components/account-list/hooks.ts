@@ -16,6 +16,12 @@ export function useAccountList() {
   const [open, setOpen] = useState(false)
   const accounts = Object.values(accountList)
 
+  const customFilter = (value: string, search: string) => {
+    const _value = value.toLowerCase()
+    const _search = search.toLowerCase()
+
+    return _value.includes(_search) ? 1 : 0
+  }
   const onSelect = (account: AccountData) => (displayName: string) => {
     if (displayName !== selected?.displayName) {
       changeSelected(account.accountId)
@@ -29,6 +35,7 @@ export function useAccountList() {
     open,
     selected,
 
+    customFilter,
     onSelect,
     setOpen,
   }
