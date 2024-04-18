@@ -1,16 +1,20 @@
+import type { AccountData } from '../../types/accounts'
+
 import { useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
 export function LoadAccounts() {
-  const { addOrUpdate, changeSelected, register } = useAccountListStore(
-    useShallow((state) => ({
-      addOrUpdate: state.addOrUpdate,
-      changeSelected: state.changeSelected,
-      register: state.register,
-    }))
-  )
+  const { accounts, addOrUpdate, changeSelected, register } =
+    useAccountListStore(
+      useShallow((state) => ({
+        accounts: state.accounts,
+        addOrUpdate: state.addOrUpdate,
+        changeSelected: state.changeSelected,
+        register: state.register,
+      }))
+    )
 
   useEffect(() => {
     const accountsLoaderListener = window.electronAPI.onAccountsLoaded(
@@ -33,7 +37,7 @@ export function LoadAccounts() {
         async ({ account, data }) => {
           addOrUpdate(account.accountId, {
             ...account,
-            provider: data?.provider ?? null,
+            provider: data?.provider,
             token: data?.accessToken ?? null,
           })
         }
@@ -46,6 +50,30 @@ export function LoadAccounts() {
       acProviderListener.removeListener()
     }
   }, [])
+
+  useEffect(() => {
+    const scheduleRequestAccountsListener =
+      window.electronAPI.scheduleRequestAccounts(async () => {
+        const accountsToArray: Array<AccountData> = Object.values(accounts)
+
+        window.electronAPI.scheduleResponseAccounts(accountsToArray)
+      })
+    const scheduleResponseProvidersListener =
+      window.electronAPI.scheduleResponseProviders(
+        async ({ account, data }) => {
+          addOrUpdate(account.accountId, {
+            ...account,
+            provider: data?.provider,
+            token: data?.accessToken ?? null,
+          })
+        }
+      )
+
+    return () => {
+      scheduleRequestAccountsListener.removeListener()
+      scheduleResponseProvidersListener.removeListener()
+    }
+  }, [accounts])
 
   return null
 }

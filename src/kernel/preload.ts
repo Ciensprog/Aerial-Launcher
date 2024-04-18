@@ -7,12 +7,14 @@ import * as authenticationActions from './preload-actions/authentication'
 import * as eventActions from './preload-actions/events'
 import * as generalActions from './preload-actions/general'
 import * as requestActions from './preload-actions/requests'
+import * as scheduleActions from './preload-actions/schedules'
 
 export const availableElectronAPIs = {
   ...authenticationActions,
   ...eventActions,
   ...generalActions,
   ...requestActions,
+  ...scheduleActions,
 } as const
 
 contextBridge.exposeInMainWorld('electronAPI', availableElectronAPIs)

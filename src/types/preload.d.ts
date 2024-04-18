@@ -18,10 +18,10 @@ export type AuthCallbackResponseParam =
 export type AntiCheatProviderCallbackResponseParam =
   | {
       account: AccountData
-      data: {
+      data: Partial<{
         accessToken: string
         provider: string | null
-      }
+      }>
       error: null
     }
   | {

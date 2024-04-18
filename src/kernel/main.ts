@@ -3,13 +3,15 @@ import type { AuthenticationByDeviceProperties } from '../types/authentication'
 
 import path from 'node:path'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
+import schedule from 'node-schedule'
 // import { updateElectronApp } from 'update-electron-app'
 
 import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
+import { AntiCheatProvider } from './core/anti-cheat-provider'
+import { Authentication } from './core/authentication'
 import { AccountsManager } from './startup/accounts'
 import { DataDirectory } from './startup/data-directory'
-import { Authentication } from './core/authentication'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -92,9 +94,11 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.RequestProviderAndAccessTokenOnStartup,
     async (_, account: AccountData) => {
-      await Authentication.requestProviderAndAccessToken(
-        currentWindow,
-        account
+      const response = await AntiCheatProvider.request(account)
+
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
+        response
       )
     }
   )
@@ -123,6 +127,36 @@ app.on('ready', async () => {
       await Authentication.device(currentWindow, data)
     }
   )
+
+  /**
+   * Schedules
+   */
+
+  schedule.scheduleJob(
+    {
+      /**
+       * Executes in every reset at time: 00:00:05 AM
+       * Hour: 00
+       * Minute: 00
+       * Second: 05
+       */
+      rule: '5 0 0 * * *',
+      /**
+       * Time zone
+       */
+      tz: 'UTC',
+    },
+    () => {
+      currentWindow.webContents.send('schedule:request:accounts')
+    }
+  )
+
+  ipcMain.on(
+    'schedule:response:accounts',
+    (_, accounts: Array<AccountData>) => {
+      AntiCheatProvider.requestBulk(currentWindow, accounts)
+    }
+  )
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -131,6 +165,7 @@ app.on('ready', async () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
+    schedule.gracefulShutdown().catch(() => {})
   }
 })
 
