@@ -2,6 +2,8 @@ import type { AccountData, AccountDataRecord } from '../../types/accounts'
 
 import { create } from 'zustand'
 
+import { sortAccounts } from '../../lib/utils'
+
 export type AccountListState = {
   accounts: AccountDataRecord
   selected: string | null
@@ -77,18 +79,3 @@ export const useAccountListStore = create<AccountListState>()(
     },
   })
 )
-
-function sortAccounts(data: AccountDataRecord) {
-  const result = Object.values(data)
-  const accounts = result.toSorted((itemA, itemB) =>
-    itemA.displayName.localeCompare(itemB.displayName)
-  )
-
-  const accountList = accounts.reduce((accumulator, current) => {
-    accumulator[current.accountId] = current
-
-    return accumulator
-  }, {} as AccountDataRecord)
-
-  return accountList
-}
