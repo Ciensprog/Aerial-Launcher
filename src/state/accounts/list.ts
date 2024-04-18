@@ -19,12 +19,17 @@ export const useAccountListStore = create<AccountListState>()(
     selected: null,
 
     addOrUpdate: (accountId, account) => {
-      set((state) => ({
-        accounts: sortAccounts({
-          ...state.accounts,
-          [accountId]: account,
-        }),
-      }))
+      const accounts = get().accounts
+      const current = accounts[accountId]
+
+      if (current !== undefined) {
+        set({
+          accounts: sortAccounts({
+            ...accounts,
+            [accountId]: account,
+          }),
+        })
+      }
     },
     changeSelected: (accountId) => {
       if (accountId === null) {
