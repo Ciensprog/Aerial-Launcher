@@ -33,4 +33,20 @@ export enum ElectronAPIEventKeys {
 
   CreateAuthWithDevice = 'auth:create:device',
   ResponseAuthWithDevice = 'auth:create:device:response',
+
+  /**
+   * Launcher
+   */
+
+  LauncherStart = 'launcher:start',
+  LauncherNotification = 'launcher:notification',
+
+  /**
+   * Schedules
+   */
+
+  ScheduleRequestAccounts = 'schedule:request:accounts',
+  ScheduleResponseAccounts = 'schedule:response:accounts',
+
+  ScheduleResponseProviders = 'schedule:response:providers',
 }

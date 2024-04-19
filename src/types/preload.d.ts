@@ -29,3 +29,8 @@ export type AntiCheatProviderCallbackResponseParam =
       data: null
       error: string
     }
+
+export type LauncherNotificationCallbackResponseParam = {
+  account: AccountData
+  status: boolean
+}

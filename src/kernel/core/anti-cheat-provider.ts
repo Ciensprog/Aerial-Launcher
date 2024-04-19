@@ -4,10 +4,12 @@ import type { AntiCheatProviderCallbackResponseParam } from '../../types/preload
 
 import { BrowserWindow } from 'electron'
 
+import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+
 import { getAntiCheatProvider } from '../../services/endpoints/caldera'
 import {
   getAccessTokenUsingDeviceAuth,
-  getExchangeCodeAccessToken,
+  getExchangeCodeUsingAccessToken,
 } from '../../services/endpoints/oauth'
 
 export class AntiCheatProvider {
@@ -16,25 +18,28 @@ export class AntiCheatProvider {
     accounts: Array<AccountData>
   ) {
     accounts.forEach((account) => {
-      currentWindow.webContents.send('schedule:response:providers', {
-        account,
-        data: {
-          accessToken: undefined,
-          provider: undefined,
-        },
-        error: null,
-      } as AntiCheatProviderCallbackResponseParam)
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.ScheduleResponseProviders,
+        {
+          account,
+          data: {
+            accessToken: undefined,
+            provider: undefined,
+          },
+          error: null,
+        } as AntiCheatProviderCallbackResponseParam
+      )
 
       AntiCheatProvider.request(account)
         .then((response: AntiCheatProviderCallbackResponseParam) => {
           currentWindow.webContents.send(
-            'schedule:response:providers',
+            ElectronAPIEventKeys.ScheduleResponseProviders,
             response
           )
         })
         .catch((response: AntiCheatProviderCallbackResponseParam) => {
           currentWindow.webContents.send(
-            'schedule:response:providers',
+            ElectronAPIEventKeys.ScheduleResponseProviders,
             response
           )
         })
@@ -46,7 +51,7 @@ export class AntiCheatProvider {
   ): Promise<AntiCheatProviderCallbackResponseParam> {
     try {
       const responseDevice = await getAccessTokenUsingDeviceAuth(account)
-      const responseExchange = await getExchangeCodeAccessToken(
+      const responseExchange = await getExchangeCodeUsingAccessToken(
         responseDevice.data.access_token
       )
       const responseACProvider = await getAntiCheatProvider({

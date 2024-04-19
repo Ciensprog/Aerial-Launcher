@@ -11,10 +11,11 @@ import {
 import { AccountList } from '../../components/account-list'
 import { SidebarMenu } from '../../components/menu/sidebar'
 
-import { useAttributesStates } from './hooks'
+import { useAttributesStates, useHandlers } from './hooks'
 
 export function Header() {
   const { isButtonDisabled, open, setOpen } = useAttributesStates()
+  const { handleLaunch } = useHandlers()
 
   return (
     <header className="app-draggable-region bg-muted/40 flex h-[var(--header-height)] items-center gap-1.5 border-b px-1.5">
@@ -53,6 +54,7 @@ export function Header() {
         size="lg"
         variant="outline"
         disabled={isButtonDisabled}
+        onClick={handleLaunch}
       >
         Launch Game
       </Button>

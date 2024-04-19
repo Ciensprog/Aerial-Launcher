@@ -4,12 +4,14 @@ import type { AntiCheatProviderCallbackResponseParam } from '../../../types/prel
 
 import { ipcRenderer } from 'electron'
 
+import { ElectronAPIEventKeys } from '../../../config/constants/main-process'
+
 export function scheduleResponseAccounts(accounts: Array<AccountData>) {
-  ipcRenderer.send('schedule:response:accounts', accounts)
+  ipcRenderer.send(ElectronAPIEventKeys.ScheduleResponseAccounts, accounts)
 }
 
 export function scheduleRequestAccounts(callback: () => Promise<void>) {
-  const eventKey = 'schedule:request:accounts'
+  const eventKey = ElectronAPIEventKeys.ScheduleRequestAccounts
   const customCallback = () => {
     callback().catch(() => {})
   }
@@ -26,7 +28,7 @@ export function scheduleResponseProviders(
     response: AntiCheatProviderCallbackResponseParam
   ) => Promise<void>
 ) {
-  const eventKey = 'schedule:response:providers'
+  const eventKey = ElectronAPIEventKeys.ScheduleResponseProviders
   const customCallback = (
     _: IpcRendererEvent,
     response: AntiCheatProviderCallbackResponseParam

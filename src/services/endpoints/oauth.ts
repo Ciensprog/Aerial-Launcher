@@ -40,7 +40,7 @@ export function getAccessTokenUsingDeviceAuth({
   })
 }
 
-export function getExchangeCodeAccessToken(accessToken: string) {
+export function getExchangeCodeUsingAccessToken(accessToken: string) {
   return oauthService.get<CreateExchangeCodeResponse>('/exchange', {
     headers: {
       Authorization: `Bearer ${accessToken}`,

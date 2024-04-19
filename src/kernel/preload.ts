@@ -6,6 +6,7 @@ import { contextBridge } from 'electron'
 import * as authenticationActions from './preload-actions/authentication'
 import * as eventActions from './preload-actions/events'
 import * as generalActions from './preload-actions/general'
+import * as launcherActions from './preload-actions/launcher'
 import * as requestActions from './preload-actions/requests'
 import * as scheduleActions from './preload-actions/schedules'
 
@@ -13,6 +14,7 @@ export const availableElectronAPIs = {
   ...authenticationActions,
   ...eventActions,
   ...generalActions,
+  ...launcherActions,
   ...requestActions,
   ...scheduleActions,
 } as const

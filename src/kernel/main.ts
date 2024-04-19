@@ -10,6 +10,7 @@ import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
 import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
+import { FortniteLauncher } from './core/launcher'
 import { AccountsManager } from './startup/accounts'
 import { DataDirectory } from './startup/data-directory'
 
@@ -129,6 +130,17 @@ app.on('ready', async () => {
   )
 
   /**
+   * Launcher
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.LauncherStart,
+    async (_, account: AccountData) => {
+      await FortniteLauncher.start(currentWindow, account)
+    }
+  )
+
+  /**
    * Schedules
    */
 
@@ -147,12 +159,14 @@ app.on('ready', async () => {
       tz: 'UTC',
     },
     () => {
-      currentWindow.webContents.send('schedule:request:accounts')
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.ScheduleRequestAccounts
+      )
     }
   )
 
   ipcMain.on(
-    'schedule:response:accounts',
+    ElectronAPIEventKeys.ScheduleResponseAccounts,
     (_, accounts: Array<AccountData>) => {
       AntiCheatProvider.requestBulk(currentWindow, accounts)
     }

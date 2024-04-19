@@ -14,6 +14,7 @@ import {
   getAccessTokenUsingAuthorizationCode,
   getAccessTokenUsingDeviceAuth,
   getAccessTokenUsingExchangeCode,
+  oauthVerify,
 } from '../../services/endpoints/oauth'
 
 export class Authentication {
@@ -113,6 +114,33 @@ export class Authentication {
         error,
       })
     }
+  }
+
+  static async verifyAccessToken(account: AccountData) {
+    if (!account.token) {
+      return null
+    }
+
+    try {
+      const response = await oauthVerify(account.token)
+
+      return response.data.token ?? null
+    } catch (error) {
+      if (
+        (error as Record<string, { status: number }>).response?.status ===
+        401
+      ) {
+        try {
+          const response = await getAccessTokenUsingDeviceAuth(account)
+
+          return response.data.access_token ?? null
+        } catch (error) {
+          //
+        }
+      }
+    }
+
+    return null
   }
 
   private static async registerAccount(

@@ -1,9 +1,6 @@
 import type { IpcRendererEvent } from 'electron'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
-import type {
-  AuthCallbackFunction,
-  AuthCallbackResponseParam,
-} from '../../types/preload'
+import type { AuthCallbackResponseParam } from '../../types/preload'
 
 import { ipcRenderer } from 'electron'
 
@@ -17,7 +14,9 @@ export function createAuthWithExchange(code: string) {
   ipcRenderer.send(ElectronAPIEventKeys.CreateAuthWithExchange, code)
 }
 
-export function responseAuthWithExchange(callback: AuthCallbackFunction) {
+export function responseAuthWithExchange(
+  callback: (values: AuthCallbackResponseParam) => Promise<void>
+) {
   const customCallback = (
     _: IpcRendererEvent,
     values: AuthCallbackResponseParam
@@ -43,7 +42,7 @@ export function createAuthWithAuthorization(code: string) {
 }
 
 export function responseAuthWithAuthorization(
-  callback: AuthCallbackFunction
+  callback: (values: AuthCallbackResponseParam) => Promise<void>
 ) {
   const customCallback = (
     _: IpcRendererEvent,
@@ -71,7 +70,9 @@ export function createAuthWithDevice(
   ipcRenderer.send(ElectronAPIEventKeys.CreateAuthWithDevice, data)
 }
 
-export function responseAuthWithDevice(callback: AuthCallbackFunction) {
+export function responseAuthWithDevice(
+  callback: (values: AuthCallbackResponseParam) => Promise<void>
+) {
   const customCallback = (
     _: IpcRendererEvent,
     values: AuthCallbackResponseParam
