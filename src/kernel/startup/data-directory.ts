@@ -18,16 +18,16 @@ export class DataDirectory {
   /**
    * Create data directory and accounts.json
    */
-  static async createDataFiles() {
+  static async createDataResources() {
     await DataDirectory.checkOrCreateDataDirectory()
-    await DataDirectory.getOrCreateJsonFile()
+    await DataDirectory.getOrCreateAccountsJsonFile()
   }
 
   /**
    * Get data from accounts.json
    */
   static async getAccountsFile(): Promise<{ accounts: AccountList }> {
-    const result = await DataDirectory.getOrCreateJsonFile()
+    const result = await DataDirectory.getOrCreateAccountsJsonFile()
 
     try {
       const list = accountListSchema.safeParse(JSON.parse(result))
@@ -80,7 +80,7 @@ export class DataDirectory {
   /**
    * Creating accounts.json
    */
-  private static async getOrCreateJsonFile() {
+  private static async getOrCreateAccountsJsonFile() {
     const checkAccountsFile = () =>
       readFile(DataDirectory.accountsFilePath, {
         encoding: 'utf8',
