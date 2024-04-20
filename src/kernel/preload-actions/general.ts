@@ -13,3 +13,11 @@ export function openExternalURL(url: string) {
 export function requestAccounts() {
   ipcRenderer.send(ElectronAPIEventKeys.RequestAccounts)
 }
+
+export function closeWindow() {
+  ipcRenderer.send(ElectronAPIEventKeys.CloseWindow)
+}
+
+export function minimizeWindow() {
+  ipcRenderer.send(ElectronAPIEventKeys.MinimizeWindow)
+}

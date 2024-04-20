@@ -22,12 +22,6 @@ export function useAttributesStates() {
 export function useHandlers() {
   const { selected } = useGetSelectedAccount()
 
-  const handleLaunch = () => {
-    if (selected) {
-      window.electronAPI.launcherStart(selected)
-    }
-  }
-
   useEffect(() => {
     const notificationLauncherListener =
       window.electronAPI.onNotificationLauncher(async (data) => {
@@ -43,5 +37,19 @@ export function useHandlers() {
     }
   }, [])
 
-  return { handleLaunch }
+  const handleLaunch = () => {
+    if (selected) {
+      window.electronAPI.launcherStart(selected)
+    }
+  }
+
+  const handleCloseWindow = () => {
+    window.electronAPI.closeWindow()
+  }
+
+  const handleMinimizeWindow = () => {
+    window.electronAPI.minimizeWindow()
+  }
+
+  return { handleCloseWindow, handleLaunch, handleMinimizeWindow }
 }

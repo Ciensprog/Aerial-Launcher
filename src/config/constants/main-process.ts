@@ -7,6 +7,9 @@ export enum ElectronAPIEventKeys {
 
   RequestAccounts = 'request:accounts',
 
+  CloseWindow = 'window:close',
+  MinimizeWindow = 'window:minimize',
+
   /**
    * Events
    */

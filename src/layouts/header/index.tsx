@@ -1,4 +1,4 @@
-import { Menu, X } from 'lucide-react'
+import { Menu, Minus, X } from 'lucide-react'
 
 import { Button } from '../../components/ui/button'
 import {
@@ -15,7 +15,8 @@ import { useAttributesStates, useHandlers } from './hooks'
 
 export function Header() {
   const { isButtonDisabled, open, setOpen } = useAttributesStates()
-  const { handleLaunch } = useHandlers()
+  const { handleCloseWindow, handleLaunch, handleMinimizeWindow } =
+    useHandlers()
 
   return (
     <header className="app-draggable-region bg-muted/40 flex h-[var(--header-height)] items-center gap-1.5 border-b px-1.5">
@@ -58,6 +59,25 @@ export function Header() {
       >
         Launch Game
       </Button>
+
+      <div className="ml-auto">
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={handleMinimizeWindow}
+        >
+          <Minus />
+          <span className="sr-only">Minimize application</span>
+        </Button>
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={handleCloseWindow}
+        >
+          <X />
+          <span className="sr-only">Close application</span>
+        </Button>
+      </div>
     </header>
   )
 }

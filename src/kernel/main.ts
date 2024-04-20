@@ -77,6 +77,14 @@ app.on('ready', async () => {
     await AccountsManager.load(currentWindow)
   })
 
+  ipcMain.on(ElectronAPIEventKeys.CloseWindow, () => {
+    currentWindow.close()
+  })
+
+  ipcMain.on(ElectronAPIEventKeys.MinimizeWindow, () => {
+    currentWindow.minimize()
+  })
+
   /**
    * Events
    */
