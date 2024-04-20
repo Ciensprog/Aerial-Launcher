@@ -37,6 +37,9 @@ export enum ElectronAPIEventKeys {
   CreateAuthWithDevice = 'auth:create:device',
   ResponseAuthWithDevice = 'auth:create:device:response',
 
+  OpenEpicGamesSettings = 'epicgames:open-settings',
+  OpenEpicGamesSettingsNotification = 'epicgames:open-settings:notification',
+
   /**
    * Launcher
    */

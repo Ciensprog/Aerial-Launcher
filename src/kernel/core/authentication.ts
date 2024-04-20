@@ -2,8 +2,9 @@ import type { CommonErrorResponse } from '../../types/services/errors'
 import type { AccountData, AccountDataRecord } from '../../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
 
-import { BrowserWindow } from 'electron'
+import { BrowserWindow, shell } from 'electron'
 
+import { epicGamesAccountSettingsURL } from '../../config/fortnite/links'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { AccountsManager } from '../startup/accounts'
@@ -14,6 +15,7 @@ import {
   getAccessTokenUsingAuthorizationCode,
   getAccessTokenUsingDeviceAuth,
   getAccessTokenUsingExchangeCode,
+  getExchangeCodeUsingAccessToken,
   oauthVerify,
 } from '../../services/endpoints/oauth'
 
@@ -114,6 +116,55 @@ export class Authentication {
         error,
       })
     }
+  }
+
+  static async openEpicGamesSettings(
+    currentWindow: BrowserWindow,
+    account: AccountData
+  ) {
+    try {
+      const accessToken = await Authentication.verifyAccessToken(account)
+
+      if (!accessToken) {
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
+          {
+            account,
+            status: false,
+          }
+        )
+
+        return
+      }
+
+      const exchange = await getExchangeCodeUsingAccessToken(accessToken)
+
+      if (exchange.data.code) {
+        await shell.openExternal(
+          epicGamesAccountSettingsURL(exchange.data.code)
+        )
+
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
+          {
+            account,
+            status: true,
+          }
+        )
+
+        return
+      }
+    } catch (error) {
+      //
+    }
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
+      {
+        account,
+        status: false,
+      }
+    )
   }
 
   static async verifyAccessToken(account: AccountData) {

@@ -1,6 +1,10 @@
 import type { IpcRendererEvent } from 'electron'
+import type { AccountData } from '../../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
-import type { AuthCallbackResponseParam } from '../../types/preload'
+import type {
+  AuthCallbackResponseParam,
+  EpicGamesSettingsNotificationCallbackResponseParam,
+} from '../../types/preload'
 
 import { ipcRenderer } from 'electron'
 
@@ -88,6 +92,35 @@ export function responseAuthWithDevice(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.ResponseAuthWithDevice,
+        customCallback
+      ),
+  }
+}
+
+export function openEpicGamesSettings(account: AccountData) {
+  ipcRenderer.send(ElectronAPIEventKeys.OpenEpicGamesSettings, account)
+}
+
+export function responseEpicGamesSettings(
+  callback: (
+    values: EpicGamesSettingsNotificationCallbackResponseParam
+  ) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    values: EpicGamesSettingsNotificationCallbackResponseParam
+  ) => {
+    callback(values).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
         customCallback
       ),
   }

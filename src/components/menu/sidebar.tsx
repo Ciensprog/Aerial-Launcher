@@ -60,7 +60,29 @@ export function SidebarMenu({
       <div className="flex-1 pb-6">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
           <OptionWithComingSoonTooltip text="STW Operations" />
-          <OptionWithComingSoonTooltip text="Account Management" />
+          {/* <OptionWithComingSoonTooltip text="Account Management" /> */}
+          <Title className="pb-0">Account Management</Title>
+          <div
+            className={cn(
+              'px-3 py-2 text-muted-foreground',
+              '[&_.item-account-management>a]:flex'
+            )}
+          >
+            <ul className="list-disc ml-5">
+              <li className="item-account-management">
+                <Link
+                  to="/account-management/epic-games-settings"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  Epic Games Settings
+                </Link>
+              </li>
+            </ul>
+          </div>
           <Separator className="my-2" />
           <Title className="pb-0">My Accounts ({totalInText}):</Title>
           <div

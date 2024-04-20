@@ -137,6 +137,13 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(
+    ElectronAPIEventKeys.OpenEpicGamesSettings,
+    async (_, account: AccountData) => {
+      await Authentication.openEpicGamesSettings(currentWindow, account)
+    }
+  )
+
   /**
    * Launcher
    */

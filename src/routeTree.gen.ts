@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as AccountsRemoveRouteImport } from './routes/accounts/remove/route'
+import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
 import { Route as AccountsAddTypeImport } from './routes/accounts/add/$type'
 
 // Create/Update Routes
@@ -27,6 +28,12 @@ const AccountsRemoveRouteRoute = AccountsRemoveRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AccountManagementEpicGamesSettingsRouteRoute =
+  AccountManagementEpicGamesSettingsRouteImport.update({
+    path: '/account-management/epic-games-settings',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 const AccountsAddTypeRoute = AccountsAddTypeImport.update({
   path: '/accounts/add/$type',
   getParentRoute: () => rootRoute,
@@ -38,6 +45,10 @@ declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/account-management/epic-games-settings': {
+      preLoaderRoute: typeof AccountManagementEpicGamesSettingsRouteImport
       parentRoute: typeof rootRoute
     }
     '/accounts/remove': {
@@ -55,6 +66,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
+  AccountManagementEpicGamesSettingsRouteRoute,
   AccountsRemoveRouteRoute,
   AccountsAddTypeRoute,
 ])

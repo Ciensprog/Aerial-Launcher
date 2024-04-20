@@ -30,7 +30,15 @@ export type AntiCheatProviderCallbackResponseParam =
       error: string
     }
 
-export type LauncherNotificationCallbackResponseParam = {
+export type CommonNotificationCallbackResponseParam<
+  Extra = Record<string, unknown>,
+> = {
   account: AccountData
   status: boolean
-}
+} & Extra
+
+export type LauncherNotificationCallbackResponseParam =
+  CommonNotificationCallbackResponseParam
+
+export type EpicGamesSettingsNotificationCallbackResponseParam =
+  CommonNotificationCallbackResponseParam
