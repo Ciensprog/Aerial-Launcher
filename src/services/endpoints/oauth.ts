@@ -23,21 +23,28 @@ export function getAccessTokenUsingExchangeCode(exchange_code: string) {
   })
 }
 
-export function getAccessTokenUsingDeviceAuth({
-  accountId,
-  deviceId,
-  secret,
-}: {
-  accountId: string
-  deviceId: string
-  secret: string
-}) {
-  return oauthService.post<AuthorizationCodeResponse>('/token', {
+export function getAccessTokenUsingDeviceAuth(
+  {
+    accountId,
+    deviceId,
     secret,
-    grant_type: 'device_auth',
-    account_id: accountId,
-    device_id: deviceId,
-  })
+  }: {
+    accountId: string
+    deviceId: string
+    secret: string
+  },
+  config?: AxiosRequestConfig
+) {
+  return oauthService.post<AuthorizationCodeResponse>(
+    '/token',
+    {
+      secret,
+      grant_type: 'device_auth',
+      account_id: accountId,
+      device_id: deviceId,
+    },
+    config
+  )
 }
 
 export function getExchangeCodeUsingAccessToken(accessToken: string) {
