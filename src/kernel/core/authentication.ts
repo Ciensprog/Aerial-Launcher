@@ -1,6 +1,7 @@
 import type { CommonErrorResponse } from '../../types/services/errors'
 import type { AccountData, AccountDataRecord } from '../../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
+import type { GenerateExchangeCodeNotificationCallbackResponseParam } from '../../types/preload'
 
 import { BrowserWindow, shell } from 'electron'
 
@@ -116,6 +117,54 @@ export class Authentication {
         error,
       })
     }
+  }
+
+  static async generateExchangeCode(
+    currentWindow: BrowserWindow,
+    account: AccountData
+  ) {
+    try {
+      const accessToken = await Authentication.verifyAccessToken(account)
+
+      if (!accessToken) {
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.ResponseGenerateExchangeCode,
+          {
+            account,
+            status: false,
+            code: null,
+          } as GenerateExchangeCodeNotificationCallbackResponseParam
+        )
+
+        return
+      }
+
+      const exchange = await getExchangeCodeUsingAccessToken(accessToken)
+
+      if (exchange.data.code) {
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.ResponseGenerateExchangeCode,
+          {
+            account,
+            status: true,
+            code: exchange.data.code,
+          } as GenerateExchangeCodeNotificationCallbackResponseParam
+        )
+
+        return
+      }
+    } catch (error) {
+      //
+    }
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.ResponseGenerateExchangeCode,
+      {
+        account,
+        status: false,
+        code: null,
+      } as GenerateExchangeCodeNotificationCallbackResponseParam
+    )
   }
 
   static async openEpicGamesSettings(

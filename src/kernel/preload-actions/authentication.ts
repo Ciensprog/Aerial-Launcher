@@ -4,6 +4,7 @@ import type { AuthenticationByDeviceProperties } from '../../types/authenticatio
 import type {
   AuthCallbackResponseParam,
   EpicGamesSettingsNotificationCallbackResponseParam,
+  GenerateExchangeCodeNotificationCallbackResponseParam,
 } from '../../types/preload'
 
 import { ipcRenderer } from 'electron'
@@ -121,6 +122,35 @@ export function responseEpicGamesSettings(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
+        customCallback
+      ),
+  }
+}
+
+export function generateExchangeCode(account: AccountData) {
+  ipcRenderer.send(ElectronAPIEventKeys.GenerateExchangeCode, account)
+}
+
+export function responseGenerateExchangeCode(
+  callback: (
+    response: GenerateExchangeCodeNotificationCallbackResponseParam
+  ) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    response: GenerateExchangeCodeNotificationCallbackResponseParam
+  ) => {
+    callback(response).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.ResponseGenerateExchangeCode,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.ResponseGenerateExchangeCode,
         customCallback
       ),
   }

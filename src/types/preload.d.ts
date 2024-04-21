@@ -42,3 +42,15 @@ export type LauncherNotificationCallbackResponseParam =
 
 export type EpicGamesSettingsNotificationCallbackResponseParam =
   CommonNotificationCallbackResponseParam
+
+export type GenerateExchangeCodeNotificationCallbackResponseParam =
+  | {
+      account: AccountData
+      code: string
+      status: true
+    }
+  | {
+      account: AccountData
+      code: null
+      status: false
+    }

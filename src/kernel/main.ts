@@ -161,6 +161,13 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(
+    ElectronAPIEventKeys.GenerateExchangeCode,
+    async (_, account: AccountData) => {
+      await Authentication.generateExchangeCode(currentWindow, account)
+    }
+  )
+
   /**
    * Launcher
    */

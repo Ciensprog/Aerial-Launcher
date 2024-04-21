@@ -48,6 +48,9 @@ export enum ElectronAPIEventKeys {
   OpenEpicGamesSettings = 'epicgames:open-settings',
   OpenEpicGamesSettingsNotification = 'epicgames:open-settings:notification',
 
+  GenerateExchangeCode = 'auth:generate:exchange',
+  ResponseGenerateExchangeCode = 'auth:generate:exchange:response',
+
   /**
    * Launcher
    */
