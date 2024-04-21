@@ -1,19 +1,31 @@
 import type { AccountList } from '../../types/accounts'
+import type { Settings } from '../../types/settings'
 
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
+import { settingsSchema } from '../../lib/validations/schemas/settings'
 
 export class DataDirectory {
   private static dataDirectoryPath = path.join(
     `${process.env.APPDATA}`,
     'aerial-launcher-data'
   )
+
   private static accountsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
     'accounts.json'
   )
+  private static accountsDefaultData: AccountList = []
+
+  private static settingsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'settings.json'
+  )
+  private static settingsDefaultData: Settings = {
+    path: 'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64',
+  }
 
   /**
    * Create data directory and accounts.json
@@ -21,6 +33,7 @@ export class DataDirectory {
   static async createDataResources() {
     await DataDirectory.checkOrCreateDataDirectory()
     await DataDirectory.getOrCreateAccountsJsonFile()
+    await DataDirectory.getOrCreateSettingsJsonFile()
   }
 
   /**
@@ -42,24 +55,43 @@ export class DataDirectory {
   }
 
   /**
-   * Update accounts.json
+   * Get data from settings.json
    */
-  static async updateAccountsFile(data: AccountList) {
-    if (!data) {
-      return
-    }
+  static async getSettingsFile(): Promise<{ settings: Settings }> {
+    const result = await DataDirectory.getOrCreateSettingsJsonFile()
 
     try {
-      await writeFile(
-        DataDirectory.accountsFilePath,
-        JSON.stringify(data ?? [], null, 2),
-        {
-          encoding: 'utf8',
-        }
-      )
+      const list = settingsSchema.safeParse(JSON.parse(result))
+      const settings = list.success
+        ? list.data
+        : DataDirectory.settingsDefaultData
+
+      return { settings }
     } catch (error) {
       //
     }
+
+    return { settings: DataDirectory.settingsDefaultData }
+  }
+
+  /**
+   * Update accounts.json
+   */
+  static async updateAccountsFile(data: AccountList) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.accountsFilePath,
+      data
+    )
+  }
+
+  /**
+   * Update settings.json
+   */
+  static async updateSettingsFile(data: Settings) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.settingsFilePath,
+      data
+    )
   }
 
   /**
@@ -81,25 +113,87 @@ export class DataDirectory {
    * Creating accounts.json
    */
   private static async getOrCreateAccountsJsonFile() {
-    const checkAccountsFile = () =>
-      readFile(DataDirectory.accountsFilePath, {
+    const initialData = DataDirectory.accountsDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.accountsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating settings.json
+   */
+  private static async getOrCreateSettingsJsonFile() {
+    const initialData = DataDirectory.settingsDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.settingsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating json file
+   */
+  private static async getOrCreateJsonFile(
+    currentPath: string,
+    config: {
+      defaults: {
+        rawString: string
+        value: unknown
+      }
+    }
+  ) {
+    const checkFile = () =>
+      readFile(currentPath, {
         encoding: 'utf8',
       })
     let result: string | undefined
 
     try {
-      result = await checkAccountsFile()
+      result = await checkFile()
     } catch (error) {
       await writeFile(
-        DataDirectory.accountsFilePath,
-        JSON.stringify([], null, 2),
+        currentPath,
+        JSON.stringify(config.defaults.value, null, 2),
         {
           encoding: 'utf8',
         }
       )
-      result = await checkAccountsFile()
+      result = await checkFile()
     }
 
-    return result ?? '[]'
+    return result ?? config.defaults.rawString
+  }
+
+  /**
+   * Update json file
+   */
+  private static async updateJsonFile<Data>(
+    currentPath: string,
+    data: Data
+  ) {
+    if (!data) {
+      return
+    }
+
+    try {
+      await writeFile(currentPath, JSON.stringify(data ?? [], null, 2), {
+        encoding: 'utf8',
+      })
+    } catch (error) {
+      //
+    }
   }
 }

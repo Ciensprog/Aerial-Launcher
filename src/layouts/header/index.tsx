@@ -1,4 +1,7 @@
-import { Menu, Minus, X } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { Menu, Minus, Settings, X } from 'lucide-react'
+
+import imgFNDB from '../../_assets/fndb.webp'
 
 import { Button } from '../../components/ui/button'
 import {
@@ -15,8 +18,12 @@ import { useAttributesStates, useHandlers } from './hooks'
 
 export function Header() {
   const { isButtonDisabled, open, setOpen } = useAttributesStates()
-  const { handleCloseWindow, handleLaunch, handleMinimizeWindow } =
-    useHandlers()
+  const {
+    handleCloseWindow,
+    handleLaunch,
+    handleMinimizeWindow,
+    handleOpenFNDBProfile,
+  } = useHandlers()
 
   return (
     <header className="app-draggable-region bg-muted/40 flex h-[var(--header-height)] items-center gap-1.5 border-b px-1.5">
@@ -52,12 +59,34 @@ export function Header() {
       </Sheet>
       <AccountList />
       <Button
-        size="lg"
+        size="default"
         variant="outline"
         disabled={isButtonDisabled}
         onClick={handleLaunch}
       >
         Launch Game
+      </Button>
+      <Button
+        size="icon"
+        variant="ghost"
+        asChild
+      >
+        <Link to="/settings">
+          <Settings />
+          <span className="sr-only">Go to settings</span>
+        </Link>
+      </Button>
+      <Button
+        size="icon"
+        variant="ghost"
+        disabled={isButtonDisabled}
+        onClick={handleOpenFNDBProfile}
+      >
+        <img
+          src={imgFNDB}
+          className="w-8"
+        />
+        <span className="sr-only">Go to FortniteDB profile</span>
       </Button>
 
       <div className="ml-auto">

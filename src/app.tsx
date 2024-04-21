@@ -5,6 +5,7 @@ import { IndexComponent } from './routes'
 import { routeTree } from './routeTree.gen'
 
 import { LoadAccounts } from './bootstrap/components/load-accounts'
+import { LoadSettings } from './bootstrap/components/load-settings'
 
 import { Toaster } from './components/ui/sonner'
 import { ThemeProvider } from './components/theme-provider'
@@ -14,6 +15,7 @@ const router = createRouter({ routeTree })
 
 root.render(
   <ThemeProvider>
+    <LoadSettings />
     <LoadAccounts />
     <RouterProvider
       router={router}

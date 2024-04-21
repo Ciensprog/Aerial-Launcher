@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { fortniteDBProfileURL } from '../../config/fortnite/links'
+
 import { useGetSelectedAccount } from '../../hooks/accounts'
 
 import { toast } from '../../lib/notifications'
@@ -43,6 +45,14 @@ export function useHandlers() {
     }
   }
 
+  const handleOpenFNDBProfile = () => {
+    if (selected) {
+      window.electronAPI.openExternalURL(
+        fortniteDBProfileURL(selected.displayName)
+      )
+    }
+  }
+
   const handleCloseWindow = () => {
     window.electronAPI.closeWindow()
   }
@@ -51,5 +61,10 @@ export function useHandlers() {
     window.electronAPI.minimizeWindow()
   }
 
-  return { handleCloseWindow, handleLaunch, handleMinimizeWindow }
+  return {
+    handleCloseWindow,
+    handleLaunch,
+    handleMinimizeWindow,
+    handleOpenFNDBProfile,
+  }
 }

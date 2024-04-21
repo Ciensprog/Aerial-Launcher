@@ -60,7 +60,6 @@ export function SidebarMenu({
       <div className="flex-1 pb-6">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
           <OptionWithComingSoonTooltip text="STW Operations" />
-          {/* <OptionWithComingSoonTooltip text="Account Management" /> */}
           <Title className="pb-0">Account Management</Title>
           <div
             className={cn(

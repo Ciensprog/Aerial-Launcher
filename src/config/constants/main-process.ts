@@ -1,5 +1,13 @@
 export enum ElectronAPIEventKeys {
   /**
+   * Settings
+   */
+
+  RequestSettings = 'request:settings',
+  OnLoadSettings = 'on:load:settings',
+  UpdateSettings = 'settings:update',
+
+  /**
    * General Methods
    */
 

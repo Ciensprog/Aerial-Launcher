@@ -6,3 +6,7 @@ export const epicGamesAuthorizationCodeURL = `https://www.epicgames.com/id/api/r
 export function epicGamesAccountSettingsURL(exchangeCode: string) {
   return `https://www.epicgames.com/id/exchange?exchangeCode=${exchangeCode}`
 }
+
+export function fortniteDBProfileURL(displayName: string) {
+  return `https://fortnitedb.com/profile/${displayName}`
+}

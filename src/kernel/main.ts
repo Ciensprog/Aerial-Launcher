@@ -1,5 +1,6 @@
 import type { AccountData } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
+import type { Settings } from '../types/settings'
 
 import path from 'node:path'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
@@ -13,6 +14,7 @@ import { Authentication } from './core/authentication'
 import { FortniteLauncher } from './core/launcher'
 import { AccountsManager } from './startup/accounts'
 import { DataDirectory } from './startup/data-directory'
+import { SettingsManager } from './startup/settings'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -66,15 +68,30 @@ app.on('ready', async () => {
   const currentWindow = await createWindow()
 
   /**
+   * Settings
+   */
+
+  ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
+    await AccountsManager.load(currentWindow)
+  })
+
+  ipcMain.on(ElectronAPIEventKeys.RequestSettings, async () => {
+    await SettingsManager.load(currentWindow)
+  })
+
+  ipcMain.on(
+    ElectronAPIEventKeys.UpdateSettings,
+    async (_, settings: Settings) => {
+      await SettingsManager.update(settings)
+    }
+  )
+
+  /**
    * General Methods
    */
 
   ipcMain.on(ElectronAPIEventKeys.OpenExternalURL, (_, url: string) => {
     shell.openExternal(url)
-  })
-
-  ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
-    await AccountsManager.load(currentWindow)
   })
 
   ipcMain.on(ElectronAPIEventKeys.CloseWindow, () => {
