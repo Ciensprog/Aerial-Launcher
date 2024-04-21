@@ -37,7 +37,7 @@ export function LoadAccounts() {
         async ({ account, data }) => {
           addOrUpdate(account.accountId, {
             ...account,
-            provider: data?.provider,
+            provider: data?.provider ?? null,
             token: data?.accessToken ?? null,
           })
         }
@@ -63,7 +63,7 @@ export function LoadAccounts() {
         async ({ account, data }) => {
           addOrUpdate(account.accountId, {
             ...account,
-            provider: data?.provider,
+            provider: data?.provider ?? null,
             token: data?.accessToken ?? null,
           })
         }
