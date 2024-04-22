@@ -15,8 +15,7 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
-      iconUrl:
-        'https://raw.githubusercontent.com/YoJellyfish/Aerial-Launcher/main/icon.ico',
+      iconUrl: `https://raw.githubusercontent.com/${packageJson.author.name}/Aerial-Launcher/main/icon.ico`,
       setupIcon: 'icon.ico',
     }),
   ],

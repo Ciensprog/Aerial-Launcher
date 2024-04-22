@@ -1,5 +1,5 @@
-export const repositoryURL =
-  'https://github.com/YoJellyfish/Aerial-Launcher'
+import packageJson from '../../../package.json'
 
-export const repositoryReleasesURL =
-  'https://github.com/YoJellyfish/Aerial-Launcher/releases'
+export const repositoryURL = `https://github.com/${packageJson.author.name}/Aerial-Launcher`
+
+export const repositoryReleasesURL = `https://github.com/${packageJson.author.name}/Aerial-Launcher/releases`
