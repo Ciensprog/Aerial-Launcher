@@ -54,3 +54,8 @@ export type GenerateExchangeCodeNotificationCallbackResponseParam =
       code: null
       status: false
     }
+
+export type NewVersionStatusCallbackResponseParam = {
+  link: string
+  version: string
+} | null

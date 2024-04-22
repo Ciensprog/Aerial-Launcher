@@ -1,6 +1,9 @@
 import type { IpcRendererEvent } from 'electron'
 import type { AccountData } from '../../types/accounts'
-import type { AntiCheatProviderCallbackResponseParam } from '../../types/preload'
+import type {
+  AntiCheatProviderCallbackResponseParam,
+  NewVersionStatusCallbackResponseParam,
+} from '../../types/preload'
 
 import { ipcRenderer } from 'electron'
 
@@ -24,9 +27,9 @@ export function responseProviderAndAccessToken(
 ) {
   const customCallback = (
     _: IpcRendererEvent,
-    values: AntiCheatProviderCallbackResponseParam
+    response: AntiCheatProviderCallbackResponseParam
   ) => {
-    callback(values).catch(() => {})
+    callback(response).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
@@ -37,6 +40,35 @@ export function responseProviderAndAccessToken(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
+        customCallback
+      ),
+  }
+}
+
+export function requestNewVersionStatus() {
+  ipcRenderer.send(ElectronAPIEventKeys.RequestNewVersionStatus)
+}
+
+export function responseNewVersionStatus(
+  callback: (
+    response: NewVersionStatusCallbackResponseParam
+  ) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    response: NewVersionStatusCallbackResponseParam
+  ) => {
+    callback(response).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.ResponseNewVersionStatus,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.ResponseNewVersionStatus,
         customCallback
       ),
   }

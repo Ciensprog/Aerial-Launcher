@@ -13,8 +13,6 @@ export enum ElectronAPIEventKeys {
 
   OpenExternalURL = 'open-external-url',
 
-  RequestAccounts = 'request:accounts',
-
   CloseWindow = 'window:close',
   MinimizeWindow = 'window:minimize',
 
@@ -28,6 +26,11 @@ export enum ElectronAPIEventKeys {
   /**
    * Requests
    */
+
+  RequestNewVersionStatus = 'request:new-version-status',
+  ResponseNewVersionStatus = 'response:new-version-status',
+
+  RequestAccounts = 'request:accounts',
 
   RequestProviderAndAccessTokenOnStartup = 'request:provider-with-access-token:on-startup',
   ResponseProviderAndAccessTokenOnStartup = 'request:provider-with-access-token:on-startup:response',

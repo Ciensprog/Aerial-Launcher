@@ -13,6 +13,7 @@ import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { FortniteLauncher } from './core/launcher'
 import { AccountsManager } from './startup/accounts'
+import { Application } from './startup/application'
 import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
 
@@ -167,6 +168,10 @@ app.on('ready', async () => {
       await Authentication.generateExchangeCode(currentWindow, account)
     }
   )
+
+  ipcMain.on(ElectronAPIEventKeys.RequestNewVersionStatus, async () => {
+    await Application.checkVersion(currentWindow)
+  })
 
   /**
    * Launcher
