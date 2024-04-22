@@ -4,12 +4,11 @@
   "description": "A Windows desktop application (based on Potato Launcher) to manage things on Fortnite STW",
   "version": "1.1.0",
   "author": {
-    "name": "YoJellyfish",
-    "email": "165499511+YoJellyfish@users.noreply.github.com"
+    "name": "Ciensprog"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/YoJellyfish/Aerial-Launcher"
+    "url": "https://github.com/Ciensprog/Aerial-Launcher"
   },
   "license": "MIT",
   "keywords": [
