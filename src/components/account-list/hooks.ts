@@ -16,11 +16,18 @@ export function useAccountList() {
   const [open, setOpen] = useState(false)
   const accounts = Object.values(accountList)
 
-  const customFilter = (value: string, search: string) => {
+  const customFilter = (
+    value: string,
+    search: string,
+    keywords?: Array<string>
+  ) => {
     const _value = value.toLowerCase()
     const _search = search.toLowerCase()
+    const _provider =
+      keywords &&
+      keywords.some((keyword) => keyword.toLowerCase().includes(_search))
 
-    return _value.includes(_search) ? 1 : 0
+    return _value.includes(_search) || _provider ? 1 : 0
   }
   const onSelect = (account: AccountData) => (displayName: string) => {
     if (displayName !== selected?.displayName) {

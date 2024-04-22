@@ -61,7 +61,10 @@ export function AccountList() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-52">
-        <Command filter={customFilter}>
+        <Command
+          filter={customFilter}
+          loop
+        >
           {accounts.length > 1 && (
             <CommandInput
               placeholder={`Search on ${accounts.length} accounts...`}
@@ -76,6 +79,9 @@ export function AccountList() {
                 <CommandItem
                   key={account.accountId}
                   value={account.displayName}
+                  keywords={
+                    account.provider ? [account.provider] : undefined
+                  }
                   onSelect={onSelect(account)}
                 >
                   <Check
