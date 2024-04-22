@@ -8,15 +8,15 @@ A Windows desktop application (based on Potato Launcher) to manage things on For
 
 ## Development Motivation (Lore)
 
-As a Fortnite STW player, learning new things is very interesting, for that reason I like to spend time when I have the chance, along the way I have met many players in different communities (especially in Spanish) and there are two players who motivated me a lot to improve my skills in the game: Kuda and Fresh.
+Most STW players can agree that most of us reach a point where we start using alts to progress even more in the game. Training, doing vbucks on alts, preparing missions... And we end up using discord bots to make our life's easier, leaving missions earlier, and claiming chests on loading screens. The main purpose of the launcher is to have all this features in the same place, storing all the information locally. Have to give some credits to Fresh and Kuda for giving me ideas and their opinion during the development, and then obviously credits to me (Ciensprog) as I'm developing the entirety of Aerial alone.
 
-I must clarify that I am a Spanish-speaker player and given how large many communities can be, I have realized that there are many projects but few are developed by Spanish-speaker players and that is curious.
+I must clarify that I am a hispanic player and given how large many communities can be, I have realised that there are many projects but few are developed by hispanic players and that's kinda lame.
 
-There are Discord bots that can facilitate many things, for utilities and account administration and that is cool, I was very interested in the idea of creating something similar and sharing with my friends, there was already an application (Potato Launcher) for do some things, I liked the idea of adding other features and even adding some existing functionality that other Discord bots have.
+There are Discord bots that can facilitate many things, for utilities and account administration and that is cool, I was very interested in the idea of creating something similar and sharing with my friends. There was already an open source application (Potato Launcher) to manage STW accounts, but as everyone can agree now, its really outdated. My main idea when I started developing Aerial was to remake a new Potato-Launcher but with all the new implementations that we've had along the years, such as kalp, ca, autokick, hl, bulk operations... And all the premium features that discord bot owners put behind a pay-wall.
 
-As a Software Developer I felt motivated to develop an Open-Source project for the community and make it useful for daily use of many players.
+As a Software Developer I felt motivated to develop an Open-Source project that serves the community and the grinders in a daily basis.
 
-But what does it mean that this project is Open-Source? It is very simple, as it is an application that runs on your computer, you keep everything locally and at any time you can review the repository and know what the application is doing.
+But what does it mean that this project is Open-Source? It is very simple, to ensure that no one thinks or defames the project as a virus, the hole source of every version of Aerial-Launcher will remain open to the public. Everyone can go and look through the source code and check if there's anything malicious in it.
 
 ## Table of Contents
 
