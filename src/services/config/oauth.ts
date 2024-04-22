@@ -1,5 +1,8 @@
+import type { AxiosRetry } from 'axios-retry'
+
 import axios from 'axios'
-import axiosRetry from 'axios-retry'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const axiosRetry = require('axios-retry').default as AxiosRetry
 
 import {
   defaultFortniteClient,
