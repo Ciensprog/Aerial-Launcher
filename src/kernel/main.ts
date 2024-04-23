@@ -5,13 +5,13 @@ import type { Settings } from '../types/settings'
 import path from 'node:path'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 import schedule from 'node-schedule'
-// import { updateElectronApp } from 'update-electron-app'
 
 import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
 import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { FortniteLauncher } from './core/launcher'
+import { Manifest } from './core/manifest'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
 import { DataDirectory } from './startup/data-directory'
@@ -38,6 +38,12 @@ async function createWindow() {
     },
   })
 
+  const manifest = Manifest.get()
+
+  if (manifest) {
+    mainWindow.webContents.setUserAgent(manifest.UserAgent)
+  }
+
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.webContents.openDevTools({
@@ -58,7 +64,6 @@ async function createWindow() {
 }
 
 Menu.setApplicationMenu(null)
-// updateElectronApp()
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
