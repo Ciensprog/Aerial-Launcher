@@ -16,11 +16,18 @@ export function getAccessTokenUsingAuthorizationCode(code: string) {
   })
 }
 
-export function getAccessTokenUsingExchangeCode(exchange_code: string) {
-  return oauthService.post<ExchangeCodeResponse>('/token', {
-    grant_type: 'exchange_code',
-    exchange_code,
-  })
+export function getAccessTokenUsingExchangeCode(
+  exchange_code: string,
+  config?: AxiosRequestConfig
+) {
+  return oauthService.post<ExchangeCodeResponse>(
+    '/token',
+    {
+      grant_type: 'exchange_code',
+      exchange_code,
+    },
+    config
+  )
 }
 
 export function getAccessTokenUsingDeviceAuth(

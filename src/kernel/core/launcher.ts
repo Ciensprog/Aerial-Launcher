@@ -4,61 +4,117 @@ import childProcess from 'node:child_process'
 import { BrowserWindow } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+import { launcherAppClient2 } from '../../config/fortnite/clients'
 
 import { DataDirectory } from '../startup/data-directory'
 
 import { Authentication } from './authentication'
+// import { Manifest } from './manifest'
 
-import { getExchangeCodeUsingAccessToken } from '../../services/endpoints/oauth'
+import {
+  getAccessTokenUsingExchangeCode,
+  getExchangeCodeUsingAccessToken,
+} from '../../services/endpoints/oauth'
 
 export class FortniteLauncher {
   static async start(currentWindow: BrowserWindow, account: AccountData) {
+    const sendError = () => {
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.LauncherNotification,
+        {
+          account,
+          status: false,
+        }
+      )
+    }
+
     try {
+      // const manifest = Manifest.get()
+
+      // if (!manifest) {
+      //   sendError()
+
+      //   return
+      // }
+
       const { settings } = await DataDirectory.getSettingsFile()
       const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
-        currentWindow.webContents.send(
-          ElectronAPIEventKeys.LauncherNotification,
-          {
-            account,
-            status: false,
-          }
-        )
+        sendError()
 
         return
       }
 
-      const exchange = await getExchangeCodeUsingAccessToken(accessToken)
+      const accountExchangeCode =
+        await getExchangeCodeUsingAccessToken(accessToken)
 
-      if (exchange.data.code) {
-        childProcess.exec(
-          `start "" FortniteLauncher.exe -AUTH_LOGIN=unused -AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -epicsandboxid=fn -EpicPortal -steamimportavailable -AUTH_PASSWORD=${exchange.data.code} -epicuserid=${account.accountId} -epicusername="${account.displayName}"`,
-          {
-            cwd: settings.path,
-          }
-        )
-
-        currentWindow.webContents.send(
-          ElectronAPIEventKeys.LauncherNotification,
-          {
-            account,
-            status: true,
-          }
-        )
+      if (!accountExchangeCode.data.code) {
+        sendError()
 
         return
       }
+
+      const launcherAccessToken = await getAccessTokenUsingExchangeCode(
+        accountExchangeCode.data.code,
+        {
+          headers: {
+            Authorization: `Basic ${launcherAppClient2.auth}`,
+          },
+        }
+      )
+
+      if (!launcherAccessToken.data.access_token) {
+        sendError()
+
+        return
+      }
+
+      const launcherExchangeCode = await getExchangeCodeUsingAccessToken(
+        launcherAccessToken.data.access_token
+      )
+
+      if (!launcherExchangeCode.data.code) {
+        sendError()
+
+        return
+      }
+
+      const command = [
+        'start',
+        '""',
+        'FortniteLauncher.exe',
+        // `${manifest.LaunchCommand}`,
+        '-AUTH_LOGIN=unused',
+        `-AUTH_PASSWORD=${launcherExchangeCode.data.code}`,
+        '-AUTH_TYPE=exchangecode',
+        '-epicapp=Fortnite',
+        '-epicenv=Prod',
+        '-EpicPortal',
+        // '-steamimportavailable',
+        `-epicusername="${account.displayName}"`,
+        `-epicuserid=${account.accountId}`,
+        // '-epiclocale=en',
+        // '-epicsandboxid=fn',
+      ].join(' ')
+
+      childProcess.exec(command, {
+        cwd: settings.path,
+      })
+
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.LauncherNotification,
+        {
+          account,
+          status: true,
+        }
+      )
+
+      return
     } catch (error) {
       //
     }
 
-    currentWindow.webContents.send(
-      ElectronAPIEventKeys.LauncherNotification,
-      {
-        account,
-        status: false,
-      }
-    )
+    sendError()
   }
 }

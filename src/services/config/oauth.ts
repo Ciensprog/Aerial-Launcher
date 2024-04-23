@@ -9,6 +9,8 @@ import {
   fortniteIOSGameClient,
 } from '../../config/fortnite/clients'
 
+import { Manifest } from '../../kernel/core/manifest'
+
 /**
  * OAuth Service
  */
@@ -39,6 +41,12 @@ axiosRetry(oauthService, {
 })
 
 oauthService.interceptors.request.use((config) => {
+  const manifest = Manifest.get()
+
+  if (manifest) {
+    config.headers.setUserAgent(manifest.UserAgent)
+  }
+
   if (!config.headers.getAuthorization()) {
     /**
      * Load Authorization header with default client on every request
