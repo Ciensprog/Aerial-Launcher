@@ -47,3 +47,9 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
+
+declare module 'csstype' {
+  interface Properties {
+    [key: `--${string}`]: string
+  }
+}
