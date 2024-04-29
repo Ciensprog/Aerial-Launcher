@@ -1,3 +1,4 @@
+import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
 import { Button } from '../../../../components/ui/button'
 import {
   Card,
@@ -12,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../../../../components/ui/form'
-import { Input } from '../../../../components/ui/input'
 
 import { useSetupForm } from './-hooks'
 
@@ -34,7 +34,7 @@ export function DeviceAuthPage() {
                 <FormItem>
                   <FormLabel>Account Id</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <InputSecret inputProps={field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -47,7 +47,7 @@ export function DeviceAuthPage() {
                 <FormItem>
                   <FormLabel>Device Id</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <InputSecret inputProps={field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -60,7 +60,7 @@ export function DeviceAuthPage() {
                 <FormItem>
                   <FormLabel>Secret</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <InputSecret inputProps={field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

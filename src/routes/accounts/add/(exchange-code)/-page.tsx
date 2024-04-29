@@ -1,5 +1,6 @@
 import { exampleCode } from '../../../../config/constants/examples'
 
+import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
 import { Button } from '../../../../components/ui/button'
 import {
   Card,
@@ -14,7 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../../../../components/ui/form'
-import { Input } from '../../../../components/ui/input'
 import { Separator } from '../../../../components/ui/separator'
 
 import { GenerateExchangeCodePage } from './-generate'
@@ -52,9 +52,11 @@ export function ExchangeCodePage() {
                   <FormItem>
                     <FormLabel>Paste Your Code</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder={`Example: ${exampleCode}`}
-                        {...field}
+                      <InputSecret
+                        inputProps={{
+                          placeholder: `Example: ${exampleCode}`,
+                          ...field,
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
