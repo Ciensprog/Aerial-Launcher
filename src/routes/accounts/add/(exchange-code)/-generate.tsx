@@ -1,5 +1,6 @@
 import { Clipboard } from 'lucide-react'
 
+import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
 import { Button } from '../../../../components/ui/button'
 import {
   Card,
@@ -7,7 +8,6 @@ import {
   CardDescription,
   CardFooter,
 } from '../../../../components/ui/card'
-import { Input } from '../../../../components/ui/input'
 
 import { useGenerateHandlers } from './-hooks'
 
@@ -27,21 +27,18 @@ export function GenerateExchangeCodePage() {
             Account selected:{' '}
             <span className="font-bold">{selected?.displayName}</span>
           </CardDescription>
-          <div className="flex items-center relative">
-            <Input
-              placeholder="Generated code will be displayed here"
-              value={generatedCode ?? ''}
-              disabled
-            />
-            <Button
-              className="absolute p-0 right-1 size-8"
-              variant="ghost"
-              disabled={generatedCode === null}
-              onClick={handleCopyCode}
-            >
-              <Clipboard size={16} />
-            </Button>
-          </div>
+          <InputSecret
+            buttonProps={{
+              disabled: generatedCode === null,
+              onClick: handleCopyCode,
+            }}
+            inputProps={{
+              placeholder: 'Generated code will be displayed here',
+              value: generatedCode ?? '',
+              disabled: true,
+            }}
+            iconButton={<Clipboard size={16} />}
+          />
         </CardContent>
         <CardFooter className="space-x-6">
           <Button

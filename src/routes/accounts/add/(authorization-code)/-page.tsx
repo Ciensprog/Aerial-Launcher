@@ -6,6 +6,7 @@ import {
   epicGamesLoginURL,
 } from '../../../../config/fortnite/links'
 
+import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
 import {
   Accordion,
   AccordionContent,
@@ -28,7 +29,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../../../../components/ui/form'
-import { Input } from '../../../../components/ui/input'
 
 import { useHandlers } from '../-hooks'
 import { useSetupForm } from './-hooks'
@@ -101,9 +101,11 @@ export function AuthorizationCodePage() {
                 <FormItem>
                   <FormLabel>Paste Your Code</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder={`Example: ${exampleCode}`}
-                      {...field}
+                    <InputSecret
+                      inputProps={{
+                        placeholder: `Example: ${exampleCode}`,
+                        ...field,
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
