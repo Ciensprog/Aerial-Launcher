@@ -175,12 +175,20 @@ export function SidebarMenu({
             Release v{packageJson.version} -{' '}
             <a
               href={repositoryReleasesURL}
-              className="underline"
+              className="underline hover:text-muted-foreground"
               onClick={goToReleasesURL}
             >
               All Releases
             </a>
           </p>
+        </div>
+        <div className="px-5 text-xs text-muted-foreground/60 lg:px-7">
+          <Link
+            to="/information/credits"
+            className="flex justify-center mt-3 underline hover:text-muted-foreground"
+          >
+            Credits
+          </Link>
         </div>
       </div>
     </ScrollArea>
