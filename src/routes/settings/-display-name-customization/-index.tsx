@@ -35,14 +35,16 @@ export function DisplayNameCustomization() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 pt-6">
-          <div className="mb-5">
-            <Input
-              className="pr-20"
-              placeholder={`Search on ${accountsArray.length} accounts...`}
-              value={searchValue}
-              onChange={onChangeSearchValue}
-            />
-          </div>
+          {accountsArray.length > 1 && (
+            <div className="mb-5">
+              <Input
+                className="pr-20"
+                placeholder={`Search on ${accountsArray.length} accounts...`}
+                value={searchValue}
+                onChange={onChangeSearchValue}
+              />
+            </div>
+          )}
           {accounts.length > 0 ? (
             accounts.map((account) => (
               <AccountItem
