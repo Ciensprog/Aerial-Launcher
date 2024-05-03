@@ -1,5 +1,5 @@
 import type { ClassValue } from 'clsx'
-import type { AccountDataRecord } from '../types/accounts'
+import type { AccountData, AccountDataRecord } from '../types/accounts'
 
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -30,4 +30,12 @@ export function sortAccounts(data: AccountDataRecord) {
   }, {} as AccountDataRecord)
 
   return accountList
+}
+
+export function parseCustomDisplayName(account: AccountData | null) {
+  const rawCustomDisplayName = account?.customDisplayName?.trim() ?? ''
+  const customDisplayNameText =
+    rawCustomDisplayName.length > 0 ? ` (${rawCustomDisplayName})` : ''
+
+  return customDisplayNameText
 }

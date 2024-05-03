@@ -11,6 +11,8 @@ import {
 
 import { useGenerateHandlers } from './-hooks'
 
+import { parseCustomDisplayName } from '../../../../lib/utils'
+
 export function GenerateExchangeCodePage() {
   const {
     generatedCode,
@@ -25,7 +27,10 @@ export function GenerateExchangeCodePage() {
         <CardContent className="grid gap-4 pt-6">
           <CardDescription>
             Account selected:{' '}
-            <span className="font-bold">{selected?.displayName}</span>
+            <span className="font-bold">
+              {selected?.displayName}
+              {parseCustomDisplayName(selected)}
+            </span>
           </CardDescription>
           <InputSecret
             buttonProps={{

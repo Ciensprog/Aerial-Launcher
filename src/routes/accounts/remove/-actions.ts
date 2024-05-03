@@ -6,6 +6,7 @@ import {
 } from '../../../hooks/accounts'
 
 import { toast } from '../../../lib/notifications'
+import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useHandleRemove() {
   const navigate = useNavigate()
@@ -21,7 +22,9 @@ export function useHandleRemove() {
 
     const total = Object.values(removeAccount(selected.accountId)).length
 
-    toast(`Account ${selected.displayName} was removed`)
+    toast(
+      `Account ${selected.displayName}${parseCustomDisplayName(selected)} was removed`
+    )
 
     if (total <= 0) {
       navigate({ to: '/' })

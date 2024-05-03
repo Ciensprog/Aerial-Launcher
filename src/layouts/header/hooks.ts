@@ -5,6 +5,7 @@ import { fortniteDBProfileURL } from '../../config/fortnite/links'
 import { useGetSelectedAccount } from '../../hooks/accounts'
 
 import { toast } from '../../lib/notifications'
+import { parseCustomDisplayName } from '../../lib/utils'
 
 export function useAttributesStates() {
   const [open, setOpen] = useState(false)
@@ -27,17 +28,10 @@ export function useHandlers() {
   useEffect(() => {
     const notificationLauncherListener =
       window.electronAPI.onNotificationLauncher(async (data) => {
-        const rawCustomDisplayName =
-          data.account.customDisplayName?.trim() ?? ''
-        const customDisplayNameText =
-          rawCustomDisplayName.length > 0
-            ? ` (${rawCustomDisplayName})`
-            : ''
-
         toast(
           data.status
-            ? `The game has been launched with the account ${data.account.displayName}${customDisplayNameText}`
-            : `An error has occurred launching game with account ${data.account.displayName}${customDisplayNameText}, try again later`
+            ? `The game has been launched with the account ${data.account.displayName}${parseCustomDisplayName(data.account)}`
+            : `An error has occurred launching game with account ${data.account.displayName}${parseCustomDisplayName(data.account)}, try again later`
         )
       })
 

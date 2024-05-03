@@ -21,6 +21,8 @@ import {
 import { useGetSelectedAccount } from '../../../hooks/accounts'
 import { useHandleRemove } from './-actions'
 
+import { parseCustomDisplayName } from '../../../lib/utils'
+
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/accounts/remove',
@@ -61,7 +63,10 @@ function Content() {
           <CardContent className="grid gap-4 pt-6">
             <CardDescription>
               Do you want to remove{' '}
-              <span className="font-bold">{selected?.displayName}</span>{' '}
+              <span className="font-bold">
+                {selected?.displayName}
+                {parseCustomDisplayName(selected)}
+              </span>{' '}
               account?
             </CardDescription>
           </CardContent>
