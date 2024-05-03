@@ -17,12 +17,10 @@ export function useAccountList() {
   const accounts = Object.values(accountList)
 
   const createKeywords = (account: AccountData) => {
-    const _keys: Array<string> = []
+    const _keys: Array<string> = [account.displayName]
     const customDisplayName = account.customDisplayName?.trim() ?? ''
     const displayName = account.displayName
     const provider = account.provider ?? ''
-
-    // [account.customDisplayName, account.provider]
 
     if (customDisplayName !== '') {
       _keys.push(customDisplayName)
@@ -40,20 +38,19 @@ export function useAccountList() {
   }
 
   const customFilter = (
-    value: string,
+    _value: string,
     search: string,
     keywords?: Array<string>
   ) => {
-    const _value = value.toLowerCase()
     const _search = search.toLowerCase()
-    const _provider =
+    const _keys =
       keywords &&
       keywords.some((keyword) => keyword.toLowerCase().includes(_search))
 
-    return _value.includes(_search) || _provider ? 1 : 0
+    return _keys ? 1 : 0
   }
-  const onSelect = (account: AccountData) => (displayName: string) => {
-    if (displayName !== selected?.displayName) {
+  const onSelect = (account: AccountData) => (accountId: string) => {
+    if (accountId !== selected?.accountId) {
       changeSelected(account.accountId)
     }
 

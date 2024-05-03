@@ -87,7 +87,7 @@ export function AccountList() {
               {accounts.map((account) => (
                 <CommandItem
                   key={account.accountId}
-                  value={account.displayName}
+                  value={account.accountId}
                   keywords={createKeywords(account)}
                   onSelect={onSelect(account)}
                 >
