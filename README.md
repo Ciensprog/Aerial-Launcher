@@ -18,6 +18,10 @@ As a Software Developer I felt motivated to develop an Open-Source project that 
 
 But what does it mean that this project is Open-Source? It is very simple, to ensure that no one thinks or defames the project as a virus, the hole source of every version of Aerial-Launcher will remain open to the public. Everyone can go and look through the source code and check if there's anything malicious in it.
 
+<p align="center">
+  <img src="./app-preview.jpg" />
+</p>
+
 ## Table of Contents
 
 - [Aerial Launcher](#aerial-launcher)
