@@ -1,4 +1,4 @@
-import type { AccountData } from '../types/accounts'
+import type { AccountBasicInfo, AccountData } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { Settings } from '../types/settings'
 
@@ -186,6 +186,20 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.LauncherStart,
     async (_, account: AccountData) => {
       await FortniteLauncher.start(currentWindow, account)
+    }
+  )
+
+  /**
+   * Accounts
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.UpdateAccountBasicInfo,
+    async (_, account: AccountBasicInfo) => {
+      await AccountsManager.add(account)
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.ResponseUpdateAccountBasicInfo
+      )
     }
   )
 

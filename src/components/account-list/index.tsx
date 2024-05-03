@@ -17,8 +17,15 @@ import { getStatusProvider } from '../../lib/statuses'
 import { cn } from '../../lib/utils'
 
 export function AccountList() {
-  const { accounts, customFilter, onSelect, open, selected, setOpen } =
-    useAccountList()
+  const {
+    accounts,
+    createKeywords,
+    customFilter,
+    onSelect,
+    open,
+    selected,
+    setOpen,
+  } = useAccountList()
 
   return (
     <Popover
@@ -44,7 +51,9 @@ export function AccountList() {
               {selected ? (
                 <span className="block w-full">
                   <span className="block truncate w-full">
-                    {selected.displayName}
+                    {selected.customDisplayName?.trim() !== ''
+                      ? selected.customDisplayName
+                      : selected.displayName}
                   </span>
                   <span className="block text-muted-foreground text-xs truncate">
                     {getStatusProvider(selected.provider)}
@@ -79,9 +88,7 @@ export function AccountList() {
                 <CommandItem
                   key={account.accountId}
                   value={account.displayName}
-                  keywords={
-                    account.provider ? [account.provider] : undefined
-                  }
+                  keywords={createKeywords(account)}
                   onSelect={onSelect(account)}
                 >
                   <Check
@@ -93,7 +100,11 @@ export function AccountList() {
                     )}
                   />
                   <div className="">
-                    <div className="">{account.displayName}</div>
+                    <div className="">
+                      {account.customDisplayName?.trim() !== ''
+                        ? account.customDisplayName
+                        : account.displayName}
+                    </div>
                     <div className="text-muted-foreground text-xs">
                       {getStatusProvider(account.provider)}
                     </div>

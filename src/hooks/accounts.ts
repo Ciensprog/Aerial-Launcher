@@ -13,6 +13,13 @@ export function useGetSelectedAccount() {
   return { selected }
 }
 
+export function useGetAccounts() {
+  const accountList = useAccountListStore((state) => state.accounts)
+  const accountsArray = Object.values(accountList)
+
+  return { accountsArray, accountList }
+}
+
 export function useRemoveSelectedAccount() {
   const removeAccount = useAccountListStore((state) => state.remove)
 

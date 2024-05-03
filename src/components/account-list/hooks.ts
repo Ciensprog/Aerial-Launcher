@@ -16,6 +16,29 @@ export function useAccountList() {
   const [open, setOpen] = useState(false)
   const accounts = Object.values(accountList)
 
+  const createKeywords = (account: AccountData) => {
+    const _keys: Array<string> = []
+    const customDisplayName = account.customDisplayName?.trim() ?? ''
+    const displayName = account.displayName
+    const provider = account.provider ?? ''
+
+    // [account.customDisplayName, account.provider]
+
+    if (customDisplayName !== '') {
+      _keys.push(customDisplayName)
+    }
+
+    if (displayName !== '') {
+      _keys.push(displayName)
+    }
+
+    if (provider !== '') {
+      _keys.push(provider)
+    }
+
+    return _keys.length > 0 ? _keys : undefined
+  }
+
   const customFilter = (
     value: string,
     search: string,
@@ -42,6 +65,7 @@ export function useAccountList() {
     open,
     selected,
 
+    createKeywords,
     customFilter,
     onSelect,
     setOpen,

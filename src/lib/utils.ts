@@ -10,9 +10,18 @@ export function cn(...inputs: ClassValue[]) {
 
 export function sortAccounts(data: AccountDataRecord) {
   const result = Object.values(data)
-  const accounts = result.toSorted((itemA, itemB) =>
-    itemA.displayName.localeCompare(itemB.displayName)
-  )
+  const accounts = result.toSorted((itemA, itemB) => {
+    const _itemADisplayName =
+      (itemA.customDisplayName?.trim() ?? '') === ''
+        ? itemA.displayName
+        : itemA.customDisplayName ?? ''
+    const _itemBDisplayName =
+      (itemB.customDisplayName?.trim() ?? '') === ''
+        ? itemB.displayName
+        : itemB.customDisplayName ?? ''
+
+    return _itemADisplayName.localeCompare(_itemBDisplayName)
+  })
 
   const accountList = accounts.reduce((accumulator, current) => {
     accumulator[current.accountId] = current

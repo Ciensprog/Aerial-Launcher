@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const accountBasicInformationSchema = z.object({
   accountId: z.string().min(1),
+  customDisplayName: z.string().optional(),
   deviceId: z.string().min(1),
   displayName: z.string().min(1),
   secret: z.string().min(1),

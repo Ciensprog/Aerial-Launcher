@@ -22,6 +22,9 @@ import {
 } from '../../components/ui/form'
 import { Input } from '../../components/ui/input'
 
+import { useGetAccounts } from '../../hooks/accounts'
+
+import { DisplayNameCustomization } from './-display-name-customization/-index'
 import { useSetupForm } from './-hooks'
 
 export const Route = createRoute({
@@ -50,43 +53,48 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { accountsArray } = useGetAccounts()
   const { form, onSubmit } = useSetupForm()
 
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="max-w-sm w-full"
-          >
-            <Card className="max-w-sm w-full">
-              <CardContent className="grid gap-4 pt-6">
-                <FormField
-                  control={form.control}
-                  name="path"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Custom Path</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-              <CardFooter className="space-x-6">
-                <Button
-                  type="submit"
-                  className="w-full"
-                >
-                  Update Information
-                </Button>
-              </CardFooter>
-            </Card>
-          </form>
-        </Form>
+        <div className="flex flex-col gap-8 max-w-md w-full">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full"
+            >
+              <Card className="w-full">
+                <CardContent className="grid gap-4 pt-6">
+                  <FormField
+                    control={form.control}
+                    name="path"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Custom Path</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+                <CardFooter className="space-x-6">
+                  <Button
+                    type="submit"
+                    className="w-full"
+                  >
+                    Update Information
+                  </Button>
+                </CardFooter>
+              </Card>
+            </form>
+          </Form>
+
+          {accountsArray.length > 0 && <DisplayNameCustomization />}
+        </div>
       </div>
     </div>
   )
