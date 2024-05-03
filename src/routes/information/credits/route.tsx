@@ -16,8 +16,6 @@ import {
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
 
-import { CheckNewVersion } from '../../../bootstrap/components/check-new-version'
-
 import { cn } from '../../../lib/utils'
 
 const links = {
@@ -54,7 +52,6 @@ export function ComponentRoute() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <CheckNewVersion />
       <div className="flex flex-grow">
         <div className="flex items-center- justify-center- w-full">
           <div className="flex flex-col max-w-md">
