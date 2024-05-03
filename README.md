@@ -31,6 +31,7 @@ But what does it mean that this project is Open-Source? It is very simple, to en
     - [Settings](#settings)
       - [Epic Games Settings](#epic-games-settings)
       - [Custom Path](#custom-path)
+      - [Custom Display Name](#custom-display-name)
     - [Accounts in Launcher](#accounts-in-launcher)
       - [Add Accounts](#add-accounts)
       - [Remove Accounts](#remove-accounts)
@@ -77,6 +78,12 @@ From the selected account, you will be redirected to your account settings on th
 #### Custom Path
 
 By default, the directory `C:\Program Files\Epic Games\Fortnite\FortniteGame\Binaries\Win64` is used but it can be changed in settings.
+
+#### Custom Display Name
+
+Sometimes you could need a specific display name for identifying an account. If you want, you can change the current display name with a custom name.
+
+> Note: this only applies to the launcher accounts.
 
 ### Accounts in Launcher
 
