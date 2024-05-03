@@ -36,6 +36,13 @@ export enum ElectronAPIEventKeys {
   ResponseProviderAndAccessTokenOnStartup = 'request:provider-with-access-token:on-startup:response',
 
   /**
+   * Accounts
+   */
+
+  UpdateAccountBasicInfo = 'account:custom-display-name:update',
+  ResponseUpdateAccountBasicInfo = 'account:custom-display-name:response',
+
+  /**
    * Authentication
    */
 

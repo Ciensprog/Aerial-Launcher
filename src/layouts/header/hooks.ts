@@ -27,10 +27,17 @@ export function useHandlers() {
   useEffect(() => {
     const notificationLauncherListener =
       window.electronAPI.onNotificationLauncher(async (data) => {
+        const rawCustomDisplayName =
+          data.account.customDisplayName?.trim() ?? ''
+        const customDisplayNameText =
+          rawCustomDisplayName.length > 0
+            ? ` (${rawCustomDisplayName})`
+            : ''
+
         toast(
           data.status
-            ? `The game has been launched with the account ${data.account.displayName}`
-            : `An error has occurred launching game with account ${data.account.displayName}, try again later`
+            ? `The game has been launched with the account ${data.account.displayName}${customDisplayNameText}`
+            : `An error has occurred launching game with account ${data.account.displayName}${customDisplayNameText}, try again later`
         )
       })
 

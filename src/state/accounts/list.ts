@@ -28,7 +28,10 @@ export const useAccountListStore = create<AccountListState>()(
         set({
           accounts: sortAccounts({
             ...accounts,
-            [accountId]: account,
+            [accountId]: {
+              ...current,
+              ...account,
+            },
           }),
         })
       }

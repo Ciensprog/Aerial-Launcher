@@ -17,6 +17,7 @@ export class AccountsManager {
     const accounts: AccountDataList = result.accounts
       .map((account) => ({
         ...account,
+        customDisplayName: account.customDisplayName ?? '',
         provider: undefined,
         token: undefined,
       }))
