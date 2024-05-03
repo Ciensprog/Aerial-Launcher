@@ -6,6 +6,10 @@
 
 A Windows desktop application (based on Potato Launcher) to manage things on Fortnite STW.
 
+<p align="center">
+  <img src="./app-preview.jpg" />
+</p>
+
 ## Development Motivation (Lore)
 
 Most STW players can agree that most of us reach a point where we start using alts to progress even more in the game. Training, doing vbucks on alts, preparing missions... And we end up using discord bots to make our life's easier, leaving missions earlier, and claiming chests on loading screens. The main purpose of the launcher is to have all this features in the same place, storing all the information locally. Have to give some credits to Fresh and Kuda for giving me ideas and their opinion during the development, and then obviously credits to me (Ciensprog) as I'm developing the entirety of Aerial alone.
@@ -17,10 +21,6 @@ There are Discord bots that can facilitate many things, for utilities and accoun
 As a Software Developer I felt motivated to develop an Open-Source project that serves the community and the grinders in a daily basis.
 
 But what does it mean that this project is Open-Source? It is very simple, to ensure that no one thinks or defames the project as a virus, the hole source of every version of Aerial-Launcher will remain open to the public. Everyone can go and look through the source code and check if there's anything malicious in it.
-
-<p align="center">
-  <img src="./app-preview.jpg" />
-</p>
 
 ## Table of Contents
 
