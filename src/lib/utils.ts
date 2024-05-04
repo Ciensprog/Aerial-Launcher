@@ -20,7 +20,9 @@ export function sortAccounts(data: AccountDataRecord) {
         ? itemB.displayName
         : itemB.customDisplayName ?? ''
 
-    return _itemADisplayName.localeCompare(_itemBDisplayName)
+    return _itemADisplayName.localeCompare(_itemBDisplayName, undefined, {
+      numeric: true,
+    })
   })
 
   const accountList = accounts.reduce((accumulator, current) => {

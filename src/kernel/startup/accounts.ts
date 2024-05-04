@@ -22,7 +22,9 @@ export class AccountsManager {
         token: undefined,
       }))
       .toSorted((itemA, itemB) =>
-        itemA.displayName.localeCompare(itemB.displayName)
+        itemA.displayName.localeCompare(itemB.displayName, undefined, {
+          numeric: true,
+        })
       )
 
     const accountList = accounts.reduce((accumulator, current) => {
@@ -56,7 +58,9 @@ export class AccountsManager {
     }
 
     accounts = accounts.toSorted((itemA, itemB) =>
-      itemA.displayName.localeCompare(itemB.displayName)
+      itemA.displayName.localeCompare(itemB.displayName, undefined, {
+        numeric: true,
+      })
     )
 
     await DataDirectory.updateAccountsFile(accounts)
