@@ -87,7 +87,7 @@ By default, the directory `C:\Program Files\Epic Games\Fortnite\FortniteGame\Bin
 
 Sometimes you could need a specific display name for identifying an account. If you want, you can change the current display name with a custom name.
 
-> Note: this only applies to the launcher accounts.
+> Note: this only applies visually to the launcher accounts.
 
 ### Accounts in Launcher
 

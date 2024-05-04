@@ -31,7 +31,7 @@ export function DisplayNameCustomization() {
             display name with a custom name.
           </CardDescription>
           <CardDescription className="text-muted-foreground/60">
-            Note: this only applies to the launcher accounts.
+            Note: this only applies visually to the launcher accounts.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 pt-6">
