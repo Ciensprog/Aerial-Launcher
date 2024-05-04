@@ -137,4 +137,4 @@ Alternatively, you can [create an issue](https://github.com/Ciensprog/Aerial-Lau
 >
 > - None developer of this application is associated with Epic Games.
 > - Please consider not using this application to abuse some features of FortniteDB.
-> - Since this project is Open-Source, be careful if you download the installer for a version from sources other than this repository, those other sources may have malicious code.
+> - **_Since this project is Open-Source, be careful if you download the installer for a version from sources other than this repository, those other sources may have malicious code_**.
