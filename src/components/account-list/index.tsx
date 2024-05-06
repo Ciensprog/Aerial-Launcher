@@ -35,7 +35,7 @@ export function AccountList() {
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            'flex justify-between select-none text-left w-52',
+            'flex justify-between pl-3 pr-2 select-none text-left w-52',
             {
               'justify-center px-0': accounts.length < 1,
             }
@@ -50,7 +50,7 @@ export function AccountList() {
             <>
               {selected ? (
                 <span className="block w-full">
-                  <span className="block truncate w-full">
+                  <span className="block truncate max-w-[10rem] w-full">
                     {selected.customDisplayName?.trim() !== ''
                       ? selected.customDisplayName
                       : selected.displayName}
@@ -84,33 +84,38 @@ export function AccountList() {
           <CommandListWithScrollArea>
             <CommandEmpty>No account found</CommandEmpty>
             <CommandGroup>
-              {accounts.map((account) => (
-                <CommandItem
-                  key={account.accountId}
-                  value={account.accountId}
-                  keywords={createKeywords(account)}
-                  onSelect={onSelect(account)}
-                >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      selected?.accountId === account.accountId
-                        ? 'opacity-100'
-                        : 'opacity-0'
-                    )}
-                  />
-                  <div className="">
-                    <div className="">
-                      {account.customDisplayName?.trim() !== ''
-                        ? account.customDisplayName
-                        : account.displayName}
+              {accounts.map((account) => {
+                const displayName =
+                  account.customDisplayName?.trim() !== ''
+                    ? account.customDisplayName
+                    : account.displayName
+
+                return (
+                  <CommandItem
+                    key={account.accountId}
+                    value={account.accountId}
+                    keywords={createKeywords(account)}
+                    onSelect={onSelect(account)}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        selected?.accountId === account.accountId
+                          ? 'opacity-100'
+                          : 'opacity-0'
+                      )}
+                    />
+                    <div title={displayName}>
+                      <div className="max-w-[10rem] truncate">
+                        {displayName}
+                      </div>
+                      <div className="text-muted-foreground text-xs">
+                        {getStatusProvider(account.provider)}
+                      </div>
                     </div>
-                    <div className="text-muted-foreground text-xs">
-                      {getStatusProvider(account.provider)}
-                    </div>
-                  </div>
-                </CommandItem>
-              ))}
+                  </CommandItem>
+                )
+              })}
             </CommandGroup>
           </CommandListWithScrollArea>
         </Command>
