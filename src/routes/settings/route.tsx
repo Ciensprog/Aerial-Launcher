@@ -59,7 +59,7 @@ function Content() {
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
-        <div className="flex flex-col gap-8 max-w-md w-full">
+        <div className="flex flex-col gap-12 max-w-md w-full">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
