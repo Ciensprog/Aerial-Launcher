@@ -24,7 +24,7 @@ import { Input } from '../../components/ui/input'
 
 import { useGetAccounts } from '../../hooks/accounts'
 
-import { DisplayNameCustomization } from './-display-name-customization/-index'
+import { AccountCustomization } from './-account-customization/-index'
 import { useSetupForm } from './-hooks'
 
 export const Route = createRoute({
@@ -93,7 +93,7 @@ function Content() {
             </form>
           </Form>
 
-          {accountsArray.length > 0 && <DisplayNameCustomization />}
+          {accountsArray.length > 0 && <AccountCustomization />}
         </div>
       </div>
     </div>

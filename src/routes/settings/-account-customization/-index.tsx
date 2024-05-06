@@ -7,13 +7,14 @@ import {
 import { Input } from '../../../components/ui/input'
 import { Separator } from '../../../components/ui/separator'
 
-import { useAccounts, useActions } from './-hooks'
 import { AccountItem } from './-item'
+import { useAccounts, useActions } from './-hooks'
 
-export function DisplayNameCustomization() {
+export function AccountCustomization() {
   const { accounts, accountsArray, onChangeSearchValue, searchValue } =
     useAccounts()
-  const { isPending, onSubmit } = useActions()
+  const { isPendingSubmitCustomDisplayName, onSubmitCustomDisplayName } =
+    useActions()
 
   return (
     <>
@@ -49,8 +50,10 @@ export function DisplayNameCustomization() {
             accounts.map((account) => (
               <AccountItem
                 account={account}
-                onSubmit={onSubmit}
-                isPending={isPending}
+                isPendingSubmitCustomDisplayName={
+                  isPendingSubmitCustomDisplayName
+                }
+                onSubmitCustomDisplayName={onSubmitCustomDisplayName}
                 key={account.accountId}
               />
             ))

@@ -3,6 +3,7 @@ import type {
   AccountBasicInfo,
   AccountData,
 } from '../../../types/accounts'
+import type { SelectOption } from '../../../components/ui/third-party/extended/input-tags'
 
 import { useEffect, useRef, useState } from 'react'
 
@@ -45,30 +46,53 @@ export function useAccounts() {
   }
 }
 
-export function useInputField({
+export function useDisplayNameInputField({
   defaultValue,
 }: {
   defaultValue?: string
 }) {
-  const [value, setValue] = useState(defaultValue ?? '')
+  const [customDisplayName, setCustomDisplayName] = useState(
+    defaultValue ?? ''
+  )
 
-  const onChangeInputValue: ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    setValue(event.currentTarget.value.replace(/\s+/g, ' '))
+  const onChangeInputDisplayNameValue: ChangeEventHandler<
+    HTMLInputElement
+  > = (event) => {
+    setCustomDisplayName(event.currentTarget.value.replace(/\s+/g, ' '))
   }
 
   return {
-    value,
+    customDisplayName,
 
-    onChangeInputValue,
+    onChangeInputDisplayNameValue,
+  }
+}
+
+export function useTagsInputField({
+  defaultValue,
+}: {
+  defaultValue?: Array<SelectOption>
+}) {
+  const [currentTags, setTagsValue] = useState(defaultValue ?? [])
+
+  const onChangeInputTagsValue = (value: Array<SelectOption>) => {
+    setTagsValue(value)
+  }
+
+  return {
+    currentTags,
+
+    onChangeInputTagsValue,
   }
 }
 
 export function useActions() {
   const addOrUpdate = useAccountListStore((state) => state.addOrUpdate)
 
-  const [isPending, setIsPending] = useState(false)
+  const [
+    isPendingSubmitCustomDisplayName,
+    setIsPendingSubmitCustomDisplayName,
+  ] = useState(false)
   const _tmpAccount = useRef<AccountBasicInfo | null>(null)
 
   useEffect(() => {
@@ -80,7 +104,7 @@ export function useActions() {
 
         _tmpAccount.current = null
 
-        setIsPending(false)
+        setIsPendingSubmitCustomDisplayName(false)
       }
     )
 
@@ -89,7 +113,7 @@ export function useActions() {
     }
   }, [])
 
-  const onSubmit =
+  const onSubmitCustomDisplayName =
     ({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       account: { provider, token, ...account },
@@ -101,18 +125,22 @@ export function useActions() {
     (event) => {
       event.preventDefault()
 
+      if (isPendingSubmitCustomDisplayName) {
+        return
+      }
+
       _tmpAccount.current = {
         ...account,
         customDisplayName: value.trim(),
       }
 
-      setIsPending(true)
+      setIsPendingSubmitCustomDisplayName(true)
       window.electronAPI.updateCustomDisplayName(_tmpAccount.current)
     }
 
   return {
-    isPending,
+    isPendingSubmitCustomDisplayName,
 
-    onSubmit,
+    onSubmitCustomDisplayName,
   }
 }
