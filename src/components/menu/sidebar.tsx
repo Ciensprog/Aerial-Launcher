@@ -82,7 +82,9 @@ export function SidebarMenu({
               </li>
             </ul>
           </div>
+
           <Separator className="my-2" />
+
           <Title className="pb-0">My Accounts ({totalInText}):</Title>
           <div
             className={cn(
@@ -150,7 +152,9 @@ export function SidebarMenu({
               </li>
             </ul>
           </div>
+
           <Separator className="my-2" />
+
           <div className="">
             <Button
               className={cn(

@@ -1,6 +1,7 @@
 import { exampleCode } from '../../../../config/constants/examples'
 
 import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
+import { Separator } from '../../../../components/ui/extended/separator'
 import { Button } from '../../../../components/ui/button'
 import {
   Card,
@@ -15,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../../../../components/ui/form'
-import { Separator } from '../../../../components/ui/separator'
 
 import { GenerateExchangeCodePage } from './-generate'
 
@@ -29,12 +29,7 @@ export function ExchangeCodePage() {
       {selected && (
         <>
           <GenerateExchangeCodePage />
-
-          <Separator className="flex justify-center relative">
-            <div className="absolute bg-background font-semibold px-1.5 text-muted-foreground text-sm -top-2.5">
-              Or
-            </div>
-          </Separator>
+          <Separator>Or</Separator>
         </>
       )}
 

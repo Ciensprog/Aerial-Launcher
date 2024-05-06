@@ -1,3 +1,4 @@
+import { Separator } from '../../../components/ui/extended/separator'
 import {
   Card,
   CardContent,
@@ -5,7 +6,6 @@ import {
   CardHeader,
 } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
-import { Separator } from '../../../components/ui/separator'
 
 import { AccountItem } from './-item'
 import { useAccounts, useActions } from './-hooks'
@@ -18,11 +18,7 @@ export function AccountCustomization() {
 
   return (
     <>
-      <Separator className="flex justify-center relative">
-        <div className="absolute bg-background font-semibold px-1.5 text-muted-foreground text-sm -top-2.5">
-          Display Name Customization
-        </div>
-      </Separator>
+      <Separator>Display Name Customization</Separator>
 
       <Card className="w-full">
         <CardHeader className="border-b">
