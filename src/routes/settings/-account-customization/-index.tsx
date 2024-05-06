@@ -18,7 +18,7 @@ export function AccountCustomization() {
 
   return (
     <>
-      <Separator>Display Name Customization</Separator>
+      <Separator>Account Customization</Separator>
 
       <Card className="w-full">
         <CardHeader className="border-b">
