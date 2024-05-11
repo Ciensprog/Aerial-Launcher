@@ -1,4 +1,4 @@
-import { Separator } from '../../../components/ui/extended/separator'
+import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
 import {
   Card,
   CardContent,
@@ -6,19 +6,25 @@ import {
   CardHeader,
 } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
-
 import { AccountItem } from './-item'
+
+import { useGetTags } from '../../../hooks/tags'
 import { useAccounts, useActions } from './-hooks'
 
+import { tagsArrayToSelectOptions } from '../../../lib/utils'
+
 export function AccountCustomization() {
+  const { tagsArray } = useGetTags()
   const { accounts, accountsArray, onChangeSearchValue, searchValue } =
     useAccounts()
   const { isPendingSubmitCustomDisplayName, onSubmitCustomDisplayName } =
     useActions()
 
+  const tags = tagsArrayToSelectOptions(tagsArray)
+
   return (
     <>
-      <Separator>Account Customization</Separator>
+      <SeparatorWithTitle>Account Customization</SeparatorWithTitle>
 
       <Card className="w-full">
         <CardHeader className="border-b">
@@ -45,6 +51,7 @@ export function AccountCustomization() {
           {accounts.length > 0 ? (
             accounts.map((account) => (
               <AccountItem
+                tags={tags}
                 account={account}
                 isPendingSubmitCustomDisplayName={
                   isPendingSubmitCustomDisplayName

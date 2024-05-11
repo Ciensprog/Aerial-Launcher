@@ -4,7 +4,7 @@ import { Separator as BaseSeparator } from '../separator'
 
 import { cn } from '../../../lib/utils'
 
-export function Separator({
+export function SeparatorWithTitle({
   children,
   className,
 }: PropsWithChildren<{

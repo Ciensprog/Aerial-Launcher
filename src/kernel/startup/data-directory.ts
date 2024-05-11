@@ -1,11 +1,13 @@
 import type { AccountList } from '../../types/accounts'
 import type { Settings } from '../../types/settings'
+import type { TagRecord } from '../../types/tags'
 
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
 import { settingsSchema } from '../../lib/validations/schemas/settings'
+import { tagsSchema } from '../../lib/validations/schemas/tags'
 
 export class DataDirectory {
   private static dataDirectoryPath = path.join(
@@ -27,6 +29,12 @@ export class DataDirectory {
     path: 'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64',
   }
 
+  private static tagsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'tags.json'
+  )
+  private static tagsDefaultData: TagRecord = {}
+
   /**
    * Create data directory and accounts.json
    */
@@ -34,6 +42,7 @@ export class DataDirectory {
     await DataDirectory.checkOrCreateDataDirectory()
     await DataDirectory.getOrCreateAccountsJsonFile()
     await DataDirectory.getOrCreateSettingsJsonFile()
+    await DataDirectory.getOrCreateTagsJsonFile()
   }
 
   /**
@@ -75,6 +84,24 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from tags.json
+   */
+  static async getTagsFile(): Promise<{ tags: TagRecord }> {
+    const result = await DataDirectory.getOrCreateTagsJsonFile()
+
+    try {
+      const list = tagsSchema.safeParse(JSON.parse(result))
+      const tags = list.success ? list.data : DataDirectory.tagsDefaultData
+
+      return { tags }
+    } catch (error) {
+      //
+    }
+
+    return { tags: DataDirectory.tagsDefaultData }
+  }
+
+  /**
    * Update accounts.json
    */
   static async updateAccountsFile(data: AccountList) {
@@ -92,6 +119,13 @@ export class DataDirectory {
       DataDirectory.settingsFilePath,
       data
     )
+  }
+
+  /**
+   * Update tags.json
+   */
+  static async updateTagsFile(data: TagRecord) {
+    await DataDirectory.updateJsonFile(DataDirectory.tagsFilePath, data)
   }
 
   /**
@@ -134,6 +168,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.settingsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating tags.json
+   */
+  private static async getOrCreateTagsJsonFile() {
+    const initialData = DataDirectory.tagsDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.tagsFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),

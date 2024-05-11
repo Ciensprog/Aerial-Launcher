@@ -22,9 +22,10 @@ import {
 } from '../../components/ui/form'
 import { Input } from '../../components/ui/input'
 
-import { useGetAccounts } from '../../hooks/accounts'
-
 import { AccountCustomization } from './-account-customization/-index'
+import { TagsManagement } from './-tags-management/-index'
+
+import { useGetAccounts } from '../../hooks/accounts'
 import { useSetupForm } from './-hooks'
 
 export const Route = createRoute({
@@ -92,6 +93,8 @@ function Content() {
               </Card>
             </form>
           </Form>
+
+          <TagsManagement />
 
           {accountsArray.length > 0 && <AccountCustomization />}
         </div>

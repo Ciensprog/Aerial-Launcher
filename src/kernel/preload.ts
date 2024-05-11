@@ -10,6 +10,7 @@ import * as generalActions from './preload-actions/general'
 import * as launcherActions from './preload-actions/launcher'
 import * as requestActions from './preload-actions/requests'
 import * as scheduleActions from './preload-actions/schedules'
+import * as settingsActions from './preload-actions/settings'
 
 export const availableElectronAPIs = {
   ...accountsActions,
@@ -19,6 +20,7 @@ export const availableElectronAPIs = {
   ...launcherActions,
   ...requestActions,
   ...scheduleActions,
+  ...settingsActions,
 } as const
 
 contextBridge.exposeInMainWorld('electronAPI', availableElectronAPIs)

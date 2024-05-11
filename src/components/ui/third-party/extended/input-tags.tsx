@@ -3,6 +3,8 @@ import type { StylesConfig } from 'react-select'
 import chroma from 'chroma-js'
 import Select from 'react-select'
 
+import { defaultColor } from '../../../../config/constants/colors'
+
 export type SelectOption = {
   color?: string
   label: string
@@ -55,7 +57,7 @@ export function InputTags({
 }
 
 function getDefaultColor(color?: string) {
-  return color ?? '#A3A3A3'
+  return color ?? defaultColor
 }
 
 const colourStyles: StylesConfig<SelectOption, true> = {

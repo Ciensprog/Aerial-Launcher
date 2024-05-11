@@ -1,7 +1,7 @@
 import { exampleCode } from '../../../../config/constants/examples'
 
 import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
-import { Separator } from '../../../../components/ui/extended/separator'
+import { SeparatorWithTitle } from '../../../../components/ui/extended/separator'
 import { Button } from '../../../../components/ui/button'
 import {
   Card,
@@ -29,7 +29,7 @@ export function ExchangeCodePage() {
       {selected && (
         <>
           <GenerateExchangeCodePage />
-          <Separator>Or</Separator>
+          <SeparatorWithTitle>Or</SeparatorWithTitle>
         </>
       )}
 

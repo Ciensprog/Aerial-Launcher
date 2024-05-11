@@ -1,6 +1,9 @@
 import type { AccountData } from '../../../types/accounts'
 
-import { InputTags } from '../../../components/ui/third-party/extended/input-tags'
+import {
+  type SelectOption,
+  InputTags,
+} from '../../../components/ui/third-party/extended/input-tags'
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 
@@ -13,9 +16,11 @@ import {
 export function AccountItem({
   account,
   isPendingSubmitCustomDisplayName,
+  tags,
   onSubmitCustomDisplayName,
 }: {
   account: AccountData
+  tags: Array<SelectOption>
 } & ReturnType<typeof useActions>) {
   const { customDisplayName, onChangeInputDisplayNameValue } =
     useDisplayNameInputField({
@@ -28,7 +33,7 @@ export function AccountItem({
   return (
     <div className="flex flex-col gap-1">
       <form
-        className="flex items-center overflow-hidden relative rounded-md"
+        className="flex items-center relative rounded-md"
         onSubmit={onSubmitCustomDisplayName({
           account,
           value: customDisplayName,
@@ -52,7 +57,7 @@ export function AccountItem({
       </form>
 
       <InputTags
-        options={[]}
+        options={tags}
         value={currentTags}
         onChange={onChangeInputTagsValue}
       />
