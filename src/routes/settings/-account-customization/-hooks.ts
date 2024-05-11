@@ -18,7 +18,7 @@ export function useAccounts() {
   const accounts =
     searchValue.length > 0
       ? accountsArray.filter((account) => {
-          const currentSearchValue = searchValue.trim()
+          const currentSearchValue = searchValue.toLowerCase().trim()
 
           return (
             account.displayName

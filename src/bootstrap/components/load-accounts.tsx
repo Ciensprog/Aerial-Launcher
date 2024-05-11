@@ -5,6 +5,8 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
+import { sortAccounts } from '../../lib/utils'
+
 export function LoadAccounts() {
   const { accounts, addOrUpdate, changeSelected, register } =
     useAccountListStore(
@@ -19,7 +21,7 @@ export function LoadAccounts() {
   useEffect(() => {
     const accountsLoaderListener = window.electronAPI.onAccountsLoaded(
       async (accounts) => {
-        const accountsToArray = Object.values(accounts)
+        const accountsToArray = Object.values(sortAccounts(accounts))
 
         register(accounts)
 
@@ -54,7 +56,9 @@ export function LoadAccounts() {
   useEffect(() => {
     const scheduleRequestAccountsListener =
       window.electronAPI.scheduleRequestAccounts(async () => {
-        const accountsToArray: Array<AccountData> = Object.values(accounts)
+        const accountsToArray: Array<AccountData> = Object.values(
+          sortAccounts(accounts)
+        )
 
         window.electronAPI.scheduleResponseAccounts(accountsToArray)
       })

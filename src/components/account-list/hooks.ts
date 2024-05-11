@@ -42,10 +42,12 @@ export function useAccountList() {
     search: string,
     keywords?: Array<string>
   ) => {
-    const _search = search.toLowerCase()
+    const _search = search.toLowerCase().trim()
     const _keys =
       keywords &&
-      keywords.some((keyword) => keyword.toLowerCase().includes(_search))
+      keywords.some((keyword) =>
+        keyword.toLowerCase().trim().includes(_search)
+      )
 
     return _keys ? 1 : 0
   }
