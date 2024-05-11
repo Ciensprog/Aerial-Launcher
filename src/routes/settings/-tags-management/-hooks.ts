@@ -6,7 +6,38 @@ import { useEffect, useState } from 'react'
 
 import { defaultColor } from '../../../config/constants/colors'
 
+import { useGetTags } from '../../../hooks/tags'
+
 import { useTagsStore } from '../../../state/settings/tags'
+
+export function useGetFilteredTags() {
+  const { tagsArray } = useGetTags()
+  const [searchValue, setSearchValue] = useState('')
+
+  const filteredTags =
+    searchValue.length > 0
+      ? tagsArray.filter(([tagName]) =>
+          tagName
+            .toLowerCase()
+            .trim()
+            .includes(searchValue.toLowerCase().trim())
+        )
+      : tagsArray
+
+  const onChangeSearchValue: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setSearchValue(event.currentTarget.value.replace(/\s+/g, ' '))
+  }
+
+  return {
+    filteredTags,
+    searchValue,
+    tagsArray,
+
+    onChangeSearchValue,
+  }
+}
 
 export function useFormCreate() {
   const tagsStore = useTagsStore()

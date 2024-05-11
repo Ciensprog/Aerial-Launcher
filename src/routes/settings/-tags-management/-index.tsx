@@ -10,12 +10,11 @@ import {
 import { Input } from '../../../components/ui/input'
 import { TagItem } from './-item'
 
-import { useFormCreate } from './-hooks'
-
-import { useGetTags } from '../../../hooks/tags'
+import { useFormCreate, useGetFilteredTags } from './-hooks'
 
 export function TagsManagement() {
-  const { tagsArray } = useGetTags()
+  const { filteredTags, onChangeSearchValue, searchValue, tagsArray } =
+    useGetFilteredTags()
   const {
     currentTag,
     isSubmittingTag,
@@ -62,15 +61,32 @@ export function TagsManagement() {
               <Separator />
 
               <div className="grid gap-4 p-6 pr-3">
-                {tagsArray.map(([name, color]) => (
-                  <TagItem
-                    data={{
-                      color,
-                      name,
-                    }}
-                    key={name}
-                  />
-                ))}
+                {tagsArray.length > 1 && (
+                  <div className="mb-5">
+                    <Input
+                      className="pr-20"
+                      placeholder={`Search on ${tagsArray.length} tags...`}
+                      value={searchValue}
+                      onChange={onChangeSearchValue}
+                    />
+                  </div>
+                )}
+
+                {filteredTags.length > 0 ? (
+                  filteredTags.map(([name, color]) => (
+                    <TagItem
+                      data={{
+                        color,
+                        name,
+                      }}
+                      key={name}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center text-muted-foreground">
+                    No tag found
+                  </div>
+                )}
               </div>
             </>
           )}
