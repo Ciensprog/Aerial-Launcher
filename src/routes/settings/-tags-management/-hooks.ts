@@ -78,6 +78,18 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
     setColor((rawData.color ?? defaultColor) as string)
   }, [rawData])
 
+  const filterTags = (currentTagName: string) => {
+    const rawTagsArray = Object.entries(tagsStore.tags).filter(
+      ([tagName]) => tagName !== currentTagName
+    )
+
+    return rawTagsArray.reduce((accumulator, [key, value]) => {
+      accumulator[key] = value
+
+      return accumulator
+    }, {} as TagRecord)
+  }
+
   const onChangeColor = (value: string) => {
     if (color !== value) {
       setColor(value.replace(/\s+/g, ''))
@@ -104,17 +116,7 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
       newData.color = null
     }
 
-    const rawTagsArray = Object.entries(tagsStore.tags).filter(
-      ([tagName]) => tagName !== rawData.name
-    )
-    const rawTagsRecord = rawTagsArray.reduce(
-      (accumulator, [key, value]) => {
-        accumulator[key] = value
-
-        return accumulator
-      },
-      {} as TagRecord
-    )
+    const rawTagsRecord = filterTags(rawData.name)
     const newTags: TagRecord = {
       ...rawTagsRecord,
       [newData.name]: (newData.color ?? null) as Tag['color'],
@@ -126,12 +128,20 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
     setName('')
   }
 
+  const onDeleteTag = (tagName: string) => () => {
+    const rawTagsRecord = filterTags(tagName)
+
+    tagsStore.updateTags(rawTagsRecord, true)
+    window.electronAPI.updateTags(rawTagsRecord)
+  }
+
   return {
     color,
     name,
 
     onChangeColor,
     onChangeName,
+    onDeleteTag,
     onSubmit,
   }
 }

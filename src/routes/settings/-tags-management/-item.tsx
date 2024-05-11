@@ -11,10 +11,16 @@ import { Input } from '../../../components/ui/input'
 import { useFormUpdate } from './-hooks'
 
 export function TagItem({ data }: { data: Tag }) {
-  const { color, name, onChangeColor, onChangeName, onSubmit } =
-    useFormUpdate({
-      rawData: data,
-    })
+  const {
+    color,
+    name,
+    onChangeColor,
+    onChangeName,
+    onDeleteTag,
+    onSubmit,
+  } = useFormUpdate({
+    rawData: data,
+  })
 
   return (
     <div className="flex gap-4 relative">
@@ -47,6 +53,7 @@ export function TagItem({ data }: { data: Tag }) {
         size="icon"
         variant="ghost"
         className="flex flex-shrink-0 justify-center text-[#ff6868]/60 hover:text-[#ff6868]"
+        onClick={onDeleteTag(data.name)}
       >
         <TrashIcon className="w-full" />
         <span className="sr-only">remove tag</span>
