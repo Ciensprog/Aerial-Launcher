@@ -27,7 +27,7 @@ export function AccountItem({
       defaultValue: account.customDisplayName,
     })
   const { currentTags, onChangeInputTagsValue } = useTagsInputField({
-    defaultValue: [],
+    account,
   })
 
   return (

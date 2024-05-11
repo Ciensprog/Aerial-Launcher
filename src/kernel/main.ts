@@ -1,5 +1,6 @@
 import type { AccountBasicInfo, AccountData } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
+import type { GroupRecord } from '../types/groups'
 import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
 
@@ -18,6 +19,7 @@ import { Application } from './startup/application'
 import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
 import { TagsManager } from './startup/tags'
+import { GroupsManager } from './startup/groups'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -91,6 +93,10 @@ app.on('ready', async () => {
     await TagsManager.load(currentWindow)
   })
 
+  ipcMain.on(ElectronAPIEventKeys.RequestGroups, async () => {
+    await GroupsManager.load(currentWindow)
+  })
+
   ipcMain.on(
     ElectronAPIEventKeys.UpdateSettings,
     async (_, settings: Settings) => {
@@ -102,6 +108,13 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.UpdateTags,
     async (_, tags: TagRecord) => {
       await TagsManager.update(currentWindow, tags)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.UpdateGroups,
+    async (_, groups: GroupRecord) => {
+      await GroupsManager.update(groups)
     }
   )
 

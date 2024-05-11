@@ -6,6 +6,7 @@ import { IndexComponent } from './routes'
 import { routeTree } from './routeTree.gen'
 
 import { LoadAccounts } from './bootstrap/components/load-accounts'
+import { LoadGroups } from './bootstrap/components/load-groups'
 import { LoadSettings } from './bootstrap/components/load-settings'
 import { LoadTags } from './bootstrap/components/load-tags'
 
@@ -24,6 +25,7 @@ root.render(
     <ThemeProvider>
       <LoadSettings />
       <LoadTags />
+      <LoadGroups />
       <LoadAccounts />
 
       <RouterProvider

@@ -7,9 +7,13 @@ import type { SelectOption } from '../../../components/ui/third-party/extended/i
 
 import { useEffect, useRef, useState } from 'react'
 
+import { defaultColor } from '../../../config/constants/colors'
+
 import { useAccountListStore } from '../../../state/accounts/list'
 
 import { useGetAccounts } from '../../../hooks/accounts'
+import { useGetGroups } from '../../../hooks/groups'
+import { useGetTags } from '../../../hooks/tags'
 
 export function useAccounts() {
   const { accountsArray } = useGetAccounts()
@@ -69,14 +73,25 @@ export function useDisplayNameInputField({
 }
 
 export function useTagsInputField({
-  defaultValue,
+  account: { accountId },
 }: {
-  defaultValue?: Array<SelectOption>
+  account: AccountData
 }) {
-  const [currentTags, setTagsValue] = useState(defaultValue ?? [])
+  const { tagList } = useGetTags()
+  const { getGroupTagsByAccountId, updateGroupTags } = useGetGroups()
+  const currentTags: Array<SelectOption> = getGroupTagsByAccountId(
+    accountId
+  ).map((name) => ({
+    label: name,
+    value: name,
+    color: tagList[name] ?? defaultColor,
+  }))
 
   const onChangeInputTagsValue = (value: Array<SelectOption>) => {
-    setTagsValue(value)
+    updateGroupTags(
+      accountId,
+      value.map((item) => item.value)
+    )
   }
 
   return {

@@ -1,4 +1,5 @@
 import type { AccountList } from '../../types/accounts'
+import type { GroupRecord } from '../../types/groups'
 import type { Settings } from '../../types/settings'
 import type { TagRecord } from '../../types/tags'
 
@@ -8,6 +9,7 @@ import path from 'node:path'
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
 import { settingsSchema } from '../../lib/validations/schemas/settings'
 import { tagsSchema } from '../../lib/validations/schemas/tags'
+import { groupsSchema } from '../../lib/validations/schemas/groups'
 
 export class DataDirectory {
   private static dataDirectoryPath = path.join(
@@ -35,6 +37,12 @@ export class DataDirectory {
   )
   private static tagsDefaultData: TagRecord = {}
 
+  private static groupsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'groups.json'
+  )
+  private static groupsDefaultData: GroupRecord = {}
+
   /**
    * Create data directory and accounts.json
    */
@@ -43,6 +51,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateAccountsJsonFile()
     await DataDirectory.getOrCreateSettingsJsonFile()
     await DataDirectory.getOrCreateTagsJsonFile()
+    await DataDirectory.getOrCreateGroupsJsonFile()
   }
 
   /**
@@ -102,6 +111,26 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from groups.json
+   */
+  static async getGroupsFile(): Promise<{ groups: GroupRecord }> {
+    const result = await DataDirectory.getOrCreateGroupsJsonFile()
+
+    try {
+      const list = groupsSchema.safeParse(JSON.parse(result))
+      const groups = list.success
+        ? list.data
+        : DataDirectory.groupsDefaultData
+
+      return { groups }
+    } catch (error) {
+      //
+    }
+
+    return { groups: DataDirectory.groupsDefaultData }
+  }
+
+  /**
    * Update accounts.json
    */
   static async updateAccountsFile(data: AccountList) {
@@ -126,6 +155,13 @@ export class DataDirectory {
    */
   static async updateTagsFile(data: TagRecord) {
     await DataDirectory.updateJsonFile(DataDirectory.tagsFilePath, data)
+  }
+
+  /**
+   * Update tags.json
+   */
+  static async updateGroupsFile(data: GroupRecord) {
+    await DataDirectory.updateJsonFile(DataDirectory.groupsFilePath, data)
   }
 
   /**
@@ -185,6 +221,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.tagsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating groups.json
+   */
+  private static async getOrCreateGroupsJsonFile() {
+    const initialData = DataDirectory.groupsDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.groupsFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),
