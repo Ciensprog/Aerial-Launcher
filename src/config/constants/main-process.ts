@@ -7,6 +7,15 @@ export enum ElectronAPIEventKeys {
   OnLoadSettings = 'on:load:settings',
   UpdateSettings = 'settings:update',
 
+  RequestTags = 'request:tags',
+  OnLoadTags = 'on:load:tags',
+  UpdateTags = 'tags:update',
+  NotificationCreationTag = 'notification:creation:tag',
+
+  RequestGroups = 'request:groups',
+  OnLoadGroups = 'on:load:groups',
+  UpdateGroups = 'groups:update',
+
   /**
    * General Methods
    */

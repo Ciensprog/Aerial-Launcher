@@ -72,3 +72,19 @@
     -webkit-app-region: no-drag;
   }
 }
+
+.mantine-ColorInput-input {
+  background-color: hsl(var(--background));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+  height: 2.5rem;
+}
+
+.mantine-ColorSwatch-alphaOverlay {
+  background-image: none;
+}
+
+.mantine-ColorInput-dropdown {
+  background-color: #151515;
+  border: 1px solid hsl(var(--border));
+}

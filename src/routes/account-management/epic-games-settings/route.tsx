@@ -21,6 +21,8 @@ import {
 import { useGetSelectedAccount } from '../../../hooks/accounts'
 import { useHandlers } from './-actions'
 
+import { parseCustomDisplayName } from '../../../lib/utils'
+
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/account-management/epic-games-settings',
@@ -61,7 +63,10 @@ function Content() {
           <CardContent className="grid gap-4 pt-6">
             <CardDescription>
               Account selected:{' '}
-              <span className="font-bold">{selected?.displayName}</span>
+              <span className="font-bold">
+                {selected?.displayName}
+                {parseCustomDisplayName(selected)}
+              </span>
             </CardDescription>
           </CardContent>
           <CardFooter className="space-x-6">

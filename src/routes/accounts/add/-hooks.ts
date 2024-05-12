@@ -4,7 +4,10 @@ import type { AuthCallbackResponseParam } from '../../../types/preload'
 import { useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
-import { epicGamesAuthorizationCodeURL } from '../../../config/fortnite/links'
+import {
+  epicGamesAuthorizationCodeURL,
+  epicGamesLoginURL,
+} from '../../../config/fortnite/links'
 
 import { useAccountListStore } from '../../../state/accounts/list'
 
@@ -17,9 +20,16 @@ export function useHandlers() {
     event.preventDefault()
     window.electronAPI.openExternalURL(epicGamesAuthorizationCodeURL)
   }
+  const goToEpicGamesLogin: MouseEventHandler<HTMLAnchorElement> = (
+    event
+  ) => {
+    event.preventDefault()
+    window.electronAPI.openExternalURL(epicGamesLoginURL)
+  }
 
   return {
     goToAuthorizationCodeURL,
+    goToEpicGamesLogin,
   }
 }
 

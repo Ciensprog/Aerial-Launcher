@@ -1,3 +1,4 @@
+import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
 import {
   Card,
   CardContent,
@@ -5,23 +6,25 @@ import {
   CardHeader,
 } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
-import { Separator } from '../../../components/ui/separator'
-
-import { useAccounts, useActions } from './-hooks'
 import { AccountItem } from './-item'
 
-export function DisplayNameCustomization() {
+import { useGetTags } from '../../../hooks/tags'
+import { useAccounts, useActions } from './-hooks'
+
+import { tagsArrayToSelectOptions } from '../../../lib/utils'
+
+export function AccountCustomization() {
+  const { tagsArray } = useGetTags()
   const { accounts, accountsArray, onChangeSearchValue, searchValue } =
     useAccounts()
-  const { isPending, onSubmit } = useActions()
+  const { isPendingSubmitCustomDisplayName, onSubmitCustomDisplayName } =
+    useActions()
+
+  const tags = tagsArrayToSelectOptions(tagsArray)
 
   return (
     <>
-      <Separator className="flex justify-center relative">
-        <div className="absolute bg-background font-semibold px-1.5 text-muted-foreground text-sm -top-2.5">
-          Display Name Customization
-        </div>
-      </Separator>
+      <SeparatorWithTitle>Account Customization</SeparatorWithTitle>
 
       <Card className="w-full">
         <CardHeader className="border-b">
@@ -48,9 +51,12 @@ export function DisplayNameCustomization() {
           {accounts.length > 0 ? (
             accounts.map((account) => (
               <AccountItem
+                tags={tags}
                 account={account}
-                onSubmit={onSubmit}
-                isPending={isPending}
+                isPendingSubmitCustomDisplayName={
+                  isPendingSubmitCustomDisplayName
+                }
+                onSubmitCustomDisplayName={onSubmitCustomDisplayName}
                 key={account.accountId}
               />
             ))

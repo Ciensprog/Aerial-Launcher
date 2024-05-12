@@ -5,6 +5,8 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
+import { useGetGroups } from '../../hooks/groups'
+
 export function useAccountList() {
   const { accountList, changeSelected, selected } = useAccountListStore(
     useShallow((state) => ({
@@ -13,25 +15,28 @@ export function useAccountList() {
       selected: state.getSelected(),
     }))
   )
+  const { getGroupTagsByAccountId } = useGetGroups()
   const [open, setOpen] = useState(false)
   const accounts = Object.values(accountList)
 
   const createKeywords = (account: AccountData) => {
     const _keys: Array<string> = [account.displayName]
     const customDisplayName = account.customDisplayName?.trim() ?? ''
-    const displayName = account.displayName
     const provider = account.provider ?? ''
+    const tags = getGroupTagsByAccountId(account.accountId)
 
     if (customDisplayName !== '') {
       _keys.push(customDisplayName)
     }
 
-    if (displayName !== '') {
-      _keys.push(displayName)
-    }
-
     if (provider !== '') {
       _keys.push(provider)
+    }
+
+    if (tags.length > 0) {
+      tags.forEach((tagName) => {
+        _keys.push(tagName)
+      })
     }
 
     return _keys.length > 0 ? _keys : undefined
@@ -42,10 +47,12 @@ export function useAccountList() {
     search: string,
     keywords?: Array<string>
   ) => {
-    const _search = search.toLowerCase()
+    const _search = search.toLowerCase().trim()
     const _keys =
       keywords &&
-      keywords.some((keyword) => keyword.toLowerCase().includes(_search))
+      keywords.some((keyword) =>
+        keyword.toLowerCase().trim().includes(_search)
+      )
 
     return _keys ? 1 : 0
   }

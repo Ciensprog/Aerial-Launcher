@@ -22,9 +22,10 @@ import {
 } from '../../components/ui/form'
 import { Input } from '../../components/ui/input'
 
-import { useGetAccounts } from '../../hooks/accounts'
+import { AccountCustomization } from './-account-customization/-index'
+import { TagsManagement } from './-tags-management/-index'
 
-import { DisplayNameCustomization } from './-display-name-customization/-index'
+import { useGetAccounts } from '../../hooks/accounts'
 import { useSetupForm } from './-hooks'
 
 export const Route = createRoute({
@@ -59,7 +60,7 @@ function Content() {
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
-        <div className="flex flex-col gap-8 max-w-md w-full">
+        <div className="flex flex-col gap-12 max-w-md w-full">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -93,7 +94,9 @@ function Content() {
             </form>
           </Form>
 
-          {accountsArray.length > 0 && <DisplayNameCustomization />}
+          <TagsManagement />
+
+          {accountsArray.length > 0 && <AccountCustomization />}
         </div>
       </div>
     </div>

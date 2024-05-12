@@ -34,7 +34,7 @@ import { useHandlers } from '../-hooks'
 import { useSetupForm } from './-hooks'
 
 export function AuthorizationCodePage() {
-  const { goToAuthorizationCodeURL } = useHandlers()
+  const { goToAuthorizationCodeURL, goToEpicGamesLogin } = useHandlers()
   const { form, onSubmit } = useSetupForm()
 
   return (
@@ -56,6 +56,7 @@ export function AuthorizationCodePage() {
                       href={epicGamesLoginURL}
                       className="font-medium text-primary underline-offset-4 hover:underline"
                       title={epicGamesLoginURL}
+                      onClick={goToEpicGamesLogin}
                     >
                       {epicGamesLoginURL}
                     </a>
