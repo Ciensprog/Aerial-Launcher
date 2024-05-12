@@ -83,3 +83,8 @@
 .mantine-ColorSwatch-alphaOverlay {
   background-image: none;
 }
+
+.mantine-ColorInput-dropdown {
+  background-color: #151515;
+  border: 1px solid hsl(var(--border));
+}
