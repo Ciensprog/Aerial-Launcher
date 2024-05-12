@@ -78,6 +78,13 @@ export enum ElectronAPIEventKeys {
   LauncherNotification = 'launcher:notification',
 
   /**
+   * STW Operations
+   */
+
+  SetSaveQuests = 'save-quests:set',
+  SaveQuestsNotification = 'save-quests:notification',
+
+  /**
    * Schedules
    */
 

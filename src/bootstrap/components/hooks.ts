@@ -1,12 +1,11 @@
 import type { MouseEventHandler } from 'react'
+import type { NewVersionStatusCallbackResponseParam } from '../../types/preload'
 
 import { useEffect, useState } from 'react'
 
 export function useCheckNewVersion() {
-  const [data, setData] = useState<{
-    link: string
-    version: string
-  } | null>(null)
+  const [data, setData] =
+    useState<NewVersionStatusCallbackResponseParam>(null)
 
   useEffect(() => {
     const listener = window.electronAPI.responseNewVersionStatus(
