@@ -17,20 +17,34 @@ import { useGetTags } from '../../../hooks/tags'
 
 export function useAccounts() {
   const { accountsArray } = useGetAccounts()
+  const { getGroupTagsByAccountId } = useGetGroups()
   const [searchValue, setSearchValue] = useState('')
 
   const accounts =
     searchValue.length > 0
       ? accountsArray.filter((account) => {
+          const _keys: Array<string> = [account.displayName]
           const currentSearchValue = searchValue.toLowerCase().trim()
+          const customDisplayName = account.customDisplayName ?? ''
+          const provider = account.provider ?? ''
+          const tags = getGroupTagsByAccountId(account.accountId)
 
-          return (
-            account.displayName
-              .toLowerCase()
-              .includes(currentSearchValue) ||
-            account.customDisplayName
-              ?.toLowerCase()
-              .includes(currentSearchValue)
+          if (customDisplayName !== '') {
+            _keys.push(customDisplayName)
+          }
+
+          if (provider !== '') {
+            _keys.push(provider)
+          }
+
+          if (tags.length > 0) {
+            tags.forEach((tagName) => {
+              _keys.push(tagName)
+            })
+          }
+
+          return _keys.some((keyword) =>
+            keyword.toLowerCase().trim().includes(currentSearchValue)
           )
         })
       : accountsArray
