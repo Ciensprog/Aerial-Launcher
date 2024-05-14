@@ -14,12 +14,12 @@ import {
 import { Button } from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
 import { Separator } from '../ui/separator'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip'
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from '../ui/tooltip'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
@@ -59,7 +59,28 @@ export function SidebarMenu({
     <ScrollArea className="h-full max-h-[calc(100vh-3.5rem)]">
       <div className="flex-1 pb-6">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
-          <OptionWithComingSoonTooltip text="STW Operations" />
+          <Title className="pb-0">STW Operations</Title>
+          <div
+            className={cn(
+              'px-3 py-2 text-muted-foreground',
+              '[&_.item-account-management>a]:flex'
+            )}
+          >
+            <ul className="list-disc ml-5">
+              <li className="item-account-management">
+                <Link
+                  to="/stw-operations/save-quests"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  Save Quests
+                </Link>
+              </li>
+            </ul>
+          </div>
           <Title className="pb-0">Account Management</Title>
           <div
             className={cn(
@@ -218,20 +239,20 @@ const Title = forwardRef<
   )
 })
 
-function OptionWithComingSoonTooltip({ text }: { text: string }) {
-  return (
-    <TooltipProvider>
-      <Tooltip
-        delayDuration={200}
-        disableHoverableContent
-      >
-        <TooltipTrigger asChild>
-          <Title>{text}</Title>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Coming Soon!</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  )
-}
+// function OptionWithComingSoonTooltip({ text }: { text: string }) {
+//   return (
+//     <TooltipProvider>
+//       <Tooltip
+//         delayDuration={200}
+//         disableHoverableContent
+//       >
+//         <TooltipTrigger asChild>
+//           <Title>{text}</Title>
+//         </TooltipTrigger>
+//         <TooltipContent>
+//           <p>Coming Soon!</p>
+//         </TooltipContent>
+//       </Tooltip>
+//     </TooltipProvider>
+//   )
+// }

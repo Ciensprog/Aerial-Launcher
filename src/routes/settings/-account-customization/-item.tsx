@@ -57,6 +57,7 @@ export function AccountItem({
       </form>
 
       <InputTags
+        placeholder="Select some tags..."
         options={tags}
         value={currentTags}
         onChange={onChangeInputTagsValue}

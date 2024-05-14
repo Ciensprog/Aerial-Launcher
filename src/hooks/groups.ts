@@ -10,12 +10,14 @@ export function useGetGroups() {
       updateGroupTags: state.updateGroupTags,
     }))
   )
+  const groupsArray = Object.entries(groupList)
 
   const getGroupTagsByAccountId = (accountId: string) => {
     return groupList[accountId] ?? []
   }
 
   return {
+    groupsArray,
     groupList,
 
     getGroupTagsByAccountId,

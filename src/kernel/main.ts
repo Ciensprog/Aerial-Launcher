@@ -13,6 +13,7 @@ import { ElectronAPIEventKeys } from '../config/constants/main-process'
 import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { FortniteLauncher } from './core/launcher'
+import { MCPClientQuestLogin } from './core/mcp'
 import { Manifest } from './core/manifest'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
@@ -212,6 +213,17 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.LauncherStart,
     async (_, account: AccountData) => {
       await FortniteLauncher.start(currentWindow, account)
+    }
+  )
+
+  /**
+   * STW Operations
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.SetSaveQuests,
+    async (_, accounts: Array<AccountData>) => {
+      await MCPClientQuestLogin.save(currentWindow, accounts)
     }
   )
 

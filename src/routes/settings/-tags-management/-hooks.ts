@@ -6,6 +6,10 @@ import { useEffect, useState } from 'react'
 
 import { defaultColor } from '../../../config/constants/colors'
 
+import {
+  useGetSaveQuestsActions,
+  useGetSaveQuestsData,
+} from '../../../hooks/stw-operations/save-quests'
 import { useGetTags } from '../../../hooks/tags'
 
 import { useTagsStore } from '../../../state/settings/tags'
@@ -105,6 +109,9 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
   )
   const [name, setName] = useState('')
 
+  const { selectedTags } = useGetSaveQuestsData()
+  const { rawSaveQuestsUpdateTags } = useGetSaveQuestsActions()
+
   useEffect(() => {
     setColor((rawData.color ?? defaultColor) as string)
   }, [rawData])
@@ -162,6 +169,9 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
   const onDeleteTag = (tagName: string) => () => {
     const rawTagsRecord = filterTags(tagName)
 
+    rawSaveQuestsUpdateTags(
+      selectedTags.filter((currentTag) => currentTag !== tagName)
+    )
     tagsStore.updateTags(rawTagsRecord, true)
     window.electronAPI.updateTags(rawTagsRecord)
   }
