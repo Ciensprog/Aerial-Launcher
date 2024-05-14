@@ -1,3 +1,5 @@
+import type { GroupRecord } from '../../../types/groups'
+
 import { useNavigate } from '@tanstack/react-router'
 
 import {
@@ -8,6 +10,7 @@ import {
   useGetSelectedAccount,
   useRemoveSelectedAccount,
 } from '../../../hooks/accounts'
+import { useGetGroups } from '../../../hooks/groups'
 
 import { toast } from '../../../lib/notifications'
 import { parseCustomDisplayName } from '../../../lib/utils'
@@ -17,6 +20,8 @@ export function useHandleRemove() {
   const { selected } = useGetSelectedAccount()
   const { removeAccount } = useRemoveSelectedAccount()
 
+  const { groupList, registerGroups } = useGetGroups()
+
   const { selectedAccounts } = useGetSaveQuestsData()
   const { rawSaveQuestsUpdateAccounts } = useGetSaveQuestsActions()
 
@@ -25,12 +30,26 @@ export function useHandleRemove() {
       return
     }
 
+    const newGroups = Object.entries(groupList).reduce(
+      (accumulator, [accountId, tags]) => {
+        if (selected.accountId !== accountId) {
+          accumulator[accountId] = tags
+        }
+
+        return accumulator
+      },
+      {} as GroupRecord
+    )
+
+    registerGroups(newGroups)
     rawSaveQuestsUpdateAccounts(
       selectedAccounts.filter(
         (accountId) => accountId !== selected.accountId
       )
     )
+
     window.electronAPI.onRemoveAccount(selected.accountId)
+    window.electronAPI.updateGroups(newGroups)
 
     const total = Object.values(removeAccount(selected.accountId)).length
 
