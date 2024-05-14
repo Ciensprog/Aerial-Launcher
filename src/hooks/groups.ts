@@ -3,10 +3,11 @@ import { useShallow } from 'zustand/react/shallow'
 import { useGroupsStore } from '../state/settings/groups'
 
 export function useGetGroups() {
-  const { groupList, updateGroupTags } = useGroupsStore(
+  const { groupList, registerGroups, updateGroupTags } = useGroupsStore(
     useShallow((state) => ({
       groupList: state.groups,
 
+      registerGroups: state.registerGroups,
       updateGroupTags: state.updateGroupTags,
     }))
   )
@@ -21,6 +22,7 @@ export function useGetGroups() {
     groupList,
 
     getGroupTagsByAccountId,
+    registerGroups,
     updateGroupTags,
   }
 }

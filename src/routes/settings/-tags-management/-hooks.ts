@@ -1,4 +1,5 @@
 import type { ChangeEventHandler, FormEventHandler } from 'react'
+import type { GroupRecord } from '../../../types/groups'
 import type { Tag, TagRecord } from '../../../types/tags'
 
 import Color from 'color'
@@ -10,6 +11,7 @@ import {
   useGetSaveQuestsActions,
   useGetSaveQuestsData,
 } from '../../../hooks/stw-operations/save-quests'
+import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
 import { useTagsStore } from '../../../state/settings/tags'
@@ -109,6 +111,8 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
   )
   const [name, setName] = useState('')
 
+  const { groupList, registerGroups } = useGetGroups()
+
   const { selectedTags } = useGetSaveQuestsData()
   const { rawSaveQuestsUpdateTags } = useGetSaveQuestsActions()
 
@@ -168,12 +172,24 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
 
   const onDeleteTag = (tagName: string) => () => {
     const rawTagsRecord = filterTags(tagName)
+    const newGroups = Object.entries(groupList).reduce(
+      (accumulator, [accountId, tags]) => {
+        accumulator[accountId] = tags.filter(
+          (currentTag) => currentTag !== tagName
+        )
 
+        return accumulator
+      },
+      {} as GroupRecord
+    )
+
+    registerGroups(newGroups)
     rawSaveQuestsUpdateTags(
       selectedTags.filter((currentTag) => currentTag !== tagName)
     )
     tagsStore.updateTags(rawTagsRecord, true)
     window.electronAPI.updateTags(rawTagsRecord)
+    window.electronAPI.updateGroups(newGroups)
   }
 
   return {
