@@ -7,6 +7,8 @@ import { useAccountListStore } from '../../state/accounts/list'
 
 import { useGetGroups } from '../../hooks/groups'
 
+import { checkIfCustomDisplayNameIsValid } from '../../lib/validations/properties'
+
 export function useAccountList() {
   const { accountList, changeSelected, selected } = useAccountListStore(
     useShallow((state) => ({
@@ -21,12 +23,11 @@ export function useAccountList() {
 
   const createKeywords = (account: AccountData) => {
     const _keys: Array<string> = [account.displayName]
-    const customDisplayName = account.customDisplayName?.trim() ?? ''
     const provider = account.provider ?? ''
     const tags = getGroupTagsByAccountId(account.accountId)
 
-    if (customDisplayName !== '') {
-      _keys.push(customDisplayName)
+    if (checkIfCustomDisplayNameIsValid(account.customDisplayName)) {
+      _keys.push(account.customDisplayName as string)
     }
 
     if (provider !== '') {

@@ -8,6 +8,8 @@ import { twMerge } from 'tailwind-merge'
 
 import { useGetTags } from '../hooks/tags'
 
+import { checkIfCustomDisplayNameIsValid } from './validations/properties'
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -27,14 +29,16 @@ export function tagsArrayToSelectOptions(
 export function sortAccounts(data: AccountDataRecord) {
   const result = Object.values(data)
   const accounts = result.toSorted((itemA, itemB) => {
-    const _itemADisplayName =
-      (itemA.customDisplayName?.trim() ?? '') === ''
-        ? itemA.displayName
-        : itemA.customDisplayName ?? ''
-    const _itemBDisplayName =
-      (itemB.customDisplayName?.trim() ?? '') === ''
-        ? itemB.displayName
-        : itemB.customDisplayName ?? ''
+    const _itemADisplayName = checkIfCustomDisplayNameIsValid(
+      itemA.customDisplayName
+    )
+      ? itemA.customDisplayName ?? ''
+      : itemA.displayName
+    const _itemBDisplayName = checkIfCustomDisplayNameIsValid(
+      itemB.customDisplayName
+    )
+      ? itemB.customDisplayName ?? ''
+      : itemB.displayName
 
     return _itemADisplayName.localeCompare(_itemBDisplayName, undefined, {
       numeric: true,
@@ -67,10 +71,18 @@ export function sortTags(data: TagRecord) {
   return tags
 }
 
+export function parseDisplayName(account: AccountData) {
+  return checkIfCustomDisplayNameIsValid(account.customDisplayName)
+    ? account.customDisplayName
+    : account.displayName
+}
+
 export function parseCustomDisplayName(account: AccountData | null) {
-  const rawCustomDisplayName = account?.customDisplayName?.trim() ?? ''
-  const customDisplayNameText =
-    rawCustomDisplayName.length > 0 ? ` (${rawCustomDisplayName})` : ''
+  const customDisplayNameText = checkIfCustomDisplayNameIsValid(
+    account?.customDisplayName
+  )
+    ? ` (${account?.customDisplayName})`
+    : ''
 
   return customDisplayNameText
 }

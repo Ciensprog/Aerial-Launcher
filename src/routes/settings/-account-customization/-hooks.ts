@@ -15,6 +15,8 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
+import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
+
 export function useAccounts() {
   const { accountsArray } = useGetAccounts()
   const { getGroupTagsByAccountId } = useGetGroups()
@@ -25,12 +27,11 @@ export function useAccounts() {
       ? accountsArray.filter((account) => {
           const _keys: Array<string> = [account.displayName]
           const currentSearchValue = searchValue.toLowerCase().trim()
-          const customDisplayName = account.customDisplayName ?? ''
           const provider = account.provider ?? ''
           const tags = getGroupTagsByAccountId(account.accountId)
 
-          if (customDisplayName !== '') {
-            _keys.push(customDisplayName)
+          if (checkIfCustomDisplayNameIsValid(account.customDisplayName)) {
+            _keys.push(account.customDisplayName as string)
           }
 
           if (provider !== '') {

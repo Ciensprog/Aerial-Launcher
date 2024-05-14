@@ -12,6 +12,7 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
+import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
@@ -24,10 +25,11 @@ export function useData() {
     useGetSaveQuestsActions()
 
   const accounts: Array<SelectOption> = accountsArray.map((account) => {
-    const label =
-      account.customDisplayName?.trim() !== ''
-        ? `${account.customDisplayName} (${account.displayName})`
-        : account.displayName
+    const label = checkIfCustomDisplayNameIsValid(
+      account.customDisplayName
+    )
+      ? `${account.customDisplayName} (${account.displayName})`
+      : account.displayName
 
     return {
       label,
