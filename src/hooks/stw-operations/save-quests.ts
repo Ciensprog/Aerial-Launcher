@@ -33,12 +33,16 @@ export function useGetSaveQuestsActions() {
     updateAccounts(value.map((item) => item.value))
   }
 
+  const rawSaveQuestsUpdateTags = (value: Array<string>) => {
+    updateTags(value)
+  }
   const saveQuestsUpdateTags = (value: Array<SelectOption>) => {
     updateTags(value.map((item) => item.value))
   }
 
   return {
     rawSaveQuestsUpdateAccounts,
+    rawSaveQuestsUpdateTags,
     saveQuestsUpdateAccounts,
     saveQuestsUpdateTags,
   }
