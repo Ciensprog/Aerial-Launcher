@@ -9,20 +9,32 @@ import { Authentication } from '../authentication'
 import { setClientQuestLogin } from '../../../services/endpoints/mcp'
 
 export class MCPClientQuestLogin {
-  static async save(currentWindow: BrowserWindow, account: AccountData) {
+  static async save(
+    currentWindow: BrowserWindow,
+    accounts: Array<AccountData>
+  ) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      await Promise.allSettled(
+        accounts.map(async (account) => {
+          try {
+            const accessToken =
+              await Authentication.verifyAccessToken(account)
 
-      if (!accessToken) {
-        return
-      }
+            if (!accessToken) {
+              return
+            }
 
-      const { accountId } = account
+            const { accountId } = account
 
-      await setClientQuestLogin({
-        accessToken,
-        accountId,
-      })
+            await setClientQuestLogin({
+              accessToken,
+              accountId,
+            })
+          } catch (error) {
+            //
+          }
+        })
+      )
     } catch (error) {
       //
     }

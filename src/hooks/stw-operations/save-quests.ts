@@ -1,0 +1,41 @@
+import type { SelectOption } from '../../components/ui/third-party/extended/input-tags'
+
+import { useShallow } from 'zustand/react/shallow'
+
+import { useSaveQuestsStore } from '../../state/stw-operations/save-quests'
+
+export function useGetSaveQuestsData() {
+  const { accounts, tags } = useSaveQuestsStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      tags: state.tags,
+    }))
+  )
+
+  return {
+    selectedAccounts: accounts,
+    selectedTags: tags,
+  }
+}
+
+export function useGetSaveQuestsActions() {
+  const { updateAccounts, updateTags } = useSaveQuestsStore(
+    useShallow((state) => ({
+      updateAccounts: state.updateAccounts,
+      updateTags: state.updateTags,
+    }))
+  )
+
+  const saveQuestsUpdateAccounts = (value: Array<SelectOption>) => {
+    updateAccounts(value.map((item) => item.value))
+  }
+
+  const saveQuestsUpdateTags = (value: Array<SelectOption>) => {
+    updateTags(value.map((item) => item.value))
+  }
+
+  return {
+    saveQuestsUpdateAccounts,
+    saveQuestsUpdateTags,
+  }
+}

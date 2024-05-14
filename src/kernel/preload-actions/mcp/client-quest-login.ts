@@ -4,8 +4,8 @@ import { ipcRenderer } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../../config/constants/main-process'
 
-export function setClientQuestLogin(account: AccountData) {
-  ipcRenderer.send(ElectronAPIEventKeys.SetSaveQuests, account)
+export function setClientQuestLogin(accounts: Array<AccountData>) {
+  ipcRenderer.send(ElectronAPIEventKeys.SetSaveQuests, accounts)
 }
 
 export function notificationClientQuestLogin(

@@ -222,8 +222,8 @@ app.on('ready', async () => {
 
   ipcMain.on(
     ElectronAPIEventKeys.SetSaveQuests,
-    async (_, account: AccountData) => {
-      await MCPClientQuestLogin.save(currentWindow, account)
+    async (_, accounts: Array<AccountData>) => {
+      await MCPClientQuestLogin.save(currentWindow, accounts)
     }
   )
 
