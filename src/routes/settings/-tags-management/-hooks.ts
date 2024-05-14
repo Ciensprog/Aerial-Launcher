@@ -164,8 +164,26 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
       [newData.name]: (newData.color ?? null) as Tag['color'],
     }
 
+    const newGroups = Object.entries(groupList).reduce(
+      (accumulator, [accountId, tags]) => {
+        accumulator[accountId] = tags.map((currentTag) =>
+          currentTag === rawData.name ? newData.name : currentTag
+        )
+
+        return accumulator
+      },
+      {} as GroupRecord
+    )
+
+    registerGroups(newGroups)
+    rawSaveQuestsUpdateTags(
+      selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
     tagsStore.updateTags(newTags, true)
     window.electronAPI.updateTags(newTags)
+    window.electronAPI.updateGroups(newGroups)
 
     setName('')
   }
