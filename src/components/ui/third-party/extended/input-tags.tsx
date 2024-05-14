@@ -13,18 +13,20 @@ export type SelectOption = {
 
 export function InputTags({
   options,
+  placeholder,
   value,
 
   onChange,
 }: {
   options: Array<SelectOption>
+  placeholder: string
   value: Array<SelectOption>
 
   onChange: (value: Array<SelectOption>) => void
 }) {
   return (
     <Select
-      placeholder="Select some tags..."
+      placeholder={placeholder}
       options={options}
       value={value}
       styles={colourStyles}
