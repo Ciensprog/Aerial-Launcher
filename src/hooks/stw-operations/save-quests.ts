@@ -26,6 +26,9 @@ export function useGetSaveQuestsActions() {
     }))
   )
 
+  const rawSaveQuestsUpdateAccounts = (value: Array<string>) => {
+    updateAccounts(value)
+  }
   const saveQuestsUpdateAccounts = (value: Array<SelectOption>) => {
     updateAccounts(value.map((item) => item.value))
   }
@@ -35,6 +38,7 @@ export function useGetSaveQuestsActions() {
   }
 
   return {
+    rawSaveQuestsUpdateAccounts,
     saveQuestsUpdateAccounts,
     saveQuestsUpdateTags,
   }
