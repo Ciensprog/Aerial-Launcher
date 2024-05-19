@@ -10,6 +10,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
+import { KickAllPartyCard } from './-kick-all-party'
+
+import { ClaimRewardsCard } from './-claim-rewards'
+import { InviteCard } from './-invite'
+import { LeavePartyCard } from './-leave-party'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -44,7 +49,14 @@ function Content() {
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
-        Party operations
+        <div className="flex flex-col items-center space-y-5 w-full">
+          <KickAllPartyCard />
+          <div className="flex gap-5 items-center justify-center">
+            <ClaimRewardsCard />
+            <LeavePartyCard />
+          </div>
+          <InviteCard />
+        </div>
       </div>
     </div>
   )
