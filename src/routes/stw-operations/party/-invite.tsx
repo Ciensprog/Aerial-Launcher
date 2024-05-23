@@ -2,11 +2,11 @@ import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 
-import { useAccounts, useComboboxSelections } from './-hooks'
+import { useComboboxAccounts } from './-hooks'
 
 export function InviteCard() {
-  const { options } = useAccounts()
-  const { hasValues, setValue, value } = useComboboxSelections()
+  const { customFilter, hasValues, options, setValue, value } =
+    useComboboxAccounts()
 
   return (
     <Card className="max-w-lg w-full">
@@ -18,6 +18,7 @@ export function InviteCard() {
             emptyText="No friend found"
             options={options}
             value={value}
+            customFilter={customFilter}
             onChange={setValue}
             isMulti
           />

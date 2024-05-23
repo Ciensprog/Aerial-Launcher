@@ -25,6 +25,7 @@ export function Combobox({
   placeholder,
   placeholderSearch,
   value,
+  customFilter,
   onChange,
 }: ComboboxProps) {
   const { __onChange, currentValues, open, selectedName, setOpen } =
@@ -43,23 +44,25 @@ export function Combobox({
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            'flex justify-between max-w-96 pl-3 pr-2 select-none w-full',
+            'flex justify-between max-w-96 pl-3 pr-2 select-none w-full disabled:cursor-not-allowed disabled:pointer-events-auto disabled:hover:bg-background',
             className
           )}
           size="sm"
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          // disabled={}
+          disabled={options.length < 1}
         >
           <div
             className={cn('max-w-72 truncate', {
               'text-muted-foreground': currentValues.length <= 0,
             })}
           >
-            {currentValues.length > 0
-              ? selectedName
-              : placeholder ?? 'Select options'}
+            {options.length > 0
+              ? currentValues.length > 0
+                ? selectedName
+                : placeholder ?? 'Select options'
+              : 'No options'}
           </div>
           <ChevronsUpDown className="h-4 ml-auto opacity-50 shrink-0 w-4" />
         </Button>
@@ -68,7 +71,10 @@ export function Combobox({
         className="max-w-52 p-0 w-full"
         align="start"
       >
-        <Command loop>
+        <Command
+          filter={customFilter}
+          loop
+        >
           <CommandInput
             className="select-none"
             placeholder={placeholderSearch ?? 'Placeholder'}
@@ -84,6 +90,7 @@ export function Combobox({
                 return (
                   <CommandItem
                     value={option.value}
+                    keywords={option.keywords}
                     onSelect={__onChange}
                     key={option.value}
                   >

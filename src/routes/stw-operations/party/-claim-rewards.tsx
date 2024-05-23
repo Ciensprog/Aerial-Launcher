@@ -2,15 +2,15 @@ import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 
-import { useAccounts, useComboboxSelections } from './-hooks'
+import { useComboboxAccounts } from './-hooks'
 
 export function ClaimRewardsCard() {
-  const { options } = useAccounts()
-  const { hasValues, setValue, value } = useComboboxSelections()
+  const { customFilter, hasValues, options, setValue, value } =
+    useComboboxAccounts()
 
   return (
-    <Card className="flex-shrink-0 h-36 max-w-52 w-full">
-      <CardContent className="block grid- gap-4 pt-6">
+    <Card className="flex flex-col flex-shrink-0 h-36 justify-center max-w-52 w-full">
+      <CardContent className="block pt-6 space-y-4">
         <div className="flex flex-col gap-4">
           <Combobox
             placeholder="Select account"
@@ -18,6 +18,7 @@ export function ClaimRewardsCard() {
             emptyText="No account found"
             options={options}
             value={value}
+            customFilter={customFilter}
             onChange={setValue}
             isMulti
           />

@@ -3,6 +3,7 @@ import { useState } from 'react'
 export type ComboboxOption = {
   label: string
   value: string
+  keywords: Array<string>
 }
 
 export type ComboboxProps = {
@@ -13,6 +14,11 @@ export type ComboboxProps = {
   placeholder?: string
   placeholderSearch?: string
   value?: Array<ComboboxOption>
+  customFilter?: (
+    value: string,
+    search: string,
+    keywords?: Array<string>
+  ) => number
   onChange?: (values: Array<ComboboxOption>) => void
 }
 
