@@ -1,6 +1,6 @@
 import type { MouseEventHandler, PropsWithChildren } from 'react'
 
-import { GitHubLogoIcon } from '@radix-ui/react-icons'
+import { DiscordLogoIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Link } from '@tanstack/react-router'
 import { forwardRef } from 'react'
 
@@ -9,6 +9,7 @@ import packageJson from '../../../package.json'
 import {
   repositoryReleasesURL,
   repositoryURL,
+  supportDiscordServerURL,
 } from '../../config/about/links'
 
 import { Button } from '../ui/button'
@@ -41,6 +42,12 @@ export function SidebarMenu({
 
   const goToPage = () => {
     onOpenChange?.(false)
+  }
+  const goToDiscordServerURL: MouseEventHandler<HTMLButtonElement> = (
+    event
+  ) => {
+    event.preventDefault()
+    window.electronAPI.openExternalURL(supportDiscordServerURL)
   }
   const goToRepositoryURL: MouseEventHandler<HTMLButtonElement> = (
     event
@@ -177,6 +184,22 @@ export function SidebarMenu({
           <Separator className="my-2" />
 
           <div className="">
+            <Button
+              className={cn(
+                'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
+                'text-muted-foreground',
+                'hover:bg-muted hover:text-primary'
+              )}
+              size="sm"
+              variant="ghost"
+              onClick={goToDiscordServerURL}
+              asChild
+            >
+              <a href={supportDiscordServerURL}>
+                <DiscordLogoIcon />
+                Discord Server
+              </a>
+            </Button>
             <Button
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
