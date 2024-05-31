@@ -23,6 +23,7 @@ const links = {
   LeleDerGrasshalmi:
     'https://github.com/LeleDerGrasshalmi/FortniteEndpointsDocumentation',
   HyperionCSharp: 'https://github.com/HyperionCSharp/EpicGamesAPIDocs',
+  eric_guest1: '',
 }
 
 export const Route = createRoute({
@@ -105,6 +106,13 @@ export function ComponentRoute() {
                 <div className="">
                   Their endpoint list helped me a lot during the
                   development.
+                </div>
+              </li>
+              <li className="item">
+                <span className="text-muted-foreground">eric_guest1</span>
+                <div className="">
+                  Tester of new features before new version releases to
+                  detect and fix possible bugs.
                 </div>
               </li>
             </ul>
