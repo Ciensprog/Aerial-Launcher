@@ -1,4 +1,8 @@
-import type { AccountBasicInfo, AccountData } from '../types/accounts'
+import type {
+  AccountBasicInfo,
+  AccountData,
+  AccountList,
+} from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { GroupRecord } from '../types/groups'
 import type { Settings } from '../types/settings'
@@ -15,6 +19,7 @@ import { Authentication } from './core/authentication'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin } from './core/mcp'
 import { Manifest } from './core/manifest'
+import { Party } from './core/party'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
 import { DataDirectory } from './startup/data-directory'
@@ -224,6 +229,28 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.SetSaveQuests,
     async (_, accounts: Array<AccountData>) => {
       await MCPClientQuestLogin.save(currentWindow, accounts)
+    }
+  )
+
+  /**
+   * Party
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyKickAction,
+    async (_, selectedAccount: AccountData, accounts: AccountList) => {
+      await Party.kickPartyMembers(
+        currentWindow,
+        selectedAccount,
+        accounts
+      )
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyLeaveAction,
+    async (_, selectedAccounts: AccountList, accounts: AccountList) => {
+      await Party.leaveParty(currentWindow, selectedAccounts, accounts)
     }
   )
 

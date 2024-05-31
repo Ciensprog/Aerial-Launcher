@@ -1,13 +1,21 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
+
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 import { Switch } from '../../../components/ui/switch'
 
-import { useComboboxAccounts } from './-hooks'
+import { useComboboxAccounts, useKickActions } from './-hooks'
+
+import { cn } from '../../../lib/utils'
 
 export function LeavePartyCard() {
   const { customFilter, hasValues, options, setValue, value } =
     useComboboxAccounts()
+  const { isPending, onKick } = useKickActions({
+    value,
+    callbackName: 'notificationLeave',
+  })
 
   return (
     <Card className="flex flex-col flex-shrink-0 h-36 justify-center max-w-72 w-full">
@@ -31,12 +39,17 @@ export function LeavePartyCard() {
           <Button
             className="leading-none disabled:cursor-not-allowed disabled:pointer-events-auto"
             size="sm"
-            onClick={() => {}}
+            onClick={onKick(true)}
             disabled={!hasValues}
           >
-            Leave
-            <br />
-            Party
+            <span className={cn('absolute', { hidden: !isPending })}>
+              <UpdateIcon className="animate-spin" />
+            </span>
+            <span className={cn({ 'opacity-0 select-none': isPending })}>
+              Leave
+              <br />
+              Party
+            </span>
           </Button>
         </div>
       </CardContent>

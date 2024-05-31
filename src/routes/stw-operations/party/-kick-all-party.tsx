@@ -1,13 +1,21 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
+
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 import { Switch } from '../../../components/ui/switch'
 
-import { useComboboxAccounts } from './-hooks'
+import { useComboboxAccounts, useKickActions } from './-hooks'
+
+import { cn } from '../../../lib/utils'
 
 export function KickAllPartyCard() {
   const { customFilter, hasValues, options, setValue, value } =
     useComboboxAccounts()
+  const { isPending, onKick } = useKickActions({
+    value,
+    callbackName: 'notificationKick',
+  })
 
   return (
     <Card className="max-w-lg w-full">
@@ -27,12 +35,17 @@ export function KickAllPartyCard() {
             onChange={setValue}
           />
           <Button
-            className="disabled:cursor-not-allowed disabled:pointer-events-auto"
+            className="relative disabled:cursor-not-allowed disabled:pointer-events-auto"
             size="sm"
-            onClick={() => {}}
+            onClick={onKick()}
             disabled={!hasValues}
           >
-            Kick All Party
+            <span className={cn('absolute', { hidden: !isPending })}>
+              <UpdateIcon className="animate-spin" />
+            </span>
+            <span className={cn({ 'opacity-0 select-none': isPending })}>
+              Kick All Party
+            </span>
           </Button>
         </div>
       </CardContent>

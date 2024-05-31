@@ -8,6 +8,7 @@ import * as authenticationActions from './preload-actions/authentication'
 import * as eventActions from './preload-actions/events'
 import * as generalActions from './preload-actions/general'
 import * as launcherActions from './preload-actions/launcher'
+import * as partyActions from './preload-actions/party'
 import * as mcpActions from './preload-actions/mcp'
 import * as requestActions from './preload-actions/requests'
 import * as scheduleActions from './preload-actions/schedules'
@@ -19,6 +20,7 @@ export const availableElectronAPIs = {
   ...eventActions,
   ...generalActions,
   ...launcherActions,
+  ...partyActions,
   ...mcpActions,
   ...requestActions,
   ...scheduleActions,
