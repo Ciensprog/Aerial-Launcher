@@ -5,13 +5,17 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 import { Switch } from '../../../components/ui/switch'
 
+import { useLeavePartyForm } from '../../../hooks/stw-operations/party'
 import { useComboboxAccounts, useKickActions } from './-hooks'
 
 import { cn } from '../../../lib/utils'
 
 export function LeavePartyCard() {
-  const { customFilter, hasValues, options, setValue, value } =
-    useComboboxAccounts()
+  const { changeClaimState, claimState, setValue, value } =
+    useLeavePartyForm()
+  const { customFilter, hasValues, options } = useComboboxAccounts({
+    value,
+  })
   const { isPending, onKick } = useKickActions({
     value,
     callbackName: 'notificationLeave',
@@ -22,7 +26,11 @@ export function LeavePartyCard() {
       <CardContent className="block pt-6 space-y-4">
         <div className="flex items-center justify-between">
           <span className="pr-5">Claim rewards after leaving mission</span>
-          <Switch disabled={!hasValues} />
+          <Switch
+            onCheckedChange={changeClaimState}
+            checked={claimState}
+            disabled={!hasValues}
+          />
         </div>
         <div className="flex gap-4">
           <Combobox

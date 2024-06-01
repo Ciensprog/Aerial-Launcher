@@ -2,11 +2,14 @@ import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 
+import { useClaimRewardsForm } from '../../../hooks/stw-operations/party'
 import { useComboboxAccounts } from './-hooks'
 
 export function ClaimRewardsCard() {
-  const { customFilter, hasValues, options, setValue, value } =
-    useComboboxAccounts()
+  const { setValue, value } = useClaimRewardsForm()
+  const { customFilter, hasValues, options } = useComboboxAccounts({
+    value,
+  })
 
   return (
     <Card className="flex flex-col flex-shrink-0 h-36 justify-center max-w-52 w-full">

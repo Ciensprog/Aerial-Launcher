@@ -2,6 +2,7 @@ import type {
   ComboboxOption,
   ComboboxProps,
 } from '../../../components/ui/extended/combobox/hooks'
+import type { PartyCommonSelectorState } from '../../../state/stw-operations/party'
 
 import { useEffect, useState } from 'react'
 
@@ -12,10 +13,11 @@ import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/proper
 import { toast } from '../../../lib/notifications'
 import { parseDisplayName } from '../../../lib/utils'
 
-export function useComboboxAccounts() {
+export function useComboboxAccounts({
+  value,
+}: Pick<PartyCommonSelectorState, 'value'>) {
   const { accountsArray } = useGetAccounts()
   const { getGroupTagsByAccountId } = useGetGroups()
-  const [value, setValue] = useState<Array<ComboboxOption>>([])
 
   const hasValues = value.length > 0
 
@@ -63,10 +65,8 @@ export function useComboboxAccounts() {
   return {
     hasValues,
     options,
-    value,
 
     customFilter,
-    setValue,
   }
 }
 

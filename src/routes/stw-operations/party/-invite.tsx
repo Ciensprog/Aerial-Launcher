@@ -2,11 +2,14 @@ import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 
+import { useInviteFriendsForm } from '../../../hooks/stw-operations/party'
 import { useComboboxAccounts } from './-hooks'
 
 export function InviteCard() {
-  const { customFilter, hasValues, options, setValue, value } =
-    useComboboxAccounts()
+  const { setValue, value } = useInviteFriendsForm()
+  const { customFilter, hasValues, options } = useComboboxAccounts({
+    value,
+  })
 
   return (
     <Card className="max-w-lg w-full">
