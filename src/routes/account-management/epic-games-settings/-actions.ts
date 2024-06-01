@@ -13,7 +13,7 @@ export function useHandlers() {
       async ({ account, status }) => {
         toast(
           status
-            ? `A new tab in your browser should be opened with Epic Games settings URL for ${account.displayName}${parseCustomDisplayName(selected)} account`
+            ? `A new tab in your browser should be opened with Epic Games settings URL for ${parseCustomDisplayName(account)} account`
             : 'An error occurred while processing your request',
           {
             duration: status ? 6000 : undefined,

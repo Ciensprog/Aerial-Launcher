@@ -64,7 +64,6 @@ function Content() {
             <CardDescription>
               Do you want to remove{' '}
               <span className="font-bold">
-                {selected?.displayName}
                 {parseCustomDisplayName(selected)}
               </span>{' '}
               account?

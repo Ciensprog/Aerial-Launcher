@@ -28,7 +28,6 @@ export function GenerateExchangeCodePage() {
           <CardDescription>
             Account selected:{' '}
             <span className="font-bold">
-              {selected?.displayName}
               {parseCustomDisplayName(selected)}
             </span>
           </CardDescription>

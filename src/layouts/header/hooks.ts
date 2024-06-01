@@ -30,8 +30,8 @@ export function useHandlers() {
       window.electronAPI.onNotificationLauncher(async (data) => {
         toast(
           data.status
-            ? `The game has been launched with the account ${data.account.displayName}${parseCustomDisplayName(data.account)}`
-            : `An error has occurred launching game with account ${data.account.displayName}${parseCustomDisplayName(data.account)}, try again later`
+            ? `The game has been launched with the account ${parseCustomDisplayName(data.account)}`
+            : `An error has occurred launching game with account ${parseCustomDisplayName(data.account)}, try again later`
         )
       })
 

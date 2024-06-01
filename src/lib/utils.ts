@@ -81,8 +81,8 @@ export function parseCustomDisplayName(account: AccountData | null) {
   const customDisplayNameText = checkIfCustomDisplayNameIsValid(
     account?.customDisplayName
   )
-    ? ` (${account?.customDisplayName})`
-    : ''
+    ? `${account?.customDisplayName}`
+    : `${account?.displayName}`
 
   return customDisplayNameText
 }
