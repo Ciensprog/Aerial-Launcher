@@ -64,7 +64,6 @@ function Content() {
             <CardDescription>
               Account selected:{' '}
               <span className="font-bold">
-                {selected?.displayName}
                 {parseCustomDisplayName(selected)}
               </span>
             </CardDescription>
