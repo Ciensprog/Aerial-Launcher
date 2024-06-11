@@ -34,10 +34,22 @@ export class Party {
 
       if (party) {
         const { members } = party
-        const leader = members.find(
-          (member) =>
-            member.account_id === selectedAccount.accountId &&
-            member.role === PartyRole.CAPTAIN
+
+        const memberListId = members.map(({ account_id }) => account_id)
+        // const accountListId = accounts.map(({ accountId }) => accountId)
+
+        const filteredMyAccountsInParty = accounts.filter((account) =>
+          memberListId.includes(account.accountId)
+        )
+        const filteredMyAccountsInPartyIds = filteredMyAccountsInParty.map(
+          ({ accountId }) => accountId
+        )
+
+        const filteredMyAccounts = members.filter((member) =>
+          filteredMyAccountsInPartyIds.includes(member.account_id)
+        )
+        const leader = filteredMyAccounts.find(
+          (member) => member.role === PartyRole.CAPTAIN
         )
 
         let total = 0
@@ -47,18 +59,18 @@ export class Party {
            * As leader, kick out all members
            */
 
+          const accountLeader = filteredMyAccountsInParty.find(
+            ({ accountId }) => accountId === leader.account_id
+          )!
           const _members = members.filter(
-            (member) => member.account_id !== leader?.account_id
+            (member) => member.account_id !== leader.account_id
           )
 
           await Promise.allSettled(
             _members.map(({ account_id }) =>
               Party.kickMember({
                 party,
-                account: {
-                  ...selectedAccount,
-                  token: accessToken,
-                },
+                account: accountLeader,
                 accountIdToKick: account_id,
               })
             )
@@ -67,11 +79,8 @@ export class Party {
           try {
             await Party.kickMember({
               party,
-              account: {
-                ...selectedAccount,
-                token: accessToken,
-              },
-              accountIdToKick: selectedAccount.accountId,
+              account: accountLeader,
+              accountIdToKick: accountLeader.accountId,
             })
           } catch (error) {
             //
@@ -84,14 +93,8 @@ export class Party {
            * Leave the party for each account within
            */
 
-          const filteredMembers = accounts.filter((member) =>
-            members.find(
-              (myAccount) => member.accountId === myAccount.account_id
-            )
-          )
-
           await Promise.allSettled(
-            filteredMembers.map((account) =>
+            filteredMyAccountsInParty.map((account) =>
               Party.kickMember({
                 account,
                 party,
@@ -100,7 +103,7 @@ export class Party {
             )
           )
 
-          total += filteredMembers.length
+          total += filteredMyAccountsInParty.length
         }
 
         currentWindow.webContents.send(
@@ -173,6 +176,116 @@ export class Party {
       selectedAccounts.length
     )
   }
+
+  /**
+   * With optimization (avoid party re-fetching)
+   */
+  // static async leaveParty(
+  //   currentWindow: BrowserWindow,
+  //   selectedAccounts: AccountList,
+
+  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   _accounts: AccountList
+  // ) {
+  //   const tmpParties: Record<
+  //     string,
+  //     {
+  //       party: PartyData
+  //       members: Array<string>
+  //     }
+  //   > = {}
+  //   const selectedAccountsIds = selectedAccounts.map(
+  //     ({ accountId }) => accountId
+  //   )
+
+  //   for (const account of selectedAccounts) {
+  //     try {
+  //       const accessToken = await Authentication.verifyAccessToken(account)
+
+  //       if (!accessToken) {
+  //         continue
+  //       }
+
+  //       const fetchAndSaveNewPartyInCache = async () => {
+  //         const result = await fetchParty({
+  //           accessToken,
+  //           accountId: account.accountId,
+  //         })
+
+  //         const party = result.data.current[0]
+
+  //         if (party) {
+  //           tmpParties[party.id] = {
+  //             party,
+  //             members: party.members
+  //               .filter(({ account_id }) =>
+  //                 selectedAccountsIds.includes(account_id)
+  //               )
+  //               .map(({ account_id }) => account_id),
+  //           }
+  //         }
+  //       }
+
+  //       if (Object.keys(tmpParties).length > 0) {
+  //         // Get it from cache
+
+  //         const findParty = Object.entries(tmpParties).find(
+  //           ([, tmpParty]) => tmpParty.members.includes(account.accountId)
+  //         )
+
+  //         if (!findParty) {
+  //           await fetchAndSaveNewPartyInCache()
+  //         }
+  //       } else {
+  //         // Save new party in cache
+
+  //         await fetchAndSaveNewPartyInCache()
+  //       }
+  //     } catch (error) {
+  //       //
+  //     }
+  //   }
+
+  //   const parsedAccounts = Object.values(tmpParties).reduce(
+  //     (accumulator, current) => {
+  //       const tmpValues = [...accumulator]
+
+  //       current.members.forEach((memberId) => {
+  //         const currentAccount = selectedAccounts.find(
+  //           ({ accountId }) => memberId === accountId
+  //         )
+
+  //         if (currentAccount) {
+  //           tmpValues.push({
+  //             account: currentAccount,
+  //             party: current.party,
+  //           })
+  //         }
+  //       })
+
+  //       return tmpValues
+  //     },
+  //     [] as Array<{
+  //       account: AccountBasicInfo
+  //       party: PartyData
+  //     }>
+  //   )
+
+  //   await Promise.allSettled(
+  //     parsedAccounts.map(async ({ account, party }) => {
+  //       return await Party.kickMember({
+  //         account,
+  //         party,
+  //         accountIdToKick: account.accountId,
+  //       })
+  //     })
+  //   )
+
+  //   currentWindow.webContents.send(
+  //     ElectronAPIEventKeys.PartyLeaveActionNotification,
+  //     selectedAccounts.length
+  //   )
+  // }
 
   private static async kickMember({
     account,
