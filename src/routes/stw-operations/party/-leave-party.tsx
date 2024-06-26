@@ -17,6 +17,7 @@ export function LeavePartyCard() {
     value,
   })
   const { isPending, onKick } = useKickActions({
+    claimState,
     value,
     callbackName: 'notificationLeave',
   })

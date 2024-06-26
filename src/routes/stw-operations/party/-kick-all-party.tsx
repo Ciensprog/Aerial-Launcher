@@ -17,6 +17,7 @@ export function KickAllPartyCard() {
     value,
   })
   const { isPending, onKick } = useKickActions({
+    claimState,
     value,
     callbackName: 'notificationKick',
   })

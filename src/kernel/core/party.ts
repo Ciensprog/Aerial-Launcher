@@ -1,5 +1,5 @@
 import type { PartyData } from '../../types/services/party'
-import type { AccountData, AccountList } from '../../types/accounts'
+import type { AccountData, AccountDataList } from '../../types/accounts'
 
 import { BrowserWindow } from 'electron'
 
@@ -9,6 +9,7 @@ import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 // import { DataDirectory } from '../startup/data-directory'
 
 import { Authentication } from './authentication'
+import { ClaimRewards } from './claim-rewards'
 
 import { fetchParty, kick } from '../../services/endpoints/party'
 
@@ -16,7 +17,8 @@ export class Party {
   static async kickPartyMembers(
     currentWindow: BrowserWindow,
     selectedAccount: AccountData,
-    accounts: AccountList
+    accounts: AccountDataList,
+    claimState: boolean
   ) {
     try {
       const accessToken =
@@ -53,6 +55,10 @@ export class Party {
         )
 
         let total = 0
+
+        if (claimState) {
+          await ClaimRewards.core(filteredMyAccountsInParty)
+        }
 
         if (leader) {
           /**
@@ -125,13 +131,21 @@ export class Party {
 
   static async leaveParty(
     currentWindow: BrowserWindow,
-    selectedAccounts: AccountList,
+    selectedAccounts: AccountDataList,
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _accounts: AccountList
+    _accounts: AccountDataList,
+
+    claimState: boolean
   ) {
+    if (claimState) {
+      await ClaimRewards.core(selectedAccounts)
+    }
+
     await Promise.allSettled(
       selectedAccounts.map(async (account) => {
+        account
+
         const accessToken = await Authentication.verifyAccessToken(account)
 
         if (!accessToken) {
@@ -153,10 +167,6 @@ export class Party {
         )
 
         if (!member) {
-          return
-        }
-
-        if (party.meta['Default:PartyState_s'] !== 'PostMatchmaking') {
           return
         }
 

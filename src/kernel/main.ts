@@ -1,6 +1,7 @@
 import type {
   AccountBasicInfo,
   AccountData,
+  AccountDataList,
   AccountList,
 } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
@@ -16,6 +17,7 @@ import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
 import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
+import { ClaimRewards } from './core/claim-rewards'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin } from './core/mcp'
 import { Manifest } from './core/manifest'
@@ -237,20 +239,43 @@ app.on('ready', async () => {
    */
 
   ipcMain.on(
+    ElectronAPIEventKeys.PartyClaimAction,
+    async (_, selectedAccount: Array<AccountData>) => {
+      await ClaimRewards.start(currentWindow, selectedAccount)
+    }
+  )
+
+  ipcMain.on(
     ElectronAPIEventKeys.PartyKickAction,
-    async (_, selectedAccount: AccountData, accounts: AccountList) => {
+    async (
+      _,
+      selectedAccount: AccountData,
+      accounts: AccountDataList,
+      claimState: boolean
+    ) => {
       await Party.kickPartyMembers(
         currentWindow,
         selectedAccount,
-        accounts
+        accounts,
+        claimState
       )
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.PartyLeaveAction,
-    async (_, selectedAccounts: AccountList, accounts: AccountList) => {
-      await Party.leaveParty(currentWindow, selectedAccounts, accounts)
+    async (
+      _,
+      selectedAccounts: AccountList,
+      accounts: AccountDataList,
+      claimState: boolean
+    ) => {
+      await Party.leaveParty(
+        currentWindow,
+        selectedAccounts,
+        accounts,
+        claimState
+      )
     }
   )
 

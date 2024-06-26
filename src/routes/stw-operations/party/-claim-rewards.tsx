@@ -1,13 +1,20 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
+
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 
 import { useClaimRewardsForm } from '../../../hooks/stw-operations/party'
-import { useComboboxAccounts } from './-hooks'
+import { useClaimActions, useComboboxAccounts } from './-hooks'
+
+import { cn } from '../../../lib/utils'
 
 export function ClaimRewardsCard() {
   const { setValue, value } = useClaimRewardsForm()
   const { customFilter, hasValues, options } = useComboboxAccounts({
+    value,
+  })
+  const { isPending, onClaim } = useClaimActions({
     value,
   })
 
@@ -28,10 +35,15 @@ export function ClaimRewardsCard() {
           <Button
             className="disabled:cursor-not-allowed disabled:pointer-events-auto"
             size="sm"
-            onClick={() => {}}
+            onClick={onClaim}
             disabled={!hasValues}
           >
-            Claim Rewards
+            <span className={cn('absolute', { hidden: !isPending })}>
+              <UpdateIcon className="animate-spin" />
+            </span>
+            <span className={cn({ 'opacity-0 select-none': isPending })}>
+              Claim Rewards
+            </span>
           </Button>
         </div>
       </CardContent>

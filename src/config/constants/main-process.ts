@@ -88,6 +88,8 @@ export enum ElectronAPIEventKeys {
    * Party
    */
 
+  PartyClaimAction = 'party:claim',
+  PartyClaimActionNotification = 'party:claim:notification',
   PartyKickAction = 'party:kick',
   PartyKickActionNotification = 'party:kick:notification',
   PartyLeaveAction = 'party:leave',

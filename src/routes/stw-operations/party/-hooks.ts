@@ -72,9 +72,11 @@ export function useComboboxAccounts({
 
 export function useKickActions({
   callbackName,
+  claimState,
   value,
 }: {
   callbackName: 'notificationKick' | 'notificationLeave'
+  claimState: boolean
   value: Array<ComboboxOption>
 }) {
   const { accountsArray, accountList } = useGetAccounts()
@@ -109,9 +111,13 @@ export function useKickActions({
 
     if (accounts.length > 0) {
       if (isMulti) {
-        window.electronAPI.leaveParty(accounts, accountsArray)
+        window.electronAPI.leaveParty(accounts, accountsArray, claimState)
       } else {
-        window.electronAPI.kickPartyMembers(accounts[0], accountsArray)
+        window.electronAPI.kickPartyMembers(
+          accounts[0],
+          accountsArray,
+          claimState
+        )
       }
     }
   }
@@ -120,5 +126,50 @@ export function useKickActions({
     isPending,
 
     onKick,
+  }
+}
+
+export function useClaimActions({
+  value,
+}: {
+  value: Array<ComboboxOption>
+}) {
+  const { accountList } = useGetAccounts()
+  const [isPending, setIsPending] = useState(false)
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationClaimRewards(
+      async () => {
+        setIsPending(false)
+
+        toast('Rewards claimed')
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  const onClaim = () => {
+    if (isPending) {
+      return
+    }
+
+    const accounts = value
+      .map((option) => accountList[option.value])
+      .filter((account) => account !== undefined)
+
+    if (accounts.length > 0) {
+      setIsPending(true)
+
+      window.electronAPI.claimRewards(accounts)
+    }
+  }
+
+  return {
+    isPending,
+
+    onClaim,
   }
 }
