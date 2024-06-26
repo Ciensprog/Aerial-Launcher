@@ -22,6 +22,8 @@ export class Application {
             version: latest.tag_name,
           }
         )
+
+        return
       }
     } catch (error) {
       //
