@@ -13,7 +13,7 @@ import {
 import { KickAllPartyCard } from './-kick-all-party'
 
 import { ClaimRewardsCard } from './-claim-rewards'
-import { InviteCard } from './-invite'
+// import { InviteCard } from './-invite'
 import { LeavePartyCard } from './-leave-party'
 
 export const Route = createRoute({
@@ -51,7 +51,7 @@ export function RouteComponent() {
               <ClaimRewardsCard />
               <LeavePartyCard />
             </div>
-            <InviteCard />
+            {/* <InviteCard /> */}
           </div>
         </div>
       </div>
