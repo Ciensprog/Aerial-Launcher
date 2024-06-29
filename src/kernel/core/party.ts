@@ -57,7 +57,7 @@ export class Party {
         let total = 0
 
         if (claimState) {
-          await ClaimRewards.core(filteredMyAccountsInParty)
+          ClaimRewards.core(filteredMyAccountsInParty)
         }
 
         if (leader) {
@@ -139,7 +139,7 @@ export class Party {
     claimState: boolean
   ) {
     if (claimState) {
-      await ClaimRewards.core(selectedAccounts)
+      ClaimRewards.core(selectedAccounts)
     }
 
     await Promise.allSettled(
