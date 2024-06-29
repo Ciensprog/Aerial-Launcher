@@ -48,6 +48,7 @@ export class ClaimRewards {
 
           await Promise.allSettled([
             MCPClaimRewards.openCardPackBatch(response.data, account),
+            MCPClaimRewards.claimQuestReward(response.data, account),
             MCPClaimRewards.claimMissionAlertRewards(account),
             MCPClaimRewards.claimDifficultyIncreaseRewards(account),
           ])

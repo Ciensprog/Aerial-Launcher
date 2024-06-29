@@ -1,6 +1,7 @@
 import type {
   MCPClaimDifficultyIncreaseRewardsResponse,
   MCPClaimMissionAlertRewardsResponse,
+  MCPClaimQuestRewardResponse,
   MCPOpenCardPackBatchPayload,
   MCPOpenCardPackBatchResponse,
   MCPRedeemSTWAccoladeTokensResponse,
@@ -28,6 +29,7 @@ export function setClientQuestLogin({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
       },
     }
   )
@@ -49,6 +51,7 @@ export function getQueryProfile({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
       },
     }
   )
@@ -73,6 +76,34 @@ export function setOpenCardPackBatch({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setClaimQuestReward({
+  accessToken,
+  accountId,
+  questId,
+}: {
+  accessToken: string
+  accountId: string
+  questId: string
+}) {
+  return mcpService.post<MCPClaimQuestRewardResponse>(
+    `/${accountId}/client/ClaimQuestReward`,
+    {
+      questId,
+      selectedRewardIndex: 0,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
       },
     }
   )
@@ -94,6 +125,7 @@ export function setClaimMissionAlertRewards({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
       },
     }
   )
@@ -115,6 +147,7 @@ export function setClaimDifficultyIncreaseRewards({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
       },
     }
   )
