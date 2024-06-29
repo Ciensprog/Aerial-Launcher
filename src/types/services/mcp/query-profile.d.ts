@@ -1,4 +1,6 @@
-export type ProfileId = 'campaign' | (string & Record<string, unknown>)
+import type { StringUnion } from '../../utils'
+
+export type ProfileId = StringUnion<'campaign'>
 
 export type MCPQueryProfile = {
   profileRevision: number
@@ -11,7 +13,7 @@ export type MCPQueryProfile = {
 }
 
 export type MCPQueryProfileProfileChanges = {
-  changeType: 'fullProfileUpdate' | (string & Record<string, unknown>)
+  changeType: StringUnion<'fullProfileUpdate'>
   profile: {
     _id: string
     created: string
@@ -39,9 +41,7 @@ export type MCPQueryProfileProfileChanges = {
             redemptionDateUtc: string
           }>
           pendingMissionAlertRewards: {
-            tierGroupName:
-              | 'MissionAlert_Storm:4'
-              | (string & Record<string, unknown>)
+            tierGroupName: StringUnion<'MissionAlert_Storm:4'>
             items: Array<{
               itemType: string
               quantity: number
@@ -73,17 +73,14 @@ export type MCPQueryProfileProfileChanges = {
             dailyLoginInterval: string
             poolLockouts: {
               poolLockouts: Array<{
-                lockoutName:
-                  | 'EnduranceDaily'
-                  | 'Weekly'
-                  | (string & Record<string, unknown>)
+                lockoutName: StringUnion<'EnduranceDaily' | 'Weekly'>
               }>
             }
             poolStats: Array<{
               questHistory: Array<string>
               rerollsRemaining: number
               nextRefresh: string
-              poolName:
+              poolName: StringUnion<
                 | 'dailywargamescanny_01'
                 | 'dailywargameschallenge_01'
                 | 'dailywargamesplankerton_01'
@@ -99,23 +96,18 @@ export type MCPQueryProfileProfileChanges = {
                 | 'weeklyelderquestroll_01'
                 | 'weeklyquestroll_23'
                 | 'weeklystormkinghardroll_01'
-                | (string & Record<string, unknown>)
+              >
             }>
           }
         }
         legacy_research_points_spent: number
         gameplay_stats: Array<{
-          statName:
-            | 'habaneroprogression'
-            | 'zonescompleted'
-            | (string & Record<string, unknown>)
+          statName: StringUnion<'habaneroprogression' | 'zonescompleted'>
           statValue: number
         }>
         event_currency: {
           cf: number
-          templateId:
-            | 'AccountResource:eventcurrency_roadtrip'
-            | (string & Record<string, unknown>)
+          templateId: StringUnion<'AccountResource:eventcurrency_roadtrip'>
         }
         matches_played: number
         xp_lost: number
@@ -137,9 +129,7 @@ export type MCPQueryProfileProfileChanges = {
         difficulty_increase_rewards_record: {
           pendingRewards: Array<{
             difficultyIncreaseMissionRewards: {
-              tierGroupName:
-                | 'BluGloDifficultyTG:4'
-                | (string & Record<string, unknown>)
+              tierGroupName: StringUnion<'BluGloDifficultyTG:4'>
               items: Array<{
                 itemType: string
                 quantity: number
@@ -169,10 +159,10 @@ export type MCPQueryProfileProfileChangesCardPack = {
       mission_name: string
       total_seconds_in_match: number
       matchmaking_session_id: string
-      eligibility_status: 'None' | (string & Record<string, unknown>)
+      eligibility_status: StringUnion<'None'>
     }
     level: number
-    pack_source: string
+    pack_source: StringUnion<'ItemCache'>
   }
   quantity: number
 }
@@ -180,7 +170,7 @@ export type MCPQueryProfileProfileChangesCardPack = {
 export type MCPQueryProfileProfileChangesHero = {
   templateId: `Hero:${string}`
   attributes: {
-    hero_name: 'DefaultHeroName' | (string & Record<string, unknown>)
+    hero_name: StringUnion<'DefaultHeroName'>
     level: number
     item_seen: boolean
     squad_slot_idx: number
@@ -189,18 +179,16 @@ export type MCPQueryProfileProfileChangesHero = {
     max_level_bonus?: number
     refundable?: boolean
     outfitvariants?: Array<{
-      channel: 'Parts' | (string & Record<string, unknown>)
-      active:
-        | 'CampaignHero.Tier2.Legendary'
-        | 'CampaignHero.Tier3.Legendary'
-        | (string & Record<string, unknown>)
+      channel: StringUnion<'Parts'>
+      active: StringUnion<
+        'CampaignHero.Tier2.Legendary' | 'CampaignHero.Tier3.Legendary'
+      >
     }>
     backblingvariants?: Array<{
-      channel: 'Parts' | (string & Record<string, unknown>)
-      active:
-        | 'CampaignHero.Tier2.Legendary'
-        | 'CampaignHero.Tier3.Legendary'
-        | (string & Record<string, unknown>)
+      channel: StringUnion<'Parts'>
+      active: StringUnion<
+        'CampaignHero.Tier2.Legendary' | 'CampaignHero.Tier3.Legendary'
+      >
     }>
     mode_loadouts?: Array<unknown>
   }
@@ -210,13 +198,13 @@ export type MCPQueryProfileProfileChangesHero = {
 export type MCPQueryProfileProfileChangesQuest = {
   templateId: `Quest:${string}`
   attributes: {
-    quest_state: 'Claimed' | (string & Record<string, unknown>)
-    creation_time: 'min' | (string & Record<string, unknown>)
+    quest_state: StringUnion<'Active' | 'Claimed' | 'Completed'>
+    creation_time: StringUnion<'min'>
     last_state_change_time: string
     level: number
     item_seen: boolean
     sent_new_notification: boolean
-    quest_rarity: 'uncommon' | (string & Record<string, unknown>)
+    quest_rarity: StringUnion<'uncommon'>
     xp_reward_scalar: number
   }
   quantity: number
@@ -229,11 +217,9 @@ export type MCPQueryProfileProfileChangesSchematic = {
     max_level_bonus?: number
     item_seen: boolean
     favorite?: boolean
-    alterations: Array<
-      `Alteration:${string}` | (string & Record<string, unknown>)
-    >
+    alterations: Array<StringUnion<`Alteration:${string}`>>
     alteration_base_rarities?: Array<
-      'common' | 'uncommon' | 'rare' | (string & Record<string, unknown>)
+      StringUnion<'common' | 'uncommon' | 'rare'>
     >
     refund_legacy_item?: boolean
   }
@@ -244,7 +230,7 @@ export type MCPQueryProfileProfileChangesWorker = {
   templateId: `Worker:${string}`
   attributes: {
     personality: 'string'
-    gender?: '1' | '2' | (string & Record<string, unknown>)
+    gender?: StringUnion<'1' | '2'>
     level: number
     max_level_bonus?: number
     favorite?: boolean

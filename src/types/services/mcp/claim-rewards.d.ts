@@ -1,10 +1,9 @@
-export type ProfileId = 'campaign' | (string & Record<string, unknown>)
+import type { StringUnion } from '../../utils'
+
+export type ProfileId = StringUnion<'campaign'>
 
 export type MCPCommonNotification = Array<{
-  type:
-    | 'cardPackResult'
-    | 'missionAlertComplete'
-    | (string & Record<string, unknown>)
+  type: StringUnion<'cardPackResult' | 'missionAlertComplete'>
   primary: boolean
   client_request_id: string
   displayLevel?: number
@@ -14,7 +13,7 @@ export type MCPCommonNotification = Array<{
     items: Array<{
       itemType: string
       itemGuid?: string
-      itemProfile: 'campaign' | (string & Record<string, unknown>)
+      itemProfile: StringUnion<'campaign'>
       quantity: number
       attributes?: {
         Alteration: {
@@ -50,7 +49,7 @@ export type MCPCommonProfileChanges = Array<{
         matchmakingSessionId: string
         totalSecondsInMatch: number
         primaryMissionName: string
-        partyEligibility: 'User' | (string & Record<string, unknown>)
+        partyEligibility: StringUnion<'User'>
         accoladesToGrant: Array<{
           templateToGrant: string
           numToGrant: number
@@ -86,6 +85,17 @@ export type MCPOpenCardPackBatchResponse = {
   notifications?: MCPCommonNotification
 }
 
+export type MCPClaimQuestRewardResponse = {
+  profileRevision: number
+  profileId: ProfileId
+  profileChangesBaseRevision: number
+  profileCommandRevision: number
+  serverTime: string
+  responseVersion: number
+  profileChanges: MCPCommonProfileChanges
+  notifications?: MCPCommonNotification
+}
+
 export type MCPClaimMissionAlertRewardsResponse = {
   profileRevision: number
   profileId: ProfileId
@@ -110,7 +120,7 @@ export type MCPClaimDifficultyIncreaseRewardsResponse = {
 
 export type MCPRedeemSTWAccoladeTokensResponse = {
   profileRevision: number
-  profileId: 'athena' | (string & Record<string, unknown>)
+  profileId: StringUnion<'athena'>
   profileChangesBaseRevision: string
   profileChanges: Array<{
     changeType: string
@@ -118,9 +128,7 @@ export type MCPRedeemSTWAccoladeTokensResponse = {
     value: number
   }>
   notifications: Array<{
-    type:
-      | 'redeemStwTokensNotification'
-      | (string & Record<string, unknown>)
+    type: StringUnion<'redeemStwTokensNotification'>
     primary: boolean
     client_request_id: string
     totalMissionXPRedeemed: number
