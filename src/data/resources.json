@@ -1,0 +1,310 @@
+{
+  "AccountResource:heroxp": {
+    "name": "Hero XP",
+    "type": "xp"
+  },
+  "AccountResource:schematicxp": {
+    "name": "Schematic XP",
+    "type": "xp"
+  },
+  "AccountResource:personnelxp": {
+    "name": "Survivor XP",
+    "type": "xp"
+  },
+  "AccountResource:phoenixxp": {
+    "name": "Venture XP",
+    "type": "xp"
+  },
+  "AccountResource:reagent_c_t01": {
+    "name": "Pure Drop of Rain",
+    "type": "evo"
+  },
+  "AccountResource:reagent_c_t02": {
+    "name": "Lightning in a Bottle",
+    "type": "evo"
+  },
+  "AccountResource:reagent_c_t03": {
+    "name": "Eye of the Storm",
+    "type": "evo"
+  },
+  "AccountResource:reagent_c_t04": {
+    "name": "Storm Shard",
+    "type": "evo"
+  },
+  "AccountResource:reagent_evolverarity_r": {
+    "name": "Rare Flux",
+    "type": "evo"
+  },
+  "AccountResource:reagent_evolverarity_vr": {
+    "name": "Epic Flux",
+    "type": "evo"
+  },
+  "AccountResource:reagent_evolverarity_sr": {
+    "name": "Legendary Flux",
+    "type": "evo"
+  },
+  "AccountResource:reagent_people": {
+    "name": "Training Manual",
+    "type": "evo"
+  },
+  "AccountResource:reagent_traps": {
+    "name": "Trap Designs",
+    "type": "evo"
+  },
+  "AccountResource:reagent_weapons": {
+    "name": "Weapon Designs",
+    "type": "evo"
+  },
+  "AccountResource:reagent_promotion_heroes": {
+    "name": "Hero Supercharger",
+    "type": "sc"
+  },
+  "AccountResource:reagent_promotion_survivors": {
+    "name": "Survivor Supercharger",
+    "type": "sc"
+  },
+  "AccountResource:reagent_promotion_traps": {
+    "name": "Trap Supercharger",
+    "type": "sc"
+  },
+  "AccountResource:reagent_promotion_weapons": {
+    "name": "Weapon Supercharger",
+    "type": "sc"
+  },
+  "AccountResource:reagent_alteration_gameplay_generic": {
+    "name": "Core RE-PERK!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_generic": {
+    "name": "RE-PERK!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_ele_nature": {
+    "name": "AMP-UP!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_ele_fire": {
+    "name": "FIRE-UP!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_ele_water": {
+    "name": "FROST-UP!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_upgrade_uc": {
+    "name": "Uncommon PERK-UP!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_upgrade_r": {
+    "name": "Rare PERK-UP!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_upgrade_vr": {
+    "name": "Epic PERK-UP!",
+    "type": "perk"
+  },
+  "AccountResource:reagent_alteration_upgrade_sr": {
+    "name": "Legendary PERK-UP!",
+    "type": "perk"
+  },
+  "AccountResource:eventcurrency_scaling": {
+    "name": "Gold",
+    "type": "currency"
+  },
+  "AccountResource:currency_xrayllama": {
+    "name": "X-Ray Llama Token",
+    "type": "currency"
+  },
+  "AccountResource:specialcurrency_daily": {
+    "name": "Daily Coins",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_founders": {
+    "name": "Founder's Coins",
+    "type": "currency"
+  },
+  "AccountResource:campaign_event_currency": {
+    "name": "Currency of the Season",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_adventure": {
+    "name": "Pirate Tickets",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_blockbuster": {
+    "name": "Blockbuster Tickets",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_candy": {
+    "name": "Fortnitemares Candy",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_lunar": {
+    "name": "Lunar Tickets",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_roadtrip": {
+    "name": "Road Trip Tickets",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_snowballs": {
+    "name": "Snowflake Tickets",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_spring": {
+    "name": "Spring Tickets",
+    "type": "currency"
+  },
+  "AccountResource:eventcurrency_summer": {
+    "name": "Summer Tickets",
+    "type": "currency"
+  },
+  "AccountResource:voucher_herobuyback": {
+    "name": "Hero Recruitment Voucher",
+    "type": "voucher"
+  },
+  "AccountResource:voucher_item_buyback": {
+    "name": "Weapon Research Voucher",
+    "type": "voucher"
+  },
+  "AccountResource:voucher_basicpack": {
+    "name": "Mini Reward Llama",
+    "type": "token"
+  },
+  "AccountResource:voucher_cardpack_bronze": {
+    "name": "Upgrade Llama Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_cardpack_jackpot": {
+    "name": "Legendary Troll Stash Llama Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_defender_r": {
+    "name": "Rare Defender Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_defender_vr": {
+    "name": "Epic Defender Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_defender_sr": {
+    "name": "Legendary Defender Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_hero_r": {
+    "name": "Rare Hero Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_hero_vr": {
+    "name": "Epic Hero Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_hero_sr": {
+    "name": "Legendary Hero Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_manager_r": {
+    "name": "Rare Lead Survivor Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_manager_vr": {
+    "name": "Epic Lead Survivor Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_manager_sr": {
+    "name": "Legendary Lead Survivor Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_melee_r": {
+    "name": "Rare Melee Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_melee_vr": {
+    "name": "Epic Melee Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_melee_sr": {
+    "name": "Legendary Melee Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_ranged_r": {
+    "name": "Rare Ranged Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_ranged_vr": {
+    "name": "Epic Ranged Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_ranged_sr": {
+    "name": "Legendary Ranged Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_schematic_r": {
+    "name": "Rare Schematic Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_schematic_vr": {
+    "name": "Epic Schematic Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_schematic_sr": {
+    "name": "Legendary Schematic Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_trap_r": {
+    "name": "Rare Trap Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_trap_vr": {
+    "name": "Epic Trap Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_trap_sr": {
+    "name": "Legendary Trap Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_weapon_r": {
+    "name": "Rare Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_weapon_vr": {
+    "name": "Epic Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_weapon_sr": {
+    "name": "Legendary Weapon Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_worker_r": {
+    "name": "Rare Survivor Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_worker_vr": {
+    "name": "Epic Survivor Token",
+    "type": "token"
+  },
+  "AccountResource:voucher_generic_worker_sr": {
+    "name": "Legendary Survivor Token",
+    "type": "token"
+  },
+  "ConsumableAccountItem:smallxpboost": {
+    "name": "XP Boost",
+    "type": "xpboost"
+  },
+  "ConsumableAccountItem:smallxpboost_gift": {
+    "name": "Teammate XP Boost",
+    "type": "xpboost"
+  },
+  "WorldItem:wooditemdata": {
+    "name": "Wood",
+    "type": "construction"
+  },
+  "WorldItem:stoneitemdata": {
+    "name": "Stone",
+    "type": "construction"
+  },
+  "WorldItem:metalitemdata": {
+    "name": "Metal",
+    "type": "construction"
+  }
+}
