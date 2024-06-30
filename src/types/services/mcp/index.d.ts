@@ -7,3 +7,4 @@ export type MCPClientQuestLoginResponse = {
 }
 
 export * from './query-profile.d'
+export * from './claim-rewards.d'

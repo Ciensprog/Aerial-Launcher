@@ -1,5 +1,11 @@
 import type { AccountData } from '../../../types/accounts'
-import type { MCPQueryProfile } from '../../../types/services/mcp'
+import type {
+  MCPClaimDifficultyIncreaseRewardsResponse,
+  MCPClaimMissionAlertRewardsResponse,
+  MCPClaimQuestRewardResponse,
+  MCPOpenCardPackBatchResponse,
+  MCPQueryProfile,
+} from '../../../types/services/mcp'
 
 import { Authentication } from '../authentication'
 
@@ -21,13 +27,15 @@ export class MCPClaimRewards {
     queryProfile: MCPQueryProfile,
     account: AccountData
   ) {
+    const defaultResponse: Array<MCPOpenCardPackBatchResponse> = []
+
     try {
       const items = Object.entries(
         queryProfile.profileChanges[0]?.profile?.items ?? {}
       )
 
       if (items.length <= 0) {
-        return null
+        return defaultResponse
       }
 
       const cardPackIds = items
@@ -40,7 +48,7 @@ export class MCPClaimRewards {
         .map(([itemKey]) => itemKey)
 
       if (cardPackIds.length <= 0) {
-        return null
+        return defaultResponse
       }
 
       const accessToken = await Authentication.verifyAccessToken(account)
@@ -52,26 +60,28 @@ export class MCPClaimRewards {
           cardPackItemIds: cardPackIds,
         })
 
-        return response.data
+        return [response.data]
       }
     } catch (error) {
       //
     }
 
-    return null
+    return defaultResponse
   }
 
   static async claimQuestReward(
     queryProfile: MCPQueryProfile,
     account: AccountData
   ) {
+    const defaultResponse: Array<MCPClaimQuestRewardResponse> = []
+
     try {
       const items = Object.entries(
         queryProfile.profileChanges[0]?.profile?.items ?? {}
       )
 
       if (items.length <= 0) {
-        return null
+        return defaultResponse
       }
 
       const questIds = items
@@ -83,10 +93,10 @@ export class MCPClaimRewards {
         .map(([itemKey]) => itemKey)
 
       if (questIds.length <= 0) {
-        return null
+        return defaultResponse
       }
 
-      await Promise.allSettled(
+      const response = await Promise.allSettled(
         questIds.map(async (questId) => {
           const accessToken =
             await Authentication.verifyAccessToken(account)
@@ -104,11 +114,19 @@ export class MCPClaimRewards {
           return null
         })
       )
+
+      const sample = response
+        .map((item) =>
+          item.status === 'fulfilled' && item.value ? item.value : null
+        )
+        .filter((item) => item !== null)
+
+      return sample as Array<MCPClaimQuestRewardResponse>
     } catch (error) {
       //
     }
 
-    return null
+    return defaultResponse
   }
 
   static async claimMissionAlertRewards(account: AccountData) {
@@ -121,13 +139,13 @@ export class MCPClaimRewards {
           accountId: account.accountId,
         })
 
-        return response.data
+        return [response.data]
       }
     } catch (error) {
       //
     }
 
-    return null
+    return [] as Array<MCPClaimMissionAlertRewardsResponse>
   }
 
   static async claimDifficultyIncreaseRewards(account: AccountData) {
@@ -140,13 +158,13 @@ export class MCPClaimRewards {
           accountId: account.accountId,
         })
 
-        return response.data
+        return [response.data]
       }
     } catch (error) {
       //
     }
 
-    return null
+    return [] as Array<MCPClaimDifficultyIncreaseRewardsResponse>
   }
 
   static async redeemSTWAccoladeTokens(account: AccountData) {

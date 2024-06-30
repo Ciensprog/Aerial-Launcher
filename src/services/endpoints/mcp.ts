@@ -169,6 +169,7 @@ export function setRedeemSTWAccoladeTokens({
       },
       params: {
         profileId: 'athena',
+        rvn: -1,
       },
     }
   )

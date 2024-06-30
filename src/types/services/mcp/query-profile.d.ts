@@ -1,6 +1,6 @@
 import type { StringUnion } from '../../utils'
 
-export type ProfileId = StringUnion<'campaign'>
+type ProfileId = StringUnion<'campaign'>
 
 export type MCPQueryProfile = {
   profileRevision: number
@@ -40,7 +40,7 @@ export type MCPQueryProfileProfileChanges = {
             evictClaimDataAfterUtc: string
             redemptionDateUtc: string
           }>
-          pendingMissionAlertRewards: {
+          pendingMissionAlertRewards?: {
             tierGroupName: StringUnion<'MissionAlert_Storm:4'>
             items: Array<{
               itemType: string
@@ -126,7 +126,7 @@ export type MCPQueryProfileProfileChanges = {
         }
         xp: number
         quest_completion_session_ids: Record<string, string>
-        difficulty_increase_rewards_record: {
+        difficulty_increase_rewards_record?: {
           pendingRewards: Array<{
             difficultyIncreaseMissionRewards: {
               tierGroupName: StringUnion<'BluGloDifficultyTG:4'>

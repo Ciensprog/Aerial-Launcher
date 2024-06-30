@@ -1,4 +1,11 @@
+import type {
+  MCPClaimDifficultyIncreaseRewardsResponse,
+  MCPClaimMissionAlertRewardsResponse,
+  MCPClaimQuestRewardResponse,
+  MCPOpenCardPackBatchResponse,
+} from '../../types/services/mcp'
 import type { AccountDataList } from '../../types/accounts'
+import type { RewardsNotification } from '../../types/notifications'
 
 import { BrowserWindow } from 'electron'
 
@@ -45,18 +52,128 @@ export class ClaimRewards {
             accessToken,
             accountId: account.accountId,
           })
+          const profileChanges = response.data.profileChanges[0] ?? null
 
-          await Promise.allSettled([
+          const rewardsToClaim: Array<
+            Promise<
+              Array<
+                | MCPClaimDifficultyIncreaseRewardsResponse
+                | MCPClaimMissionAlertRewardsResponse
+                | MCPClaimQuestRewardResponse
+                | MCPOpenCardPackBatchResponse
+              >
+            >
+          > = [
             MCPClaimRewards.openCardPackBatch(response.data, account),
             MCPClaimRewards.claimQuestReward(response.data, account),
-            MCPClaimRewards.claimMissionAlertRewards(account),
-            MCPClaimRewards.claimDifficultyIncreaseRewards(account),
-          ])
-          await MCPClaimRewards.redeemSTWAccoladeTokens(account)
+          ]
+
+          const pendingMissionAlertRewardsTotal =
+            profileChanges?.profile.stats.attributes
+              .mission_alert_redemption_record.pendingMissionAlertRewards
+              ?.items.length ?? 0
+          const pendingDifficultyIncreaseRewardsTotal =
+            profileChanges?.profile.stats.attributes
+              .difficulty_increase_rewards_record?.pendingRewards.length ??
+            0
+
+          if (pendingMissionAlertRewardsTotal > 0) {
+            rewardsToClaim.push(
+              MCPClaimRewards.claimMissionAlertRewards(account)
+            )
+          }
+
+          if (pendingDifficultyIncreaseRewardsTotal > 0) {
+            rewardsToClaim.push(
+              MCPClaimRewards.claimDifficultyIncreaseRewards(account)
+            )
+          }
+
+          const claimsResponse = await Promise.allSettled(rewardsToClaim)
+          const accoladesResponse =
+            await MCPClaimRewards.redeemSTWAccoladeTokens(account)
+
+          const notifications: Array<{
+            itemType: string
+            quantity: number
+          }> = []
+
+          claimsResponse.forEach((claimResponse) => {
+            if (claimResponse.status === 'fulfilled') {
+              claimResponse.value.forEach((item) => {
+                item.notifications?.forEach((notification) => {
+                  if (notification.loot) {
+                    if (notification.loot.items) {
+                      notification.loot.items.forEach((loot) => {
+                        notifications.push({
+                          itemType: loot.itemType,
+                          quantity: loot.quantity,
+                        })
+                      })
+                    } else if (notification.loot.lootGranted) {
+                      console.log(
+                        '====================== notification.loot.lootGranted ->',
+                        notification.loot.lootGranted
+                      )
+                    }
+                  } else if (notification.lootGranted) {
+                    notification.lootGranted?.items.forEach((loot) => {
+                      notifications.push({
+                        itemType: loot.itemType,
+                        quantity: loot.quantity,
+                      })
+                    })
+                  }
+                })
+              })
+            }
+          })
+
+          const accolades = accoladesResponse?.notifications.reduce(
+            (accumulator, current) => {
+              accumulator.totalMissionXPRedeemed +=
+                current.totalMissionXPRedeemed
+              accumulator.totalQuestXPRedeemed +=
+                current.totalQuestXPRedeemed
+
+              return accumulator
+            },
+            {
+              totalMissionXPRedeemed: 0,
+              totalQuestXPRedeemed: 0,
+            }
+          ) ?? {
+            totalMissionXPRedeemed: 0,
+            totalQuestXPRedeemed: 0,
+          }
+
+          const rewards: RewardsNotification['rewards'] = {}
+
+          notifications.forEach(({ itemType, quantity }) => {
+            if (!itemType.toLowerCase().startsWith('accolades:')) {
+              if (!rewards[itemType]) {
+                rewards[itemType] = 0
+              }
+
+              rewards[itemType] += quantity
+            }
+          })
+
+          return {
+            accolades,
+            rewards,
+            accountId: account.accountId,
+          }
         })
       )
 
-      return response.filter((item) => item.status === 'fulfilled')
+      const records = response.map((item) =>
+        item.status === 'fulfilled' ? item.value : null
+      )
+
+      return records.filter(
+        (item) => item !== null
+      ) as Array<RewardsNotification>
     } catch (error) {
       //
     }

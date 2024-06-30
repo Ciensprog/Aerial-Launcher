@@ -57,7 +57,16 @@ export class Party {
         let total = 0
 
         if (claimState) {
-          ClaimRewards.core(filteredMyAccountsInParty)
+          ClaimRewards.core(filteredMyAccountsInParty).then((response) => {
+            console.log('kalp :: response ->', response)
+
+            if (response) {
+              response.forEach((notification) => {
+                console.log('----------')
+                console.log('kalp :: notification ->', notification)
+              })
+            }
+          })
         }
 
         if (leader) {
@@ -139,7 +148,16 @@ export class Party {
     claimState: boolean
   ) {
     if (claimState) {
-      ClaimRewards.core(selectedAccounts)
+      ClaimRewards.core(selectedAccounts).then((response) => {
+        console.log('lp :: response ->', response)
+
+        if (response) {
+          response.forEach((notification) => {
+            console.log('----------')
+            console.log('lp :: notification ->', notification)
+          })
+        }
+      })
     }
 
     await Promise.allSettled(

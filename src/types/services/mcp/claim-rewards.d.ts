@@ -1,15 +1,36 @@
 import type { StringUnion } from '../../utils'
 
-export type ProfileId = StringUnion<'campaign'>
+type ProfileId = StringUnion<'campaign'>
 
 export type MCPCommonNotification = Array<{
-  type: StringUnion<'cardPackResult' | 'missionAlertComplete'>
+  type: StringUnion<
+    | 'cardPackResult'
+    | 'claimedDifficultyIncreaseReward'
+    | 'missionAlertComplete'
+    | 'phoenixLevelUp'
+    | 'questClaim'
+  >
   primary: boolean
   client_request_id: string
   displayLevel?: number
+  level?: number
   tier?: number
   overrideTier?: number
-  lootGranted: {
+  loot?: {
+    type?: StringUnion<'lootGrant'>
+    primary?: boolean
+    client_request_id?: string
+    lootSource?: StringUnion<'PhoenixLevelUp'>
+    lootSourceInstance?: string
+    lootGranted?: Array<Record<string, unknown>>
+    items?: Array<{
+      itemType: string
+      itemGuid?: string
+      itemProfile?: StringUnion<'campaign'>
+      quantity: number
+    }>
+  }
+  lootGranted?: {
     items: Array<{
       itemType: string
       itemGuid?: string
