@@ -12,8 +12,8 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
-import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
+import { parseDisplayName } from '../../../lib/utils'
 
 export function useData() {
   const [isLoading, setIsLoading] = useState(false)
@@ -26,11 +26,7 @@ export function useData() {
 
   const areThereAccounts = accountsArray.length > 0
   const accounts: Array<SelectOption> = accountsArray.map((account) => {
-    const label = checkIfCustomDisplayNameIsValid(
-      account.customDisplayName
-    )
-      ? `${account.customDisplayName} (${account.displayName})`
-      : account.displayName
+    const label = parseDisplayName(account)
 
     return {
       label,
