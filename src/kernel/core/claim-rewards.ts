@@ -28,6 +28,10 @@ export class ClaimRewards {
           response
         )
       }
+
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.PartyClaimActionNotification
+      )
     })
   }
 
@@ -178,10 +182,11 @@ export class ClaimRewards {
       const records = response.map((item) =>
         item.status === 'fulfilled' ? item.value : null
       )
-
-      return records.filter(
-        (item) => item !== null
+      const newNotifications = records.filter(
+        (item) => item !== null && Object.keys(item.rewards).length > 0
       ) as Array<RewardsNotification>
+
+      return newNotifications.length > 0 ? newNotifications : null
     } catch (error) {
       //
     }
