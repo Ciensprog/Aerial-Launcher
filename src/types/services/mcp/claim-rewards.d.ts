@@ -22,7 +22,14 @@ export type MCPCommonNotification = Array<{
     client_request_id?: string
     lootSource?: StringUnion<'PhoenixLevelUp'>
     lootSourceInstance?: string
-    lootGranted?: Array<Record<string, unknown>>
+    lootGranted?: {
+      items: Array<{
+        itemType: string
+        itemGuid?: string
+        itemProfile?: StringUnion<'campaign'>
+        quantity: number
+      }>
+    }
     items?: Array<{
       itemType: string
       itemGuid?: string

@@ -6,8 +6,6 @@ import { BrowserWindow } from 'electron'
 import { PartyRole } from '../../config/constants/fortnite/party'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
-// import { DataDirectory } from '../startup/data-directory'
-
 import { Authentication } from './authentication'
 import { ClaimRewards } from './claim-rewards'
 
@@ -58,13 +56,11 @@ export class Party {
 
         if (claimState) {
           ClaimRewards.core(filteredMyAccountsInParty).then((response) => {
-            console.log('kalp :: response ->', response)
-
             if (response) {
-              response.forEach((notification) => {
-                console.log('----------')
-                console.log('kalp :: notification ->', notification)
-              })
+              currentWindow.webContents.send(
+                ElectronAPIEventKeys.ClaimRewardsClientNotification,
+                response
+              )
             }
           })
         }
@@ -149,13 +145,11 @@ export class Party {
   ) {
     if (claimState) {
       ClaimRewards.core(selectedAccounts).then((response) => {
-        console.log('lp :: response ->', response)
-
         if (response) {
-          response.forEach((notification) => {
-            console.log('----------')
-            console.log('lp :: notification ->', notification)
-          })
+          currentWindow.webContents.send(
+            ElectronAPIEventKeys.ClaimRewardsClientNotification,
+            response
+          )
         }
       })
     }

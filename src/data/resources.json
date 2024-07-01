@@ -111,6 +111,10 @@
     "name": "Gold",
     "type": "currency"
   },
+  "AccountResource:currency_mtxswap": {
+    "name": "V-Bucks",
+    "type": "currency"
+  },
   "AccountResource:currency_xrayllama": {
     "name": "X-Ray Llama Token",
     "type": "currency"

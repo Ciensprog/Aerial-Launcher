@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 
 import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
+import { useClaimedRewards } from '../../../hooks/stw-operations/claimed-rewards'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
@@ -172,4 +173,20 @@ export function useClaimActions({
 
     onClaim,
   }
+}
+
+export function useClaimedRewardsNotifications() {
+  const { updateData } = useClaimedRewards()
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationClaimedRewards(
+      async (notifications) => {
+        updateData(notifications)
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
 }

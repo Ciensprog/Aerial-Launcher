@@ -10,11 +10,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
-import { KickAllPartyCard } from './-kick-all-party'
 
+import { KickAllPartyCard } from './-kick-all-party'
 import { ClaimRewardsCard } from './-claim-rewards'
 // import { InviteCard } from './-invite'
 import { LeavePartyCard } from './-leave-party'
+
+import { useClaimedRewardsNotifications } from './-hooks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -23,6 +25,8 @@ export const Route = createRoute({
 })
 
 export function RouteComponent() {
+  useClaimedRewardsNotifications()
+
   return (
     <>
       <Breadcrumb>

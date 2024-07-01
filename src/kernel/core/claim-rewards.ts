@@ -19,18 +19,16 @@ import { getQueryProfile } from '../../services/endpoints/mcp'
 export class ClaimRewards {
   static async start(
     currentWindow: BrowserWindow,
-    accounts: AccountDataList,
-    showNotification?: boolean
+    accounts: AccountDataList
   ) {
-    const notificationIsActive = showNotification ?? true
-
-    await ClaimRewards.core(accounts)
-
-    if (notificationIsActive) {
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.PartyClaimActionNotification
-      )
-    }
+    ClaimRewards.core(accounts).then((response) => {
+      if (response) {
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.ClaimRewardsClientNotification,
+          response
+        )
+      }
+    })
   }
 
   static async core(accounts: AccountDataList) {
@@ -111,9 +109,13 @@ export class ClaimRewards {
                         })
                       })
                     } else if (notification.loot.lootGranted) {
-                      console.log(
-                        '====================== notification.loot.lootGranted ->',
-                        notification.loot.lootGranted
+                      notification.loot.lootGranted.items.forEach(
+                        (loot) => {
+                          notifications.push({
+                            itemType: loot.itemType,
+                            quantity: loot.quantity,
+                          })
+                        }
                       )
                     }
                   } else if (notification.lootGranted) {
@@ -151,11 +153,17 @@ export class ClaimRewards {
 
           notifications.forEach(({ itemType, quantity }) => {
             if (!itemType.toLowerCase().startsWith('accolades:')) {
-              if (!rewards[itemType]) {
-                rewards[itemType] = 0
+              const newItemType =
+                itemType === 'AccountResource:campaign_event_currency'
+                  ? profileChanges.profile.stats.attributes.event_currency
+                      .templateId
+                  : itemType
+
+              if (!rewards[newItemType]) {
+                rewards[newItemType] = 0
               }
 
-              rewards[itemType] += quantity
+              rewards[newItemType] += quantity
             }
           })
 

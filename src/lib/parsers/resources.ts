@@ -26,9 +26,12 @@ export function parseResource({
   const current = resourcesJson[key]
 
   if (current) {
+    const isEventCurrency =
+      key !== 'AccountResource:eventcurrency_scaling' &&
+      key.startsWith('AccountResource:eventcurrency_')
     const resourceId = key.split(':')[1]
 
-    data.imgUrl = `${repositoryAssetsURL}/images/${resourceId ? `resources/${resourceId}` : `rarities/${RarityType.Common}`}.png`
+    data.imgUrl = `${repositoryAssetsURL}/images/${resourceId ? `${isEventCurrency ? 'currency' : 'resources'}/${resourceId}` : `rarities/${RarityType.Common}`}.png`
     data.name = current.name
   } else {
     const rarity = parseRarity(key)

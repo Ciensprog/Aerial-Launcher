@@ -1,5 +1,7 @@
 import type { RewardsNotification } from '../../types/notifications'
 
+import { repositoryAssetsURL } from '../../config/about/links'
+
 import { ScrollArea } from '../ui/scroll-area'
 
 import { useClaimedRewards } from '../../hooks/stw-operations/claimed-rewards'
@@ -11,16 +13,17 @@ import { parseDisplayName } from '../../lib/utils'
 
 export function HistoryMenu() {
   const { data } = useClaimedRewards()
+  const dataOrderByDesc = data.toReversed()
 
   return (
     <ScrollArea className="h-full max-h-[calc(100vh-3.5rem)]">
-      {data.length > 0 ? (
+      {dataOrderByDesc.length > 0 ? (
         <>
           <div className="border-l-4 italic mb-4 mt-2 pl-2 py-1 text-muted-foreground">
             Note: this is a temporal history
           </div>
           <div className="flex-1 pb-6 [&_img]:pointer-events-none [&_img]:select-none">
-            {data.map((item, index) => (
+            {dataOrderByDesc.map((item, index) => (
               <div
                 className="border-b py-3 space-y-5 text-foreground/90 last:border-b-0"
                 key={index}
@@ -52,6 +55,7 @@ function RewardSection({ data }: { data: Array<RewardsNotification> }) {
         key={index}
       >
         <RewardItems rewards={item.rewards} />
+        <AccoladesItem accolades={item.accolades} />
       </ul>
     </div>
   ))
@@ -78,4 +82,27 @@ function RewardItems({ rewards }: Pick<RewardsNotification, 'rewards'>) {
       </figure>
     </li>
   ))
+}
+
+function AccoladesItem({
+  accolades,
+}: Pick<RewardsNotification, 'accolades'>) {
+  return (
+    <li>
+      <figure className="flex gap-1 items-center">
+        <img
+          src={`${repositoryAssetsURL}/images/brxp.png`}
+          className="size-6"
+          alt="Accolades"
+        />
+        <figcaption className="break-all">
+          {Intl.NumberFormat('en-US').format(
+            accolades.totalMissionXPRedeemed +
+              accolades.totalQuestXPRedeemed
+          )}{' '}
+          &times; Accolades
+        </figcaption>
+      </figure>
+    </li>
+  )
 }

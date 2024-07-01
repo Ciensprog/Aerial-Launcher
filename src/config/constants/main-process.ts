@@ -95,6 +95,8 @@ export enum ElectronAPIEventKeys {
   PartyLeaveAction = 'party:leave',
   PartyLeaveActionNotification = 'party:leave:notification',
 
+  ClaimRewardsClientNotification = 'claim-rewards:client:notification',
+
   /**
    * Schedules
    */
