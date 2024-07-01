@@ -70,11 +70,23 @@ export function SidebarMenu({
           <div
             className={cn(
               'px-3 py-2 text-muted-foreground',
-              '[&_.item-account-management>a]:flex'
+              '[&_.item-stw-operations>a]:flex'
             )}
           >
             <ul className="list-disc ml-5">
-              <li className="item-account-management">
+              <li className="item-stw-operations">
+                <Link
+                  to="/stw-operations/party"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  Party
+                </Link>
+              </li>
+              <li className="item-stw-operations">
                 <Link
                   to="/stw-operations/save-quests"
                   className={currentClassNameHover}

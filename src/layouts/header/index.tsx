@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Menu, Minus, Settings, X } from 'lucide-react'
+import { History, Menu, Minus, Rocket, Settings, X } from 'lucide-react'
 
 import imgFNDB from '../../_assets/fndb.webp'
 
@@ -12,11 +12,14 @@ import {
 } from '../../components/ui/sheet'
 
 import { AccountList } from '../../components/account-list'
+import { HistoryMenu } from '../../components/menu/history'
 import { SidebarMenu } from '../../components/menu/sidebar'
 
-import { useAttributesStates, useHandlers } from './hooks'
+import { useUISidebarHistory } from '../../hooks/ui/sidebars'
+import { useAttributesStates, useHandlers, useWindowEvents } from './hooks'
 
 export function Header() {
+  const { changeVisibility, visibility } = useUISidebarHistory()
   const { isButtonDisabled, open, setOpen } = useAttributesStates()
   const {
     handleCloseWindow,
@@ -24,6 +27,7 @@ export function Header() {
     handleMinimizeWindow,
     handleOpenFNDBProfile,
   } = useHandlers()
+  const { isMinWith } = useWindowEvents()
 
   return (
     <header className="app-draggable-region bg-muted/40 flex h-[var(--header-height)] items-center gap-1.5 border-b px-1.5">
@@ -59,12 +63,12 @@ export function Header() {
       </Sheet>
       <AccountList />
       <Button
-        size="default"
+        size={isMinWith ? 'icon' : 'default'}
         variant="outline"
         disabled={isButtonDisabled}
         onClick={handleLaunch}
       >
-        Launch Game
+        {isMinWith ? <Rocket size={20} /> : 'Launch Game'}
       </Button>
       <Button
         size="icon"
@@ -76,6 +80,37 @@ export function Header() {
           <span className="sr-only">Go to settings</span>
         </Link>
       </Button>
+
+      <Sheet
+        open={visibility}
+        onOpenChange={changeVisibility}
+      >
+        <SheetTrigger asChild>
+          <Button
+            size="icon"
+            variant="ghost"
+          >
+            <History />
+            <span className="sr-only">Toggle history sidebar</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent
+          className="flex flex-col"
+          side="right"
+          hideCloseButton
+        >
+          <div>
+            <div className="text-center">
+              <SheetClose>
+                <X />
+                <span className="sr-only">Close history sidebar</span>
+              </SheetClose>
+            </div>
+            <HistoryMenu />
+          </div>
+        </SheetContent>
+      </Sheet>
+
       <Button
         size="icon"
         variant="ghost"

@@ -85,6 +85,19 @@ export enum ElectronAPIEventKeys {
   SaveQuestsNotification = 'save-quests:notification',
 
   /**
+   * Party
+   */
+
+  PartyClaimAction = 'party:claim',
+  PartyClaimActionNotification = 'party:claim:notification',
+  PartyKickAction = 'party:kick',
+  PartyKickActionNotification = 'party:kick:notification',
+  PartyLeaveAction = 'party:leave',
+  PartyLeaveActionNotification = 'party:leave:notification',
+
+  ClaimRewardsClientNotification = 'claim-rewards:client:notification',
+
+  /**
    * Schedules
    */
 

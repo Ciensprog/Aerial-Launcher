@@ -1,4 +1,9 @@
-import type { AccountBasicInfo, AccountData } from '../types/accounts'
+import type {
+  AccountBasicInfo,
+  AccountData,
+  AccountDataList,
+  AccountList,
+} from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { GroupRecord } from '../types/groups'
 import type { Settings } from '../types/settings'
@@ -12,9 +17,11 @@ import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
 import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
+import { ClaimRewards } from './core/claim-rewards'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin } from './core/mcp'
 import { Manifest } from './core/manifest'
+import { Party } from './core/party'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
 import { DataDirectory } from './startup/data-directory'
@@ -224,6 +231,51 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.SetSaveQuests,
     async (_, accounts: Array<AccountData>) => {
       await MCPClientQuestLogin.save(currentWindow, accounts)
+    }
+  )
+
+  /**
+   * Party
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyClaimAction,
+    async (_, selectedAccount: Array<AccountData>) => {
+      await ClaimRewards.start(currentWindow, selectedAccount)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyKickAction,
+    async (
+      _,
+      selectedAccount: AccountData,
+      accounts: AccountDataList,
+      claimState: boolean
+    ) => {
+      await Party.kickPartyMembers(
+        currentWindow,
+        selectedAccount,
+        accounts,
+        claimState
+      )
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyLeaveAction,
+    async (
+      _,
+      selectedAccounts: AccountList,
+      accounts: AccountDataList,
+      claimState: boolean
+    ) => {
+      await Party.leaveParty(
+        currentWindow,
+        selectedAccounts,
+        accounts,
+        claimState
+      )
     }
   )
 

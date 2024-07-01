@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { fortniteDBProfileURL } from '../../config/fortnite/links'
 
@@ -67,5 +67,28 @@ export function useHandlers() {
     handleLaunch,
     handleMinimizeWindow,
     handleOpenFNDBProfile,
+  }
+}
+
+export function useWindowEvents() {
+  const matchMediaRef = useRef(window.matchMedia('(min-width: 800px)'))
+  const [isMinWith, setIsMinWith] = useState(
+    !matchMediaRef.current.matches
+  )
+
+  useEffect(() => {
+    const handler = (event: MediaQueryListEvent) => {
+      setIsMinWith(!event.matches)
+    }
+
+    matchMediaRef.current.addEventListener('change', handler)
+
+    return () => {
+      matchMediaRef.current.removeEventListener('change', handler)
+    }
+  }, [])
+
+  return {
+    isMinWith,
   }
 }

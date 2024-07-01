@@ -27,7 +27,7 @@ export function useAccountList() {
     const tags = getGroupTagsByAccountId(account.accountId)
 
     if (checkIfCustomDisplayNameIsValid(account.customDisplayName)) {
-      _keys.push(account.customDisplayName as string)
+      _keys.push(account.customDisplayName)
     }
 
     if (provider !== '') {
