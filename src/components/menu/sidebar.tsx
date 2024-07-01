@@ -111,11 +111,17 @@ export function SidebarMenu({
               <li className="item-account-management">
                 <Link
                   to="/account-management/epic-games-settings"
-                  className={currentClassNameHover}
+                  className={cn({
+                    [currentClassNameHover]: areThereAccounts,
+                    'cursor-not-allowed opacity-60': !areThereAccounts,
+                  })}
                   activeProps={{
-                    className: cn(activeClassName),
+                    className: cn({
+                      [activeClassName]: areThereAccounts,
+                    }),
                   }}
                   onClick={goToPage}
+                  disabled={!areThereAccounts}
                 >
                   Epic Games Settings
                 </Link>
@@ -184,8 +190,8 @@ export function SidebarMenu({
                       [activeClassName]: areThereAccounts,
                     }),
                   }}
-                  disabled={!areThereAccounts}
                   onClick={goToPage}
+                  disabled={!areThereAccounts}
                 >
                   Remove Account
                 </Link>

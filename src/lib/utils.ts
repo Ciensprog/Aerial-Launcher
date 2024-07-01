@@ -72,12 +72,20 @@ export function sortTags(data: TagRecord) {
 }
 
 export function parseDisplayName(account: AccountData) {
+  if (!account) {
+    return 'Unknown User'
+  }
+
   return checkIfCustomDisplayNameIsValid(account.customDisplayName)
     ? account.customDisplayName
     : account.displayName
 }
 
 export function parseCustomDisplayName(account: AccountData | null) {
+  if (!account) {
+    return 'Unknown User'
+  }
+
   const customDisplayNameText = checkIfCustomDisplayNameIsValid(
     account?.customDisplayName
   )

@@ -24,6 +24,7 @@ export function useData() {
   const { saveQuestsUpdateAccounts, saveQuestsUpdateTags } =
     useGetSaveQuestsActions()
 
+  const areThereAccounts = accountsArray.length > 0
   const accounts: Array<SelectOption> = accountsArray.map((account) => {
     const label = checkIfCustomDisplayNameIsValid(
       account.customDisplayName
@@ -83,7 +84,7 @@ export function useData() {
   }, [])
 
   const handleSave = () => {
-    if (isSelectedEmpty) {
+    if (isSelectedEmpty || !areThereAccounts) {
       return
     }
 
@@ -114,6 +115,7 @@ export function useData() {
 
   return {
     accounts,
+    areThereAccounts,
     isLoading,
     isSelectedEmpty,
     parsedSelectedAccounts,

@@ -55,6 +55,7 @@ export const Route = createRoute({
 function Content() {
   const {
     accounts,
+    areThereAccounts,
     isLoading,
     isSelectedEmpty,
     parsedSelectedAccounts,
@@ -92,9 +93,9 @@ function Content() {
           </CardContent>
           <CardFooter className="space-x-6">
             <Button
-              className="w-full"
+              className="disabled:cursor-not-allowed disabled:pointer-events-auto disabled:select-none w-full"
               onClick={handleSave}
-              disabled={isSelectedEmpty || isLoading}
+              disabled={isSelectedEmpty || isLoading || !areThereAccounts}
             >
               {isLoading ? (
                 <UpdateIcon className="animate-spin" />
