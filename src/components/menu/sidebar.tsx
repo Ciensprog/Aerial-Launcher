@@ -236,7 +236,7 @@ export function SidebarMenu({
             </Button>
           </div>
         </nav>
-        <div className="pl-5 text-xs text-muted-foreground/60 lg:pl-7">
+        <div className="px-5 text-center text-xs text-muted-foreground/60 lg:pl-7">
           <p className="">
             Release v{packageJson.version} -{' '}
             <a
