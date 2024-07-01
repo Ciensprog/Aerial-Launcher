@@ -54,17 +54,6 @@ export class Party {
 
         let total = 0
 
-        if (claimState) {
-          ClaimRewards.core(filteredMyAccountsInParty).then((response) => {
-            if (response) {
-              currentWindow.webContents.send(
-                ElectronAPIEventKeys.ClaimRewardsClientNotification,
-                response
-              )
-            }
-          })
-        }
-
         if (leader) {
           /**
            * As leader, kick out all members
@@ -117,6 +106,17 @@ export class Party {
           total += filteredMyAccountsInParty.length
         }
 
+        if (claimState) {
+          ClaimRewards.core(filteredMyAccountsInParty).then((response) => {
+            if (response) {
+              currentWindow.webContents.send(
+                ElectronAPIEventKeys.ClaimRewardsClientNotification,
+                response
+              )
+            }
+          })
+        }
+
         currentWindow.webContents.send(
           ElectronAPIEventKeys.PartyKickActionNotification,
           total
@@ -143,17 +143,6 @@ export class Party {
 
     claimState: boolean
   ) {
-    if (claimState) {
-      ClaimRewards.core(selectedAccounts).then((response) => {
-        if (response) {
-          currentWindow.webContents.send(
-            ElectronAPIEventKeys.ClaimRewardsClientNotification,
-            response
-          )
-        }
-      })
-    }
-
     await Promise.allSettled(
       selectedAccounts.map(async (account) => {
         account
@@ -192,6 +181,17 @@ export class Party {
         })
       })
     )
+
+    if (claimState) {
+      ClaimRewards.core(selectedAccounts).then((response) => {
+        if (response) {
+          currentWindow.webContents.send(
+            ElectronAPIEventKeys.ClaimRewardsClientNotification,
+            response
+          )
+        }
+      })
+    }
 
     currentWindow.webContents.send(
       ElectronAPIEventKeys.PartyLeaveActionNotification,
