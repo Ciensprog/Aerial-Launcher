@@ -71,7 +71,7 @@ export function useHandlers() {
 }
 
 export function useWindowEvents() {
-  const matchMediaRef = useRef(window.matchMedia('(min-width: 640px)'))
+  const matchMediaRef = useRef(window.matchMedia('(min-width: 800px)'))
   const [isMinWith, setIsMinWith] = useState(
     !matchMediaRef.current.matches
   )
