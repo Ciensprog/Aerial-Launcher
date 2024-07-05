@@ -16,34 +16,39 @@ import {
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/homebase-name',
-  component: Content,
+  component: () => {
+    return (
+      <>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>STW Operations</BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Homebase Name</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
+        <Content />
+      </>
+    )
+  },
 })
 
 function Content() {
   return (
-    <>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>STW Operations</BreadcrumbPage>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Homebase Name</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <div className="flex flex-grow">
-        <div className="flex items-center justify-center w-full">
-          Coming Soon!
-        </div>
+    <div className="flex flex-grow">
+      <div className="flex items-center justify-center w-full">
+        Coming Soon!
       </div>
-    </>
+    </div>
   )
 }
