@@ -98,6 +98,18 @@ export function SidebarMenu({
                   Save Quests
                 </Link>
               </li>
+              <li className="item-stw-operations">
+                <Link
+                  to="/stw-operations/homebase-name"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  Homebase Name
+                </Link>
+              </li>
             </ul>
           </div>
           <Title className="pb-0">Account Management</Title>

@@ -1,5 +1,5 @@
-import { Link, createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { Link, createRoute } from '@tanstack/react-router'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -20,12 +20,13 @@ import {
   CardFooter,
   CardHeader,
 } from '../../../components/ui/card'
+import { Input } from '../../../components/ui/input'
 
-import { useData } from './-hooks'
+import { useHomebaseNameData } from './-hooks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
-  path: '/stw-operations/save-quests',
+  path: '/stw-operations/homebase-name',
   component: () => {
     return (
       <>
@@ -42,10 +43,11 @@ export const Route = createRoute({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Save Quests</BreadcrumbPage>
+              <BreadcrumbPage>Homebase Name</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+
         <Content />
       </>
     )
@@ -55,17 +57,19 @@ export const Route = createRoute({
 function Content() {
   const {
     accounts,
-    areThereAccounts,
+    error,
+    isDisabledForm,
     isLoading,
-    isSelectedEmpty,
+    name,
     parsedSelectedAccounts,
     parsedSelectedTags,
     tags,
 
     handleSave,
-    saveQuestsUpdateAccounts,
-    saveQuestsUpdateTags,
-  } = useData()
+    handleUpdateName,
+    homebaseNameUpdateAccounts,
+    homebaseNameUpdateTags,
+  } = useHomebaseNameData()
 
   return (
     <div className="flex flex-grow">
@@ -73,7 +77,8 @@ function Content() {
         <Card className="max-w-lg w-full">
           <CardHeader className="border-b">
             <CardDescription>
-              Save quests progression of the selected accounts.
+              Update homebase name (no longer visible in game) of the
+              selected accounts.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 pt-6">
@@ -86,20 +91,32 @@ function Content() {
                 options: tags,
                 value: parsedSelectedTags,
               }}
-              onUpdateAccounts={saveQuestsUpdateAccounts}
-              onUpdateTags={saveQuestsUpdateTags}
+              onUpdateAccounts={homebaseNameUpdateAccounts}
+              onUpdateTags={homebaseNameUpdateTags}
             />
+            <Input
+              className="mt-2 pr-20"
+              placeholder="Set a homebase name"
+              value={name}
+              onChange={handleUpdateName}
+            />
+
+            {error && (
+              <div className="border-l-4 border-red-400 ml-2 pl-2 text-red-400">
+                {error}
+              </div>
+            )}
           </CardContent>
           <CardFooter className="space-x-6">
             <Button
               className="disabled:cursor-not-allowed disabled:pointer-events-auto disabled:select-none w-full"
               onClick={handleSave}
-              disabled={isSelectedEmpty || isLoading || !areThereAccounts}
+              disabled={isDisabledForm}
             >
               {isLoading ? (
                 <UpdateIcon className="animate-spin" />
               ) : (
-                'Save Quests'
+                `Update Homebase Name`
               )}
             </Button>
           </CardFooter>

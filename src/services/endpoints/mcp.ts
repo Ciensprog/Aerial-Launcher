@@ -6,6 +6,7 @@ import type {
   MCPOpenCardPackBatchResponse,
   MCPRedeemSTWAccoladeTokensResponse,
 } from '../../types/services/mcp/claim-rewards'
+import type { MCPHomebaseNameResponse } from '../../types/services/mcp/homebase-name'
 import type {
   MCPClientQuestLoginResponse,
   MCPQueryProfile,
@@ -169,6 +170,32 @@ export function setRedeemSTWAccoladeTokens({
       },
       params: {
         profileId: 'athena',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setHomebaseName({
+  accessToken,
+  accountId,
+  homebaseName,
+}: {
+  accessToken: string
+  accountId: string
+  homebaseName: string
+}) {
+  return mcpService.post<MCPHomebaseNameResponse>(
+    `/${accountId}/client/SetHomebaseName`,
+    {
+      homebaseName,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'common_public',
         rvn: -1,
       },
     }

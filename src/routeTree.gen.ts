@@ -15,6 +15,7 @@ import { Route as SettingsRouteImport } from './routes/settings/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as StwOperationsSaveQuestsRouteImport } from './routes/stw-operations/save-quests/route'
 import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/party/route'
+import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
 import { Route as InformationCreditsRouteImport } from './routes/information/credits/route'
 import { Route as AccountsRemoveRouteImport } from './routes/accounts/remove/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
@@ -42,6 +43,12 @@ const StwOperationsPartyRouteRoute = StwOperationsPartyRouteImport.update({
   path: '/stw-operations/party',
   getParentRoute: () => rootRoute,
 } as any)
+
+const StwOperationsHomebaseNameRouteRoute =
+  StwOperationsHomebaseNameRouteImport.update({
+    path: '/stw-operations/homebase-name',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const InformationCreditsRouteRoute = InformationCreditsRouteImport.update({
   path: '/information/credits',
@@ -88,6 +95,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InformationCreditsRouteImport
       parentRoute: typeof rootRoute
     }
+    '/stw-operations/homebase-name': {
+      preLoaderRoute: typeof StwOperationsHomebaseNameRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/stw-operations/party': {
       preLoaderRoute: typeof StwOperationsPartyRouteImport
       parentRoute: typeof rootRoute
@@ -111,6 +122,7 @@ export const routeTree = rootRoute.addChildren([
   AccountManagementEpicGamesSettingsRouteRoute,
   AccountsRemoveRouteRoute,
   InformationCreditsRouteRoute,
+  StwOperationsHomebaseNameRouteRoute,
   StwOperationsPartyRouteRoute,
   StwOperationsSaveQuestsRouteRoute,
   AccountsAddTypeRoute,

@@ -19,7 +19,7 @@ import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
 import { FortniteLauncher } from './core/launcher'
-import { MCPClientQuestLogin } from './core/mcp'
+import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
 import { AccountsManager } from './startup/accounts'
@@ -231,6 +231,13 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.SetSaveQuests,
     async (_, accounts: Array<AccountData>) => {
       await MCPClientQuestLogin.save(currentWindow, accounts)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.SetHombaseName,
+    async (_, accounts: Array<AccountData>, homebaseName: string) => {
+      await MCPHomebaseName.update(currentWindow, accounts, homebaseName)
     }
   )
 
