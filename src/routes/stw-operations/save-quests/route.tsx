@@ -3,7 +3,7 @@ import { UpdateIcon } from '@radix-ui/react-icons'
 
 import { Route as RootRoute } from '../../__root'
 
-import { InputTags } from '../../../components/ui/third-party/extended/input-tags'
+import { AccountSelectors } from '../../../components/selectors/accounts'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -61,6 +61,7 @@ function Content() {
     parsedSelectedAccounts,
     parsedSelectedTags,
     tags,
+
     handleSave,
     saveQuestsUpdateAccounts,
     saveQuestsUpdateTags,
@@ -76,20 +77,18 @@ function Content() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 pt-6">
-            <div className="grid gap-4">
-              <InputTags
-                placeholder="Select some accounts..."
-                options={accounts}
-                value={parsedSelectedAccounts}
-                onChange={saveQuestsUpdateAccounts}
-              />
-              <InputTags
-                placeholder="Select some tags..."
-                options={tags}
-                value={parsedSelectedTags}
-                onChange={saveQuestsUpdateTags}
-              />
-            </div>
+            <AccountSelectors
+              accounts={{
+                options: accounts,
+                value: parsedSelectedAccounts,
+              }}
+              tags={{
+                options: tags,
+                value: parsedSelectedTags,
+              }}
+              onUpdateAccounts={saveQuestsUpdateAccounts}
+              onUpdateTags={saveQuestsUpdateTags}
+            />
           </CardContent>
           <CardFooter className="space-x-6">
             <Button
