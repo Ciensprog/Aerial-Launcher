@@ -84,6 +84,9 @@ export enum ElectronAPIEventKeys {
   SetSaveQuests = 'save-quests:set',
   SaveQuestsNotification = 'save-quests:notification',
 
+  SetHombaseName = 'homebase-name:set',
+  HomebaseNameNotification = 'homebase-name:notification',
+
   /**
    * Party
    */

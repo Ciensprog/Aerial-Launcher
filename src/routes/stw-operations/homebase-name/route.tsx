@@ -1,7 +1,9 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
 import { Link, createRoute } from '@tanstack/react-router'
 
 import { Route as RootRoute } from '../../__root'
 
+import { AccountSelectors } from '../../../components/selectors/accounts'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,8 +12,17 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
+import { Button } from '../../../components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from '../../../components/ui/card'
+import { Input } from '../../../components/ui/input'
 
-// import { useData } from './-hooks'
+import { useHomebaseNameData } from './-hooks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -44,10 +55,72 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const {
+    accounts,
+    error,
+    isDisabledForm,
+    isLoading,
+    name,
+    parsedSelectedAccounts,
+    parsedSelectedTags,
+    tags,
+
+    handleSave,
+    handleUpdateName,
+    homebaseNameUpdateAccounts,
+    homebaseNameUpdateTags,
+  } = useHomebaseNameData()
+
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
-        Coming Soon!
+        <Card className="max-w-lg w-full">
+          <CardHeader className="border-b">
+            <CardDescription>
+              Update homebase name (no longer visible in game) of the
+              selected accounts.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4 pt-6">
+            <AccountSelectors
+              accounts={{
+                options: accounts,
+                value: parsedSelectedAccounts,
+              }}
+              tags={{
+                options: tags,
+                value: parsedSelectedTags,
+              }}
+              onUpdateAccounts={homebaseNameUpdateAccounts}
+              onUpdateTags={homebaseNameUpdateTags}
+            />
+            <Input
+              className="mt-2 pr-20"
+              placeholder="Set a homebase name"
+              value={name}
+              onChange={handleUpdateName}
+            />
+
+            {error && (
+              <div className="border-l-4 border-red-400 ml-2 pl-2 text-red-400">
+                {error}
+              </div>
+            )}
+          </CardContent>
+          <CardFooter className="space-x-6">
+            <Button
+              className="disabled:cursor-not-allowed disabled:pointer-events-auto disabled:select-none w-full"
+              onClick={handleSave}
+              disabled={isDisabledForm}
+            >
+              {isLoading ? (
+                <UpdateIcon className="animate-spin" />
+              ) : (
+                `Update Homebase Name`
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   )

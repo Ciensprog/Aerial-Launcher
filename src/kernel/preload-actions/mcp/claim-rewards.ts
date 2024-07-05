@@ -1,5 +1,4 @@
 import type { IpcRendererEvent } from 'electron'
-// import type { AccountData } from '../../../types/accounts'
 import type { RewardsNotification } from '../../../types/notifications'
 
 import { ipcRenderer } from 'electron'
