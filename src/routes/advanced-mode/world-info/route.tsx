@@ -1,7 +1,9 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
 import { Link, createRoute } from '@tanstack/react-router'
 import {
   CloudDownload,
   FileJson,
+  FileSearch2,
   FileWarning,
   Save,
   Share,
@@ -22,7 +24,7 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
 
-import { useData } from './-hooks'
+import { useCurrentActions, useData } from './-hooks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -64,6 +66,7 @@ const files = [
 
 function Content() {
   const { currentData, isFetching } = useData()
+  const { handleRefetch } = useCurrentActions()
 
   return (
     <div className="flex flex-grow">
@@ -72,8 +75,13 @@ function Content() {
           <div className="border flex mb-10 mt-5 mx-auto rounded w-80">
             <div className="bg-muted-foreground/5 flex flex-col justify-center py-4 w-1/2">
               <div className="flex flex-shrink-0 justify-center mb-2 pl-2 pr-3">
-                {currentData.value ? (
+                {!isFetching && currentData.value ? (
                   <FileJson
+                    className="stroke-muted-foreground"
+                    size={32}
+                  />
+                ) : isFetching ? (
+                  <FileSearch2
                     className="stroke-muted-foreground"
                     size={32}
                   />
@@ -99,17 +107,24 @@ function Content() {
                 className="gap-1 h-auto px-0 py-2 text-xs"
                 disabled={isFetching || !currentData.value}
               >
-                <Save size={18} />
+                <Save size={16} />
                 Save On Local
               </Button>
               <Button
                 type="button"
                 variant="secondary"
                 className="gap-1 h-auto px-0 py-2 text-xs"
+                onClick={handleRefetch}
                 disabled={isFetching}
               >
-                <CloudDownload size={18} />
-                Refetch data
+                {isFetching ? (
+                  <UpdateIcon className="animate-spin h-4" />
+                ) : (
+                  <>
+                    <CloudDownload size={16} />
+                    Refetch data
+                  </>
+                )}
               </Button>
             </div>
           </div>
