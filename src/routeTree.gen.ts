@@ -17,6 +17,7 @@ import { Route as StwOperationsSaveQuestsRouteImport } from './routes/stw-operat
 import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/party/route'
 import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
 import { Route as InformationCreditsRouteImport } from './routes/information/credits/route'
+import { Route as AdvancedModeWorldInfoRouteImport } from './routes/advanced-mode/world-info/route'
 import { Route as AccountsRemoveRouteImport } from './routes/accounts/remove/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
 import { Route as AccountsAddTypeImport } from './routes/accounts/add/$type'
@@ -55,6 +56,13 @@ const InformationCreditsRouteRoute = InformationCreditsRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AdvancedModeWorldInfoRouteRoute = AdvancedModeWorldInfoRouteImport.update(
+  {
+    path: '/advanced-mode/world-info',
+    getParentRoute: () => rootRoute,
+  } as any,
+)
+
 const AccountsRemoveRouteRoute = AccountsRemoveRouteImport.update({
   path: '/accounts/remove',
   getParentRoute: () => rootRoute,
@@ -91,6 +99,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountsRemoveRouteImport
       parentRoute: typeof rootRoute
     }
+    '/advanced-mode/world-info': {
+      preLoaderRoute: typeof AdvancedModeWorldInfoRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/information/credits': {
       preLoaderRoute: typeof InformationCreditsRouteImport
       parentRoute: typeof rootRoute
@@ -121,6 +133,7 @@ export const routeTree = rootRoute.addChildren([
   SettingsRouteRoute,
   AccountManagementEpicGamesSettingsRouteRoute,
   AccountsRemoveRouteRoute,
+  AdvancedModeWorldInfoRouteRoute,
   InformationCreditsRouteRoute,
   StwOperationsHomebaseNameRouteRoute,
   StwOperationsPartyRouteRoute,
