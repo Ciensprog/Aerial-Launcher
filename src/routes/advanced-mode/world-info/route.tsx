@@ -22,7 +22,7 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
 
-// import {  } from './-hooks'
+import { useData } from './-hooks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -54,8 +54,6 @@ export const Route = createRoute({
   },
 })
 
-const currentData: true | null = true
-
 const files = [
   '2024-01-01',
   '2024-01-02',
@@ -65,6 +63,8 @@ const files = [
 ]
 
 function Content() {
+  const { currentData, isFetching } = useData()
+
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
@@ -72,7 +72,7 @@ function Content() {
           <div className="border flex mb-10 mt-5 mx-auto rounded w-80">
             <div className="bg-muted-foreground/5 flex flex-col justify-center py-4 w-1/2">
               <div className="flex flex-shrink-0 justify-center mb-2 pl-2 pr-3">
-                {currentData ? (
+                {currentData.value ? (
                   <FileJson
                     className="stroke-muted-foreground"
                     size={32}
@@ -86,7 +86,7 @@ function Content() {
               </div>
               <div className="text-center">
                 <div className="font-bold text-lg">
-                  {currentData ? '2024-01-06' : 'N/A'}
+                  {currentData.value ? currentData.date : 'N/A'}
                 </div>
                 <div className="font-medium text-muted-foreground text-xs uppercase">
                   Current
@@ -97,7 +97,7 @@ function Content() {
               <Button
                 type="button"
                 className="gap-1 h-auto px-0 py-2 text-xs"
-                disabled={!currentData}
+                disabled={isFetching || !currentData.value}
               >
                 <Save size={18} />
                 Save On Local
@@ -106,6 +106,7 @@ function Content() {
                 type="button"
                 variant="secondary"
                 className="gap-1 h-auto px-0 py-2 text-xs"
+                disabled={isFetching}
               >
                 <CloudDownload size={18} />
                 Refetch data

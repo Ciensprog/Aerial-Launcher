@@ -101,6 +101,13 @@ export enum ElectronAPIEventKeys {
   ClaimRewardsClientNotification = 'claim-rewards:client:notification',
 
   /**
+   * Advanced Mode
+   */
+
+  WorldInfoRequestFile = 'advanced-mode:world-info:request:file',
+  WorldInfoResponseFile = 'advanced-mode:world-info:response:file',
+
+  /**
    * Schedules
    */
 

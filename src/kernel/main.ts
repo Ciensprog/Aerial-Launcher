@@ -22,6 +22,7 @@ import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
+import { WorldInfoManager } from './core/world-info'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
 import { DataDirectory } from './startup/data-directory'
@@ -251,6 +252,14 @@ app.on('ready', async () => {
       await ClaimRewards.start(currentWindow, selectedAccount)
     }
   )
+
+  /**
+   * Advanced Mode
+   */
+
+  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFile, async () => {
+    await WorldInfoManager.requestData(currentWindow)
+  })
 
   ipcMain.on(
     ElectronAPIEventKeys.PartyKickAction,

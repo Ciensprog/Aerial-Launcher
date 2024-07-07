@@ -12,7 +12,7 @@ import type {
   MCPQueryProfile,
 } from '../../types/services/mcp'
 
-import { mcpService } from '../config/mcp'
+import { baseGameService } from '../config/base-game'
 
 export function setClientQuestLogin({
   accessToken,
@@ -21,8 +21,8 @@ export function setClientQuestLogin({
   accessToken: string
   accountId: string
 }) {
-  return mcpService.post<MCPClientQuestLoginResponse>(
-    `/${accountId}/client/ClientQuestLogin`,
+  return baseGameService.post<MCPClientQuestLoginResponse>(
+    `/profile/${accountId}/client/ClientQuestLogin`,
     {},
     {
       headers: {
@@ -43,8 +43,8 @@ export function getQueryProfile({
   accessToken: string
   accountId: string
 }) {
-  return mcpService.post<MCPQueryProfile>(
-    `/${accountId}/client/QueryProfile`,
+  return baseGameService.post<MCPQueryProfile>(
+    `/profile/${accountId}/client/QueryProfile`,
     {},
     {
       headers: {
@@ -66,8 +66,8 @@ export function setOpenCardPackBatch({
   accessToken: string
   accountId: string
 } & MCPOpenCardPackBatchPayload) {
-  return mcpService.post<MCPOpenCardPackBatchResponse>(
-    `/${accountId}/client/OpenCardPackBatch`,
+  return baseGameService.post<MCPOpenCardPackBatchResponse>(
+    `/profile/${accountId}/client/OpenCardPackBatch`,
     {
       cardPackItemIds,
     } as MCPOpenCardPackBatchPayload,
@@ -92,8 +92,8 @@ export function setClaimQuestReward({
   accountId: string
   questId: string
 }) {
-  return mcpService.post<MCPClaimQuestRewardResponse>(
-    `/${accountId}/client/ClaimQuestReward`,
+  return baseGameService.post<MCPClaimQuestRewardResponse>(
+    `/profile/${accountId}/client/ClaimQuestReward`,
     {
       questId,
       selectedRewardIndex: 0,
@@ -117,8 +117,8 @@ export function setClaimMissionAlertRewards({
   accessToken: string
   accountId: string
 }) {
-  return mcpService.post<MCPClaimMissionAlertRewardsResponse>(
-    `/${accountId}/client/ClaimMissionAlertRewards`,
+  return baseGameService.post<MCPClaimMissionAlertRewardsResponse>(
+    `/profile/${accountId}/client/ClaimMissionAlertRewards`,
     {},
     {
       headers: {
@@ -139,8 +139,8 @@ export function setClaimDifficultyIncreaseRewards({
   accessToken: string
   accountId: string
 }) {
-  return mcpService.post<MCPClaimDifficultyIncreaseRewardsResponse>(
-    `/${accountId}/client/ClaimDifficultyIncreaseRewards`,
+  return baseGameService.post<MCPClaimDifficultyIncreaseRewardsResponse>(
+    `/profile/${accountId}/client/ClaimDifficultyIncreaseRewards`,
     {},
     {
       headers: {
@@ -161,8 +161,8 @@ export function setRedeemSTWAccoladeTokens({
   accessToken: string
   accountId: string
 }) {
-  return mcpService.post<MCPRedeemSTWAccoladeTokensResponse>(
-    `/${accountId}/client/RedeemSTWAccoladeTokens`,
+  return baseGameService.post<MCPRedeemSTWAccoladeTokensResponse>(
+    `/profile/${accountId}/client/RedeemSTWAccoladeTokens`,
     {},
     {
       headers: {
@@ -185,8 +185,8 @@ export function setHomebaseName({
   accountId: string
   homebaseName: string
 }) {
-  return mcpService.post<MCPHomebaseNameResponse>(
-    `/${accountId}/client/SetHomebaseName`,
+  return baseGameService.post<MCPHomebaseNameResponse>(
+    `/profile/${accountId}/client/SetHomebaseName`,
     {
       homebaseName,
     },
