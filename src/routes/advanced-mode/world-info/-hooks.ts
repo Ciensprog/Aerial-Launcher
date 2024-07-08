@@ -77,11 +77,13 @@ export function useCurrentActions() {
   useEffect(() => {
     const listener = window.electronAPI.exportWorldInfoFileNotification(
       async ({ status }) => {
-        toast(
-          status
-            ? 'The file has been exported'
-            : `The file can't be exported, please try again later`
-        )
+        if (status !== 'canceled') {
+          toast(
+            status === 'success'
+              ? 'The file has been exported'
+              : `The file can't be exported, please try again later`
+          )
+        }
       }
     )
 

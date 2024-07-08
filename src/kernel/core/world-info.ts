@@ -1,6 +1,7 @@
 import type {
   SaveWorldInfoData,
   WorldInfoDeleteResponse,
+  WorldInfoExportResponse,
   WorldInfoFileData,
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
@@ -189,8 +190,8 @@ export class WorldInfoManager {
       currentWindow.webContents.send(
         ElectronAPIEventKeys.WorldInfoExportFileNotification,
         {
-          status: false,
-        }
+          status: 'canceled',
+        } as WorldInfoExportResponse
       )
     }
 
@@ -211,20 +212,29 @@ export class WorldInfoManager {
         return
       }
 
-      await writeFile(
-        response.filePath,
-        JSON.stringify(value.data, null, 2),
-        {
-          encoding: 'utf8',
-        }
-      )
+      try {
+        await writeFile(
+          response.filePath,
+          JSON.stringify(value.data, null, 2),
+          {
+            encoding: 'utf8',
+          }
+        )
 
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.WorldInfoExportFileNotification,
-        {
-          status: true,
-        }
-      )
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.WorldInfoExportFileNotification,
+          {
+            status: 'success',
+          } as WorldInfoExportResponse
+        )
+      } catch (error) {
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.WorldInfoExportFileNotification,
+          {
+            status: 'error',
+          } as WorldInfoExportResponse
+        )
+      }
 
       return
     } catch (error) {

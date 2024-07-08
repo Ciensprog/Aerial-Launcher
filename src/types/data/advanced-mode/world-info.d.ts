@@ -14,7 +14,7 @@ export type WorldInfoDeleteResponse = {
 }
 
 export type WorldInfoExportResponse = {
-  status: boolean
+  status: 'canceled' | 'error' | 'success'
 }
 
 export type WorldInfoFileData = {
