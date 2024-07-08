@@ -1,9 +1,10 @@
 import type {
   SaveWorldInfoData,
+  WorldInfoFileData,
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
 
-import { writeFile } from 'node:fs/promises'
+import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { BrowserWindow } from 'electron'
 
@@ -13,6 +14,8 @@ import { defaultFortniteClient } from '../../config/fortnite/clients'
 import { getWorldInfoData } from '../../services/endpoints/advanced-mode/world-info'
 import { createAccessTokenUsingClientCredentials } from '../../services/endpoints/oauth'
 import { DataDirectory } from '../startup/data-directory'
+
+import { getDate } from '../../lib/dates'
 
 export class WorldInfoManager {
   static async requestData(currentWindow: BrowserWindow) {
@@ -94,6 +97,56 @@ export class WorldInfoManager {
     currentWindow.webContents.send(
       ElectronAPIEventKeys.WorldInfoSaveNotification,
       status
+    )
+  }
+
+  static async requestFiles(currentWindow: BrowserWindow) {
+    const files: Array<WorldInfoFileData> = []
+
+    try {
+      const basePath = DataDirectory.getWorldInfoDirectoryPath()
+      const dir = await readdir(basePath)
+
+      for (const filename of dir) {
+        try {
+          const filePath = path.join(basePath, filename)
+          const file = await readFile(filePath, {
+            encoding: 'utf8',
+          })
+          const stats = await stat(filePath)
+
+          if (
+            !stats.isFile() ||
+            (stats.isFile() && !filename.endsWith('.json'))
+          ) {
+            continue
+          }
+
+          const parsedJson = JSON.parse(file)
+          const data: WorldInfoFileData = {
+            filename: filename.replace('.json', ''),
+            createdAt: stats.birthtime,
+            date: getDate(stats.birthtime),
+            data: parsedJson,
+            size: stats.size,
+          }
+
+          files.push(data)
+        } catch (error) {
+          //
+        }
+      }
+    } catch (error) {
+      //
+    }
+
+    const sortedFiles = files.toSorted((itemA, itemB) =>
+      itemA.createdAt > itemB.createdAt ? -1 : 1
+    )
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.WorldInfoResponseFiles,
+      sortedFiles
     )
   }
 }

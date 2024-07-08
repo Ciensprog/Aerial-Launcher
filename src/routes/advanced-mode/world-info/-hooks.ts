@@ -1,22 +1,28 @@
-import { useEffect } from 'react'
+import type { ChangeEventHandler } from 'react'
+import type { WorldInfoFileData } from '../../../types/data/advanced-mode/world-info'
+
+import { useEffect, useState } from 'react'
 
 import {
   useCurrentWorldInfoActions,
   useCurrentWorldInfoData,
+  useWorldInfoFiles,
 } from '../../../hooks/advanced-mode/world-info'
 
-import { dateNow } from '../../../lib/dates'
+import { getDate } from '../../../lib/dates'
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
   const { data, isFetching, isSaving } = useCurrentWorldInfoData()
+  const { files } = useWorldInfoFiles()
   const currentData = {
-    date: dateNow(),
+    date: getDate(),
     value: data,
   }
 
   return {
     currentData,
+    files,
     isFetching,
     isSaving,
   }
@@ -68,5 +74,24 @@ export function useCurrentActions() {
   return {
     handleRefetch,
     handleSave,
+  }
+}
+
+export function useItemData({ data }: { data: WorldInfoFileData }) {
+  const [name, setName] = useState(data.filename)
+
+  const validName = name.trim() !== ''
+
+  const handleUpdateName: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setName(event.target.value.replace(/\s+/g, ' '))
+  }
+
+  return {
+    name,
+    validName,
+
+    handleUpdateName,
   }
 }

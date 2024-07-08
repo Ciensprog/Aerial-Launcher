@@ -307,6 +307,10 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFiles, async () => {
+    await WorldInfoManager.requestFiles(currentWindow)
+  })
+
   /**
    * Accounts
    */

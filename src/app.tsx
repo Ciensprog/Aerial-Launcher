@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { IndexComponent } from './routes'
 import { routeTree } from './routeTree.gen'
 
+import { LoadWorldInfoFiles } from './bootstrap/components/advanced-mode/load-world-info-files'
 import { LoadWorldInfoData } from './bootstrap/components/advanced-mode/load-world-info'
 import { LoadAccounts } from './bootstrap/components/load-accounts'
 import { LoadGroups } from './bootstrap/components/load-groups'
@@ -33,6 +34,7 @@ root.render(
       <LoadGroups />
       <LoadAccounts />
       <LoadWorldInfoData />
+      <LoadWorldInfoFiles />
 
       <RouterProvider
         router={router}

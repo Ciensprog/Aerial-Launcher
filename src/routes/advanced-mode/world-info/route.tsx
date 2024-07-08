@@ -1,3 +1,5 @@
+import type { WorldInfoFileData } from '../../../types/data/advanced-mode/world-info'
+
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { Link, createRoute } from '@tanstack/react-router'
 import {
@@ -24,7 +26,9 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
 
-import { useCurrentActions, useData } from './-hooks'
+import { useCurrentActions, useData, useItemData } from './-hooks'
+
+import { relativeTime } from '../../../lib/dates'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -56,16 +60,8 @@ export const Route = createRoute({
   },
 })
 
-const files = [
-  '2024-01-01',
-  '2024-01-02',
-  '2024-01-03',
-  '2024-01-04',
-  '2024-01-05',
-]
-
 function Content() {
-  const { currentData, isFetching, isSaving } = useData()
+  const { currentData, files, isFetching, isSaving } = useData()
   const { handleRefetch, handleSave } = useCurrentActions()
 
   return (
@@ -148,12 +144,10 @@ function Content() {
                 )}
 
                 <div className="gap-2 grid grid-cols-1">
-                  {files.toReversed().map((date) => (
+                  {files.map((data) => (
                     <Item
-                      data={{
-                        date,
-                      }}
-                      key={date}
+                      data={data}
+                      key={data.createdAt.toISOString()}
                     />
                   ))}
                 </div>
@@ -174,13 +168,9 @@ function Content() {
   )
 }
 
-function Item({
-  data,
-}: {
-  data: {
-    date: string
-  }
-}) {
+function Item({ data }: { data: WorldInfoFileData }) {
+  const { handleUpdateName, name, validName } = useItemData({ data })
+
   return (
     <Card className="border-none-">
       <CardContent className="flex items-center px-2 py-2">
@@ -194,11 +184,14 @@ function Item({
           <Input
             className="border-none- h-auto pr-20 pl-3  py-1"
             placeholder={`Default name: ${data.date}`}
+            value={name}
+            onChange={handleUpdateName}
           />
           <Button
             type="button"
             variant="secondary"
             className="absolute h-auto px-2 py-0.5 right-1 text-sm"
+            disabled={!validName}
           >
             Update
           </Button>
@@ -208,6 +201,9 @@ function Item({
         <div className="">
           <span className="flex-shrink-0 px-1.5- py-0.5 rounded text-muted-foreground text-sm">
             Date: {data.date}
+            <span className="italic ml-1">
+              ({relativeTime(data.createdAt)})
+            </span>
           </span>
         </div>
         <div className="flex ml-auto">
