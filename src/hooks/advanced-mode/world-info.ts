@@ -7,6 +7,7 @@ export function useCurrentWorldInfoActions() {
     useShallow((state) => ({
       setData: state.setData,
       setIsFetching: state.setIsFetching,
+      setIsSaving: state.setIsSaving,
     }))
   )
 }
@@ -16,6 +17,7 @@ export function useCurrentWorldInfoData() {
     useShallow((state) => ({
       data: state.data,
       isFetching: state.isFetching,
+      isSaving: state.isSaving,
     }))
   )
 }

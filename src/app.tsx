@@ -1,5 +1,7 @@
 import { createTheme, MantineProvider } from '@mantine/core'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import dayjs from 'dayjs'
 import { createRoot } from 'react-dom/client'
 
 import { IndexComponent } from './routes'
@@ -13,6 +15,8 @@ import { LoadTags } from './bootstrap/components/load-tags'
 
 import { Toaster } from './components/ui/sonner'
 import { ThemeProvider } from './components/theme-provider'
+
+dayjs.extend(relativeTime)
 
 const root = createRoot(document.getElementById('app')!)
 const router = createRouter({ routeTree })

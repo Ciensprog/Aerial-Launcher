@@ -1,3 +1,4 @@
+import type { SaveWorldInfoData } from '../types/data/advanced-mode/world-info'
 import type {
   AccountBasicInfo,
   AccountData,
@@ -10,6 +11,8 @@ import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
 
 import path from 'node:path'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import dayjs from 'dayjs'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 import schedule from 'node-schedule'
 
@@ -29,6 +32,8 @@ import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
 import { TagsManager } from './startup/tags'
 import { GroupsManager } from './startup/groups'
+
+dayjs.extend(relativeTime)
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -253,14 +258,6 @@ app.on('ready', async () => {
     }
   )
 
-  /**
-   * Advanced Mode
-   */
-
-  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFile, async () => {
-    await WorldInfoManager.requestData(currentWindow)
-  })
-
   ipcMain.on(
     ElectronAPIEventKeys.PartyKickAction,
     async (
@@ -292,6 +289,21 @@ app.on('ready', async () => {
         accounts,
         claimState
       )
+    }
+  )
+
+  /**
+   * Advanced Mode
+   */
+
+  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFile, async () => {
+    await WorldInfoManager.requestData(currentWindow)
+  })
+
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoSaveFile,
+    async (_, data: SaveWorldInfoData) => {
+      await WorldInfoManager.saveFile(currentWindow, data)
     }
   )
 

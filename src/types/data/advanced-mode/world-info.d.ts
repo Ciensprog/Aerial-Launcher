@@ -7,3 +7,8 @@ export type WorldInfoResponse =
       data: null
       status: false
     }
+
+export type SaveWorldInfoData = {
+  data: WorldInfoData
+  date: strinng
+}

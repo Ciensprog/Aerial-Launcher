@@ -106,6 +106,8 @@ export enum ElectronAPIEventKeys {
 
   WorldInfoRequestFile = 'advanced-mode:world-info:request:file',
   WorldInfoResponseFile = 'advanced-mode:world-info:response:file',
+  WorldInfoSaveFile = 'advanced-mode:world-info:save:file',
+  WorldInfoSaveNotification = 'advanced-mode:world-info:save:notification',
 
   /**
    * Schedules

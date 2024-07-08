@@ -65,8 +65,8 @@ const files = [
 ]
 
 function Content() {
-  const { currentData, isFetching } = useData()
-  const { handleRefetch } = useCurrentActions()
+  const { currentData, isFetching, isSaving } = useData()
+  const { handleRefetch, handleSave } = useCurrentActions()
 
   return (
     <div className="flex flex-grow">
@@ -105,17 +105,24 @@ function Content() {
               <Button
                 type="button"
                 className="gap-1 h-auto px-0 py-2 text-xs"
-                disabled={isFetching || !currentData.value}
+                onClick={handleSave(currentData.date)}
+                disabled={isFetching || !currentData.value || isSaving}
               >
-                <Save size={16} />
-                Save On Local
+                {isSaving ? (
+                  <UpdateIcon className="animate-spin h-4" />
+                ) : (
+                  <>
+                    <Save size={16} />
+                    Save On Local
+                  </>
+                )}
               </Button>
               <Button
                 type="button"
                 variant="secondary"
                 className="gap-1 h-auto px-0 py-2 text-xs"
                 onClick={handleRefetch}
-                disabled={isFetching}
+                disabled={isFetching || isSaving}
               >
                 {isFetching ? (
                   <UpdateIcon className="animate-spin h-4" />
