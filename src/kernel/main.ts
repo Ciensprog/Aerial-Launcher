@@ -321,6 +321,13 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoExportFile,
+    async (_, data: WorldInfoFileData) => {
+      await WorldInfoManager.exportWorldInfoFile(currentWindow, data)
+    }
+  )
+
   /**
    * Accounts
    */

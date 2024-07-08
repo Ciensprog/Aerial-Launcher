@@ -169,8 +169,13 @@ function Content() {
 }
 
 function Item({ data }: { data: WorldInfoFileData }) {
-  const { handleDeleteFile, handleUpdateName, name, validName } =
-    useItemData({ data })
+  const {
+    handleDeleteFile,
+    handleExportFile,
+    handleUpdateName,
+    name,
+    validName,
+  } = useItemData({ data })
 
   return (
     <Card className="border-none-">
@@ -213,6 +218,7 @@ function Item({ data }: { data: WorldInfoFileData }) {
             size="icon"
             variant="ghost"
             className="flex flex-shrink-0 justify-center size-8"
+            onClick={handleExportFile}
           >
             <Share size={16} />
             <span className="sr-only">export file</span>

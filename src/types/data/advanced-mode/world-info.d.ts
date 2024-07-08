@@ -13,6 +13,10 @@ export type WorldInfoDeleteResponse = {
   status: boolean
 }
 
+export type WorldInfoExportResponse = {
+  status: boolean
+}
+
 export type WorldInfoFileData = {
   createdAt: Date
   data: WorldInfoData

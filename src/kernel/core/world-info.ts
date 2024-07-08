@@ -8,7 +8,7 @@ import type {
 import crypto from 'node:crypto'
 import { rm, readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { BrowserWindow } from 'electron'
+import { BrowserWindow, dialog } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { defaultFortniteClient } from '../../config/fortnite/clients'
@@ -179,5 +179,58 @@ export class WorldInfoManager {
       ElectronAPIEventKeys.WorldInfoDeleteNotification,
       response
     )
+  }
+
+  static async exportWorldInfoFile(
+    currentWindow: BrowserWindow,
+    value: WorldInfoFileData
+  ) {
+    const defaultResponse = () => {
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.WorldInfoExportFileNotification,
+        {
+          status: false,
+        }
+      )
+    }
+
+    try {
+      const response = await dialog.showSaveDialog(currentWindow, {
+        defaultPath: `${value.filename}.json`,
+        filters: [
+          {
+            extensions: ['json'],
+            name: 'World Info',
+          },
+        ],
+      })
+
+      if (response.canceled || !response.filePath) {
+        defaultResponse()
+
+        return
+      }
+
+      await writeFile(
+        response.filePath,
+        JSON.stringify(value.data, null, 2),
+        {
+          encoding: 'utf8',
+        }
+      )
+
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.WorldInfoExportFileNotification,
+        {
+          status: true,
+        }
+      )
+
+      return
+    } catch (error) {
+      //
+    }
+
+    defaultResponse()
   }
 }

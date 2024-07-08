@@ -2,6 +2,7 @@ import type { IpcRendererEvent } from 'electron'
 import type {
   SaveWorldInfoData,
   WorldInfoDeleteResponse,
+  WorldInfoExportResponse,
   WorldInfoFileData,
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
@@ -24,6 +25,10 @@ export function saveWorldInfoData(data: SaveWorldInfoData) {
 
 export function deleteWorldInfoFile(data: WorldInfoFileData) {
   ipcRenderer.send(ElectronAPIEventKeys.WorldInfoDeleteFile, data)
+}
+
+export function exportWorldInfoFile(data: WorldInfoFileData) {
+  ipcRenderer.send(ElectronAPIEventKeys.WorldInfoExportFile, data)
 }
 
 export function responseWorldInfoData(
@@ -110,6 +115,29 @@ export function deleteWorldInfoFileNotification(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.WorldInfoDeleteNotification,
+        customCallback
+      ),
+  }
+}
+
+export function exportWorldInfoFileNotification(
+  callback: (value: WorldInfoExportResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: WorldInfoExportResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.WorldInfoExportFileNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.WorldInfoExportFileNotification,
         customCallback
       ),
   }
