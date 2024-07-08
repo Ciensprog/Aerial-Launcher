@@ -296,7 +296,7 @@ app.on('ready', async () => {
    * Advanced Mode
    */
 
-  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFile, async () => {
+  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestData, async () => {
     await WorldInfoManager.requestData(currentWindow)
   })
 

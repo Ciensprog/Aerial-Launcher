@@ -9,7 +9,7 @@ import { ipcRenderer } from 'electron'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 export function requestWorldInfoData() {
-  ipcRenderer.send(ElectronAPIEventKeys.WorldInfoRequestFile)
+  ipcRenderer.send(ElectronAPIEventKeys.WorldInfoRequestData)
 }
 
 export function saveWorldInfoData(data: SaveWorldInfoData) {
@@ -26,14 +26,14 @@ export function responseWorldInfoData(
     callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
-    ElectronAPIEventKeys.WorldInfoResponseFile,
+    ElectronAPIEventKeys.WorldInfoResponseData,
     customCallback
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
-        ElectronAPIEventKeys.WorldInfoResponseFile,
+        ElectronAPIEventKeys.WorldInfoResponseData,
         customCallback
       ),
   }

@@ -18,7 +18,7 @@ export class WorldInfoManager {
   static async requestData(currentWindow: BrowserWindow) {
     const defaultResponse = () => {
       currentWindow.webContents.send(
-        ElectronAPIEventKeys.WorldInfoResponseFile,
+        ElectronAPIEventKeys.WorldInfoResponseData,
         {
           data: null,
           status: false,
@@ -52,7 +52,7 @@ export class WorldInfoManager {
       }
 
       currentWindow.webContents.send(
-        ElectronAPIEventKeys.WorldInfoResponseFile,
+        ElectronAPIEventKeys.WorldInfoResponseData,
         {
           data: worldInfoResponse.data,
           status: true,
