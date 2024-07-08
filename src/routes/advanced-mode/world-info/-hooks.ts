@@ -20,6 +20,26 @@ export function useData() {
     value: data,
   }
 
+  useEffect(() => {
+    const listener = window.electronAPI.deleteWorldInfoFileNotification(
+      async ({ filename, status }) => {
+        toast(
+          status
+            ? `The file "${filename}" has been saved`
+            : `The file "${filename}" can't be deleted, please try again later`
+        )
+
+        if (status) {
+          window.electronAPI.requestWorldInfoFiles()
+        }
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   return {
     currentData,
     files,
@@ -92,10 +112,15 @@ export function useItemData({ data }: { data: WorldInfoFileData }) {
     setName(event.target.value.replace(/\s+/g, ' '))
   }
 
+  const handleDeleteFile = () => {
+    window.electronAPI.deleteWorldInfoFile(data)
+  }
+
   return {
     name,
     validName,
 
+    handleDeleteFile,
     handleUpdateName,
   }
 }

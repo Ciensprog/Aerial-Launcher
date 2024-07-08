@@ -1,10 +1,11 @@
 import type {
   SaveWorldInfoData,
+  WorldInfoDeleteResponse,
   WorldInfoFileData,
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
 
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { rm, readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { BrowserWindow } from 'electron'
 
@@ -147,6 +148,34 @@ export class WorldInfoManager {
     currentWindow.webContents.send(
       ElectronAPIEventKeys.WorldInfoResponseFiles,
       sortedFiles
+    )
+  }
+
+  static async deleteFile(
+    currentWindow: BrowserWindow,
+    data: WorldInfoFileData
+  ) {
+    const response: WorldInfoDeleteResponse = {
+      filename: data.filename,
+      status: false,
+    }
+
+    try {
+      await rm(
+        path.join(
+          DataDirectory.getWorldInfoDirectoryPath(),
+          `${data.filename}.json`
+        )
+      )
+
+      response.status = true
+    } catch (error) {
+      //
+    }
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.WorldInfoDeleteNotification,
+      response
     )
   }
 }

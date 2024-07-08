@@ -1,4 +1,7 @@
-import type { SaveWorldInfoData } from '../types/data/advanced-mode/world-info'
+import type {
+  SaveWorldInfoData,
+  WorldInfoFileData,
+} from '../types/data/advanced-mode/world-info'
 import type {
   AccountBasicInfo,
   AccountData,
@@ -310,6 +313,13 @@ app.on('ready', async () => {
   ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFiles, async () => {
     await WorldInfoManager.requestFiles(currentWindow)
   })
+
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoDeleteFile,
+    async (_, data: WorldInfoFileData) => {
+      await WorldInfoManager.deleteFile(currentWindow, data)
+    }
+  )
 
   /**
    * Accounts

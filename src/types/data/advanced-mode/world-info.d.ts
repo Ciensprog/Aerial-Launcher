@@ -8,6 +8,11 @@ export type WorldInfoResponse =
       status: false
     }
 
+export type WorldInfoDeleteResponse = {
+  filename: string
+  status: boolean
+}
+
 export type WorldInfoFileData = {
   createdAt: Date
   data: WorldInfoData
