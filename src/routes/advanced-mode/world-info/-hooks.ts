@@ -92,6 +92,26 @@ export function useCurrentActions() {
     }
   }, [])
 
+  useEffect(() => {
+    const listener = window.electronAPI.openWorldInfoFileNotification(
+      async ({ filename, status }) => {
+        toast(
+          status
+            ? `The file "${filename}" has been opened`
+            : `The file "${filename}" can't be opened, please try again later`
+        )
+
+        if (status) {
+          window.electronAPI.requestWorldInfoFiles()
+        }
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   const handleRefetch = () => {
     if (isFetching) {
       return
@@ -138,12 +158,17 @@ export function useItemData({ data }: { data: WorldInfoFileData }) {
     window.electronAPI.exportWorldInfoFile(data)
   }
 
+  const handleOpenFile = () => {
+    window.electronAPI.openWorldInfoFile(data)
+  }
+
   return {
     name,
     validName,
 
     handleDeleteFile,
     handleExportFile,
+    handleOpenFile,
     handleUpdateName,
   }
 }

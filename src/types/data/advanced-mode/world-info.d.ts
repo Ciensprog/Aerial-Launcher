@@ -17,6 +17,11 @@ export type WorldInfoExportResponse = {
   status: 'canceled' | 'error' | 'success'
 }
 
+export type WorldInfoOpenResponse = {
+  filename: string
+  status: boolean
+}
+
 export type WorldInfoFileData = {
   createdAt: Date
   data: WorldInfoData

@@ -4,6 +4,7 @@ import { UpdateIcon } from '@radix-ui/react-icons'
 import { Link, createRoute } from '@tanstack/react-router'
 import {
   CloudDownload,
+  Eye,
   FileJson,
   FileSearch2,
   FileWarning,
@@ -172,6 +173,7 @@ function Item({ data }: { data: WorldInfoFileData }) {
   const {
     handleDeleteFile,
     handleExportFile,
+    handleOpenFile,
     handleUpdateName,
     name,
     validName,
@@ -213,6 +215,16 @@ function Item({ data }: { data: WorldInfoFileData }) {
           </span>
         </div>
         <div className="flex ml-auto">
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            className="flex flex-shrink-0 justify-center size-8"
+            onClick={handleOpenFile}
+          >
+            <Eye size={16} />
+            <span className="sr-only">open file</span>
+          </Button>
           <Button
             type="button"
             size="icon"

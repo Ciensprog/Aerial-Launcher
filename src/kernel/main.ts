@@ -328,6 +328,13 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoOpenFile,
+    async (_, data: WorldInfoFileData) => {
+      await WorldInfoManager.openWorldInfoFile(currentWindow, data)
+    }
+  )
+
   /**
    * Accounts
    */

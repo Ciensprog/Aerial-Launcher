@@ -3,13 +3,14 @@ import type {
   WorldInfoDeleteResponse,
   WorldInfoExportResponse,
   WorldInfoFileData,
+  WorldInfoOpenResponse,
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
 
 import crypto from 'node:crypto'
 import { rm, readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { BrowserWindow, dialog } from 'electron'
+import { BrowserWindow, dialog, shell } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { defaultFortniteClient } from '../../config/fortnite/clients'
@@ -242,5 +243,33 @@ export class WorldInfoManager {
     }
 
     defaultResponse()
+  }
+
+  static async openWorldInfoFile(
+    currentWindow: BrowserWindow,
+    { filename }: WorldInfoFileData
+  ) {
+    const response: WorldInfoOpenResponse = {
+      filename,
+      status: false,
+    }
+
+    try {
+      await shell.openPath(
+        path.join(
+          DataDirectory.getWorldInfoDirectoryPath(),
+          `${filename}.json`
+        )
+      )
+
+      response.status = true
+    } catch (error) {
+      //
+    }
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.WorldInfoOpenFileNotification,
+      response
+    )
   }
 }

@@ -4,6 +4,7 @@ import type {
   WorldInfoDeleteResponse,
   WorldInfoExportResponse,
   WorldInfoFileData,
+  WorldInfoOpenResponse,
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
 
@@ -29,6 +30,10 @@ export function deleteWorldInfoFile(data: WorldInfoFileData) {
 
 export function exportWorldInfoFile(data: WorldInfoFileData) {
   ipcRenderer.send(ElectronAPIEventKeys.WorldInfoExportFile, data)
+}
+
+export function openWorldInfoFile(data: WorldInfoFileData) {
+  ipcRenderer.send(ElectronAPIEventKeys.WorldInfoOpenFile, data)
 }
 
 export function responseWorldInfoData(
@@ -138,6 +143,29 @@ export function exportWorldInfoFileNotification(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.WorldInfoExportFileNotification,
+        customCallback
+      ),
+  }
+}
+
+export function openWorldInfoFileNotification(
+  callback: (value: WorldInfoOpenResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: WorldInfoOpenResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.WorldInfoOpenFileNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.WorldInfoOpenFileNotification,
         customCallback
       ),
   }
