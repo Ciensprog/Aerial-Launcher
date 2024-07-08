@@ -18,6 +18,7 @@ export type WorldInfoFileData = {
   data: WorldInfoData
   date: string
   filename: string
+  id: string
   size: number
 }
 

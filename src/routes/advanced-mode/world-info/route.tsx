@@ -147,7 +147,7 @@ function Content() {
                   {files.map((data) => (
                     <Item
                       data={data}
-                      key={data.createdAt.toISOString()}
+                      key={data.id}
                     />
                   ))}
                 </div>

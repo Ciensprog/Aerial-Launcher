@@ -5,6 +5,7 @@ import type {
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
 
+import crypto from 'node:crypto'
 import { rm, readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { BrowserWindow } from 'electron'
@@ -125,10 +126,11 @@ export class WorldInfoManager {
 
           const parsedJson = JSON.parse(file)
           const data: WorldInfoFileData = {
-            filename: filename.replace('.json', ''),
             createdAt: stats.birthtime,
             date: getDate(stats.birthtime),
             data: parsedJson,
+            filename: filename.replace('.json', ''),
+            id: crypto.randomUUID(),
             size: stats.size,
           }
 
