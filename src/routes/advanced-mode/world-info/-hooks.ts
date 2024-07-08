@@ -42,6 +42,10 @@ export function useCurrentActions() {
             ? 'The file has been saved'
             : "The file can't be saved, please try again later"
         )
+
+        if (status) {
+          window.electronAPI.requestWorldInfoFiles()
+        }
       }
     )
 
