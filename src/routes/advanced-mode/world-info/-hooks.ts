@@ -30,17 +30,24 @@ export function useData() {
 
 export function useSearch({ files }: { files: Array<WorldInfoFileData> }) {
   const [searchValue, setSearchValue] = useState('')
+  const [includeFileData, setIncludeFileData] = useState(false)
 
   const filteredFiles =
     searchValue.length > 0
-      ? files.filter((item) =>
-          [item.date, item.filename].some((value) =>
+      ? files.filter((item) => {
+          const data = [item.date, item.filename]
+
+          if (includeFileData) {
+            data.push(JSON.stringify(item.data))
+          }
+
+          return data.some((value) =>
             value
               .toLowerCase()
               .trim()
               .includes(searchValue.toLowerCase().trim())
           )
-        )
+        })
       : files
 
   const onChangeSearchValue: ChangeEventHandler<HTMLInputElement> = (
@@ -51,9 +58,11 @@ export function useSearch({ files }: { files: Array<WorldInfoFileData> }) {
 
   return {
     filteredFiles,
+    includeFileData,
     searchValue,
 
     onChangeSearchValue,
+    setIncludeFileData,
   }
 }
 

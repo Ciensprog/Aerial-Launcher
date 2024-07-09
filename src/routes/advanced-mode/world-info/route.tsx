@@ -26,6 +26,7 @@ import {
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
+import { Switch } from '../../../components/ui/switch'
 
 import {
   useCurrentActions,
@@ -69,7 +70,13 @@ export const Route = createRoute({
 function Content() {
   const { currentData, files, isFetching, isSaving } = useData()
   const { handleRefetch, handleSave } = useCurrentActions()
-  const { filteredFiles, searchValue, onChangeSearchValue } = useSearch({
+  const {
+    filteredFiles,
+    includeFileData,
+    searchValue,
+    onChangeSearchValue,
+    setIncludeFileData,
+  } = useSearch({
     files,
   })
 
@@ -145,12 +152,19 @@ function Content() {
             {files.length > 0 ? (
               <>
                 {files.length > 1 && (
-                  <div className="mb-5">
+                  <div className="flex gap-3 items-center mb-5">
                     <Input
                       placeholder={`Search on ${files.length} files`}
                       value={searchValue}
                       onChange={onChangeSearchValue}
                     />
+                    <div className="flex flex-shrink-0 gap-2 items-center text-muted-foreground w-1/3">
+                      Include file data
+                      <Switch
+                        checked={includeFileData}
+                        onCheckedChange={setIncludeFileData}
+                      />
+                    </div>
                   </div>
                 )}
 
