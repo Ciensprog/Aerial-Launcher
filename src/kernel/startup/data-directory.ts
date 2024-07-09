@@ -12,6 +12,8 @@ import { tagsSchema } from '../../lib/validations/schemas/tags'
 import { groupsSchema } from '../../lib/validations/schemas/groups'
 
 export class DataDirectory {
+  private static devPrefix = 'dev-'
+
   /**
    * Folders
    */
@@ -30,10 +32,12 @@ export class DataDirectory {
    * Files
    */
 
-  private static accountsFilePath = path.join(
-    DataDirectory.dataDirectoryPath,
-    'accounts.json'
-  )
+  private static accountsFilePath = MAIN_WINDOW_VITE_DEV_SERVER_URL
+    ? path.join(
+        DataDirectory.dataDirectoryPath,
+        `${DataDirectory.devPrefix}accounts.json`
+      )
+    : path.join(DataDirectory.dataDirectoryPath, 'accounts.json')
   private static accountsDefaultData: AccountList = []
 
   private static settingsFilePath = path.join(
