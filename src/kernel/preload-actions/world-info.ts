@@ -36,6 +36,17 @@ export function openWorldInfoFile(data: WorldInfoFileData) {
   ipcRenderer.send(ElectronAPIEventKeys.WorldInfoOpenFile, data)
 }
 
+export function renameWorldInfoFile(
+  data: WorldInfoFileData,
+  newFilename: string
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.WorldInfoRenameFile,
+    data,
+    newFilename
+  )
+}
+
 export function responseWorldInfoData(
   callback: (value: WorldInfoResponse) => Promise<void>
 ) {
@@ -166,6 +177,26 @@ export function openWorldInfoFileNotification(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.WorldInfoOpenFileNotification,
+        customCallback
+      ),
+  }
+}
+
+export function renameWorldInfoFileNotification(
+  callback: (value: boolean) => Promise<void>
+) {
+  const customCallback = (_: IpcRendererEvent, value: boolean) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.WorldInfoRenameFileNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.WorldInfoRenameFileNotification,
         customCallback
       ),
   }

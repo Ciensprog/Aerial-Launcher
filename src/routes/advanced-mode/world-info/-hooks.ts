@@ -141,6 +141,26 @@ export function useCurrentActions() {
     }
   }, [])
 
+  useEffect(() => {
+    const listener = window.electronAPI.renameWorldInfoFileNotification(
+      async (status) => {
+        toast(
+          status
+            ? 'The file has been renamed'
+            : "The file can't be renamed, please try again later"
+        )
+
+        if (status) {
+          window.electronAPI.requestWorldInfoFiles()
+        }
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   const handleRefetch = () => {
     if (isFetching) {
       return
@@ -191,6 +211,15 @@ export function useItemData({ data }: { data: WorldInfoFileData }) {
     window.electronAPI.openWorldInfoFile(data)
   }
 
+  const handleRenameFile = () => {
+    if (validName) {
+      window.electronAPI.renameWorldInfoFile(data, name.trim())
+    }
+  }
+  const handleRevertFilename = () => {
+    setName(data.filename)
+  }
+
   return {
     name,
     validName,
@@ -198,6 +227,8 @@ export function useItemData({ data }: { data: WorldInfoFileData }) {
     handleDeleteFile,
     handleExportFile,
     handleOpenFile,
+    handleRenameFile,
+    handleRevertFilename,
     handleUpdateName,
   }
 }

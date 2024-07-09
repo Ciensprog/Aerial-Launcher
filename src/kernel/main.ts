@@ -335,6 +335,13 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoRenameFile,
+    async (_, data: WorldInfoFileData, newFilename: string) => {
+      await WorldInfoManager.renameFile(currentWindow, data, newFilename)
+    }
+  )
+
   /**
    * Accounts
    */

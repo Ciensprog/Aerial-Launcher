@@ -116,6 +116,8 @@ export enum ElectronAPIEventKeys {
   WorldInfoExportFileNotification = 'advanced-mode:world-info:export:notification',
   WorldInfoOpenFile = 'advanced-mode:world-info:open:file',
   WorldInfoOpenFileNotification = 'advanced-mode:world-info:open:notification',
+  WorldInfoRenameFile = 'advanced-mode:world-info:rename:file',
+  WorldInfoRenameFileNotification = 'advanced-mode:world-info:rename:notification',
 
   /**
    * Schedules

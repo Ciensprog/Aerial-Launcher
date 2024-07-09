@@ -8,7 +8,14 @@ import type {
 } from '../../types/data/advanced-mode/world-info'
 
 import crypto from 'node:crypto'
-import { rm, readdir, readFile, stat, writeFile } from 'node:fs/promises'
+import {
+  readdir,
+  readFile,
+  rename,
+  rm,
+  stat,
+  writeFile,
+} from 'node:fs/promises'
 import path from 'node:path'
 import { BrowserWindow, dialog, shell } from 'electron'
 
@@ -270,6 +277,42 @@ export class WorldInfoManager {
     currentWindow.webContents.send(
       ElectronAPIEventKeys.WorldInfoOpenFileNotification,
       response
+    )
+  }
+
+  static async renameFile(
+    currentWindow: BrowserWindow,
+    data: WorldInfoFileData,
+    newFilename: string
+  ) {
+    let status = false
+
+    try {
+      const baseFilePath = path.join(
+        DataDirectory.getWorldInfoDirectoryPath(),
+        `${data.filename}.json`
+      )
+      const newFilePath = path.join(
+        DataDirectory.getWorldInfoDirectoryPath(),
+        `${newFilename}.json`
+      )
+
+      try {
+        await readFile(newFilePath, {
+          encoding: 'utf8',
+        })
+      } catch (error) {
+        await rename(baseFilePath, newFilePath)
+
+        status = true
+      }
+    } catch (error) {
+      //
+    }
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.WorldInfoRenameFileNotification,
+      status
     )
   }
 }

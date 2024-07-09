@@ -194,6 +194,8 @@ function Item({ data }: { data: WorldInfoFileData }) {
     handleDeleteFile,
     handleExportFile,
     handleOpenFile,
+    handleRenameFile,
+    handleRevertFilename,
     handleUpdateName,
     name,
     validName,
@@ -219,9 +221,9 @@ function Item({ data }: { data: WorldInfoFileData }) {
             type="button"
             variant="secondary"
             className="absolute h-auto px-2 py-0.5 right-1 text-sm"
-            disabled={!validName}
+            onClick={validName ? handleRenameFile : handleRevertFilename}
           >
-            Update
+            {validName ? 'Update' : 'Revert'}
           </Button>
         </div>
       </CardContent>
