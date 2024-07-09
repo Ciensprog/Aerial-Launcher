@@ -1,4 +1,8 @@
 import type {
+  SaveWorldInfoData,
+  WorldInfoFileData,
+} from '../types/data/advanced-mode/world-info'
+import type {
   AccountBasicInfo,
   AccountData,
   AccountDataList,
@@ -10,6 +14,8 @@ import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
 
 import path from 'node:path'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import dayjs from 'dayjs'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 import schedule from 'node-schedule'
 
@@ -22,12 +28,15 @@ import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
+import { WorldInfoManager } from './core/world-info'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
 import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
 import { TagsManager } from './startup/tags'
 import { GroupsManager } from './startup/groups'
+
+dayjs.extend(relativeTime)
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -283,6 +292,53 @@ app.on('ready', async () => {
         accounts,
         claimState
       )
+    }
+  )
+
+  /**
+   * Advanced Mode
+   */
+
+  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestData, async () => {
+    await WorldInfoManager.requestData(currentWindow)
+  })
+
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoSaveFile,
+    async (_, data: SaveWorldInfoData) => {
+      await WorldInfoManager.saveFile(currentWindow, data)
+    }
+  )
+
+  ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFiles, async () => {
+    await WorldInfoManager.requestFiles(currentWindow)
+  })
+
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoDeleteFile,
+    async (_, data: WorldInfoFileData) => {
+      await WorldInfoManager.deleteFile(currentWindow, data)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoExportFile,
+    async (_, data: WorldInfoFileData) => {
+      await WorldInfoManager.exportWorldInfoFile(currentWindow, data)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoOpenFile,
+    async (_, data: WorldInfoFileData) => {
+      await WorldInfoManager.openWorldInfoFile(currentWindow, data)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.WorldInfoRenameFile,
+    async (_, data: WorldInfoFileData, newFilename: string) => {
+      await WorldInfoManager.renameFile(currentWindow, data, newFilename)
     }
   )
 

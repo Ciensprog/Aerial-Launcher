@@ -33,6 +33,18 @@ export type CreateExchangeCodeResponse = {
   creatingClientId: string
 }
 
+export type CreateAccessTokenWithClientCredentialsResponse = {
+  access_token: string
+  expires_in: number
+  expires_at: string
+  token_type: string
+  client_id: string
+  internal_client: boolean
+  client_service: string
+  product_id: string
+  application_id: string
+}
+
 export type DeviceAuthResponse = {
   deviceId: string
   accountId: string

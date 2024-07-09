@@ -1,6 +1,7 @@
 import type { AxiosRequestConfig } from 'axios'
 import type {
   AuthorizationCodeResponse,
+  CreateAccessTokenWithClientCredentialsResponse,
   CreateExchangeCodeResponse,
   DeviceAuthResponse,
   ExchangeCodeResponse,
@@ -60,6 +61,24 @@ export function getExchangeCodeUsingAccessToken(accessToken: string) {
       Authorization: `Bearer ${accessToken}`,
     },
   })
+}
+
+export function createAccessTokenUsingClientCredentials({
+  authorization,
+}: {
+  authorization: string
+}) {
+  return oauthService.post<CreateAccessTokenWithClientCredentialsResponse>(
+    '/token',
+    {
+      grant_type: 'client_credentials',
+    },
+    {
+      headers: {
+        Authorization: `basic ${authorization}`,
+      },
+    }
+  )
 }
 
 export function createDeviceAuthCredentials({

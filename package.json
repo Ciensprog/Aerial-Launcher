@@ -52,6 +52,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
     "color": "^4.2.3",
+    "dayjs": "^1.11.11",
     "electron-squirrel-startup": "^1.0.0",
     "lucide-react": "^0.372.0",
     "next-themes": "^0.3.0",

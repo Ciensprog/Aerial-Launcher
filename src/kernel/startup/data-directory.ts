@@ -12,10 +12,23 @@ import { tagsSchema } from '../../lib/validations/schemas/tags'
 import { groupsSchema } from '../../lib/validations/schemas/groups'
 
 export class DataDirectory {
+  /**
+   * Folders
+   */
+
   private static dataDirectoryPath = path.join(
     `${process.env.APPDATA}`,
     'aerial-launcher-data'
   )
+
+  private static worldInfoDirectoryPath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'world-info'
+  )
+
+  /**
+   * Files
+   */
 
   private static accountsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
@@ -44,10 +57,23 @@ export class DataDirectory {
   private static groupsDefaultData: GroupRecord = {}
 
   /**
+   * Get Path
+   */
+
+  static getDataDirectoryPath() {
+    return DataDirectory.dataDirectoryPath
+  }
+
+  static getWorldInfoDirectoryPath() {
+    return DataDirectory.worldInfoDirectoryPath
+  }
+
+  /**
    * Create data directory and accounts.json
    */
   static async createDataResources() {
     await DataDirectory.checkOrCreateDataDirectory()
+    await DataDirectory.checkOrCreateWorldInfoDirectory()
     await DataDirectory.getOrCreateAccountsJsonFile()
     await DataDirectory.getOrCreateSettingsJsonFile()
     await DataDirectory.getOrCreateTagsJsonFile()
@@ -162,6 +188,22 @@ export class DataDirectory {
    */
   static async updateGroupsFile(data: GroupRecord) {
     await DataDirectory.updateJsonFile(DataDirectory.groupsFilePath, data)
+  }
+
+  /**
+   * Creating World Info directory
+   */
+  static async checkOrCreateWorldInfoDirectory() {
+    const checkDirectory = () =>
+      readdir(DataDirectory.worldInfoDirectoryPath)
+
+    try {
+      await checkDirectory()
+    } catch (error) {
+      await mkdir(DataDirectory.worldInfoDirectoryPath)
+    }
+
+    return DataDirectory.worldInfoDirectoryPath
   }
 
   /**

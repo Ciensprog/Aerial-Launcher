@@ -101,6 +101,25 @@ export enum ElectronAPIEventKeys {
   ClaimRewardsClientNotification = 'claim-rewards:client:notification',
 
   /**
+   * Advanced Mode
+   */
+
+  WorldInfoRequestData = 'advanced-mode:world-info:request:data',
+  WorldInfoResponseData = 'advanced-mode:world-info:response:data',
+  WorldInfoSaveFile = 'advanced-mode:world-info:save:file',
+  WorldInfoSaveNotification = 'advanced-mode:world-info:save:notification',
+  WorldInfoRequestFiles = 'advanced-mode:world-info:request:files',
+  WorldInfoResponseFiles = 'advanced-mode:world-info:response:files',
+  WorldInfoDeleteFile = 'advanced-mode:world-info:delete:file',
+  WorldInfoDeleteNotification = 'advanced-mode:world-info:delete:notification',
+  WorldInfoExportFile = 'advanced-mode:world-info:export:file',
+  WorldInfoExportFileNotification = 'advanced-mode:world-info:export:notification',
+  WorldInfoOpenFile = 'advanced-mode:world-info:open:file',
+  WorldInfoOpenFileNotification = 'advanced-mode:world-info:open:notification',
+  WorldInfoRenameFile = 'advanced-mode:world-info:rename:file',
+  WorldInfoRenameFileNotification = 'advanced-mode:world-info:rename:notification',
+
+  /**
    * Schedules
    */
 

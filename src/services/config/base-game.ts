@@ -3,15 +3,15 @@ import axios from 'axios'
 import { Manifest } from '../../kernel/core/manifest'
 
 /**
- * MCP Service
+ * Base Game Service
  */
 
-export const mcpService = axios.create({
+export const baseGameService = axios.create({
   baseURL:
-    'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/game/v2/profile',
+    'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/game/v2',
 })
 
-mcpService.interceptors.request.use((config) => {
+baseGameService.interceptors.request.use((config) => {
   const manifest = Manifest.get()
 
   if (manifest) {

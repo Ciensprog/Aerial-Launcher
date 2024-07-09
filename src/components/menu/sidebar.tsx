@@ -70,11 +70,11 @@ export function SidebarMenu({
           <div
             className={cn(
               'px-3 py-2 text-muted-foreground',
-              '[&_.item-stw-operations>a]:flex'
+              '[&_.item>a]:flex'
             )}
           >
             <ul className="list-disc ml-5">
-              <li className="item-stw-operations">
+              <li className="item">
                 <Link
                   to="/stw-operations/party"
                   className={currentClassNameHover}
@@ -86,7 +86,7 @@ export function SidebarMenu({
                   Party
                 </Link>
               </li>
-              <li className="item-stw-operations">
+              <li className="item">
                 <Link
                   to="/stw-operations/save-quests"
                   className={currentClassNameHover}
@@ -98,7 +98,7 @@ export function SidebarMenu({
                   Save Quests
                 </Link>
               </li>
-              <li className="item-stw-operations">
+              <li className="item">
                 <Link
                   to="/stw-operations/homebase-name"
                   className={currentClassNameHover}
@@ -116,11 +116,11 @@ export function SidebarMenu({
           <div
             className={cn(
               'px-3 py-2 text-muted-foreground',
-              '[&_.item-account-management>a]:flex'
+              '[&_.item>a]:flex'
             )}
           >
             <ul className="list-disc ml-5">
-              <li className="item-account-management">
+              <li className="item">
                 <Link
                   to="/account-management/epic-games-settings"
                   className={cn({
@@ -141,17 +141,40 @@ export function SidebarMenu({
             </ul>
           </div>
 
+          <Title className="pb-0">Advanced Mode</Title>
+          <div
+            className={cn(
+              'px-3 py-2 text-muted-foreground',
+              '[&_.item>a]:flex'
+            )}
+          >
+            <ul className="list-disc ml-5">
+              <li className="item">
+                <Link
+                  to="/advanced-mode/world-info"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  World Info
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           <Separator className="my-2" />
 
           <Title className="pb-0">My Accounts ({totalInText}):</Title>
           <div
             className={cn(
               'px-3 py-2 text-muted-foreground',
-              '[&_.item-auth-type>a]:flex'
+              '[&_.item>a]:flex'
             )}
           >
             <ul className="list-disc ml-5">
-              <li className="item-auth-type">
+              <li className="item">
                 <Link
                   to="/accounts/add/$type"
                   params={{ type: 'authorization-code' }}
@@ -164,7 +187,7 @@ export function SidebarMenu({
                   Authorization Code
                 </Link>
               </li>
-              <li className="item-auth-type">
+              <li className="item">
                 <Link
                   to="/accounts/add/$type"
                   params={{ type: 'exchange-code' }}
@@ -177,7 +200,7 @@ export function SidebarMenu({
                   Exchange Code
                 </Link>
               </li>
-              <li className="item-auth-type">
+              <li className="item">
                 <Link
                   to="/accounts/add/$type"
                   params={{ type: 'device-auth' }}
@@ -190,7 +213,7 @@ export function SidebarMenu({
                   Device Auth
                 </Link>
               </li>
-              <li className="item-auth-type">
+              <li className="item">
                 <Link
                   to="/accounts/remove"
                   className={cn({
