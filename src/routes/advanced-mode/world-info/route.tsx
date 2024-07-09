@@ -27,7 +27,12 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
 
-import { useCurrentActions, useData, useItemData } from './-hooks'
+import {
+  useCurrentActions,
+  useData,
+  useItemData,
+  useSearch,
+} from './-hooks'
 
 import { relativeTime } from '../../../lib/dates'
 
@@ -64,6 +69,9 @@ export const Route = createRoute({
 function Content() {
   const { currentData, files, isFetching, isSaving } = useData()
   const { handleRefetch, handleSave } = useCurrentActions()
+  const { filteredFiles, searchValue, onChangeSearchValue } = useSearch({
+    files,
+  })
 
   return (
     <div className="flex flex-grow">
@@ -140,17 +148,29 @@ function Content() {
                   <div className="mb-5">
                     <Input
                       placeholder={`Search on ${files.length} files`}
+                      value={searchValue}
+                      onChange={onChangeSearchValue}
                     />
                   </div>
                 )}
 
                 <div className="gap-2 grid grid-cols-1">
-                  {files.map((data) => (
-                    <Item
-                      data={data}
-                      key={data.id}
-                    />
-                  ))}
+                  {filteredFiles.length > 0 ? (
+                    filteredFiles.map((data) => (
+                      <Item
+                        data={data}
+                        key={data.id}
+                      />
+                    ))
+                  ) : (
+                    <div className="mt-10 text-center text-muted-foreground">
+                      <FileWarning
+                        size={48}
+                        className="mx-auto"
+                      />
+                      <div className="mt-2">No files found</div>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (

@@ -28,6 +28,35 @@ export function useData() {
   }
 }
 
+export function useSearch({ files }: { files: Array<WorldInfoFileData> }) {
+  const [searchValue, setSearchValue] = useState('')
+
+  const filteredFiles =
+    searchValue.length > 0
+      ? files.filter((item) =>
+          [item.date, item.filename].some((value) =>
+            value
+              .toLowerCase()
+              .trim()
+              .includes(searchValue.toLowerCase().trim())
+          )
+        )
+      : files
+
+  const onChangeSearchValue: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setSearchValue(event.currentTarget.value.replace(/\s+/g, ' '))
+  }
+
+  return {
+    filteredFiles,
+    searchValue,
+
+    onChangeSearchValue,
+  }
+}
+
 export function useCurrentActions() {
   const { setIsFetching, setIsSaving } = useCurrentWorldInfoActions()
   const { data, isFetching, isSaving } = useCurrentWorldInfoData()
