@@ -194,10 +194,9 @@ function Item({ data }: { data: WorldInfoFileData }) {
     handleDeleteFile,
     handleExportFile,
     handleOpenFile,
-    handleRenameFile,
-    handleRevertFilename,
     handleUpdateName,
     name,
+    onSubmit,
     validName,
   } = useItemData({ data })
 
@@ -210,7 +209,10 @@ function Item({ data }: { data: WorldInfoFileData }) {
             size={24}
           />
         </div>
-        <div className="flex flex-grow items-center relative">
+        <form
+          className="flex flex-grow items-center relative"
+          onSubmit={onSubmit}
+        >
           <Input
             className="border-none- h-auto pr-20 pl-3  py-1"
             placeholder={`Default name: ${data.date}`}
@@ -218,14 +220,13 @@ function Item({ data }: { data: WorldInfoFileData }) {
             onChange={handleUpdateName}
           />
           <Button
-            type="button"
+            type="submit"
             variant="secondary"
             className="absolute h-auto px-2 py-0.5 right-1 text-sm"
-            onClick={validName ? handleRenameFile : handleRevertFilename}
           >
             {validName ? 'Update' : 'Revert'}
           </Button>
-        </div>
+        </form>
       </CardContent>
       <CardFooter className="bg-muted-foreground/5 px-2 py-1 rounded-b">
         <div className="">

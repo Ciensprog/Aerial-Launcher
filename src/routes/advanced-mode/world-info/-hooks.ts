@@ -1,4 +1,4 @@
-import type { ChangeEventHandler } from 'react'
+import type { ChangeEventHandler, FormEventHandler } from 'react'
 import type { WorldInfoFileData } from '../../../types/data/advanced-mode/world-info'
 
 import { useEffect, useState } from 'react'
@@ -211,13 +211,14 @@ export function useItemData({ data }: { data: WorldInfoFileData }) {
     window.electronAPI.openWorldInfoFile(data)
   }
 
-  const handleRenameFile = () => {
+  const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault()
+
     if (validName) {
       window.electronAPI.renameWorldInfoFile(data, name.trim())
+    } else {
+      setName(data.filename)
     }
-  }
-  const handleRevertFilename = () => {
-    setName(data.filename)
   }
 
   return {
@@ -227,8 +228,7 @@ export function useItemData({ data }: { data: WorldInfoFileData }) {
     handleDeleteFile,
     handleExportFile,
     handleOpenFile,
-    handleRenameFile,
-    handleRevertFilename,
     handleUpdateName,
+    onSubmit,
   }
 }
