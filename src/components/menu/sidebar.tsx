@@ -110,6 +110,18 @@ export function SidebarMenu({
                   Homebase Name
                 </Link>
               </li>
+              <li className="item">
+                <Link
+                  to="/stw-operations/xpboosts"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  XP Boosts
+                </Link>
+              </li>
             </ul>
           </div>
           <Title className="pb-0">Account Management</Title>
