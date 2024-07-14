@@ -94,3 +94,12 @@ export function parseCustomDisplayName(account: AccountData | null) {
 
   return customDisplayNameText
 }
+
+/**
+ *
+ * @param max number. `Default: 100`
+ * @returns random number
+ */
+export function randomNumber(max?: number) {
+  return Math.floor(Math.random() * (max ?? 100))
+}
