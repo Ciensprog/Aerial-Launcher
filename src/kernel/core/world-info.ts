@@ -152,8 +152,10 @@ export class WorldInfoManager {
       //
     }
 
-    const sortedFiles = files.toSorted((itemA, itemB) =>
-      itemA.createdAt > itemB.createdAt ? -1 : 1
+    const sortedFiles = files.toSorted(
+      (itemA, itemB) =>
+        itemB.createdAt.getTime() - itemA.createdAt.getTime() ||
+        itemB.filename.localeCompare(itemA.filename)
     )
 
     currentWindow.webContents.send(
