@@ -96,7 +96,6 @@ export function Header() {
         </SheetTrigger>
         <SheetContent
           className="flex flex-col"
-          side="right"
           hideCloseButton
         >
           <div>

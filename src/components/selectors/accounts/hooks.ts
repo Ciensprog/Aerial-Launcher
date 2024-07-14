@@ -73,7 +73,10 @@ export function useAccountSelectorData({
           .map(([key]) => key),
       ]),
     ]
-    return accountIds.map((accountId) => accountList[accountId])
+
+    return accountIds
+      .map((accountId) => accountList[accountId])
+      .filter((account) => account !== undefined)
   }
 
   return {
