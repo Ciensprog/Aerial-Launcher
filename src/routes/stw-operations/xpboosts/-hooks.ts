@@ -141,10 +141,8 @@ export function useData() {
     actionFormIsDisabled,
     accounts,
     amountToSend,
-    // areThereAccounts,
     data,
     isSubmitting,
-    // isSelectedEmpty,
     parsedSelectedAccounts,
     parsedSelectedTags,
     seeBoostsButtonIsDisabled,
@@ -253,7 +251,6 @@ export function useSendBoostsSheet() {
 
   return {
     accountIdSelected,
-    // amountToSend,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,
     consumePersonalBoostsButtonIsDisabled,

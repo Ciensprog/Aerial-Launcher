@@ -83,10 +83,8 @@ function Content() {
     actionFormIsDisabled,
     accounts,
     amountToSend,
-    // areThereAccounts,
     data,
     isSubmitting,
-    // isSelectedEmpty,
     parsedSelectedAccounts,
     parsedSelectedTags,
     seeBoostsButtonIsDisabled,
@@ -195,14 +193,11 @@ function Content() {
 function SendBoostsSheet() {
   const {
     accountIdSelected,
-    // amountToSend,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,
     consumePersonalBoostsButtonIsDisabled,
     consumeTeammateBoostsButtonIsDisabled,
-    // data,
     dataFilterByPersonalType,
-    // dataFilterByTeammateType,
     generalIsSubmitting,
     isSubmittingPersonal,
     isSubmittingTeammate,
@@ -222,7 +217,6 @@ function SendBoostsSheet() {
         <Button
           variant="secondary"
           className="w-full"
-          // onClick={}
           disabled={sendBoostsButtonIsDisabled}
         >
           Send Boosts
