@@ -11,6 +11,7 @@ import {
   useGetXPBoostsFormConsumeStatus,
   useGetXPBoostsFormData,
   useGetXPBoostsFormStatus,
+  useXPBoostsAccountItem,
 } from '../../../hooks/stw-operations/xpboosts'
 import { useGetAccounts } from '../../../hooks/accounts'
 
@@ -162,14 +163,26 @@ export function useAccountDataItem({
 }: {
   data: XPBoostsDataWithAccountData
 }) {
+  const { updateAvailability } = useXPBoostsAccountItem()
+
   const isZero =
     data.items.personal.quantity === 0 &&
     data.items.teammate.quantity === 0
-  const isDisabled = isZero
+  const isDisabled = !data.available
+
+  const handleChangeAvailability = (value: boolean) => {
+    if (isZero) {
+      return
+    }
+
+    updateAvailability(data.accountId, !value)
+  }
 
   return {
     isDisabled,
     isZero,
+
+    handleChangeAvailability,
   }
 }
 
@@ -198,10 +211,10 @@ export function useSendBoostsSheet() {
     ? 0
     : Number(amountToSend)
   const dataFilterByPersonalType = data.filter(
-    (item) => item.items.personal.quantity > 0
+    (item) => item.available && item.items.personal.quantity > 0
   )
   const dataFilterByTeammateType = data.filter(
-    (item) => item.items.teammate.quantity > 0
+    (item) => item.available && item.items.teammate.quantity > 0
   )
 
   const noPersonalBoostsData = dataFilterByPersonalType.length <= 0
@@ -245,7 +258,7 @@ export function useSendBoostsSheet() {
     window.electronAPI.consumePersonalXPBoosts({
       accounts: dataFilterByPersonalType,
       originalAccounts: getAccounts(),
-      total: Number(amountToSend),
+      total: amountToSendParsedToNumber,
     })
   }
 

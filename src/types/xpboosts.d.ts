@@ -2,6 +2,7 @@ import type { AccountData } from './accounts'
 
 export type XPBoostsData = {
   accountId: string
+  available: boolean
   items: {
     personal: XPBoostItem
     teammate: XPBoostItem

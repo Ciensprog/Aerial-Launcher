@@ -109,6 +109,16 @@ export function useGetXPBoostsData() {
   }
 }
 
+export function useXPBoostsAccountItem() {
+  const updateAvailability = useXPBoostsDataStore(
+    (state) => state.updateAvailability
+  )
+
+  return {
+    updateAvailability,
+  }
+}
+
 export function useGetXPBoostsFormGeneralStatus() {
   const isSubmitting = useXPBoostsFormStore((state) => state.isSubmitting)
   const { isSubmittingPersonal, isSubmittingTeammate } =

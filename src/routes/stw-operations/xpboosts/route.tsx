@@ -265,158 +265,146 @@ function SendBoostsSheet() {
           </div>
         </SheetHeader>
         <div className="flex flex-col overflow-auto">
-          {xpBoostType ? (
+          {noPersonalBoostsData || noTeammateBoostsData ? (
+            <div className="mt-14 text-center text-muted-foreground">
+              No accounts available
+            </div>
+          ) : xpBoostType ? (
             <>
-              {noPersonalBoostsData ? (
-                <div className="mt-14 text-center text-muted-foreground">
-                  No accounts available
-                </div>
-              ) : (
-                <>
-                  <div className="p-1">
-                    <p className="px-2 text-sm">
-                      All of these accounts will use XP boosts:
-                    </p>
-                  </div>
-                  <ScrollArea>
-                    <div className="flex flex-col gap-1 overflow-auto">
-                      {dataFilterByPersonalType.map((item) => (
-                        <div
-                          className="border px-2 py-1 rounded-sm"
-                          key={item.accountId}
-                        >
-                          <div className="text-muted-foreground text-sm truncate max-w-[40ch]">
-                            {parseCustomDisplayName(item.account)}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                  <div className="mb-5 mt-5 px-1">
-                    <Button
-                      className="w-full"
-                      onClick={handleConsumePersonal}
-                      disabled={consumePersonalBoostsButtonIsDisabled}
+              <div className="p-1">
+                <p className="px-2 text-sm">
+                  All of these accounts will use XP boosts:
+                </p>
+              </div>
+              <ScrollArea>
+                <div className="flex flex-col gap-1 overflow-auto">
+                  {dataFilterByPersonalType.map((item) => (
+                    <div
+                      className="border px-2 py-1 rounded-sm"
+                      key={item.accountId}
                     >
-                      {isSubmittingPersonal ? (
-                        <UpdateIcon className="animate-spin" />
-                      ) : noPersonalBoostsData ? (
-                        'No accounts available'
-                      ) : amountToSendIsInvalid ? (
-                        'Please type a valid amount'
-                      ) : (
-                        `Consume ${compactNumber(amountToSendParsedToNumber)} XP Boost${amountToSendParsedToNumber > 1 ? 's' : ''} on each account`
-                      )}
-                    </Button>
-                  </div>
-                </>
-              )}
+                      <div className="text-muted-foreground text-sm truncate max-w-[40ch]">
+                        {parseCustomDisplayName(item.account)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+              <div className="mb-5 mt-5 px-1">
+                <Button
+                  className="w-full"
+                  onClick={handleConsumePersonal}
+                  disabled={consumePersonalBoostsButtonIsDisabled}
+                >
+                  {isSubmittingPersonal ? (
+                    <UpdateIcon className="animate-spin" />
+                  ) : noPersonalBoostsData ? (
+                    'No accounts available'
+                  ) : amountToSendIsInvalid ? (
+                    'Please type a valid amount'
+                  ) : (
+                    `Consume ${compactNumber(amountToSendParsedToNumber)} XP Boost${amountToSendParsedToNumber > 1 ? 's' : ''} on each account`
+                  )}
+                </Button>
+              </div>
             </>
           ) : (
             <>
-              {noTeammateBoostsData ? (
-                <div className="mt-14 text-center text-muted-foreground">
-                  No accounts available
+              <div className="p-1">
+                <div className="relative">
+                  <Input
+                    placeholder="Search by display name (epic username)"
+                    disabled={
+                      noTeammateBoostsData ||
+                      consumeTeammateBoostsButtonIsDisabled
+                    }
+                  />
                 </div>
-              ) : (
-                <>
-                  <div className="p-1">
-                    <div className="relative">
-                      <Input
-                        placeholder="Search by display name (epic username)"
-                        disabled={
-                          noTeammateBoostsData ||
-                          consumeTeammateBoostsButtonIsDisabled
-                        }
-                      />
-                    </div>
-                    <p className="mt-3 px-2 text-sm">
-                      Please select correct account:
-                    </p>
-                  </div>
-                  <ScrollArea>
-                    <Command
-                      disablePointerSelection={
-                        consumeTeammateBoostsButtonIsDisabled
-                      }
-                      loop
-                    >
-                      <CommandList className="max-h-full">
-                        <CommandGroup>
-                          <RadioGroup className="gap-1">
-                            {Array.from({ length: 12 }, () => null).map(
-                              (_, index) => (
-                                <CommandItem
-                                  className={cn(
-                                    'border cursor-pointer gap-2 py-1 select-text',
-                                    {
-                                      'bg-muted ring-2 ring-white/20':
-                                        accountIdSelected === `${index}`,
-                                    }
-                                  )}
-                                  value={`${index}`}
-                                  onSelect={handleSetAccountIdSelected}
-                                  key={index}
-                                >
-                                  <a
-                                    href={`https://fortnitedb.com/profile/Sample`}
-                                    className="flex-shrink-0"
-                                    onClick={(event) => {
-                                      event.preventDefault()
+                <p className="mt-3 px-2 text-sm">
+                  Please select correct account:
+                </p>
+              </div>
+              <ScrollArea>
+                <Command
+                  disablePointerSelection={
+                    consumeTeammateBoostsButtonIsDisabled
+                  }
+                  loop
+                >
+                  <CommandList className="max-h-full">
+                    <CommandGroup>
+                      <RadioGroup className="gap-1">
+                        {Array.from({ length: 12 }, () => null).map(
+                          (_, index) => (
+                            <CommandItem
+                              className={cn(
+                                'border cursor-pointer gap-2 py-1 select-text',
+                                {
+                                  'bg-muted ring-2 ring-white/20':
+                                    accountIdSelected === `${index}`,
+                                }
+                              )}
+                              value={`${index}`}
+                              onSelect={handleSetAccountIdSelected}
+                              key={index}
+                            >
+                              <a
+                                href={`https://fortnitedb.com/profile/Sample`}
+                                className="flex-shrink-0"
+                                onClick={(event) => {
+                                  event.preventDefault()
 
-                                      window.electronAPI.openExternalURL(
-                                        `https://fortnitedb.com/profile/Sample`
-                                      )
-                                    }}
-                                  >
-                                    <figure>
-                                      <img
-                                        src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
-                                        className="size-4"
-                                        alt="fndb"
-                                      />
-                                    </figure>
-                                  </a>
-                                  <div className="text-muted-foreground truncate max-w-[40ch]">
-                                    {`External.v${index}`}
-                                  </div>
-                                </CommandItem>
-                              )
-                            )}
-                          </RadioGroup>
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </ScrollArea>
-                  <div className="mb-5 mt-5 px-1">
-                    <Button
-                      className="gap-1 w-full"
-                      disabled={consumeTeammateBoostsButtonIsDisabled}
-                    >
-                      {isSubmittingTeammate ? (
-                        <UpdateIcon className="animate-spin" />
-                      ) : noTeammateBoostsData ? (
-                        'No accounts available'
-                      ) : amountToSendIsInvalid ? (
-                        'Please type a valid amount'
-                      ) : accountIdSelected ? (
-                        <>
-                          Send
-                          <span className="underline">
-                            {compactNumber(amountToSendParsedToNumber)}
-                          </span>
-                          to:
-                          <span className="font-bold max-w-[25ch] truncate">
-                            {`External.v${accountIdSelected}`}
-                          </span>
-                        </>
-                      ) : (
-                        'Please select an account'
-                      )}
-                    </Button>
-                  </div>
-                </>
-              )}
+                                  window.electronAPI.openExternalURL(
+                                    `https://fortnitedb.com/profile/Sample`
+                                  )
+                                }}
+                              >
+                                <figure>
+                                  <img
+                                    src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
+                                    className="size-4"
+                                    alt="fndb"
+                                  />
+                                </figure>
+                              </a>
+                              <div className="text-muted-foreground truncate max-w-[40ch]">
+                                {`External.v${index}`}
+                              </div>
+                            </CommandItem>
+                          )
+                        )}
+                      </RadioGroup>
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </ScrollArea>
+              <div className="mb-5 mt-5 px-1">
+                <Button
+                  className="gap-1 w-full"
+                  disabled={consumeTeammateBoostsButtonIsDisabled}
+                >
+                  {isSubmittingTeammate ? (
+                    <UpdateIcon className="animate-spin" />
+                  ) : noTeammateBoostsData ? (
+                    'No accounts available'
+                  ) : amountToSendIsInvalid ? (
+                    'Please type a valid amount'
+                  ) : accountIdSelected ? (
+                    <>
+                      Send
+                      <span className="underline">
+                        {compactNumber(amountToSendParsedToNumber)}
+                      </span>
+                      to:
+                      <span className="font-bold max-w-[25ch] truncate">
+                        {`External.v${accountIdSelected}`}
+                      </span>
+                    </>
+                  ) : (
+                    'Please select an account'
+                  )}
+                </Button>
+              </div>
             </>
           )}
         </div>
@@ -463,9 +451,10 @@ function AccountInformation({
   data: XPBoostsDataWithAccountData
   disableActions: boolean
 }) {
-  const { isDisabled, isZero } = useAccountDataItem({
-    data,
-  })
+  const { isDisabled, isZero, handleChangeAvailability } =
+    useAccountDataItem({
+      data,
+    })
 
   return (
     <article
@@ -498,8 +487,9 @@ function AccountInformation({
                 }
               )}
               defaultPressed={isDisabled}
-              disabled={isDisabled || disableActions}
-              aria-label="toggle use"
+              onPressedChange={handleChangeAvailability}
+              disabled={disableActions}
+              aria-label="toggle availability"
             >
               {isDisabled ? <Undo2 size={14} /> : <Trash2 size={14} />}
             </Toggle>

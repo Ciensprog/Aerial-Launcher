@@ -29,6 +29,7 @@ export class XPBoostsManager {
         accounts.map(async (account) => {
           const defaultValue: XPBoostsData = {
             accountId: account.accountId,
+            available: true,
             items: {
               personal: {
                 itemId: null,
