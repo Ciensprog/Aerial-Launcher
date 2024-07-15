@@ -5,6 +5,7 @@ import { InputTags } from '../../ui/third-party/extended/input-tags'
 
 export function AccountSelectors({
   accounts,
+  isDisabled,
   tags,
   onUpdateAccounts,
   onUpdateTags,
@@ -13,6 +14,7 @@ export function AccountSelectors({
     options: Array<SelectOption>
     value: Array<SelectOption>
   }
+  isDisabled?: boolean
   tags: {
     options: Array<SelectOption>
     value: Array<SelectOption>
@@ -27,6 +29,7 @@ export function AccountSelectors({
         options={accounts.options}
         value={accounts.value}
         onChange={onUpdateAccounts ?? (() => {})}
+        isDisabled={isDisabled}
       />
       <SeparatorWithTitle>Or</SeparatorWithTitle>
       <InputTags
@@ -34,6 +37,7 @@ export function AccountSelectors({
         options={tags.options}
         value={tags.value}
         onChange={onUpdateTags ?? (() => {})}
+        isDisabled={isDisabled}
       />
     </div>
   )

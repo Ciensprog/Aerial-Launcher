@@ -12,6 +12,7 @@ import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { GroupRecord } from '../types/groups'
 import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
+import type { XPBoostsConsumePersonalData } from '../types/xpboosts'
 
 import path from 'node:path'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -28,6 +29,7 @@ import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
+import { XPBoostsManager } from './core/xpboosts'
 import { WorldInfoManager } from './core/world-info'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
@@ -247,6 +249,20 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.SetHombaseName,
     async (_, accounts: Array<AccountData>, homebaseName: string) => {
       await MCPHomebaseName.update(currentWindow, accounts, homebaseName)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.XPBoostsAccountProfileRequest,
+    async (_, accounts: Array<AccountData>) => {
+      await XPBoostsManager.requestAccounts(currentWindow, accounts)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.XPBoostsConsumePersonal,
+    async (_, data: XPBoostsConsumePersonalData) => {
+      await XPBoostsManager.consumePersonal(currentWindow, data)
     }
   )
 

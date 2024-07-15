@@ -144,9 +144,10 @@ export type MCPQueryProfileProfileChanges = {
     items: Record<
       string,
       | MCPQueryProfileProfileChangesCardPack
+      | MCPQueryProfileProfileChangesConsumableAccountItem
       | MCPQueryProfileProfileChangesHero
-      | MCPQueryProfileProfileChangesQuest
       | MCPQueryProfileProfileChangesSchematic
+      | MCPQueryProfileProfileChangesQuest
       | MCPQueryProfileProfileChangesWorker
     >
   }
@@ -163,6 +164,15 @@ export type MCPQueryProfileProfileChangesCardPack = {
     }
     level: number
     pack_source: StringUnion<'ItemCache'>
+  }
+  quantity: number
+}
+
+export type MCPQueryProfileProfileChangesConsumableAccountItem = {
+  templateId: `ConsumableAccountItem:${string}`
+  attributes: {
+    level: number
+    item_seen: boolean
   }
   quantity: number
 }

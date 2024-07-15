@@ -81,7 +81,7 @@ export function parseDisplayName(account: AccountData) {
     : account.displayName
 }
 
-export function parseCustomDisplayName(account: AccountData | null) {
+export function parseCustomDisplayName(account?: AccountData | null) {
   if (!account) {
     return 'Unknown User'
   }

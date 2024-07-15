@@ -8,21 +8,22 @@ import type {
 } from '../../types/services/mcp/claim-rewards'
 import type { MCPHomebaseNameResponse } from '../../types/services/mcp/homebase-name'
 import type {
+  MCPActivateConsumableResponse,
   MCPClientQuestLoginResponse,
   MCPQueryProfile,
 } from '../../types/services/mcp'
 
 import { baseGameService } from '../config/base-game'
 
-export function setClientQuestLogin({
+export function getQueryProfile({
   accessToken,
   accountId,
 }: {
   accessToken: string
   accountId: string
 }) {
-  return baseGameService.post<MCPClientQuestLoginResponse>(
-    `/profile/${accountId}/client/ClientQuestLogin`,
+  return baseGameService.post<MCPQueryProfile>(
+    `/profile/${accountId}/client/QueryProfile`,
     {},
     {
       headers: {
@@ -36,7 +37,7 @@ export function setClientQuestLogin({
   )
 }
 
-export function getQueryProfile({
+export function getQueryPublicProfile({
   accessToken,
   accountId,
 }: {
@@ -44,7 +45,58 @@ export function getQueryProfile({
   accountId: string
 }) {
   return baseGameService.post<MCPQueryProfile>(
-    `/profile/${accountId}/client/QueryProfile`,
+    `/profile/${accountId}/public/QueryPublicProfile`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setActivateConsumable({
+  accessToken,
+  accountId,
+  targetItemId,
+  targetAccountId,
+}: {
+  accessToken: string
+  accountId: string
+  targetItemId: string
+  targetAccountId: string
+}) {
+  return baseGameService.post<MCPActivateConsumableResponse>(
+    `/profile/${accountId}/client/ActivateConsumable`,
+    {
+      targetItemId,
+      targetAccountId,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setClientQuestLogin({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return baseGameService.post<MCPClientQuestLoginResponse>(
+    `/profile/${accountId}/client/ClientQuestLogin`,
     {},
     {
       headers: {

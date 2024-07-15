@@ -6,5 +6,6 @@ export type MCPClientQuestLoginResponse = {
   notifications?: Array<unknown>
 }
 
-export * from './query-profile.d'
+export * from './activate-consumable.d'
 export * from './claim-rewards.d'
+export * from './query-profile.d'

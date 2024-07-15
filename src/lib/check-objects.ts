@@ -1,5 +1,6 @@
 import type {
   MCPQueryProfileProfileChangesCardPack,
+  MCPQueryProfileProfileChangesConsumableAccountItem,
   MCPQueryProfileProfileChangesHero,
   MCPQueryProfileProfileChangesQuest,
   MCPQueryProfileProfileChangesSchematic,
@@ -12,22 +13,28 @@ export function isMCPQueryProfileProfileChangesCardPack(value: {
   return value?.templateId?.startsWith('CardPack:')
 }
 
+export function isMCPQueryProfileProfileChangesConsumableAccountItem(value: {
+  templateId: string
+}): value is MCPQueryProfileProfileChangesConsumableAccountItem {
+  return value?.templateId?.startsWith('ConsumableAccountItem:')
+}
+
 export function isMCPQueryProfileProfileChangesHero(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesHero {
   return value?.templateId?.startsWith('Hero:')
 }
 
-export function isMCPQueryProfileProfileChangesQuest(value: {
-  templateId: string
-}): value is MCPQueryProfileProfileChangesQuest {
-  return value?.templateId?.startsWith('Quest:')
-}
-
 export function isMCPQueryProfileProfileChangesSchematic(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesSchematic {
   return value?.templateId?.startsWith('Schematic:')
+}
+
+export function isMCPQueryProfileProfileChangesQuest(value: {
+  templateId: string
+}): value is MCPQueryProfileProfileChangesQuest {
+  return value?.templateId?.startsWith('Quest:')
 }
 
 export function isMCPQueryProfileProfileChangesWorker(value: {

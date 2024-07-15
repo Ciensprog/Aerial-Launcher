@@ -77,6 +77,9 @@ export function useAccountSelectorData({
     return accountIds
       .map((accountId) => accountList[accountId])
       .filter((account) => account !== undefined)
+      .toSorted((itemA, itemB) =>
+        parseDisplayName(itemA).localeCompare(parseDisplayName(itemB))
+      )
   }
 
   return {

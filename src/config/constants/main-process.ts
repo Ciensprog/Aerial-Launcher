@@ -87,6 +87,11 @@ export enum ElectronAPIEventKeys {
   SetHombaseName = 'homebase-name:set',
   HomebaseNameNotification = 'homebase-name:notification',
 
+  XPBoostsAccountProfileRequest = 'xpboosts:account-profile:request',
+  XPBoostsAccountProfileResponse = 'xpboosts:account-profile:response',
+  XPBoostsConsumePersonal = 'xpboosts:consume:personal',
+  XPBoostsConsumePersonalNotification = 'xpboosts:consume:personal:notification',
+
   /**
    * Party
    */
