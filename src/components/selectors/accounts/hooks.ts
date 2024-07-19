@@ -6,7 +6,10 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
-import { parseCustomDisplayName } from '../../../lib/utils'
+import {
+  localeCompareForSorting,
+  parseCustomDisplayName,
+} from '../../../lib/utils'
 
 export function useAccountSelectorData({
   selectedAccounts,
@@ -78,7 +81,8 @@ export function useAccountSelectorData({
       .map((accountId) => accountList[accountId])
       .filter((account) => account !== undefined)
       .toSorted((itemA, itemB) =>
-        parseCustomDisplayName(itemA).localeCompare(
+        localeCompareForSorting(
+          parseCustomDisplayName(itemA),
           parseCustomDisplayName(itemB)
         )
       )

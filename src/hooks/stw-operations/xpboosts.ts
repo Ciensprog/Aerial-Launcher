@@ -10,7 +10,10 @@ import {
 
 import { useGetAccounts } from '../accounts'
 
-import { parseCustomDisplayName } from '../../lib/utils'
+import {
+  localeCompareForSorting,
+  parseCustomDisplayName,
+} from '../../lib/utils'
 
 export function useGetXPBoostsFormData() {
   const { amountToSend, updateAmountToSend } = useXPBoostsDataStore(
@@ -96,7 +99,8 @@ export function useGetXPBoostsData() {
       return item
     })
     .toSorted((itemA, itemB) =>
-      parseCustomDisplayName(itemA.account).localeCompare(
+      localeCompareForSorting(
+        parseCustomDisplayName(itemA.account),
         parseCustomDisplayName(itemB.account)
       )
     )

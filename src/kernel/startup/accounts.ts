@@ -11,6 +11,11 @@ import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { DataDirectory } from './data-directory'
 
+import {
+  localeCompareForSorting,
+  parseCustomDisplayName,
+} from '../../lib/utils'
+
 export class AccountsManager {
   static async load(currentWindow: BrowserWindow) {
     const result = await DataDirectory.getAccountsFile()
@@ -22,9 +27,10 @@ export class AccountsManager {
         token: undefined,
       }))
       .toSorted((itemA, itemB) =>
-        itemA.displayName.localeCompare(itemB.displayName, undefined, {
-          numeric: true,
-        })
+        localeCompareForSorting(
+          parseCustomDisplayName(itemA),
+          parseCustomDisplayName(itemB)
+        )
       )
 
     const accountList = accounts.reduce((accumulator, current) => {
@@ -58,9 +64,10 @@ export class AccountsManager {
     }
 
     accounts = accounts.toSorted((itemA, itemB) =>
-      itemA.displayName.localeCompare(itemB.displayName, undefined, {
-        numeric: true,
-      })
+      localeCompareForSorting(
+        parseCustomDisplayName(itemA),
+        parseCustomDisplayName(itemB)
+      )
     )
 
     await DataDirectory.updateAccountsFile(accounts)

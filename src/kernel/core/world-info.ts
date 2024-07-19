@@ -27,6 +27,7 @@ import { createAccessTokenUsingClientCredentials } from '../../services/endpoint
 import { DataDirectory } from '../startup/data-directory'
 
 import { getDate } from '../../lib/dates'
+import { localeCompareForSorting } from '../../lib/utils'
 
 export class WorldInfoManager {
   static async requestData(currentWindow: BrowserWindow) {
@@ -154,8 +155,9 @@ export class WorldInfoManager {
 
     const sortedFiles = files.toSorted(
       (itemA, itemB) =>
-        itemB.createdAt.getTime() - itemA.createdAt.getTime() ||
-        itemB.filename.localeCompare(itemA.filename)
+        (itemB.createdAt?.getTime() ?? 0) -
+          (itemA.createdAt?.getTime() ?? 0) ||
+        localeCompareForSorting(itemB.filename, itemA.filename)
     )
 
     currentWindow.webContents.send(
