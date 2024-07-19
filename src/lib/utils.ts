@@ -29,16 +29,8 @@ export function tagsArrayToSelectOptions(
 export function sortAccounts(data: AccountDataRecord) {
   const result = Object.values(data)
   const accounts = result.toSorted((itemA, itemB) => {
-    const _itemADisplayName = checkIfCustomDisplayNameIsValid(
-      itemA.customDisplayName
-    )
-      ? itemA.customDisplayName ?? ''
-      : itemA.displayName
-    const _itemBDisplayName = checkIfCustomDisplayNameIsValid(
-      itemB.customDisplayName
-    )
-      ? itemB.customDisplayName ?? ''
-      : itemB.displayName
+    const _itemADisplayName = parseCustomDisplayName(itemA)
+    const _itemBDisplayName = parseCustomDisplayName(itemB)
 
     return _itemADisplayName.localeCompare(_itemBDisplayName, undefined, {
       numeric: true,
@@ -69,16 +61,6 @@ export function sortTags(data: TagRecord) {
   }, {} as TagRecord)
 
   return tags
-}
-
-export function parseDisplayName(account: AccountData) {
-  if (!account) {
-    return 'Unknown User'
-  }
-
-  return checkIfCustomDisplayNameIsValid(account.customDisplayName)
-    ? account.customDisplayName
-    : account.displayName
 }
 
 export function parseCustomDisplayName(account?: AccountData | null) {

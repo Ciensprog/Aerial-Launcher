@@ -14,7 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { useAccountList } from './hooks'
 
 import { getStatusProvider } from '../../lib/statuses'
-import { cn, parseDisplayName } from '../../lib/utils'
+import { cn, parseCustomDisplayName } from '../../lib/utils'
 
 export function AccountList() {
   const {
@@ -51,7 +51,7 @@ export function AccountList() {
               {selected ? (
                 <span className="block w-full">
                   <span className="block truncate max-w-[10rem] w-full">
-                    {parseDisplayName(selected)}
+                    {parseCustomDisplayName(selected)}
                   </span>
                   <span className="block text-muted-foreground text-xs truncate">
                     {getStatusProvider(selected.provider)}
@@ -83,7 +83,7 @@ export function AccountList() {
             <CommandEmpty>No account found</CommandEmpty>
             <CommandGroup>
               {accounts.map((account) => {
-                const displayName = parseDisplayName(account)
+                const displayName = parseCustomDisplayName(account)
 
                 return (
                   <CommandItem

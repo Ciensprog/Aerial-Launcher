@@ -9,7 +9,7 @@ import { useClaimedRewards } from '../../hooks/stw-operations/claimed-rewards'
 import { useGetAccounts } from '../../hooks/accounts'
 
 import { parseResource } from '../../lib/parsers/resources'
-import { parseDisplayName } from '../../lib/utils'
+import { parseCustomDisplayName } from '../../lib/utils'
 
 export function HistoryMenu() {
   const { data } = useClaimedRewards()
@@ -48,7 +48,7 @@ function RewardSection({ data }: { data: Array<RewardsNotification> }) {
   return data.map((item, index) => (
     <div key={index}>
       <div className="font-bold mb-2 break-all">
-        {parseDisplayName(accountList[item.accountId])}:
+        {parseCustomDisplayName(accountList[item.accountId])}:
       </div>
       <ul
         className="space-y-1"
