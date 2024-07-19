@@ -168,7 +168,7 @@ export function useAccountDataItem({
   const isZero =
     data.items.personal.quantity === 0 &&
     data.items.teammate.quantity === 0
-  const isDisabled = !data.available
+  const isDisabled = !data.available || isZero
 
   const handleChangeAvailability = (value: boolean) => {
     if (isZero) {
@@ -229,6 +229,8 @@ export function useSendBoostsSheet() {
     amountToSendIsInvalid ||
     generalIsSubmitting ||
     noTeammateBoostsData
+  const inputSearchIsDisabled =
+    amountToSendIsInvalid || generalIsSubmitting || noTeammateBoostsData
 
   const handleSetXPBoostsType = (value: boolean) => {
     if (generalIsSubmitting) {
@@ -272,6 +274,7 @@ export function useSendBoostsSheet() {
     dataFilterByPersonalType,
     dataFilterByTeammateType,
     generalIsSubmitting,
+    inputSearchIsDisabled,
     isSubmittingPersonal,
     isSubmittingTeammate,
     noPersonalBoostsData,

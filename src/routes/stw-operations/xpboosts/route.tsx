@@ -199,6 +199,7 @@ function SendBoostsSheet() {
     consumeTeammateBoostsButtonIsDisabled,
     dataFilterByPersonalType,
     generalIsSubmitting,
+    inputSearchIsDisabled,
     isSubmittingPersonal,
     isSubmittingTeammate,
     noPersonalBoostsData,
@@ -314,10 +315,7 @@ function SendBoostsSheet() {
                 <div className="relative">
                   <Input
                     placeholder="Search by display name (epic username)"
-                    disabled={
-                      noTeammateBoostsData ||
-                      consumeTeammateBoostsButtonIsDisabled
-                    }
+                    disabled={inputSearchIsDisabled}
                   />
                 </div>
                 <p className="mt-3 px-2 text-sm">
