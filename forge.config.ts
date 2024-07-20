@@ -10,13 +10,13 @@ import packageJson from './package.json'
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    icon: 'icon.ico',
+    icon: 'icon-transparent.ico',
   },
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
-      iconUrl: `https://raw.githubusercontent.com/${packageJson.author.name}/Aerial-Launcher/main/icon.ico`,
-      setupIcon: 'icon.ico',
+      iconUrl: `https://raw.githubusercontent.com/${packageJson.author.name}/Aerial-Launcher/main/icon-transparent.ico`,
+      setupIcon: 'icon-transparent.ico',
     }),
   ],
   plugins: [
