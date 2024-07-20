@@ -3,6 +3,8 @@ import type { XPBoostsDataWithAccountData } from '../../../types/xpboosts'
 
 import { useEffect, useState } from 'react'
 
+import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
+
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
 
 import {
@@ -13,8 +15,12 @@ import {
   useGetXPBoostsFormStatus,
   useXPBoostsAccountItem,
 } from '../../../hooks/stw-operations/xpboosts'
-import { useGetAccounts } from '../../../hooks/accounts'
+import {
+  useGetAccounts,
+  useGetSelectedAccount,
+} from '../../../hooks/accounts'
 
+import { calculateTeammateXPBoostsToUse } from '../../../lib/calculations/xpboosts'
 import { compactNumber } from '../../../lib/parsers/numbers'
 import { toast } from '../../../lib/notifications'
 
@@ -48,6 +54,10 @@ export function useData() {
     selectedTags,
   })
   const { amountToSendIsInvalid, data, updateData } = useGetXPBoostsData()
+
+  const amountToSendParsedToNumber = amountToSendIsInvalid
+    ? 0
+    : Number(amountToSend)
 
   const seeBoostsButtonIsDisabled =
     isSelectedEmpty ||
@@ -118,7 +128,14 @@ export function useData() {
   const handleChangeAmount: ChangeEventHandler<HTMLInputElement> = (
     event
   ) => {
-    updateAmountToSend(event.target.value.replace(/[^0-9]+/g, ''))
+    const value = event.target.value.replace(/[^0-9]+/g, '')
+    const currentValue = Number.isNaN(value) ? 0 : Number(value)
+
+    updateAmountToSend(
+      currentValue > maxAmountLimitedTo
+        ? `${maxAmountLimitedTo}`
+        : `${currentValue === 0 ? '' : currentValue}`
+    )
   }
 
   const handleSearch = () => {
@@ -142,6 +159,7 @@ export function useData() {
     actionFormIsDisabled,
     accounts,
     amountToSend,
+    amountToSendParsedToNumber,
     data,
     isSubmitting,
     parsedSelectedAccounts,
@@ -158,12 +176,39 @@ export function useData() {
   }
 }
 
+export function useFilterXPBoosts({
+  amountToSend,
+  data,
+}: {
+  amountToSend: number
+  data: Array<XPBoostsDataWithAccountData>
+}) {
+  const result = calculateTeammateXPBoostsToUse({
+    amountToSend,
+    data,
+  })
+  const calculatedTotal = Object.values(result).reduce(
+    (accumulator, current) => accumulator + current,
+    0
+  )
+
+  return {
+    calculatedTotal,
+    teammateXPBoostsFiltered: result,
+  }
+}
+
 export function useAccountDataItem({
   data,
 }: {
   data: XPBoostsDataWithAccountData
 }) {
+  const { amountToSend, amountToSendIsInvalid } = useGetXPBoostsData()
   const { updateAvailability } = useXPBoostsAccountItem()
+
+  const amountToSendParsedToNumber = amountToSendIsInvalid
+    ? 0
+    : Number(amountToSend)
 
   const isZero =
     data.items.personal.quantity === 0 &&
@@ -179,6 +224,7 @@ export function useAccountDataItem({
   }
 
   return {
+    amountToSendParsedToNumber,
     isDisabled,
     isZero,
 
@@ -187,10 +233,13 @@ export function useAccountDataItem({
 }
 
 export function useSendBoostsSheet() {
+  const { selected: currentAccountSelected } = useGetSelectedAccount()
+  const { accountList } = useGetAccounts()
+
   const [xpBoostType, setXPBoostType] = useState(false)
   const [accountIdSelected, setAccountIdSelected] = useState<
     string | null
-  >(null)
+  >(currentAccountSelected?.accountId ?? null)
 
   const { selectedAccounts, selectedTags } = useGetXPBoostsFormData()
   const { getAccounts } = useAccountSelectorData({
@@ -232,6 +281,23 @@ export function useSendBoostsSheet() {
   const inputSearchIsDisabled =
     amountToSendIsInvalid || generalIsSubmitting || noTeammateBoostsData
 
+  useEffect(() => {
+    console.log('----------')
+    console.log('Use:', currentAccountSelected)
+
+    if (
+      currentAccountSelected?.accountId &&
+      currentAccountSelected.accountId !== accountIdSelected
+    ) {
+      console.log('Update:', currentAccountSelected)
+      setAccountIdSelected(currentAccountSelected.accountId)
+    }
+
+    // return () => {
+    //   //
+    // }
+  }, [currentAccountSelected])
+
   const handleSetXPBoostsType = (value: boolean) => {
     if (generalIsSubmitting) {
       return
@@ -266,10 +332,12 @@ export function useSendBoostsSheet() {
 
   return {
     accountIdSelected,
+    accountList,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,
     consumePersonalBoostsButtonIsDisabled,
     consumeTeammateBoostsButtonIsDisabled,
+    currentAccountSelected,
     data,
     dataFilterByPersonalType,
     dataFilterByTeammateType,

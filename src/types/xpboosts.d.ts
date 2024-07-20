@@ -1,12 +1,11 @@
 import type { AccountData } from './accounts'
 
+export type XPBoostType = 'personal' | 'teammate'
+
 export type XPBoostsData = {
   accountId: string
   available: boolean
-  items: {
-    personal: XPBoostItem
-    teammate: XPBoostItem
-  }
+  items: Record<XPBoostType, XPBoostItem>
 }
 
 export type XPBoostsDataWithAccountData = XPBoostsData & {

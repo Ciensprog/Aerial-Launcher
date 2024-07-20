@@ -1,14 +1,20 @@
-import type { XPBoostsDataWithAccountData } from '../../../types/xpboosts'
+import type {
+  XPBoostsDataWithAccountData,
+  XPBoostType,
+} from '../../../types/xpboosts'
 
 import { Link, createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { Trash2, Undo2, X } from 'lucide-react'
 
 import { repositoryAssetsURL } from '../../../config/about/links'
+import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
+import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 
 import { Route as RootRoute } from '../../__root'
 
 import { AccountSelectors } from '../../../components/selectors/accounts'
+import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -32,6 +38,7 @@ import {
   CommandList,
 } from '../../../components/ui/command'
 import { Input } from '../../../components/ui/input'
+import { Label } from '../../../components/ui/label'
 import { RadioGroup } from '../../../components/ui/radio-group'
 import { ScrollArea } from '../../../components/ui/scroll-area'
 import {
@@ -44,7 +51,12 @@ import {
 import { Switch } from '../../../components/ui/switch'
 import { Toggle } from '../../../components/ui/toggle'
 
-import { useAccountDataItem, useData, useSendBoostsSheet } from './-hooks'
+import {
+  useAccountDataItem,
+  useData,
+  useFilterXPBoosts,
+  useSendBoostsSheet,
+} from './-hooks'
 
 import { compactNumber } from '../../../lib/parsers/numbers'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
@@ -83,6 +95,7 @@ function Content() {
     actionFormIsDisabled,
     accounts,
     amountToSend,
+    amountToSendParsedToNumber,
     data,
     isSubmitting,
     parsedSelectedAccounts,
@@ -96,6 +109,10 @@ function Content() {
     xpBoostsUpdateAccounts,
     xpBoostsUpdateTags,
   } = useData()
+  const { calculatedTotal, teammateXPBoostsFiltered } = useFilterXPBoosts({
+    data,
+    amountToSend: amountToSendParsedToNumber,
+  })
 
   return (
     <div className="flex flex-grow">
@@ -121,11 +138,18 @@ function Content() {
                 onUpdateTags={xpBoostsUpdateTags}
                 isDisabled={actionFormIsDisabled}
               />
+              <Label htmlFor="amountToSend">
+                Amount of XP Boosts to send{' '}
+                <span className="italic">
+                  (limited to {compactNumber(maxAmountLimitedTo)})
+                </span>
+              </Label>
               <Input
-                placeholder="Amount of XP Boosts to send"
+                placeholder="Example: 123"
                 value={amountToSend}
                 onChange={handleChangeAmount}
                 disabled={actionFormIsDisabled}
+                id="amountToSend"
               />
             </CardContent>
             <CardFooter className="space-x-6">
@@ -143,7 +167,7 @@ function Content() {
                 )}
               </Button>
 
-              <SendBoostsSheet />
+              <SendBoostsSheet calculatedTotal={calculatedTotal} />
             </CardFooter>
           </Card>
 
@@ -178,6 +202,9 @@ function Content() {
                   <AccountInformation
                     data={data}
                     disableActions={actionFormIsDisabled}
+                    teammateXPBoostsFiltered={
+                      teammateXPBoostsFiltered[data.accountId] ?? 0
+                    }
                     key={data.accountId}
                   />
                 ))}
@@ -190,13 +217,19 @@ function Content() {
   )
 }
 
-function SendBoostsSheet() {
+function SendBoostsSheet({
+  calculatedTotal,
+}: {
+  calculatedTotal: number
+}) {
   const {
     accountIdSelected,
+    accountList,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,
     consumePersonalBoostsButtonIsDisabled,
     consumeTeammateBoostsButtonIsDisabled,
+    currentAccountSelected,
     dataFilterByPersonalType,
     generalIsSubmitting,
     inputSearchIsDisabled,
@@ -332,6 +365,50 @@ function SendBoostsSheet() {
                   <CommandList className="max-h-full">
                     <CommandGroup>
                       <RadioGroup className="gap-1">
+                        <CommandItem
+                          className={cn(
+                            'border cursor-pointer gap-2 py-1 select-text',
+                            {
+                              'bg-muted ring-2 ring-white/20':
+                                accountIdSelected ===
+                                currentAccountSelected?.accountId,
+                            }
+                          )}
+                          value={`${currentAccountSelected?.accountId}`}
+                          onSelect={handleSetAccountIdSelected}
+                        >
+                          <a
+                            href={fortniteDBProfileURL(
+                              `${currentAccountSelected?.displayName}`
+                            )}
+                            className="flex-shrink-0"
+                            onClick={(event) => {
+                              event.preventDefault()
+
+                              window.electronAPI.openExternalURL(
+                                fortniteDBProfileURL(
+                                  `${currentAccountSelected?.displayName}`
+                                )
+                              )
+                            }}
+                          >
+                            <figure>
+                              <img
+                                src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
+                                className="size-4"
+                                alt="fndb profile"
+                              />
+                            </figure>
+                          </a>
+                          <div className="text-muted-foreground truncate max-w-[40ch]">
+                            {parseCustomDisplayName(
+                              currentAccountSelected
+                            )}
+                          </div>
+                        </CommandItem>
+                        <SeparatorWithTitle classNameContainer="my-3">
+                          Or
+                        </SeparatorWithTitle>
                         {Array.from({ length: 12 }, () => null).map(
                           (_, index) => (
                             <CommandItem
@@ -391,11 +468,13 @@ function SendBoostsSheet() {
                     <>
                       Send
                       <span className="underline">
-                        {compactNumber(amountToSendParsedToNumber)}
+                        {compactNumber(calculatedTotal)}
                       </span>
                       to:
                       <span className="font-bold max-w-[25ch] truncate">
-                        {`External.v${accountIdSelected}`}
+                        {parseCustomDisplayName(
+                          accountList[accountIdSelected]
+                        )}
                       </span>
                     </>
                   ) : (
@@ -415,7 +494,7 @@ function BoostSummaryItem({
   type,
   quantity,
 }: {
-  type: 'personal' | 'teammate'
+  type: XPBoostType
   quantity: number
 }) {
   const isPersonal = type === 'personal'
@@ -445,14 +524,20 @@ function BoostSummaryItem({
 function AccountInformation({
   data,
   disableActions,
+  teammateXPBoostsFiltered,
 }: {
   data: XPBoostsDataWithAccountData
   disableActions: boolean
+  teammateXPBoostsFiltered: number
 }) {
-  const { isDisabled, isZero, handleChangeAvailability } =
-    useAccountDataItem({
-      data,
-    })
+  const {
+    amountToSendParsedToNumber,
+    isDisabled,
+    isZero,
+    handleChangeAvailability,
+  } = useAccountDataItem({
+    data,
+  })
 
   return (
     <article
@@ -494,30 +579,64 @@ function AccountInformation({
           </div>
         )}
       </div>
-      <footer
-        className={cn('border-t gap-1 grid grid-cols-2 px-1', {
-          'opacity-40': isDisabled,
-        })}
-      >
-        <AccountSummaryItem
-          type="teammate"
-          quantity={data.items.teammate.quantity}
-        />
-        <AccountSummaryItem
-          type="personal"
-          quantity={data.items.personal.quantity}
-        />
+      <footer className="rounded-b">
+        <div
+          className={cn('border-t gap-1 grid grid-cols-2 px-1', {
+            'opacity-40': isDisabled,
+          })}
+        >
+          <AccountSummaryItem
+            type="teammate"
+            data={data}
+          />
+          <AccountSummaryItem
+            type="personal"
+            data={data}
+          />
+        </div>
+        <div
+          className={cn(
+            'border-t pt-2 px-3 text-muted-foreground text-xs',
+            {
+              'opacity-40': isDisabled,
+            }
+          )}
+        >
+          Teammate XP Boosts to use:
+        </div>
+        <div
+          className={cn('flex px-1', {
+            'opacity-40': isDisabled,
+          })}
+        >
+          <div className="flex items-center py-1">
+            <figure className="flex-shrink-0 px-2">
+              <img
+                src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
+                className="size-5"
+                alt="Teammate XP Boosts"
+              />
+            </figure>
+            <div className="flex-grow space-y-1">
+              <div className="text-muted-foreground text-xs">
+                {compactNumber(teammateXPBoostsFiltered)}/
+                {compactNumber(data.items.teammate.quantity)} of a total of{' '}
+                {compactNumber(amountToSendParsedToNumber)}
+              </div>
+            </div>
+          </div>
+        </div>
       </footer>
     </article>
   )
 }
 
 function AccountSummaryItem({
+  data,
   type,
-  quantity,
 }: {
-  type: 'personal' | 'teammate'
-  quantity: number
+  data: XPBoostsDataWithAccountData
+  type: XPBoostType
 }) {
   const isPersonal = type === 'personal'
 
@@ -532,7 +651,9 @@ function AccountSummaryItem({
       </figure>
       <div className="flex-grow space-y-1">
         <div className="flex max-w-20 relative text-muted-foreground text-xs">
-          <span className="truncate">{compactNumber(quantity)}</span>
+          <span className="truncate">
+            {compactNumber(data.items[type]?.quantity)}
+          </span>
         </div>
       </div>
     </div>

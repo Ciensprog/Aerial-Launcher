@@ -1,3 +1,5 @@
+import type { XPBoostType } from '../../../types/xpboosts'
+
 import { create } from 'zustand'
 
 export type XPBoostsFormState = {
@@ -14,10 +16,7 @@ export type XPBoostsFormConsumeState = {
   isSubmittingPersonal: boolean
   isSubmittingTeammate: boolean
 
-  updateIsSubmittingConsume: (
-    type: 'personal' | 'teammate',
-    value: boolean
-  ) => void
+  updateIsSubmittingConsume: (type: XPBoostType, value: boolean) => void
 }
 
 export const useXPBoostsFormStore = create<XPBoostsFormState>()((set) => ({
