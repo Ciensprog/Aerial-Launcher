@@ -15,10 +15,7 @@ import {
   useGetXPBoostsFormStatus,
   useXPBoostsAccountItem,
 } from '../../../hooks/stw-operations/xpboosts'
-import {
-  useGetAccounts,
-  useGetSelectedAccount,
-} from '../../../hooks/accounts'
+import { useGetAccounts } from '../../../hooks/accounts'
 
 import { calculateTeammateXPBoostsToUse } from '../../../lib/calculations/xpboosts'
 import { compactNumber } from '../../../lib/parsers/numbers'
@@ -233,14 +230,9 @@ export function useAccountDataItem({
 }
 
 export function useSendBoostsSheet() {
-  const { selected: currentAccountSelected } = useGetSelectedAccount()
-  const { accountList } = useGetAccounts()
-
   const [xpBoostType, setXPBoostType] = useState(false)
-  const [accountIdSelected, setAccountIdSelected] = useState<
-    string | null
-  >(currentAccountSelected?.accountId ?? null)
 
+  const { accountList } = useGetAccounts()
   const { selectedAccounts, selectedTags } = useGetXPBoostsFormData()
   const { getAccounts } = useAccountSelectorData({
     selectedAccounts,
@@ -274,29 +266,9 @@ export function useSendBoostsSheet() {
   const consumePersonalBoostsButtonIsDisabled =
     amountToSendIsInvalid || generalIsSubmitting || noPersonalBoostsData
   const consumeTeammateBoostsButtonIsDisabled =
-    !accountIdSelected ||
-    amountToSendIsInvalid ||
-    generalIsSubmitting ||
-    noTeammateBoostsData
+    amountToSendIsInvalid || generalIsSubmitting || noTeammateBoostsData
   const inputSearchIsDisabled =
     amountToSendIsInvalid || generalIsSubmitting || noTeammateBoostsData
-
-  useEffect(() => {
-    console.log('----------')
-    console.log('Use:', currentAccountSelected)
-
-    if (
-      currentAccountSelected?.accountId &&
-      currentAccountSelected.accountId !== accountIdSelected
-    ) {
-      console.log('Update:', currentAccountSelected)
-      setAccountIdSelected(currentAccountSelected.accountId)
-    }
-
-    // return () => {
-    //   //
-    // }
-  }, [currentAccountSelected])
 
   const handleSetXPBoostsType = (value: boolean) => {
     if (generalIsSubmitting) {
@@ -304,17 +276,6 @@ export function useSendBoostsSheet() {
     }
 
     setXPBoostType(value)
-  }
-  const handleSetAccountIdSelected = (value: string | null) => {
-    if (
-      amountToSendIsInvalid ||
-      generalIsSubmitting ||
-      noTeammateBoostsData
-    ) {
-      return
-    }
-
-    setAccountIdSelected(value)
   }
   const handleConsumePersonal = () => {
     if (consumePersonalBoostsButtonIsDisabled) {
@@ -331,13 +292,11 @@ export function useSendBoostsSheet() {
   }
 
   return {
-    accountIdSelected,
     accountList,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,
     consumePersonalBoostsButtonIsDisabled,
     consumeTeammateBoostsButtonIsDisabled,
-    currentAccountSelected,
     data,
     dataFilterByPersonalType,
     dataFilterByTeammateType,
@@ -351,7 +310,6 @@ export function useSendBoostsSheet() {
     xpBoostType,
 
     handleConsumePersonal,
-    handleSetAccountIdSelected,
     handleSetXPBoostsType,
   }
 }

@@ -215,7 +215,7 @@ function Item({ data }: { data: WorldInfoFileData }) {
   } = useItemData({ data })
 
   return (
-    <Card className="border-none-">
+    <Card className="">
       <CardContent className="flex items-center px-2 py-2">
         <div className="flex-shrink-0 pl-2 pr-3">
           <FileJson
@@ -228,7 +228,7 @@ function Item({ data }: { data: WorldInfoFileData }) {
           onSubmit={onSubmit}
         >
           <Input
-            className="border-none- h-auto pr-20 pl-3  py-1"
+            className="h-auto pr-20 pl-3 py-1"
             placeholder={`Default name: ${data.date}`}
             value={name}
             onChange={handleUpdateName}

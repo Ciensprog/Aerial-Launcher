@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type {
   XPBoostsDataWithAccountData,
   XPBoostType,
@@ -5,7 +6,16 @@ import type {
 
 import { Link, createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
-import { Trash2, Undo2, X } from 'lucide-react'
+import {
+  // BookUp2,
+  // ChevronsUp,
+  ExternalLink,
+  // LogIn,
+  Trash2,
+  // TrendingUp,
+  Undo2,
+  X,
+} from 'lucide-react'
 
 import { repositoryAssetsURL } from '../../../config/about/links'
 import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
@@ -14,7 +24,6 @@ import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 import { Route as RootRoute } from '../../__root'
 
 import { AccountSelectors } from '../../../components/selectors/accounts'
-import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -31,15 +40,8 @@ import {
   CardFooter,
   CardHeader,
 } from '../../../components/ui/card'
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from '../../../components/ui/command'
 import { Input } from '../../../components/ui/input'
 import { Label } from '../../../components/ui/label'
-import { RadioGroup } from '../../../components/ui/radio-group'
 import { ScrollArea } from '../../../components/ui/scroll-area'
 import {
   Sheet,
@@ -58,7 +60,10 @@ import {
   useSendBoostsSheet,
 } from './-hooks'
 
-import { compactNumber } from '../../../lib/parsers/numbers'
+import {
+  compactNumber,
+  numberWithCommaSeparator,
+} from '../../../lib/parsers/numbers'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
 
 export const Route = createRoute({
@@ -223,13 +228,11 @@ function SendBoostsSheet({
   calculatedTotal: number
 }) {
   const {
-    accountIdSelected,
-    accountList,
+    // accountList,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,
     consumePersonalBoostsButtonIsDisabled,
     consumeTeammateBoostsButtonIsDisabled,
-    currentAccountSelected,
     dataFilterByPersonalType,
     generalIsSubmitting,
     inputSearchIsDisabled,
@@ -241,7 +244,6 @@ function SendBoostsSheet({
     xpBoostType,
 
     handleConsumePersonal,
-    handleSetAccountIdSelected,
     handleSetXPBoostsType,
   } = useSendBoostsSheet()
 
@@ -345,143 +347,167 @@ function SendBoostsSheet({
           ) : (
             <>
               <div className="p-1">
-                <div className="relative">
+                <div className="flex items-center relative">
                   <Input
-                    placeholder="Search by display name (epic username)"
-                    disabled={inputSearchIsDisabled}
+                    placeholder="Search player by display name"
+                    className="pr-20 pl-3 py-1"
+                    disabled={false && inputSearchIsDisabled}
                   />
+                  <Button className="absolute h-auto px-2 py-1.5 right-1 text-sm w-16">
+                    Search
+                  </Button>
                 </div>
-                <p className="mt-3 px-2 text-sm">
-                  Please select correct account:
-                </p>
+
+                {/* <div className="mt-14 text-center text-muted-foreground">
+                  No player found
+                </div> */}
               </div>
-              <ScrollArea>
-                <Command
-                  disablePointerSelection={
-                    consumeTeammateBoostsButtonIsDisabled
-                  }
-                  loop
-                >
-                  <CommandList className="max-h-full">
-                    <CommandGroup>
-                      <RadioGroup className="gap-1">
-                        <CommandItem
-                          className={cn(
-                            'border cursor-pointer gap-2 py-1 select-text',
-                            {
-                              'bg-muted ring-2 ring-white/20':
-                                accountIdSelected ===
-                                currentAccountSelected?.accountId,
-                            }
-                          )}
-                          value={`${currentAccountSelected?.accountId}`}
-                          onSelect={handleSetAccountIdSelected}
+              {!noTeammateBoostsData && (
+                <>
+                  <ScrollArea>
+                    <div className="flex flex-col gap-1 overflow-auto px-1 pt-4">
+                      <div className="">
+                        <a
+                          href={fortniteDBProfileURL('Sample')}
+                          className="inline-flex gap-2 items-center"
                         >
-                          <a
-                            href={fortniteDBProfileURL(
-                              `${currentAccountSelected?.displayName}`
-                            )}
-                            className="flex-shrink-0"
-                            onClick={(event) => {
-                              event.preventDefault()
-
-                              window.electronAPI.openExternalURL(
-                                fortniteDBProfileURL(
-                                  `${currentAccountSelected?.displayName}`
-                                )
-                              )
-                            }}
-                          >
-                            <figure>
-                              <img
-                                src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
-                                className="size-4"
-                                alt="fndb profile"
-                              />
-                            </figure>
-                          </a>
-                          <div className="text-muted-foreground truncate max-w-[40ch]">
-                            {parseCustomDisplayName(
-                              currentAccountSelected
-                            )}
-                          </div>
-                        </CommandItem>
-                        <SeparatorWithTitle classNameContainer="my-3">
-                          Or
-                        </SeparatorWithTitle>
-                        {Array.from({ length: 12 }, () => null).map(
-                          (_, index) => (
-                            <CommandItem
-                              className={cn(
-                                'border cursor-pointer gap-2 py-1 select-text',
-                                {
-                                  'bg-muted ring-2 ring-white/20':
-                                    accountIdSelected === `${index}`,
-                                }
-                              )}
-                              value={`${index}`}
-                              onSelect={handleSetAccountIdSelected}
-                              key={index}
-                            >
-                              <a
-                                href={`https://fortnitedb.com/profile/Sample`}
-                                className="flex-shrink-0"
-                                onClick={(event) => {
-                                  event.preventDefault()
-
-                                  window.electronAPI.openExternalURL(
-                                    `https://fortnitedb.com/profile/Sample`
-                                  )
-                                }}
-                              >
-                                <figure>
-                                  <img
-                                    src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
-                                    className="size-4"
-                                    alt="fndb"
-                                  />
-                                </figure>
-                              </a>
-                              <div className="text-muted-foreground truncate max-w-[40ch]">
-                                {`External.v${index}`}
+                          <span className="max-w-72 text-lg truncate">
+                            Sample
+                          </span>
+                          <ExternalLink
+                            className="stroke-muted-foreground"
+                            size={16}
+                          />
+                        </a>
+                      </div>
+                      <div className="border-l-4 pl-3 space-y-0.5 text-sm [&_.icon-wrapper]:flex [&_.icon-wrapper]:items-center [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:size-5">
+                        {false ? (
+                          <>
+                            <div className="py-1.5">
+                              <div className="text-base text-muted-foreground">
+                                Note:
                               </div>
-                            </CommandItem>
-                          )
+                              This user has "Public Game Stats" disabled
+                              option.
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <AccountBasicInformationSection
+                              title={
+                                <>
+                                  {/* <span className="icon-wrapper">⚡</span> */}
+                                  Power Level:
+                                </>
+                              }
+                              value="⚡130"
+                            />
+                            <AccountBasicInformationSection
+                              title={
+                                <>
+                                  {/* <span className="icon-wrapper">
+                                <TrendingUp
+                                  className=""
+                                  size={18}
+                                />
+                              </span> */}
+                                  Commander Level:
+                                </>
+                              }
+                              value={numberWithCommaSeparator(1234)}
+                            />
+                            <AccountBasicInformationSection
+                              title={
+                                <>
+                                  {/* <span className="icon-wrapper">
+                                <ChevronsUp
+                                  className=""
+                                  size={20}
+                                />
+                              </span> */}
+                                  Boosted XP:
+                                </>
+                              }
+                              value={numberWithCommaSeparator(31085031)}
+                            />
+                            {/* <div className="mt-2" /> */}
+                            <AccountBasicInformationSection
+                              title={
+                                <>
+                                  {/* <span className="icon-wrapper">
+                                <LogIn
+                                  className=""
+                                  size={18}
+                                />
+                              </span> */}
+                                  Days Logged In:
+                                </>
+                              }
+                              value={numberWithCommaSeparator(477)}
+                            />
+                            <AccountBasicInformationSection
+                              title={
+                                <>
+                                  {/* <span className="icon-wrapper">
+                                <BookUp2
+                                  className=""
+                                  size={18}
+                                />
+                              </span> */}
+                                  Collection Book Level:
+                                </>
+                              }
+                              value={numberWithCommaSeparator(1031)}
+                            />
+                            <AccountBasicInformationSection
+                              title={
+                                <>
+                                  <figure className="size-5">
+                                    <img
+                                      src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
+                                      className="size-[18px]"
+                                      alt="FNDB Profile"
+                                    />
+                                  </figure>
+                                  Founder Status:
+                                </>
+                              }
+                              value="Non-Founder"
+                            />
+                          </>
                         )}
-                      </RadioGroup>
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </ScrollArea>
-              <div className="mb-5 mt-5 px-1">
-                <Button
-                  className="gap-1 w-full"
-                  disabled={consumeTeammateBoostsButtonIsDisabled}
-                >
-                  {isSubmittingTeammate ? (
-                    <UpdateIcon className="animate-spin" />
-                  ) : noTeammateBoostsData ? (
-                    'No accounts available'
-                  ) : amountToSendIsInvalid ? (
-                    'Please type a valid amount'
-                  ) : accountIdSelected ? (
-                    <>
-                      Send
-                      <span className="underline">
-                        {compactNumber(calculatedTotal)}
-                      </span>
-                      to:
-                      <span className="font-bold max-w-[25ch] truncate">
-                        {parseCustomDisplayName(
-                          accountList[accountIdSelected]
-                        )}
-                      </span>
-                    </>
-                  ) : (
-                    'Please select an account'
-                  )}
-                </Button>
-              </div>
+                      </div>
+                    </div>
+                  </ScrollArea>
+                  <div className="mb-5 mt-4 px-1">
+                    <Button
+                      className="gap-1 w-full"
+                      disabled={consumeTeammateBoostsButtonIsDisabled}
+                    >
+                      {isSubmittingTeammate ? (
+                        <UpdateIcon className="animate-spin" />
+                      ) : noTeammateBoostsData ? (
+                        'No accounts available'
+                      ) : amountToSendIsInvalid ? (
+                        'Please type a valid amount'
+                      ) : true ? (
+                        <>
+                          Send
+                          <span className="underline">
+                            {compactNumber(calculatedTotal)}
+                          </span>
+                          to:
+                          <span className="font-bold max-w-[25ch] truncate">
+                            External
+                          </span>
+                        </>
+                      ) : (
+                        'Please select an account'
+                      )}
+                    </Button>
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>
@@ -656,6 +682,23 @@ function AccountSummaryItem({
           </span>
         </div>
       </div>
+    </div>
+  )
+}
+
+function AccountBasicInformationSection({
+  title,
+  value,
+}: {
+  title: ReactNode
+  value: ReactNode
+}) {
+  return (
+    <div className="flex gap-1.5 items-center">
+      <div className="flex flex-shrink-0 gap-1.5 items-center text-muted-foreground">
+        {title}
+      </div>{' '}
+      <div className="">{value}</div>
     </div>
   )
 }

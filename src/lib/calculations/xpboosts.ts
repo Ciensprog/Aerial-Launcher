@@ -21,9 +21,13 @@ export function calculateTeammateXPBoostsToUse({
     }
 
     for (const indexPrevData in prevData) {
+      if (counter >= amountToSend) {
+        break
+      }
+
       const current = prevData[indexPrevData]
 
-      if (!current || counter >= amountToSend) {
+      if (!current) {
         continue
       }
 
