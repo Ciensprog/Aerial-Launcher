@@ -2,7 +2,10 @@ import type { AccountData } from '../../types/accounts'
 
 import { Authentication } from './authentication'
 
-import { findUserByDisplayName } from '../../services/endpoints/lookup'
+import {
+  findUserByDisplayName,
+  findUserByExternalDisplayName,
+} from '../../services/endpoints/lookup'
 
 export class LookupManager {
   static async searchUserByDisplayName({
@@ -51,6 +54,42 @@ export class LookupManager {
         response.errorCode ===
         'errors.com.epicgames.account.account_not_found'
       ) {
+        try {
+          const accessToken =
+            await Authentication.verifyAccessToken(account)
+
+          if (!accessToken) {
+            return defaultResponse
+          }
+
+          for (const externalAuthType of ['xbl', 'psn'] as const) {
+            const response = await findUserByExternalDisplayName({
+              accessToken,
+              displayName,
+              externalAuthType,
+            })
+
+            if (response.data?.length > 0) {
+              const current = response.data[0]
+
+              if (current) {
+                return {
+                  data: {
+                    ...current,
+                    displayName:
+                      current.externalAuths[externalAuthType]
+                        ?.externalDisplayName ?? current.displayName,
+                  },
+                  errorMessage: null,
+                  success: true,
+                } as const
+              }
+            }
+          }
+        } catch (error) {
+          //
+        }
+
         defaultResponse.errorMessage = response.errorMessage
       }
     }
