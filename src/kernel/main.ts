@@ -12,7 +12,10 @@ import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { GroupRecord } from '../types/groups'
 import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
-import type { XPBoostsConsumePersonalData } from '../types/xpboosts'
+import type {
+  XPBoostsConsumePersonalData,
+  XPBoostsSearchUserConfig,
+} from '../types/xpboosts'
 
 import path from 'node:path'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -263,6 +266,13 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.XPBoostsConsumePersonal,
     async (_, data: XPBoostsConsumePersonalData) => {
       await XPBoostsManager.consumePersonal(currentWindow, data)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.XPBoostsSearchUser,
+    async (_, config: XPBoostsSearchUserConfig) => {
+      await XPBoostsManager.searchUser(currentWindow, config)
     }
   )
 

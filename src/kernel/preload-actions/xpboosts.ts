@@ -4,6 +4,8 @@ import type {
   XPBoostsConsumePersonalData,
   XPBoostsConsumePersonalResponse,
   XPBoostsData,
+  XPBoostsSearchUserConfig,
+  XPBoostsSearchUserResponse,
 } from '../../types/xpboosts'
 
 import { ipcRenderer } from 'electron'
@@ -21,6 +23,12 @@ export function consumePersonalXPBoosts(
   data: XPBoostsConsumePersonalData
 ) {
   ipcRenderer.send(ElectronAPIEventKeys.XPBoostsConsumePersonal, data)
+}
+
+export function findAPlayerWhoWillReceiveXPBoosts(
+  config: XPBoostsSearchUserConfig
+) {
+  ipcRenderer.send(ElectronAPIEventKeys.XPBoostsSearchUser, config)
 }
 
 export function notificationXPBoostsAccounts(
@@ -64,6 +72,29 @@ export function notificationConsumePersonalXPBoosts(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.XPBoostsConsumePersonalNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationFindAPlayerWhoWillReceiveXPBoosts(
+  callback: (value: XPBoostsSearchUserResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: XPBoostsSearchUserResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.XPBoostsSearchUserNotification,
         customCallback
       ),
   }

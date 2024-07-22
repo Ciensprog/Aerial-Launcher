@@ -64,6 +64,10 @@ import {
   compactNumber,
   numberWithCommaSeparator,
 } from '../../../lib/parsers/numbers'
+import {
+  extractBoostedXP,
+  extractFounderStatus,
+} from '../../../lib/parsers/query-profile'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
 
 export const Route = createRoute({
@@ -235,15 +239,22 @@ function SendBoostsSheet({
     consumeTeammateBoostsButtonIsDisabled,
     dataFilterByPersonalType,
     generalIsSubmitting,
+    inputSearchDisplayName,
     inputSearchIsDisabled,
+    inputSearchButtonIsDisabled,
     isSubmittingPersonal,
     isSubmittingTeammate,
     noPersonalBoostsData,
     noTeammateBoostsData,
+    searchedUser,
+    searchUserIsSubmitting,
     sendBoostsButtonIsDisabled,
     xpBoostType,
 
+    handleChangeSearchDisplayName,
     handleConsumePersonal,
+    handleOpenExternalFNDBProfileUrl,
+    handleSearchUser,
     handleSetXPBoostsType,
   } = useSendBoostsSheet()
 
@@ -351,28 +362,49 @@ function SendBoostsSheet({
                   <Input
                     placeholder="Search player by display name"
                     className="pr-20 pl-3 py-1"
-                    disabled={false && inputSearchIsDisabled}
+                    value={inputSearchDisplayName}
+                    onChange={handleChangeSearchDisplayName}
+                    disabled={inputSearchIsDisabled}
                   />
-                  <Button className="absolute h-auto px-2 py-1.5 right-1 text-sm w-16">
-                    Search
+                  <Button
+                    className="absolute h-8 px-2 py-1.5 right-1 text-sm w-16"
+                    onClick={handleSearchUser}
+                    disabled={inputSearchButtonIsDisabled}
+                  >
+                    {searchUserIsSubmitting ? (
+                      <UpdateIcon className="animate-spin h-4" />
+                    ) : (
+                      'Search'
+                    )}
                   </Button>
                 </div>
 
-                {/* <div className="mt-14 text-center text-muted-foreground">
-                  No player found
-                </div> */}
+                {searchedUser &&
+                  !searchedUser.success &&
+                  !searchedUser.isPrivate && (
+                    <div className="mt-14 text-center text-muted-foreground">
+                      {searchedUser.errorMessage
+                        ? searchedUser.errorMessage
+                        : 'No player found'}
+                    </div>
+                  )}
               </div>
-              {!noTeammateBoostsData && (
+              {!noTeammateBoostsData && searchedUser?.data && (
                 <>
                   <ScrollArea>
                     <div className="flex flex-col gap-1 overflow-auto px-1 pt-4">
                       <div className="">
                         <a
-                          href={fortniteDBProfileURL('Sample')}
-                          className="inline-flex gap-2 items-center"
+                          href={fortniteDBProfileURL(
+                            searchedUser.data.lookup.displayName
+                          )}
+                          className="inline-flex gap-2 items-center hover:opacity-75"
+                          onClick={handleOpenExternalFNDBProfileUrl(
+                            searchedUser.data.lookup.displayName
+                          )}
                         >
                           <span className="max-w-72 text-lg truncate">
-                            Sample
+                            {searchedUser.data.lookup.displayName}
                           </span>
                           <ExternalLink
                             className="stroke-muted-foreground"
@@ -380,101 +412,75 @@ function SendBoostsSheet({
                           />
                         </a>
                       </div>
-                      <div className="border-l-4 pl-3 space-y-0.5 text-sm [&_.icon-wrapper]:flex [&_.icon-wrapper]:items-center [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:size-5">
-                        {false ? (
+                      <div className="border-l-4 pl-3 space-y-0.5 text-muted-foreground text-sm [&_.icon-wrapper]:flex [&_.icon-wrapper]:items-center [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:size-5">
+                        {searchedUser?.isPrivate ? (
                           <>
                             <div className="py-1.5">
-                              <div className="text-base text-muted-foreground">
-                                Note:
-                              </div>
-                              This user has "Public Game Stats" disabled
-                              option.
+                              <div className="">Note:</div>
+                              This user has "Public Game Stats" disabled,
+                              more information can't be displayed.
                             </div>
                           </>
                         ) : (
-                          <>
-                            <AccountBasicInformationSection
-                              title={
-                                <>
-                                  {/* <span className="icon-wrapper">⚡</span> */}
-                                  Power Level:
-                                </>
-                              }
-                              value="⚡130"
-                            />
-                            <AccountBasicInformationSection
-                              title={
-                                <>
-                                  {/* <span className="icon-wrapper">
-                                <TrendingUp
-                                  className=""
-                                  size={18}
-                                />
-                              </span> */}
-                                  Commander Level:
-                                </>
-                              }
-                              value={numberWithCommaSeparator(1234)}
-                            />
-                            <AccountBasicInformationSection
-                              title={
-                                <>
-                                  {/* <span className="icon-wrapper">
-                                <ChevronsUp
-                                  className=""
-                                  size={20}
-                                />
-                              </span> */}
-                                  Boosted XP:
-                                </>
-                              }
-                              value={numberWithCommaSeparator(31085031)}
-                            />
-                            {/* <div className="mt-2" /> */}
-                            <AccountBasicInformationSection
-                              title={
-                                <>
-                                  {/* <span className="icon-wrapper">
-                                <LogIn
-                                  className=""
-                                  size={18}
-                                />
-                              </span> */}
-                                  Days Logged In:
-                                </>
-                              }
-                              value={numberWithCommaSeparator(477)}
-                            />
-                            <AccountBasicInformationSection
-                              title={
-                                <>
-                                  {/* <span className="icon-wrapper">
-                                <BookUp2
-                                  className=""
-                                  size={18}
-                                />
-                              </span> */}
-                                  Collection Book Level:
-                                </>
-                              }
-                              value={numberWithCommaSeparator(1031)}
-                            />
-                            <AccountBasicInformationSection
-                              title={
-                                <>
-                                  <figure className="size-5">
-                                    <img
-                                      src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
-                                      className="size-[18px]"
-                                      alt="FNDB Profile"
-                                    />
-                                  </figure>
-                                  Founder Status:
-                                </>
-                              }
-                              value="Non-Founder"
-                            />
-                          </>
+                          searchedUser?.success && (
+                            <>
+                              {/* <AccountBasicInformationSection
+                                title="Power Level:"
+                                value="⚡130"
+                              /> */}
+                              <AccountBasicInformationSection
+                                title="Commander Level:"
+                                value={numberWithCommaSeparator(
+                                  searchedUser.data.profileChanges.profile
+                                    .stats.attributes.level +
+                                    (searchedUser.data.profileChanges
+                                      .profile.stats.attributes
+                                      .rewards_claimed_post_max_level ?? 0)
+                                )}
+                              />
+                              <AccountBasicInformationSection
+                                title="Boosted XP:"
+                                value={numberWithCommaSeparator(
+                                  extractBoostedXP(
+                                    searchedUser.data.profileChanges
+                                  )
+                                )}
+                              />
+                              <AccountBasicInformationSection
+                                title="Days Logged In:"
+                                value={numberWithCommaSeparator(
+                                  searchedUser.data.profileChanges.profile
+                                    .stats.attributes.daily_rewards
+                                    ?.totalDaysLoggedIn
+                                )}
+                              />
+                              <AccountBasicInformationSection
+                                title="Collection Book Level:"
+                                value={numberWithCommaSeparator(
+                                  searchedUser.data.profileChanges.profile
+                                    .stats.attributes.collection_book
+                                    ?.maxBookXpLevelAchieved
+                                )}
+                              />
+                              <AccountBasicInformationSection
+                                title={
+                                  <>
+                                    <figure className="size-5">
+                                      <img
+                                        src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
+                                        className="size-[18px]"
+                                        alt="FNDB Profile"
+                                      />
+                                    </figure>
+                                    Founder Status:
+                                  </>
+                                }
+                                value={extractFounderStatus(
+                                  searchedUser.data.profileChanges
+                                )}
+                              />
+                            </>
+                          )
                         )}
                       </div>
                     </div>
@@ -486,11 +492,9 @@ function SendBoostsSheet({
                     >
                       {isSubmittingTeammate ? (
                         <UpdateIcon className="animate-spin" />
-                      ) : noTeammateBoostsData ? (
-                        'No accounts available'
                       ) : amountToSendIsInvalid ? (
                         'Please type a valid amount'
-                      ) : true ? (
+                      ) : (
                         <>
                           Send
                           <span className="underline">
@@ -498,11 +502,9 @@ function SendBoostsSheet({
                           </span>
                           to:
                           <span className="font-bold max-w-[25ch] truncate">
-                            External
+                            {searchedUser.data.lookup.displayName}
                           </span>
                         </>
-                      ) : (
-                        'Please select an account'
                       )}
                     </Button>
                   </div>
@@ -698,7 +700,7 @@ function AccountBasicInformationSection({
       <div className="flex flex-shrink-0 gap-1.5 items-center text-muted-foreground">
         {title}
       </div>{' '}
-      <div className="">{value}</div>
+      <div className="text-white">{value}</div>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import type { XPBoostType } from '../../../types/xpboosts'
+import type { XPBoostType } from '../../../../types/xpboosts'
 
 import { create } from 'zustand'
 

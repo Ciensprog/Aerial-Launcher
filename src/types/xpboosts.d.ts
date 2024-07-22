@@ -1,3 +1,5 @@
+import type { LookupFindOneByDisplayNameResponse } from './services/lookup'
+import type { MCPQueryProfileChanges } from './services/mcp'
 import type { AccountData } from './accounts'
 
 export type XPBoostType = 'personal' | 'teammate'
@@ -31,4 +33,28 @@ export type XPBoostsConsumePersonalResponse = {
       expected: number
     }
   }
+}
+
+export type XPBoostsSearchUserConfig = {
+  account: AccountData
+  displayName: string
+}
+
+export type XPBoostsSearchUserResponse =
+  | {
+      data: Pick<XPBoostsSearchUserData, 'lookup'> | null
+      errorMessage: string | null
+      isPrivate: boolean
+      success: false
+    }
+  | {
+      data: XPBoostsSearchUserData
+      errorMessage: null
+      isPrivate: false
+      success: true
+    }
+
+export type XPBoostsSearchUserData = {
+  lookup: LookupFindOneByDisplayNameResponse
+  profileChanges: MCPQueryProfileChanges
 }

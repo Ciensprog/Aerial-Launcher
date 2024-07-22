@@ -2,11 +2,12 @@ import type { SelectOption } from '../../components/ui/third-party/extended/inpu
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { useXPBoostsDataStore } from '../../state/stw-operations/xpboosts/accounts'
 import {
   useXPBoostsFormConsumeStore,
   useXPBoostsFormStore,
-} from '../../state/stw-operations/xpboosts/form'
+} from '../../state/stw-operations/xpboosts/forms/consume-personal'
+import { useXPBoostsConsumeTeammateFormStore } from '../../state/stw-operations/xpboosts/forms/consume-teammate'
+import { useXPBoostsDataStore } from '../../state/stw-operations/xpboosts/accounts'
 
 import { useGetAccounts } from '../accounts'
 
@@ -174,5 +175,21 @@ export function useGetXPBoostsFormConsumeStatus() {
     isSubmittingTeammate,
 
     updateIsSubmittingConsume,
+  }
+}
+
+export function useGetXPBoostsConsumeTeammateFormStatus() {
+  const { isSubmitting, updateIsSubmitting } =
+    useXPBoostsConsumeTeammateFormStore(
+      useShallow((state) => ({
+        isSubmitting: state.isSubmitting,
+        updateIsSubmitting: state.updateIsSubmitting,
+      }))
+    )
+
+  return {
+    searchUserIsSubmitting: isSubmitting,
+
+    updateSearchUserIsSubmitting: updateIsSubmitting,
   }
 }

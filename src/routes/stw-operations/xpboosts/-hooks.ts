@@ -1,21 +1,29 @@
-import type { ChangeEventHandler } from 'react'
-import type { XPBoostsDataWithAccountData } from '../../../types/xpboosts'
+import type { ChangeEventHandler, MouseEventHandler } from 'react'
+import type {
+  XPBoostsDataWithAccountData,
+  XPBoostsSearchUserResponse,
+} from '../../../types/xpboosts'
 
 import { useEffect, useState } from 'react'
 
 import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
+import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
 
 import {
   useGetXPBoostsActions,
+  useGetXPBoostsConsumeTeammateFormStatus,
   useGetXPBoostsData,
   useGetXPBoostsFormConsumeStatus,
   useGetXPBoostsFormData,
   useGetXPBoostsFormStatus,
   useXPBoostsAccountItem,
 } from '../../../hooks/stw-operations/xpboosts'
-import { useGetAccounts } from '../../../hooks/accounts'
+import {
+  useGetAccounts,
+  useGetSelectedAccount,
+} from '../../../hooks/accounts'
 
 import { calculateTeammateXPBoostsToUse } from '../../../lib/calculations/xpboosts'
 import { compactNumber } from '../../../lib/parsers/numbers'
@@ -231,8 +239,13 @@ export function useAccountDataItem({
 
 export function useSendBoostsSheet() {
   const [xpBoostType, setXPBoostType] = useState(false)
+  const [inputSearchDisplayName, setInputSearchDisplayName] = useState('')
+
+  const [searchedUser, setSearchedUser] =
+    useState<XPBoostsSearchUserResponse | null>(null)
 
   const { accountList } = useGetAccounts()
+  const { selected } = useGetSelectedAccount()
   const { selectedAccounts, selectedTags } = useGetXPBoostsFormData()
   const { getAccounts } = useAccountSelectorData({
     selectedAccounts,
@@ -240,6 +253,8 @@ export function useSendBoostsSheet() {
   })
 
   const { isSubmitting } = useGetXPBoostsFormStatus()
+  const { searchUserIsSubmitting, updateSearchUserIsSubmitting } =
+    useGetXPBoostsConsumeTeammateFormStatus()
   const {
     isSubmittingPersonal,
     isSubmittingTeammate,
@@ -266,9 +281,38 @@ export function useSendBoostsSheet() {
   const consumePersonalBoostsButtonIsDisabled =
     amountToSendIsInvalid || generalIsSubmitting || noPersonalBoostsData
   const consumeTeammateBoostsButtonIsDisabled =
-    amountToSendIsInvalid || generalIsSubmitting || noTeammateBoostsData
+    amountToSendIsInvalid ||
+    generalIsSubmitting ||
+    noTeammateBoostsData ||
+    searchUserIsSubmitting
   const inputSearchIsDisabled =
-    amountToSendIsInvalid || generalIsSubmitting || noTeammateBoostsData
+    amountToSendIsInvalid ||
+    generalIsSubmitting ||
+    searchUserIsSubmitting ||
+    noTeammateBoostsData
+  const inputSearchButtonIsDisabled =
+    inputSearchIsDisabled || inputSearchDisplayName.trim() === ''
+
+  useEffect(() => {
+    const listener =
+      window.electronAPI.notificationFindAPlayerWhoWillReceiveXPBoosts(
+        async (response) => {
+          setSearchedUser(response)
+          updateSearchUserIsSubmitting(false)
+        }
+      )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  const handleOpenExternalFNDBProfileUrl =
+    (displayName: string): MouseEventHandler =>
+    (event) => {
+      event.preventDefault()
+      window.electronAPI.openExternalURL(fortniteDBProfileURL(displayName))
+    }
 
   const handleSetXPBoostsType = (value: boolean) => {
     if (generalIsSubmitting) {
@@ -290,6 +334,31 @@ export function useSendBoostsSheet() {
       total: amountToSendParsedToNumber,
     })
   }
+  const handleChangeSearchDisplayName: ChangeEventHandler<
+    HTMLInputElement
+  > = (event) => {
+    const value = event.target.value
+
+    setInputSearchDisplayName(value)
+  }
+
+  const handleSearchUser = () => {
+    if (
+      !selected ||
+      inputSearchDisplayName === '' ||
+      searchUserIsSubmitting
+    ) {
+      return
+    }
+
+    setInputSearchDisplayName(inputSearchDisplayName.trim())
+    updateSearchUserIsSubmitting(true)
+
+    window.electronAPI.findAPlayerWhoWillReceiveXPBoosts({
+      account: selected,
+      displayName: inputSearchDisplayName.trim(),
+    })
+  }
 
   return {
     accountList,
@@ -301,15 +370,22 @@ export function useSendBoostsSheet() {
     dataFilterByPersonalType,
     dataFilterByTeammateType,
     generalIsSubmitting,
+    inputSearchDisplayName,
     inputSearchIsDisabled,
+    inputSearchButtonIsDisabled,
     isSubmittingPersonal,
     isSubmittingTeammate,
     noPersonalBoostsData,
     noTeammateBoostsData,
+    searchedUser,
+    searchUserIsSubmitting,
     sendBoostsButtonIsDisabled,
     xpBoostType,
 
+    handleChangeSearchDisplayName,
     handleConsumePersonal,
+    handleOpenExternalFNDBProfileUrl,
+    handleSearchUser,
     handleSetXPBoostsType,
   }
 }

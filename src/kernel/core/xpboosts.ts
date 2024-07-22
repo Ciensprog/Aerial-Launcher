@@ -4,6 +4,8 @@ import type {
   XPBoostsConsumePersonalData,
   XPBoostsConsumePersonalResponse,
   XPBoostsData,
+  XPBoostsSearchUserConfig,
+  XPBoostsSearchUserResponse,
 } from '../../types/xpboosts'
 
 import { BrowserWindow } from 'electron'
@@ -11,13 +13,15 @@ import { BrowserWindow } from 'electron'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { Authentication } from './authentication'
+import { LookupManager } from './lookup'
 
 import {
   getQueryProfile,
+  getQueryPublicProfile,
   setActivateConsumable,
 } from '../../services/endpoints/mcp'
 
-import { isMCPQueryProfileProfileChangesConsumableAccountItem } from '../../lib/check-objects'
+import { isMCPQueryProfileChangesConsumableAccountItem } from '../../lib/check-objects'
 
 export class XPBoostsManager {
   static async requestAccounts(
@@ -62,7 +66,7 @@ export class XPBoostsManager {
             const items = Object.entries(
               queryProfileResponse.data.profileChanges?.[0]?.profile.items
             ).filter(([, data]) =>
-              isMCPQueryProfileProfileChangesConsumableAccountItem(data)
+              isMCPQueryProfileChangesConsumableAccountItem(data)
             ) as
               | Array<
                   [
@@ -217,5 +221,83 @@ export class XPBoostsManager {
       ElectronAPIEventKeys.XPBoostsConsumePersonalNotification,
       defaultResponse
     )
+  }
+
+  static async searchUser(
+    currentWindow: BrowserWindow,
+    config: XPBoostsSearchUserConfig
+  ) {
+    const defaultResponse: XPBoostsSearchUserResponse = {
+      data: null,
+      errorMessage: null,
+      isPrivate: false,
+      success: false,
+    }
+    const sendDefaultResponse = () => {
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+        defaultResponse
+      )
+    }
+
+    const response = await LookupManager.searchUserByDisplayName(config)
+
+    if (response.success) {
+      defaultResponse.data = {
+        lookup: response.data,
+      }
+
+      try {
+        const accessToken = await Authentication.verifyAccessToken(
+          config.account
+        )
+
+        if (!accessToken) {
+          sendDefaultResponse()
+
+          return
+        }
+
+        const queryProfileResponse = await getQueryPublicProfile({
+          accessToken,
+          accountId: response.data.id,
+        })
+        const profileChanges =
+          queryProfileResponse.data.profileChanges[0] ?? null
+
+        if (profileChanges) {
+          currentWindow.webContents.send(
+            ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+            {
+              data: {
+                profileChanges,
+                lookup: response.data,
+              },
+              errorMessage: null,
+              isPrivate: false,
+              success: true,
+            } as XPBoostsSearchUserResponse
+          )
+
+          return
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        const response =
+          (error?.response?.data as Record<string, number | string>) ?? {}
+
+        if (
+          response.errorCode ===
+          'errors.com.epicgames.fortnite.operation_forbidden'
+        ) {
+          defaultResponse.isPrivate = true
+        }
+      }
+    } else {
+      defaultResponse.errorMessage = `${response.errorMessage}`
+    }
+
+    sendDefaultResponse()
   }
 }

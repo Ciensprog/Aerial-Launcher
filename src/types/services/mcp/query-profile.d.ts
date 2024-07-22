@@ -9,10 +9,10 @@ export type MCPQueryProfile = {
   profileCommandRevision: number
   serverTime: string
   responseVersion: number
-  profileChanges: Array<MCPQueryProfileProfileChanges>
+  profileChanges: Array<MCPQueryProfileChanges>
 }
 
-export type MCPQueryProfileProfileChanges = {
+export type MCPQueryProfileChanges = {
   changeType: StringUnion<'fullProfileUpdate'>
   profile: {
     _id: string
@@ -26,7 +26,7 @@ export type MCPQueryProfileProfileChanges = {
     commandRevision: number
     stats: {
       attributes: {
-        node_costs: {
+        node_costs?: {
           homebase_node_default_page: {
             'Token:homebasepoints': number
           }
@@ -34,12 +34,14 @@ export type MCPQueryProfileProfileChanges = {
             'Token:collectionresource_nodegatetoken01': number
           }
         }
-        mission_alert_redemption_record: {
+        mission_alert_redemption_record?: {
           claimData: Array<{
             missionAlertId: string
             evictClaimDataAfterUtc: string
             redemptionDateUtc: string
           }>
+          lastClaimTimesMap?: unknown
+          lastClaimedGuidPerTheater?: unknown
           pendingMissionAlertRewards?: {
             tierGroupName: StringUnion<'MissionAlert_Storm:4'>
             items: Array<{
@@ -48,28 +50,28 @@ export type MCPQueryProfileProfileChanges = {
             }>
           }
         }
-        rewards_claimed_post_max_level: number
-        client_settings: {
+        rewards_claimed_post_max_level?: number
+        client_settings?: {
           pinnedQuestInstances: Array<string>
         }
-        research_levels: {
+        research_levels?: {
           technology: number
           offense: number
           fortitude: number
           resistance: number
         }
-        selected_hero_loadout: string
+        selected_hero_loadout?: string
         level: number
-        xp_overflow: number
-        collection_book: {
+        xp_overflow?: number
+        collection_book?: {
           maxBookXpLevelAchieved: number
         }
-        latent_xp_marker: string
-        mfa_reward_claimed: boolean
+        latent_xp_marker?: string
+        mfa_reward_claimed?: boolean
         quest_manager: {
           dailyLoginInterval: string
           dailyQuestRerolls: number
-          questPoolStats: {
+          questPoolStats?: {
             dailyLoginInterval: string
             poolLockouts: {
               poolLockouts: Array<{
@@ -100,8 +102,8 @@ export type MCPQueryProfileProfileChanges = {
             }>
           }
         }
-        legacy_research_points_spent: number
-        gameplay_stats: Array<{
+        legacy_research_points_spent?: number
+        gameplay_stats?: Array<{
           statName: StringUnion<'habaneroprogression' | 'zonescompleted'>
           statValue: number
         }>
@@ -109,11 +111,11 @@ export type MCPQueryProfileProfileChanges = {
           cf: number
           templateId: StringUnion<'AccountResource:eventcurrency_roadtrip'>
         }
-        matches_played: number
-        xp_lost: number
-        mode_loadouts: Array<unknown>
-        unslot_mtx_spend: number
-        daily_rewards: {
+        matches_played?: number
+        xp_lost?: number
+        mode_loadouts?: Array<unknown>
+        unslot_mtx_spend?: number
+        daily_rewards?: {
           nextDefaultReward: number
           totalDaysLoggedIn: number
           lastClaimDate: string
@@ -124,8 +126,8 @@ export type MCPQueryProfileProfileChanges = {
             }
           }
         }
-        xp: number
-        quest_completion_session_ids: Record<string, string>
+        xp?: number
+        quest_completion_session_ids?: Record<string, string>
         difficulty_increase_rewards_record?: {
           pendingRewards: Array<{
             difficultyIncreaseMissionRewards: {
@@ -138,7 +140,7 @@ export type MCPQueryProfileProfileChanges = {
             difficultyIncreaseTier: number
           }>
         }
-        packs_granted: number
+        packs_granted?: number
       }
     }
     items: Record<
@@ -147,6 +149,7 @@ export type MCPQueryProfileProfileChanges = {
       | MCPQueryProfileProfileChangesConsumableAccountItem
       | MCPQueryProfileProfileChangesHero
       | MCPQueryProfileProfileChangesSchematic
+      | MCPQueryProfileProfileChangesToken
       | MCPQueryProfileProfileChangesQuest
       | MCPQueryProfileProfileChangesWorker
     >
@@ -236,6 +239,14 @@ export type MCPQueryProfileProfileChangesSchematic = {
   quantity: number
 }
 
+export type MCPQueryProfileProfileChangesToken = {
+  templateId: `Token:${string}`
+  attributes: {
+    level: number
+  }
+  quantity: number
+}
+
 export type MCPQueryProfileProfileChangesWorker = {
   templateId: `Worker:${string}`
   attributes: {
@@ -245,7 +256,7 @@ export type MCPQueryProfileProfileChangesWorker = {
     max_level_bonus?: number
     favorite?: boolean
     item_seen: boolean
-    squad_id?: number
+    squad_id?: string
     squad_slot_idx: number
     portrait: string
     building_slot_used: number

@@ -4,40 +4,47 @@ import type {
   MCPQueryProfileProfileChangesHero,
   MCPQueryProfileProfileChangesQuest,
   MCPQueryProfileProfileChangesSchematic,
+  MCPQueryProfileProfileChangesToken,
   MCPQueryProfileProfileChangesWorker,
 } from '../types/services/mcp'
 
-export function isMCPQueryProfileProfileChangesCardPack(value: {
+export function isMCPQueryProfileChangesCardPack(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesCardPack {
   return value?.templateId?.startsWith('CardPack:')
 }
 
-export function isMCPQueryProfileProfileChangesConsumableAccountItem(value: {
+export function isMCPQueryProfileChangesConsumableAccountItem(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesConsumableAccountItem {
   return value?.templateId?.startsWith('ConsumableAccountItem:')
 }
 
-export function isMCPQueryProfileProfileChangesHero(value: {
+export function isMCPQueryProfileChangesHero(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesHero {
   return value?.templateId?.startsWith('Hero:')
 }
 
-export function isMCPQueryProfileProfileChangesSchematic(value: {
+export function isMCPQueryProfileChangesSchematic(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesSchematic {
   return value?.templateId?.startsWith('Schematic:')
 }
 
-export function isMCPQueryProfileProfileChangesQuest(value: {
+export function isMCPQueryProfileChangesToken(value: {
+  templateId: string
+}): value is MCPQueryProfileProfileChangesToken {
+  return value?.templateId?.startsWith('Token:')
+}
+
+export function isMCPQueryProfileChangesQuest(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesQuest {
   return value?.templateId?.startsWith('Quest:')
 }
 
-export function isMCPQueryProfileProfileChangesWorker(value: {
+export function isMCPQueryProfileChangesWorker(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesWorker {
   return value?.templateId?.startsWith('Worker:')
