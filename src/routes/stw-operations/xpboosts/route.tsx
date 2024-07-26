@@ -108,15 +108,18 @@ function Content() {
     amountToSend,
     amountToSendParsedToNumber,
     data,
+    filteredData,
     isSubmitting,
     parsedSelectedAccounts,
     parsedSelectedTags,
     seeBoostsButtonIsDisabled,
+    searchValue,
     summary,
     tags,
 
     handleChangeAmount,
     handleSearch,
+    onChangeSearchValue,
     xpBoostsUpdateAccounts,
     xpBoostsUpdateTags,
   } = useData()
@@ -202,26 +205,35 @@ function Content() {
                 />
               </div>
 
-              <div className="mt-5">
-                <Input
-                  placeholder={`Search on ${data.length} accounts`}
-                  // value={searchValue}
-                  // onChange={onChangeSearchValue}
-                />
-              </div>
-
-              <div className="gap-4 grid grid-cols-2 max-w-lg mt-5">
-                {data.map((data) => (
-                  <AccountInformation
-                    data={data}
-                    disableActions={actionFormIsDisabled}
-                    teammateXPBoostsFiltered={
-                      teammateXPBoostsFiltered[data.accountId] ?? 0
-                    }
-                    key={data.accountId}
+              {data.length > 1 && (
+                <div className="mt-5">
+                  <Input
+                    placeholder={`Search on ${data.length} accounts`}
+                    value={searchValue}
+                    onChange={onChangeSearchValue}
                   />
-                ))}
-              </div>
+                </div>
+              )}
+
+              {filteredData.length > 0 ? (
+                <div className="gap-4 grid grid-cols-2 max-w-lg mt-5">
+                  {filteredData.map((currentData) => (
+                    <AccountInformation
+                      data={currentData}
+                      disableActions={actionFormIsDisabled}
+                      teammateXPBoostsFiltered={
+                        teammateXPBoostsFiltered[currentData.accountId] ??
+                        0
+                      }
+                      key={currentData.accountId}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-10 text-center text-muted-foreground">
+                  <div className="mt-2">No account found</div>
+                </div>
+              )}
             </>
           )}
         </div>
@@ -321,49 +333,55 @@ function SendBoostsSheet({
           </div>
         </SheetHeader>
         <div className="flex flex-col overflow-auto">
-          {noPersonalBoostsData || noTeammateBoostsData ? (
+          {xpBoostType ? (
+            noPersonalBoostsData ? (
+              <div className="mt-14 text-center text-muted-foreground">
+                No accounts available
+              </div>
+            ) : (
+              <>
+                <div className="p-1">
+                  <p className="px-2 text-sm">
+                    All of these accounts will use XP boosts:
+                  </p>
+                </div>
+                <ScrollArea>
+                  <div className="flex flex-col gap-1 overflow-auto">
+                    {dataFilterByPersonalType.map((item) => (
+                      <div
+                        className="border px-2 py-1 rounded-sm"
+                        key={item.accountId}
+                      >
+                        <div className="text-muted-foreground text-sm truncate max-w-[40ch]">
+                          {parseCustomDisplayName(item.account)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+                <div className="mb-5 mt-5 px-1">
+                  <Button
+                    className="w-full"
+                    onClick={handleConsumePersonal}
+                    disabled={consumePersonalBoostsButtonIsDisabled}
+                  >
+                    {isSubmittingPersonal ? (
+                      <UpdateIcon className="animate-spin" />
+                    ) : noPersonalBoostsData ? (
+                      'No accounts available'
+                    ) : amountToSendIsInvalid ? (
+                      'Please type a valid amount'
+                    ) : (
+                      `Consume ${compactNumber(amountToSendParsedToNumber)} XP Boost${amountToSendParsedToNumber > 1 ? 's' : ''} on each account`
+                    )}
+                  </Button>
+                </div>
+              </>
+            )
+          ) : noTeammateBoostsData ? (
             <div className="mt-14 text-center text-muted-foreground">
               No accounts available
             </div>
-          ) : xpBoostType ? (
-            <>
-              <div className="p-1">
-                <p className="px-2 text-sm">
-                  All of these accounts will use XP boosts:
-                </p>
-              </div>
-              <ScrollArea>
-                <div className="flex flex-col gap-1 overflow-auto">
-                  {dataFilterByPersonalType.map((item) => (
-                    <div
-                      className="border px-2 py-1 rounded-sm"
-                      key={item.accountId}
-                    >
-                      <div className="text-muted-foreground text-sm truncate max-w-[40ch]">
-                        {parseCustomDisplayName(item.account)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-              <div className="mb-5 mt-5 px-1">
-                <Button
-                  className="w-full"
-                  onClick={handleConsumePersonal}
-                  disabled={consumePersonalBoostsButtonIsDisabled}
-                >
-                  {isSubmittingPersonal ? (
-                    <UpdateIcon className="animate-spin" />
-                  ) : noPersonalBoostsData ? (
-                    'No accounts available'
-                  ) : amountToSendIsInvalid ? (
-                    'Please type a valid amount'
-                  ) : (
-                    `Consume ${compactNumber(amountToSendParsedToNumber)} XP Boost${amountToSendParsedToNumber > 1 ? 's' : ''} on each account`
-                  )}
-                </Button>
-              </div>
-            </>
           ) : (
             <>
               <div className="p-1 space-y-1">

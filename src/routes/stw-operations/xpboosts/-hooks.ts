@@ -24,13 +24,18 @@ import {
   useGetAccounts,
   useGetSelectedAccount,
 } from '../../../hooks/accounts'
+import { useGetGroups } from '../../../hooks/groups'
 
 import { calculateTeammateXPBoostsToUse } from '../../../lib/calculations/xpboosts'
 import { compactNumber } from '../../../lib/parsers/numbers'
+import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
+  const [searchValue, setSearchValue] = useState('')
+
   const { accountList } = useGetAccounts()
+  const { getGroupTagsByAccountId } = useGetGroups()
   const {
     amountToSend,
     selectedAccounts,
@@ -59,6 +64,34 @@ export function useData() {
     selectedTags,
   })
   const { amountToSendIsInvalid, data, updateData } = useGetXPBoostsData()
+
+  const filteredData =
+    searchValue.length > 0
+      ? data.filter((item) => {
+          if (!item.account) {
+            return false
+          }
+
+          const { account } = item
+          const _keys: Array<string> = [account.displayName]
+          const tags = getGroupTagsByAccountId(account.accountId)
+          const _search = searchValue.toLowerCase().trim()
+
+          if (checkIfCustomDisplayNameIsValid(account.customDisplayName)) {
+            _keys.push(account.customDisplayName)
+          }
+
+          if (tags.length > 0) {
+            tags.forEach((tagName) => {
+              _keys.push(tagName)
+            })
+          }
+
+          return _keys.some((keyword) =>
+            keyword.toLowerCase().trim().includes(_search)
+          )
+        })
+      : data
 
   const amountToSendParsedToNumber = amountToSendIsInvalid
     ? 0
@@ -188,15 +221,23 @@ export function useData() {
     window.electronAPI.requestXPBoostsAccounts(parsedAccounts)
   }
 
+  const onChangeSearchValue: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setSearchValue(event.target.value.replace(/\s+/g, ' '))
+  }
+
   return {
     actionFormIsDisabled,
     accounts,
     amountToSend,
     amountToSendParsedToNumber,
     data,
+    filteredData,
     isSubmitting,
     parsedSelectedAccounts,
     parsedSelectedTags,
+    searchValue,
     seeBoostsButtonIsDisabled,
     summary,
     tags,
@@ -204,6 +245,7 @@ export function useData() {
     getAccounts,
     handleChangeAmount,
     handleSearch,
+    onChangeSearchValue,
     xpBoostsUpdateAccounts,
     xpBoostsUpdateTags,
   }
