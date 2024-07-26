@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { MCPQueryProfileChanges } from '../../../types/services/mcp'
 import type {
   XPBoostsDataWithAccountData,
   XPBoostType,
@@ -435,97 +436,31 @@ function SendBoostsSheet({
                           </>
                         ) : (
                           searchedUser?.success && (
-                            <>
-                              {/* <AccountBasicInformationSection
-                                title="Power Level:"
-                                value="⚡130"
-                              /> */}
-                              <AccountBasicInformationSection
-                                title="Commander Level:"
-                                value={numberWithCommaSeparator(
-                                  searchedUser.data.profileChanges.profile
-                                    .stats.attributes.level +
-                                    (searchedUser.data.profileChanges
-                                      .profile.stats.attributes
-                                      .rewards_claimed_post_max_level ?? 0)
-                                )}
-                              />
-                              <AccountBasicInformationSection
-                                title="Boosted XP:"
-                                value={numberWithCommaSeparator(
-                                  extractBoostedXP(
-                                    searchedUser.data.profileChanges
-                                  )
-                                )}
-                              />
-                              <AccountBasicInformationSection
-                                title="Days Logged In:"
-                                value={numberWithCommaSeparator(
-                                  searchedUser.data.profileChanges.profile
-                                    .stats.attributes.daily_rewards
-                                    ?.totalDaysLoggedIn
-                                )}
-                              />
-                              <AccountBasicInformationSection
-                                title="Collection Book Level:"
-                                value={numberWithCommaSeparator(
-                                  searchedUser.data.profileChanges.profile
-                                    .stats.attributes.collection_book
-                                    ?.maxBookXpLevelAchieved
-                                )}
-                              />
-                              <AccountBasicInformationSection
-                                title={
-                                  <>
-                                    <figure className="size-5">
-                                      <img
-                                        src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
-                                        className="size-[18px]"
-                                        alt="FNDB Profile"
-                                      />
-                                    </figure>
-                                    Personal XP Boosts:
-                                  </>
-                                }
-                                value={numberWithCommaSeparator(
-                                  userBoosts.personal
-                                )}
-                              />
-                              <AccountBasicInformationSection
-                                title={
-                                  <>
-                                    <figure className="size-5">
-                                      <img
-                                        src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
-                                        className="size-[18px]"
-                                        alt="FNDB Profile"
-                                      />
-                                    </figure>
-                                    Teammate XP Boosts:
-                                  </>
-                                }
-                                value={numberWithCommaSeparator(
-                                  userBoosts.teammate
-                                )}
-                              />
-                              <AccountBasicInformationSection
-                                title={
-                                  <>
-                                    <figure className="size-5">
-                                      <img
-                                        src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
-                                        className="size-[18px]"
-                                        alt="FNDB Profile"
-                                      />
-                                    </figure>
-                                    Founder Status:
-                                  </>
-                                }
-                                value={extractFounderStatus(
-                                  searchedUser.data.profileChanges
-                                )}
-                              />
-                            </>
+                            <SearchedUserData
+                              boostedXP={searchedUser.data.profileChanges}
+                              collectionBookLevel={
+                                searchedUser.data.profileChanges.profile
+                                  .stats.attributes.collection_book
+                                  ?.maxBookXpLevelAchieved ?? 0
+                              }
+                              commanderLevel={
+                                searchedUser.data.profileChanges.profile
+                                  .stats.attributes.level +
+                                (searchedUser.data.profileChanges.profile
+                                  .stats.attributes
+                                  .rewards_claimed_post_max_level ?? 0)
+                              }
+                              daysLoggedIn={
+                                searchedUser.data.profileChanges.profile
+                                  .stats.attributes.daily_rewards
+                                  ?.totalDaysLoggedIn ?? 0
+                              }
+                              founderStatus={
+                                searchedUser.data.profileChanges
+                              }
+                              personalXPBoosts={userBoosts.personal}
+                              teammateXPBoosts={userBoosts.teammate}
+                            />
                           )
                         )}
                       </div>
@@ -749,5 +684,93 @@ function AccountBasicInformationSection({
       </div>{' '}
       <div className="text-white">{value}</div>
     </div>
+  )
+}
+
+function SearchedUserData({
+  boostedXP,
+  collectionBookLevel,
+  commanderLevel,
+  daysLoggedIn,
+  founderStatus,
+  personalXPBoosts,
+  teammateXPBoosts,
+}: {
+  boostedXP: MCPQueryProfileChanges
+  collectionBookLevel: number
+  commanderLevel: number
+  daysLoggedIn: number
+  founderStatus: MCPQueryProfileChanges
+  personalXPBoosts: number
+  teammateXPBoosts: number
+}) {
+  return (
+    <>
+      {/* <AccountBasicInformationSection
+        title="Power Level:"
+        value="⚡130"
+      /> */}
+      <AccountBasicInformationSection
+        title="Commander Level:"
+        value={numberWithCommaSeparator(commanderLevel)}
+      />
+      <AccountBasicInformationSection
+        title="Boosted XP:"
+        value={numberWithCommaSeparator(extractBoostedXP(boostedXP))}
+      />
+      <AccountBasicInformationSection
+        title="Days Logged In:"
+        value={numberWithCommaSeparator(daysLoggedIn)}
+      />
+      <AccountBasicInformationSection
+        title="Collection Book Level:"
+        value={numberWithCommaSeparator(collectionBookLevel)}
+      />
+      <AccountBasicInformationSection
+        title={
+          <>
+            <figure className="size-5">
+              <img
+                src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
+                className="size-[18px]"
+                alt="FNDB Profile"
+              />
+            </figure>
+            Personal XP Boosts:
+          </>
+        }
+        value={numberWithCommaSeparator(personalXPBoosts)}
+      />
+      <AccountBasicInformationSection
+        title={
+          <>
+            <figure className="size-5">
+              <img
+                src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
+                className="size-[18px]"
+                alt="FNDB Profile"
+              />
+            </figure>
+            Teammate XP Boosts:
+          </>
+        }
+        value={numberWithCommaSeparator(teammateXPBoosts)}
+      />
+      <AccountBasicInformationSection
+        title={
+          <>
+            <figure className="size-5">
+              <img
+                src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
+                className="size-[18px]"
+                alt="FNDB Profile"
+              />
+            </figure>
+            Founder Status:
+          </>
+        }
+        value={extractFounderStatus(founderStatus)}
+      />
+    </>
   )
 }
