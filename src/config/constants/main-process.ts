@@ -89,10 +89,12 @@ export enum ElectronAPIEventKeys {
 
   XPBoostsAccountProfileRequest = 'xpboosts:account-profile:request',
   XPBoostsAccountProfileResponse = 'xpboosts:account-profile:response',
-  XPBoostsConsumePersonal = 'xpboosts:consume:personal',
-  XPBoostsConsumePersonalNotification = 'xpboosts:consume:personal:notification',
   XPBoostsSearchUser = 'xpboosts:search:user',
   XPBoostsSearchUserNotification = 'xpboosts:search:user:notification',
+  XPBoostsConsumePersonal = 'xpboosts:consume:personal',
+  XPBoostsConsumePersonalNotification = 'xpboosts:consume:personal:notification',
+  XPBoostsConsumeTeammate = 'xpboosts:consume:teammate',
+  XPBoostsConsumeTeammateNotification = 'xpboosts:consume:teammate:notification',
 
   /**
    * Party

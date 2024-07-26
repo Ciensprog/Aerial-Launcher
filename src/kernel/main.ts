@@ -14,6 +14,7 @@ import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
 import type {
   XPBoostsConsumePersonalData,
+  XPBoostsConsumeTeammateData,
   XPBoostsSearchUserConfig,
 } from '../types/xpboosts'
 
@@ -266,6 +267,13 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.XPBoostsConsumePersonal,
     async (_, data: XPBoostsConsumePersonalData) => {
       await XPBoostsManager.consumePersonal(currentWindow, data)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.XPBoostsConsumeTeammate,
+    async (_, data: XPBoostsConsumeTeammateData) => {
+      await XPBoostsManager.consumeTeammate(currentWindow, data)
     }
   )
 

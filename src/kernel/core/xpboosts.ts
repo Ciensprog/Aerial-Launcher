@@ -3,6 +3,8 @@ import type { AccountData } from '../../types/accounts'
 import type {
   XPBoostsConsumePersonalData,
   XPBoostsConsumePersonalResponse,
+  XPBoostsConsumeTeammateData,
+  XPBoostsConsumeTeammateResponse,
   XPBoostsData,
   XPBoostsSearchUserConfig,
   XPBoostsSearchUserResponse,
@@ -21,6 +23,7 @@ import {
   setActivateConsumable,
 } from '../../services/endpoints/mcp'
 
+import { calculateTeammateXPBoostsToUse } from '../../lib/calculations/xpboosts'
 import { isMCPQueryProfileChangesConsumableAccountItem } from '../../lib/check-objects'
 
 export class XPBoostsManager {
@@ -166,7 +169,7 @@ export class XPBoostsManager {
 
             defaultResponse.total.xpBoosts.expected += currentTotal
 
-            const mcpResponses = await Promise.allSettled(
+            await Promise.allSettled(
               Array.from({ length: currentTotal }, () => null).map(
                 async () => {
                   const accessToken =
@@ -191,21 +194,12 @@ export class XPBoostsManager {
                     return false
                   }
 
+                  defaultResponse.total.xpBoosts.current++
+
                   return true
                 }
               )
             )
-            const filteredResponses = mcpResponses.filter(
-              (item) => item.status === 'fulfilled' && item.value
-            )
-
-            if (filteredResponses.length > 0) {
-              mcpResponses.forEach((item) => {
-                if (item.status === 'fulfilled' && item.value) {
-                  defaultResponse.total.xpBoosts.current++
-                }
-              })
-            }
           })
       )
 
@@ -219,6 +213,108 @@ export class XPBoostsManager {
 
     currentWindow.webContents.send(
       ElectronAPIEventKeys.XPBoostsConsumePersonalNotification,
+      defaultResponse
+    )
+  }
+
+  static async consumeTeammate(
+    currentWindow: BrowserWindow,
+    data: XPBoostsConsumeTeammateData
+  ) {
+    const defaultResponse: XPBoostsConsumeTeammateResponse = {
+      total: {
+        accounts: 0,
+        destinationAccount: data.destinationAccount,
+        xpBoosts: {
+          current: 0,
+          expected: 0,
+        },
+      },
+    }
+
+    try {
+      const result = calculateTeammateXPBoostsToUse({
+        amountToSend: data.total,
+        data: data.accounts,
+      })
+      const accounts = data.accounts.filter((item) => {
+        const isNotDestination =
+          item &&
+          item.accountId !== data.destinationAccount.id &&
+          result[item.accountId] !== undefined
+
+        if (isNotDestination) {
+          defaultResponse.total.accounts++
+        }
+
+        return isNotDestination
+      })
+      const newTotal = Object.entries(result).reduce(
+        (accumulator, [accountId, quantity]) => {
+          let currentQuantity = quantity
+
+          if (accountId === data.destinationAccount.id) {
+            currentQuantity = 0
+          }
+
+          return accumulator + currentQuantity
+        },
+        0
+      )
+
+      defaultResponse.total.xpBoosts.expected = newTotal
+
+      await Promise.allSettled(
+        accounts.map(async ({ account, accountId, items }) => {
+          const { teammate } = items
+          const currentTotal =
+            teammate.quantity > result[accountId]
+              ? result[accountId]
+              : teammate.quantity
+
+          await Promise.allSettled(
+            Array.from({ length: currentTotal }, () => null).map(
+              async () => {
+                const accessToken = await Authentication.verifyAccessToken(
+                  account as AccountData
+                )
+
+                if (!accessToken) {
+                  return false
+                }
+
+                const mcpResponse = await setActivateConsumable({
+                  accessToken,
+                  accountId,
+                  targetAccountId: data.destinationAccount.id,
+                  targetItemId: `${teammate.itemId}`,
+                })
+                const isValid =
+                  (mcpResponse.data.profileChanges?.length ?? 0) > 0
+
+                if (!isValid) {
+                  return false
+                }
+
+                defaultResponse.total.xpBoosts.current++
+
+                return true
+              }
+            )
+          )
+        })
+      )
+
+      await XPBoostsManager.requestAccounts(
+        currentWindow,
+        data.originalAccounts
+      )
+    } catch (error) {
+      //
+    }
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.XPBoostsConsumeTeammateNotification,
       defaultResponse
     )
   }

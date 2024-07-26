@@ -120,7 +120,35 @@ export function useData() {
           )
 
           toast(
-            `A total of ${currentTotalXPBoosts}/${expectedTotalXPBoosts} XP boost${total.xpBoosts.current > 1 ? 's were' : ' was'} consumed. Summary of ${compactNumber(total.accounts)} account${total.accounts > 1 ? 's' : ''}`
+            `A total of ${currentTotalXPBoosts}/${expectedTotalXPBoosts} XP boost${total.xpBoosts.current > 1 ? 's were' : ' was'} consumed. Summary of ${compactNumber(total.accounts)} account${total.accounts > 1 ? 's' : ''}`,
+            {
+              duration: 6000,
+            }
+          )
+        }
+      )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
+    const listener =
+      window.electronAPI.notificationConsumeTeammateXPBoosts(
+        async ({ total }) => {
+          const currentTotalXPBoosts = compactNumber(
+            total.xpBoosts.current
+          )
+          const expectedTotalXPBoosts = compactNumber(
+            total.xpBoosts.expected
+          )
+
+          toast(
+            `A total of ${currentTotalXPBoosts}/${expectedTotalXPBoosts} XP boost${total.xpBoosts.current > 1 ? 's were' : ' was'} send to ${total.destinationAccount.displayName ?? 'Unknown User'}. Summary of ${compactNumber(total.accounts)} account${total.accounts > 1 ? 's' : ''}`,
+            {
+              duration: 6000,
+            }
           )
         }
       )
@@ -192,13 +220,20 @@ export function useFilterXPBoosts({
     amountToSend,
     data,
   })
-  const calculatedTotal = Object.values(result).reduce(
-    (accumulator, current) => accumulator + current,
-    0
-  )
+
+  const recalculateTotal = (ignoreIds?: Array<string>) =>
+    Object.entries(result).reduce((accumulator, [accountId, quantity]) => {
+      let currentQuantity = quantity
+
+      if (ignoreIds && ignoreIds.includes(accountId)) {
+        currentQuantity = 0
+      }
+
+      return accumulator + currentQuantity
+    }, 0)
 
   return {
-    calculatedTotal,
+    recalculateTotal,
     teammateXPBoostsFiltered: result,
   }
 }
@@ -237,7 +272,9 @@ export function useAccountDataItem({
   }
 }
 
-export function useSendBoostsSheet() {
+export function useSendBoostsSheet({
+  recalculateTotal,
+}: Pick<ReturnType<typeof useFilterXPBoosts>, 'recalculateTotal'>) {
   const [xpBoostType, setXPBoostType] = useState(false)
   const [inputSearchDisplayName, setInputSearchDisplayName] = useState('')
 
@@ -263,6 +300,10 @@ export function useSendBoostsSheet() {
   const { amountToSend, amountToSendIsInvalid, data } =
     useGetXPBoostsData()
 
+  const newCalculatedTotal = recalculateTotal(
+    searchedUser?.data ? [searchedUser.data.lookup.id] : undefined
+  )
+
   const amountToSendParsedToNumber = amountToSendIsInvalid
     ? 0
     : Number(amountToSend)
@@ -284,7 +325,8 @@ export function useSendBoostsSheet() {
     amountToSendIsInvalid ||
     generalIsSubmitting ||
     noTeammateBoostsData ||
-    searchUserIsSubmitting
+    searchUserIsSubmitting ||
+    newCalculatedTotal <= 0
   const inputSearchIsDisabled =
     amountToSendIsInvalid ||
     generalIsSubmitting ||
@@ -321,6 +363,7 @@ export function useSendBoostsSheet() {
 
     setXPBoostType(value)
   }
+
   const handleConsumePersonal = () => {
     if (consumePersonalBoostsButtonIsDisabled) {
       return
@@ -334,6 +377,22 @@ export function useSendBoostsSheet() {
       total: amountToSendParsedToNumber,
     })
   }
+
+  const handleConsumeTeammate = () => {
+    if (consumeTeammateBoostsButtonIsDisabled || !searchedUser?.data) {
+      return
+    }
+
+    updateIsSubmittingConsume('teammate', true)
+
+    window.electronAPI.consumeTeammateXPBoosts({
+      accounts: dataFilterByTeammateType,
+      originalAccounts: getAccounts(),
+      destinationAccount: searchedUser.data.lookup,
+      total: amountToSendParsedToNumber,
+    })
+  }
+
   const handleChangeSearchDisplayName: ChangeEventHandler<
     HTMLInputElement
   > = (event) => {
@@ -375,6 +434,7 @@ export function useSendBoostsSheet() {
     inputSearchButtonIsDisabled,
     isSubmittingPersonal,
     isSubmittingTeammate,
+    newCalculatedTotal,
     noPersonalBoostsData,
     noTeammateBoostsData,
     searchedUser,
@@ -384,6 +444,7 @@ export function useSendBoostsSheet() {
 
     handleChangeSearchDisplayName,
     handleConsumePersonal,
+    handleConsumeTeammate,
     handleOpenExternalFNDBProfileUrl,
     handleSearchUser,
     handleSetXPBoostsType,

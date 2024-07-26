@@ -66,6 +66,7 @@ import {
 } from '../../../lib/parsers/numbers'
 import {
   extractBoostedXP,
+  extractXPBoosts,
   extractFounderStatus,
 } from '../../../lib/parsers/query-profile'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
@@ -118,10 +119,12 @@ function Content() {
     xpBoostsUpdateAccounts,
     xpBoostsUpdateTags,
   } = useData()
-  const { calculatedTotal, teammateXPBoostsFiltered } = useFilterXPBoosts({
-    data,
-    amountToSend: amountToSendParsedToNumber,
-  })
+  const { recalculateTotal, teammateXPBoostsFiltered } = useFilterXPBoosts(
+    {
+      data,
+      amountToSend: amountToSendParsedToNumber,
+    }
+  )
 
   return (
     <div className="flex flex-grow">
@@ -176,7 +179,7 @@ function Content() {
                 )}
               </Button>
 
-              <SendBoostsSheet calculatedTotal={calculatedTotal} />
+              <SendBoostsSheet recalculateTotal={recalculateTotal} />
             </CardFooter>
           </Card>
 
@@ -227,10 +230,8 @@ function Content() {
 }
 
 function SendBoostsSheet({
-  calculatedTotal,
-}: {
-  calculatedTotal: number
-}) {
+  recalculateTotal,
+}: Pick<ReturnType<typeof useFilterXPBoosts>, 'recalculateTotal'>) {
   const {
     // accountList,
     amountToSendIsInvalid,
@@ -244,6 +245,7 @@ function SendBoostsSheet({
     inputSearchButtonIsDisabled,
     isSubmittingPersonal,
     isSubmittingTeammate,
+    newCalculatedTotal,
     noPersonalBoostsData,
     noTeammateBoostsData,
     searchedUser,
@@ -253,10 +255,16 @@ function SendBoostsSheet({
 
     handleChangeSearchDisplayName,
     handleConsumePersonal,
+    handleConsumeTeammate,
     handleOpenExternalFNDBProfileUrl,
     handleSearchUser,
     handleSetXPBoostsType,
-  } = useSendBoostsSheet()
+  } = useSendBoostsSheet({ recalculateTotal })
+  const userBoosts = extractXPBoosts(
+    searchedUser?.success && searchedUser?.data
+      ? searchedUser.data.profileChanges
+      : undefined
+  )
 
   return (
     <Sheet>
@@ -357,14 +365,18 @@ function SendBoostsSheet({
             </>
           ) : (
             <>
-              <div className="p-1">
+              <div className="p-1 space-y-1">
+                <Label htmlFor="sheet-input-search-player">
+                  Search player by display name (epic, xbl or psn)
+                </Label>
                 <div className="flex items-center relative">
                   <Input
-                    placeholder="Search player by display name"
+                    placeholder="Example: Sample"
                     className="pr-20 pl-3 py-1"
                     value={inputSearchDisplayName}
                     onChange={handleChangeSearchDisplayName}
                     disabled={inputSearchIsDisabled}
+                    id="sheet-input-search-player"
                   />
                   <Button
                     className="absolute h-8 px-2 py-1.5 right-1 text-sm w-16"
@@ -467,6 +479,40 @@ function SendBoostsSheet({
                                   <>
                                     <figure className="size-5">
                                       <img
+                                        src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
+                                        className="size-[18px]"
+                                        alt="FNDB Profile"
+                                      />
+                                    </figure>
+                                    Personal XP Boosts:
+                                  </>
+                                }
+                                value={numberWithCommaSeparator(
+                                  userBoosts.personal
+                                )}
+                              />
+                              <AccountBasicInformationSection
+                                title={
+                                  <>
+                                    <figure className="size-5">
+                                      <img
+                                        src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
+                                        className="size-[18px]"
+                                        alt="FNDB Profile"
+                                      />
+                                    </figure>
+                                    Teammate XP Boosts:
+                                  </>
+                                }
+                                value={numberWithCommaSeparator(
+                                  userBoosts.teammate
+                                )}
+                              />
+                              <AccountBasicInformationSection
+                                title={
+                                  <>
+                                    <figure className="size-5">
+                                      <img
                                         src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
                                         className="size-[18px]"
                                         alt="FNDB Profile"
@@ -488,6 +534,7 @@ function SendBoostsSheet({
                   <div className="mb-5 mt-4 px-1">
                     <Button
                       className="gap-1 w-full"
+                      onClick={handleConsumeTeammate}
                       disabled={consumeTeammateBoostsButtonIsDisabled}
                     >
                       {isSubmittingTeammate ? (
@@ -498,7 +545,7 @@ function SendBoostsSheet({
                         <>
                           Send
                           <span className="underline">
-                            {compactNumber(calculatedTotal)}
+                            {compactNumber(newCalculatedTotal)}
                           </span>
                           to:
                           <span className="font-bold max-w-[25ch] truncate">

@@ -25,9 +25,27 @@ export type XPBoostsConsumePersonalData = {
   total: number
 }
 
+export type XPBoostsConsumeTeammateData = {
+  accounts: Array<XPBoostsDataWithAccountData>
+  originalAccounts: Array<AccountData>
+  destinationAccount: LookupFindOneByDisplayNameResponse
+  total: number
+}
+
 export type XPBoostsConsumePersonalResponse = {
   total: {
     accounts: number
+    xpBoosts: {
+      current: number
+      expected: number
+    }
+  }
+}
+
+export type XPBoostsConsumeTeammateResponse = {
+  total: {
+    accounts: number
+    destinationAccount: LookupFindOneByDisplayNameResponse
     xpBoosts: {
       current: number
       expected: number

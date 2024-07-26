@@ -3,6 +3,8 @@ import type { AccountData } from '../../types/accounts'
 import type {
   XPBoostsConsumePersonalData,
   XPBoostsConsumePersonalResponse,
+  XPBoostsConsumeTeammateData,
+  XPBoostsConsumeTeammateResponse,
   XPBoostsData,
   XPBoostsSearchUserConfig,
   XPBoostsSearchUserResponse,
@@ -23,6 +25,12 @@ export function consumePersonalXPBoosts(
   data: XPBoostsConsumePersonalData
 ) {
   ipcRenderer.send(ElectronAPIEventKeys.XPBoostsConsumePersonal, data)
+}
+
+export function consumeTeammateXPBoosts(
+  data: XPBoostsConsumeTeammateData
+) {
+  ipcRenderer.send(ElectronAPIEventKeys.XPBoostsConsumeTeammate, data)
 }
 
 export function findAPlayerWhoWillReceiveXPBoosts(
@@ -54,6 +62,29 @@ export function notificationXPBoostsAccounts(
   }
 }
 
+export function notificationFindAPlayerWhoWillReceiveXPBoosts(
+  callback: (value: XPBoostsSearchUserResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: XPBoostsSearchUserResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+        customCallback
+      ),
+  }
+}
+
 export function notificationConsumePersonalXPBoosts(
   callback: (value: XPBoostsConsumePersonalResponse) => Promise<void>
 ) {
@@ -77,24 +108,24 @@ export function notificationConsumePersonalXPBoosts(
   }
 }
 
-export function notificationFindAPlayerWhoWillReceiveXPBoosts(
-  callback: (value: XPBoostsSearchUserResponse) => Promise<void>
+export function notificationConsumeTeammateXPBoosts(
+  callback: (value: XPBoostsConsumeTeammateResponse) => Promise<void>
 ) {
   const customCallback = (
     _: IpcRendererEvent,
-    value: XPBoostsSearchUserResponse
+    value: XPBoostsConsumeTeammateResponse
   ) => {
     callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
-    ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+    ElectronAPIEventKeys.XPBoostsConsumeTeammateNotification,
     customCallback
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
-        ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+        ElectronAPIEventKeys.XPBoostsConsumeTeammateNotification,
         customCallback
       ),
   }

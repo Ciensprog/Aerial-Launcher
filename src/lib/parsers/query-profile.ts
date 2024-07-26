@@ -12,6 +12,26 @@ export function extractBoostedXP(value: MCPQueryProfileChanges) {
   )
 }
 
+export function extractXPBoosts(value?: MCPQueryProfileChanges) {
+  const items = Object.entries(value?.profile?.items ?? {})
+  const data = {
+    personal: 0,
+    teammate: 0,
+  }
+
+  items.forEach(([, item]) => {
+    if (item.templateId === 'ConsumableAccountItem:smallxpboost') {
+      data.personal = item.quantity
+    } else if (
+      item.templateId === 'ConsumableAccountItem:smallxpboost_gift'
+    ) {
+      data.teammate = item.quantity
+    }
+  })
+
+  return data
+}
+
 export function extractFounderStatus(value: MCPQueryProfileChanges) {
   const items = Object.values(value?.profile?.items ?? {})
   const isFounder = items.find(
