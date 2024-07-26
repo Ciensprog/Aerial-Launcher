@@ -56,6 +56,7 @@ export type XPBoostsConsumeTeammateResponse = {
 export type XPBoostsSearchUserConfig = {
   account: AccountData
   displayName: string
+  originalAccounts: Array<AccountData>
 }
 
 export type XPBoostsSearchUserResponse =

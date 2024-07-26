@@ -344,8 +344,11 @@ export class XPBoostsManager {
       }
 
       try {
+        const accountDestinationInLauncher = config.originalAccounts.find(
+          (item) => item.accountId === response.data.id
+        )
         const accessToken = await Authentication.verifyAccessToken(
-          config.account
+          accountDestinationInLauncher ?? config.account
         )
 
         if (!accessToken) {

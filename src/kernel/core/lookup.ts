@@ -1,4 +1,4 @@
-import type { AccountData } from '../../types/accounts'
+import type { XPBoostsSearchUserConfig } from '../../types/xpboosts'
 
 import { Authentication } from './authentication'
 
@@ -11,10 +11,7 @@ export class LookupManager {
   static async searchUserByDisplayName({
     account,
     displayName,
-  }: {
-    account: AccountData
-    displayName: string
-  }) {
+  }: XPBoostsSearchUserConfig) {
     const defaultResponse: {
       data: null
       success: false

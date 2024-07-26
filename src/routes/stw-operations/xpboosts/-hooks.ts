@@ -416,6 +416,7 @@ export function useSendBoostsSheet({
     window.electronAPI.findAPlayerWhoWillReceiveXPBoosts({
       account: selected,
       displayName: inputSearchDisplayName.trim(),
+      originalAccounts: getAccounts(),
     })
   }
 
