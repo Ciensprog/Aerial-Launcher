@@ -3,7 +3,7 @@ import type { MCPQueryProfileChanges } from '../../types/services/mcp'
 import { FounderEdition } from '../../config/constants/fortnite/founder'
 import { isMCPQueryProfileChangesQuest } from '../check-objects'
 
-export function extractBoostedXP(value: MCPQueryProfileChanges) {
+export function extractBoostedXP(value?: MCPQueryProfileChanges) {
   const items = Object.values(value?.profile?.items ?? {})
 
   return (
@@ -32,7 +32,7 @@ export function extractXPBoosts(value?: MCPQueryProfileChanges) {
   return data
 }
 
-export function extractFounderStatus(value: MCPQueryProfileChanges) {
+export function extractFounderStatus(value?: MCPQueryProfileChanges) {
   const items = Object.values(value?.profile?.items ?? {})
   const isFounder = items.find(
     (item) => item.templateId === 'Token:receivemtxcurrency'

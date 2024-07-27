@@ -39,6 +39,12 @@ export function findAPlayerWhoWillReceiveXPBoosts(
   ipcRenderer.send(ElectronAPIEventKeys.XPBoostsSearchUser, config)
 }
 
+export function generalFindAPlayerWhoWillReceiveXPBoosts(
+  config: XPBoostsSearchUserConfig
+) {
+  ipcRenderer.send(ElectronAPIEventKeys.XPBoostsGeneralSearchUser, config)
+}
+
 export function notificationXPBoostsAccounts(
   callback: (value: Array<XPBoostsData>) => Promise<void>
 ) {
@@ -85,6 +91,29 @@ export function notificationFindAPlayerWhoWillReceiveXPBoosts(
   }
 }
 
+export function notificationGeneralFindAPlayerWhoWillReceiveXPBoosts(
+  callback: (value: XPBoostsSearchUserResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: XPBoostsSearchUserResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.XPBoostsGeneralSearchUserNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.XPBoostsGeneralSearchUserNotification,
+        customCallback
+      ),
+  }
+}
+
 export function notificationConsumePersonalXPBoosts(
   callback: (value: XPBoostsConsumePersonalResponse) => Promise<void>
 ) {
@@ -126,6 +155,26 @@ export function notificationConsumeTeammateXPBoosts(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.XPBoostsConsumeTeammateNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationConsumeTeammateProgressionXPBoosts(
+  callback: () => Promise<void>
+) {
+  const customCallback = () => {
+    callback().catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.XPBoostsConsumeTeammateProgressionNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.XPBoostsConsumeTeammateProgressionNotification,
         customCallback
       ),
   }

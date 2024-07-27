@@ -31,6 +31,71 @@ import { compactNumber } from '../../../lib/parsers/numbers'
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
 
+export function useSearchUser() {
+  const [inputSearchDisplayName, setInputSearchDisplayName] = useState('')
+  const [searchUserIsSubmitting, setSearchUserIsSubmitting] =
+    useState(false)
+  const [searchedUser, setSearchedUser] =
+    useState<XPBoostsSearchUserResponse | null>(null)
+
+  const { selected } = useGetSelectedAccount()
+  const { accountsArray } = useGetAccounts()
+
+  const inputSearchButtonIsDisabled =
+    searchUserIsSubmitting || inputSearchDisplayName.trim() === ''
+
+  useEffect(() => {
+    const listener =
+      window.electronAPI.notificationGeneralFindAPlayerWhoWillReceiveXPBoosts(
+        async (response) => {
+          setSearchedUser(response)
+          setSearchUserIsSubmitting(false)
+        }
+      )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  const handleChangeSearchDisplayName: ChangeEventHandler<
+    HTMLInputElement
+  > = (event) => {
+    const value = event.target.value
+
+    setInputSearchDisplayName(value)
+  }
+
+  const handleSearchUser = () => {
+    if (
+      !selected ||
+      inputSearchDisplayName === '' ||
+      searchUserIsSubmitting
+    ) {
+      return
+    }
+
+    setInputSearchDisplayName(inputSearchDisplayName.trim())
+    setSearchUserIsSubmitting(true)
+
+    window.electronAPI.generalFindAPlayerWhoWillReceiveXPBoosts({
+      account: selected,
+      displayName: inputSearchDisplayName.trim(),
+      originalAccounts: accountsArray,
+    })
+  }
+
+  return {
+    inputSearchDisplayName,
+    inputSearchButtonIsDisabled,
+    searchUserIsSubmitting,
+    searchedUser,
+
+    handleChangeSearchDisplayName,
+    handleSearchUser,
+  }
+}
+
 export function useData() {
   const [searchValue, setSearchValue] = useState('')
 
@@ -317,6 +382,8 @@ export function useAccountDataItem({
 export function useSendBoostsSheet({
   recalculateTotal,
 }: Pick<ReturnType<typeof useFilterXPBoosts>, 'recalculateTotal'>) {
+  const [success, setSuccess] = useState(0)
+
   const [xpBoostType, setXPBoostType] = useState(false)
   const [inputSearchDisplayName, setInputSearchDisplayName] = useState('')
 
@@ -391,6 +458,19 @@ export function useSendBoostsSheet({
     }
   }, [])
 
+  useEffect(() => {
+    const listener =
+      window.electronAPI.notificationConsumeTeammateProgressionXPBoosts(
+        async () => {
+          setSuccess((state) => state + 1)
+        }
+      )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   const handleOpenExternalFNDBProfileUrl =
     (displayName: string): MouseEventHandler =>
     (event) => {
@@ -425,6 +505,7 @@ export function useSendBoostsSheet({
       return
     }
 
+    setSuccess(0)
     updateIsSubmittingConsume('teammate', true)
 
     window.electronAPI.consumeTeammateXPBoosts({
@@ -463,6 +544,8 @@ export function useSendBoostsSheet({
   }
 
   return {
+    success,
+
     accountList,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,

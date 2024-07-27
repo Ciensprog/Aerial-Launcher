@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { MouseEventHandler, ReactNode } from 'react'
 import type { MCPQueryProfileChanges } from '../../../types/services/mcp'
 import type {
   XPBoostsDataWithAccountData,
@@ -11,6 +11,8 @@ import {
   // BookUp2,
   // ChevronsUp,
   ExternalLink,
+  Info,
+  Send,
   // LogIn,
   Trash2,
   // TrendingUp,
@@ -58,6 +60,7 @@ import {
   useAccountDataItem,
   useData,
   useFilterXPBoosts,
+  useSearchUser,
   useSendBoostsSheet,
 } from './-hooks'
 
@@ -123,17 +126,149 @@ function Content() {
     xpBoostsUpdateAccounts,
     xpBoostsUpdateTags,
   } = useData()
+  const {
+    inputSearchButtonIsDisabled,
+    inputSearchDisplayName,
+    searchUserIsSubmitting,
+    searchedUser,
+
+    handleChangeSearchDisplayName,
+    handleSearchUser,
+  } = useSearchUser()
   const { recalculateTotal, teammateXPBoostsFiltered } = useFilterXPBoosts(
     {
       data,
       amountToSend: amountToSendParsedToNumber,
     }
   )
+  const userBoosts = extractXPBoosts(
+    searchedUser?.success && searchedUser?.data
+      ? searchedUser.data.profileChanges
+      : undefined
+  )
+
+  const handleOpenExternalFNDBProfileUrl =
+    (displayName: string): MouseEventHandler<HTMLAnchorElement> =>
+    (event) => {
+      event.preventDefault()
+
+      window.electronAPI.openExternalURL(fortniteDBProfileURL(displayName))
+    }
 
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center mb-10 w-full">
-        <div className="flex flex-col max-w-lg w-full">
+        <div className="flex flex-col gap-5 max-w-lg w-full">
+          <Card>
+            <CardHeader className="border-b">
+              <CardDescription>
+                Display basic information about a player
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6 px-0 space-y-4">
+              <div className="grid gap-4 px-6">
+                <Label htmlFor="global-input-search-player">
+                  Search player by display name (epic, xbl or psn)
+                </Label>
+                <div className="flex items-center relative">
+                  <Input
+                    placeholder="Example: Sample"
+                    className="pr-32 pl-3 py-1"
+                    value={inputSearchDisplayName}
+                    onChange={handleChangeSearchDisplayName}
+                    disabled={searchUserIsSubmitting}
+                    id="global-input-search-player"
+                  />
+                  <Button
+                    className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
+                    onClick={handleSearchUser}
+                    disabled={inputSearchButtonIsDisabled}
+                  >
+                    {searchUserIsSubmitting ? (
+                      <UpdateIcon className="animate-spin h-4" />
+                    ) : (
+                      'Search'
+                    )}
+                  </Button>
+                </div>
+
+                {searchedUser &&
+                  !searchedUser.success &&
+                  !searchedUser.isPrivate && (
+                    <div className="mt-2 text-center text-muted-foreground">
+                      {searchedUser.errorMessage
+                        ? searchedUser.errorMessage
+                        : 'No player found'}
+                    </div>
+                  )}
+              </div>
+              {searchedUser?.data && (
+                <div className="px-6">
+                  <div className="">
+                    <div className="">
+                      <a
+                        href={fortniteDBProfileURL(
+                          searchedUser.data.lookup.displayName
+                        )}
+                        className="inline-flex gap-2 items-center hover:opacity-75"
+                        onClick={handleOpenExternalFNDBProfileUrl(
+                          searchedUser.data.lookup.displayName
+                        )}
+                      >
+                        <span className="max-w-72 text-lg truncate">
+                          {searchedUser.data.lookup.displayName}
+                        </span>
+                        <ExternalLink
+                          className="stroke-muted-foreground"
+                          size={16}
+                        />
+                      </a>
+                    </div>
+                    <div className="border-l-4 pl-3 space-y-0.5 text-muted-foreground text-sm [&_.icon-wrapper]:flex [&_.icon-wrapper]:items-center [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:size-5">
+                      {searchedUser?.isPrivate ? (
+                        <>
+                          <div className="py-1.5">
+                            <div className="">Note:</div>
+                            This user has "Public Game Stats" disabled,
+                            more information can't be displayed.
+                          </div>
+                        </>
+                      ) : (
+                        searchedUser?.success && (
+                          <SearchedUserData
+                            boostedXP={searchedUser.data.profileChanges}
+                            collectionBookLevel={
+                              searchedUser.data.profileChanges.profile
+                                .stats.attributes.collection_book
+                                ?.maxBookXpLevelAchieved ?? 0
+                            }
+                            commanderLevel={
+                              searchedUser.data.profileChanges.profile
+                                .stats.attributes.level +
+                              (searchedUser.data.profileChanges.profile
+                                .stats.attributes
+                                .rewards_claimed_post_max_level ?? 0)
+                            }
+                            daysLoggedIn={
+                              searchedUser.data.profileChanges.profile
+                                .stats.attributes.daily_rewards
+                                ?.totalDaysLoggedIn ?? 0
+                            }
+                            founderStatus={
+                              searchedUser.data.profileChanges
+                            }
+                            personalXPBoosts={userBoosts.personal}
+                            teammateXPBoosts={userBoosts.teammate}
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="border-b">
               <CardDescription>
@@ -246,6 +381,8 @@ function SendBoostsSheet({
   recalculateTotal,
 }: Pick<ReturnType<typeof useFilterXPBoosts>, 'recalculateTotal'>) {
   const {
+    success,
+
     // accountList,
     amountToSendIsInvalid,
     amountToSendParsedToNumber,
@@ -482,32 +619,49 @@ function SendBoostsSheet({
                           )
                         )}
                       </div>
+                      <div className="mb-4 mt-4 px-1">
+                        <div className="flex gap-1 items-center mb-4 px-1 text-muted-foreground text-xs">
+                          <Info className="flex-shrink-0 size-3.5" />
+                          Some boosts might not send if your ping is not
+                          stable.
+                        </div>
+                        <Button
+                          className="gap-1 w-full"
+                          onClick={handleConsumeTeammate}
+                          disabled={consumeTeammateBoostsButtonIsDisabled}
+                        >
+                          {isSubmittingTeammate ? (
+                            <UpdateIcon className="animate-spin" />
+                          ) : amountToSendIsInvalid ? (
+                            'Please type a valid amount'
+                          ) : (
+                            <>
+                              Send
+                              <span className="underline">
+                                {compactNumber(newCalculatedTotal)}
+                              </span>
+                              to:
+                              <span className="font-bold max-w-[25ch] truncate">
+                                {searchedUser.data.lookup.displayName}
+                              </span>
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                      <div className="mb-4 px-2 text-sm">
+                        <div className="flex gap-1.5">
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <Send className="flex-shrink-0 size-3.5" />
+                            Success:
+                          </div>{' '}
+                          {numberWithCommaSeparator(success)}/
+                          {numberWithCommaSeparator(
+                            amountToSendParsedToNumber
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </ScrollArea>
-                  <div className="mb-5 mt-4 px-1">
-                    <Button
-                      className="gap-1 w-full"
-                      onClick={handleConsumeTeammate}
-                      disabled={consumeTeammateBoostsButtonIsDisabled}
-                    >
-                      {isSubmittingTeammate ? (
-                        <UpdateIcon className="animate-spin" />
-                      ) : amountToSendIsInvalid ? (
-                        'Please type a valid amount'
-                      ) : (
-                        <>
-                          Send
-                          <span className="underline">
-                            {compactNumber(newCalculatedTotal)}
-                          </span>
-                          to:
-                          <span className="font-bold max-w-[25ch] truncate">
-                            {searchedUser.data.lookup.displayName}
-                          </span>
-                        </>
-                      )}
-                    </Button>
-                  </div>
                 </>
               )}
             </>
@@ -699,7 +853,7 @@ function AccountBasicInformationSection({
     <div className="flex gap-1.5 items-center">
       <div className="flex flex-shrink-0 gap-1.5 items-center text-muted-foreground">
         {title}
-      </div>{' '}
+      </div>
       <div className="text-white">{value}</div>
     </div>
   )
@@ -714,14 +868,17 @@ function SearchedUserData({
   personalXPBoosts,
   teammateXPBoosts,
 }: {
-  boostedXP: MCPQueryProfileChanges
+  boostedXP?: MCPQueryProfileChanges
   collectionBookLevel: number
   commanderLevel: number
   daysLoggedIn: number
-  founderStatus: MCPQueryProfileChanges
+  founderStatus?: MCPQueryProfileChanges
   personalXPBoosts: number
   teammateXPBoosts: number
 }) {
+  const extractedBoostedXP = extractBoostedXP(boostedXP)
+  const individualBoosts = Math.round(extractedBoostedXP / 864191)
+
   return (
     <>
       {/* <AccountBasicInformationSection
@@ -734,7 +891,17 @@ function SearchedUserData({
       />
       <AccountBasicInformationSection
         title="Boosted XP:"
-        value={numberWithCommaSeparator(extractBoostedXP(boostedXP))}
+        value={
+          <div className="space-x-1.5">
+            <span className="">
+              {numberWithCommaSeparator(extractedBoostedXP)}
+            </span>
+            <span className="">
+              ({numberWithCommaSeparator(individualBoosts)}{' '}
+              {individualBoosts > 1 ? 'Boosts' : 'Boost'})
+            </span>
+          </div>
+        }
       />
       <AccountBasicInformationSection
         title="Days Logged In:"

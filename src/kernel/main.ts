@@ -280,7 +280,18 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.XPBoostsSearchUser,
     async (_, config: XPBoostsSearchUserConfig) => {
-      await XPBoostsManager.searchUser(currentWindow, config)
+      await XPBoostsManager.searchUser(
+        ElectronAPIEventKeys.XPBoostsSearchUserNotification,
+        currentWindow,
+        config
+      )
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.XPBoostsGeneralSearchUser,
+    async (_, config: XPBoostsSearchUserConfig) => {
+      await XPBoostsManager.generalSearchUser(currentWindow, config)
     }
   )
 

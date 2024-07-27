@@ -296,6 +296,10 @@ export class XPBoostsManager {
                   return false
                 }
 
+                currentWindow.webContents.send(
+                  ElectronAPIEventKeys.XPBoostsConsumeTeammateProgressionNotification
+                )
+
                 defaultResponse.total.xpBoosts.current++
 
                 return true
@@ -319,7 +323,19 @@ export class XPBoostsManager {
     )
   }
 
+  static async generalSearchUser(
+    currentWindow: BrowserWindow,
+    config: XPBoostsSearchUserConfig
+  ) {
+    await XPBoostsManager.searchUser(
+      ElectronAPIEventKeys.XPBoostsGeneralSearchUserNotification,
+      currentWindow,
+      config
+    )
+  }
+
   static async searchUser(
+    notificationId: ElectronAPIEventKeys,
     currentWindow: BrowserWindow,
     config: XPBoostsSearchUserConfig
   ) {
@@ -330,10 +346,7 @@ export class XPBoostsManager {
       success: false,
     }
     const sendDefaultResponse = () => {
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.XPBoostsSearchUserNotification,
-        defaultResponse
-      )
+      currentWindow.webContents.send(notificationId, defaultResponse)
     }
 
     const response = await LookupManager.searchUserByDisplayName(config)
@@ -365,18 +378,15 @@ export class XPBoostsManager {
           queryProfileResponse.data.profileChanges[0] ?? null
 
         if (profileChanges) {
-          currentWindow.webContents.send(
-            ElectronAPIEventKeys.XPBoostsSearchUserNotification,
-            {
-              data: {
-                profileChanges,
-                lookup: response.data,
-              },
-              errorMessage: null,
-              isPrivate: false,
-              success: true,
-            } as XPBoostsSearchUserResponse
-          )
+          currentWindow.webContents.send(notificationId, {
+            data: {
+              profileChanges,
+              lookup: response.data,
+            },
+            errorMessage: null,
+            isPrivate: false,
+            success: true,
+          } as XPBoostsSearchUserResponse)
 
           return
         }
