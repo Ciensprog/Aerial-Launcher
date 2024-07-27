@@ -162,7 +162,7 @@ function Content() {
           <Card>
             <CardHeader className="border-b">
               <CardDescription>
-                Display basic information about a player
+                Display basic information about a player.
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6 px-0 space-y-4">
