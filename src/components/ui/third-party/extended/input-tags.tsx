@@ -12,12 +12,14 @@ export type SelectOption = {
 }
 
 export function InputTags({
+  isDisabled,
   options,
   placeholder,
   value,
 
   onChange,
 }: {
+  isDisabled?: boolean
   options: Array<SelectOption>
   placeholder: string
   value: Array<SelectOption>
@@ -52,6 +54,7 @@ export function InputTags({
 
         return
       }}
+      isDisabled={isDisabled}
       isMulti
       unstyled
     />

@@ -12,7 +12,7 @@ import { useClaimedRewards } from '../../../hooks/stw-operations/claimed-rewards
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
-import { parseDisplayName } from '../../../lib/utils'
+import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useComboboxAccounts({
   value,
@@ -42,7 +42,7 @@ export function useComboboxAccounts({
     }
 
     return {
-      label: parseDisplayName(account)!,
+      label: parseCustomDisplayName(account)!,
       value: account.accountId,
       keywords: _keys,
     }

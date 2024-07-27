@@ -8,33 +8,12 @@ import type {
 } from '../../types/services/mcp/claim-rewards'
 import type { MCPHomebaseNameResponse } from '../../types/services/mcp/homebase-name'
 import type {
+  MCPActivateConsumableResponse,
   MCPClientQuestLoginResponse,
   MCPQueryProfile,
 } from '../../types/services/mcp'
 
 import { baseGameService } from '../config/base-game'
-
-export function setClientQuestLogin({
-  accessToken,
-  accountId,
-}: {
-  accessToken: string
-  accountId: string
-}) {
-  return baseGameService.post<MCPClientQuestLoginResponse>(
-    `/profile/${accountId}/client/ClientQuestLogin`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        profileId: 'campaign',
-        rvn: -1,
-      },
-    }
-  )
-}
 
 export function getQueryProfile({
   accessToken,
@@ -58,19 +37,89 @@ export function getQueryProfile({
   )
 }
 
-export function setOpenCardPackBatch({
+export function getQueryPublicProfile({
   accessToken,
   accountId,
-  cardPackItemIds,
 }: {
   accessToken: string
   accountId: string
-} & MCPOpenCardPackBatchPayload) {
-  return baseGameService.post<MCPOpenCardPackBatchResponse>(
-    `/profile/${accountId}/client/OpenCardPackBatch`,
+}) {
+  return baseGameService.post<MCPQueryProfile>(
+    `/profile/${accountId}/public/QueryPublicProfile`,
+    {},
     {
-      cardPackItemIds,
-    } as MCPOpenCardPackBatchPayload,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setActivateConsumable({
+  accessToken,
+  accountId,
+  targetItemId,
+  targetAccountId,
+}: {
+  accessToken: string
+  accountId: string
+  targetItemId: string
+  targetAccountId: string
+}) {
+  return baseGameService.post<MCPActivateConsumableResponse>(
+    `/profile/${accountId}/client/ActivateConsumable`,
+    {
+      targetItemId,
+      targetAccountId,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setClaimDifficultyIncreaseRewards({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return baseGameService.post<MCPClaimDifficultyIncreaseRewardsResponse>(
+    `/profile/${accountId}/client/ClaimDifficultyIncreaseRewards`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setClaimMissionAlertRewards({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return baseGameService.post<MCPClaimMissionAlertRewardsResponse>(
+    `/profile/${accountId}/client/ClaimMissionAlertRewards`,
+    {},
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -110,15 +159,15 @@ export function setClaimQuestReward({
   )
 }
 
-export function setClaimMissionAlertRewards({
+export function setClientQuestLogin({
   accessToken,
   accountId,
 }: {
   accessToken: string
   accountId: string
 }) {
-  return baseGameService.post<MCPClaimMissionAlertRewardsResponse>(
-    `/profile/${accountId}/client/ClaimMissionAlertRewards`,
+  return baseGameService.post<MCPClientQuestLoginResponse>(
+    `/profile/${accountId}/client/ClientQuestLogin`,
     {},
     {
       headers: {
@@ -132,16 +181,45 @@ export function setClaimMissionAlertRewards({
   )
 }
 
-export function setClaimDifficultyIncreaseRewards({
+export function setHomebaseName({
   accessToken,
   accountId,
+  homebaseName,
 }: {
   accessToken: string
   accountId: string
+  homebaseName: string
 }) {
-  return baseGameService.post<MCPClaimDifficultyIncreaseRewardsResponse>(
-    `/profile/${accountId}/client/ClaimDifficultyIncreaseRewards`,
-    {},
+  return baseGameService.post<MCPHomebaseNameResponse>(
+    `/profile/${accountId}/client/SetHomebaseName`,
+    {
+      homebaseName,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'common_public',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setOpenCardPackBatch({
+  accessToken,
+  accountId,
+  cardPackItemIds,
+}: {
+  accessToken: string
+  accountId: string
+} & MCPOpenCardPackBatchPayload) {
+  return baseGameService.post<MCPOpenCardPackBatchResponse>(
+    `/profile/${accountId}/client/OpenCardPackBatch`,
+    {
+      cardPackItemIds,
+    } as MCPOpenCardPackBatchPayload,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -170,32 +248,6 @@ export function setRedeemSTWAccoladeTokens({
       },
       params: {
         profileId: 'athena',
-        rvn: -1,
-      },
-    }
-  )
-}
-
-export function setHomebaseName({
-  accessToken,
-  accountId,
-  homebaseName,
-}: {
-  accessToken: string
-  accountId: string
-  homebaseName: string
-}) {
-  return baseGameService.post<MCPHomebaseNameResponse>(
-    `/profile/${accountId}/client/SetHomebaseName`,
-    {
-      homebaseName,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        profileId: 'common_public',
         rvn: -1,
       },
     }

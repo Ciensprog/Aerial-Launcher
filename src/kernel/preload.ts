@@ -13,6 +13,7 @@ import * as mcpActions from './preload-actions/mcp'
 import * as requestActions from './preload-actions/requests'
 import * as scheduleActions from './preload-actions/schedules'
 import * as settingsActions from './preload-actions/settings'
+import * as xpBoostsActions from './preload-actions/xpboosts'
 import * as worldInfoActions from './preload-actions/world-info'
 
 export const availableElectronAPIs = {
@@ -26,6 +27,7 @@ export const availableElectronAPIs = {
   ...requestActions,
   ...scheduleActions,
   ...settingsActions,
+  ...xpBoostsActions,
   ...worldInfoActions,
 } as const
 

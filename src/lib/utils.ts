@@ -29,20 +29,10 @@ export function tagsArrayToSelectOptions(
 export function sortAccounts(data: AccountDataRecord) {
   const result = Object.values(data)
   const accounts = result.toSorted((itemA, itemB) => {
-    const _itemADisplayName = checkIfCustomDisplayNameIsValid(
-      itemA.customDisplayName
-    )
-      ? itemA.customDisplayName ?? ''
-      : itemA.displayName
-    const _itemBDisplayName = checkIfCustomDisplayNameIsValid(
-      itemB.customDisplayName
-    )
-      ? itemB.customDisplayName ?? ''
-      : itemB.displayName
+    const _itemADisplayName = parseCustomDisplayName(itemA)
+    const _itemBDisplayName = parseCustomDisplayName(itemB)
 
-    return _itemADisplayName.localeCompare(_itemBDisplayName, undefined, {
-      numeric: true,
-    })
+    return localeCompareForSorting(_itemADisplayName, _itemBDisplayName)
   })
 
   const accountList = accounts.reduce((accumulator, current) => {
@@ -57,9 +47,7 @@ export function sortAccounts(data: AccountDataRecord) {
 export function sortTags(data: TagRecord) {
   const result = Object.entries(data)
   const _rawTags = result.toSorted(([itemA], [itemB]) =>
-    itemA.localeCompare(itemB, undefined, {
-      numeric: true,
-    })
+    localeCompareForSorting(itemA, itemB)
   )
 
   const tags = _rawTags.reduce((accumulator, [key, value]) => {
@@ -71,17 +59,7 @@ export function sortTags(data: TagRecord) {
   return tags
 }
 
-export function parseDisplayName(account: AccountData) {
-  if (!account) {
-    return 'Unknown User'
-  }
-
-  return checkIfCustomDisplayNameIsValid(account.customDisplayName)
-    ? account.customDisplayName
-    : account.displayName
-}
-
-export function parseCustomDisplayName(account: AccountData | null) {
+export function parseCustomDisplayName(account?: AccountData | null) {
   if (!account) {
     return 'Unknown User'
   }
@@ -93,4 +71,19 @@ export function parseCustomDisplayName(account: AccountData | null) {
     : `${account?.displayName}`
 
   return customDisplayNameText
+}
+
+/**
+ *
+ * @param max number. `Default: 100`
+ * @returns random number
+ */
+export function randomNumber(max?: number) {
+  return Math.floor(Math.random() * (max ?? 100))
+}
+
+export function localeCompareForSorting(valueA: string, valueB: string) {
+  return valueA.localeCompare(valueB, undefined, {
+    numeric: true,
+  })
 }

@@ -18,8 +18,8 @@ import {
 } from '../../../services/endpoints/mcp'
 
 import {
-  isMCPQueryProfileProfileChangesCardPack,
-  isMCPQueryProfileProfileChangesQuest,
+  isMCPQueryProfileChangesCardPack,
+  isMCPQueryProfileChangesQuest,
 } from '../../../lib/check-objects'
 
 export class MCPClaimRewards {
@@ -41,7 +41,7 @@ export class MCPClaimRewards {
       const cardPackIds = items
         .filter(
           ([, itemValue]) =>
-            isMCPQueryProfileProfileChangesCardPack(itemValue) &&
+            isMCPQueryProfileChangesCardPack(itemValue) &&
             (itemValue.attributes.match_statistics ||
               itemValue.attributes.pack_source === 'ItemCache')
         )
@@ -87,7 +87,7 @@ export class MCPClaimRewards {
       const questIds = items
         .filter(
           ([, itemValue]) =>
-            isMCPQueryProfileProfileChangesQuest(itemValue) &&
+            isMCPQueryProfileChangesQuest(itemValue) &&
             itemValue.attributes.quest_state === 'Completed'
         )
         .map(([itemKey]) => itemKey)

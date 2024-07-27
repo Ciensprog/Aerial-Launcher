@@ -38,7 +38,7 @@ export type MCPHomebaseNameError = {
   >
   errorMessage: string
   messageVars: Array<'[homebaseName]'>
-  numericErrorCode: nubmer
+  numericErrorCode: number
   originatingService: StringUnion<'fortnite'>
   intent: StringUnion<'prod-live'>
 }

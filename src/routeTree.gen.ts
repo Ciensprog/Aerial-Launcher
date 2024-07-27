@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as StwOperationsXpboostsRouteImport } from './routes/stw-operations/xpboosts/route'
 import { Route as StwOperationsSaveQuestsRouteImport } from './routes/stw-operations/save-quests/route'
 import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/party/route'
 import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
@@ -33,6 +34,13 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const StwOperationsXpboostsRouteRoute = StwOperationsXpboostsRouteImport.update(
+  {
+    path: '/stw-operations/xpboosts',
+    getParentRoute: () => rootRoute,
+  } as any,
+)
 
 const StwOperationsSaveQuestsRouteRoute =
   StwOperationsSaveQuestsRouteImport.update({
@@ -119,6 +127,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StwOperationsSaveQuestsRouteImport
       parentRoute: typeof rootRoute
     }
+    '/stw-operations/xpboosts': {
+      preLoaderRoute: typeof StwOperationsXpboostsRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/accounts/add/$type': {
       preLoaderRoute: typeof AccountsAddTypeImport
       parentRoute: typeof rootRoute
@@ -138,6 +150,7 @@ export const routeTree = rootRoute.addChildren([
   StwOperationsHomebaseNameRouteRoute,
   StwOperationsPartyRouteRoute,
   StwOperationsSaveQuestsRouteRoute,
+  StwOperationsXpboostsRouteRoute,
   AccountsAddTypeRoute,
 ])
 

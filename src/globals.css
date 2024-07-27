@@ -65,6 +65,11 @@
   --sidebar-width-lg: 17.5rem;
 }
 
+img {
+  pointer-events: none;
+  user-select: none;
+}
+
 .app-draggable-region {
   -webkit-app-region: drag;
 
