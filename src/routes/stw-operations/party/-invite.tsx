@@ -41,6 +41,7 @@ export function InviteCard() {
             customFilter={customFilter}
             onChange={setValue}
             isMulti
+            showNames
           />
           <Button
             className="disabled:cursor-not-allowed disabled:pointer-events-auto"

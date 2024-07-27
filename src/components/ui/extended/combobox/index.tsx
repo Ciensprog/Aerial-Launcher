@@ -24,6 +24,7 @@ export function Combobox({
   options,
   placeholder,
   placeholderSearch,
+  showNames,
   value,
   customFilter,
   onChange,
@@ -33,6 +34,7 @@ export function Combobox({
       options,
       isMulti,
       onChange,
+      showNames,
       value,
     })
 

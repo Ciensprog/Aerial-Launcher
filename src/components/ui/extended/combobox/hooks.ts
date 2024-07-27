@@ -13,6 +13,7 @@ export type ComboboxProps = {
   options: Array<ComboboxOption>
   placeholder?: string
   placeholderSearch?: string
+  showNames?: boolean
   value?: Array<ComboboxOption>
   customFilter?: (
     value: string,
@@ -25,9 +26,13 @@ export type ComboboxProps = {
 export function useData({
   isMulti = false,
   options,
+  showNames,
   value,
   onChange,
-}: Pick<ComboboxProps, 'isMulti' | 'options' | 'value' | 'onChange'>) {
+}: Pick<
+  ComboboxProps,
+  'isMulti' | 'options' | 'showNames' | 'value' | 'onChange'
+>) {
   const [open, setOpen] = useState(false)
   const [__values, __setValues] = useState<Array<ComboboxOption>>([])
 
@@ -35,7 +40,9 @@ export function useData({
 
   const selectedName = isMulti
     ? currentValues.length > 1
-      ? `${currentValues.length} selected`
+      ? showNames
+        ? `${currentValues.map(({ label }) => label).join(', ')}`
+        : `${currentValues.length} selected`
       : currentValues[0]?.label
     : options.find((item) => item.value === currentValues[0]?.value)?.label
 
