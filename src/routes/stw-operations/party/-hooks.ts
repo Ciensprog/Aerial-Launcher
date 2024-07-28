@@ -14,7 +14,10 @@ import { usePartyFriendsForm } from '../../../hooks/stw-operations/party'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
-import { parseCustomDisplayName } from '../../../lib/utils'
+import {
+  // localeCompareForSorting,
+  parseCustomDisplayName,
+} from '../../../lib/utils'
 
 export function useComboboxAccounts({
   value,
@@ -203,13 +206,17 @@ export function useInviteActions({
   const [inputSearchValue, setInputSearchValue] = useState('')
   const { friends } = usePartyFriendsForm()
 
-  const friendOptions: Array<ComboboxOption> = Object.values(friends).map(
-    (item) => ({
-      keywords: [],
+  const friendOptions: Array<ComboboxOption> = Object.values(friends)
+    .toSorted(
+      (itemA, itemB) =>
+        // localeCompareForSorting(itemA.displayName, itemB.displayName) ||
+        itemB.invitations - itemA.invitations
+    )
+    .map((item) => ({
+      keywords: [item.displayName],
       label: item.displayName,
       value: item.accountId,
-    })
-  )
+    }))
 
   useEffect(() => {
     const listener = window.electronAPI.notificationAddNewFriend(
@@ -299,12 +306,28 @@ export function useInviteActions({
     window.electronAPI.invite(selected, accountIds)
   }
 
+  const customFilter: ComboboxProps['customFilter'] = (
+    _value,
+    search,
+    keywords
+  ) => {
+    const _search = search.toLowerCase().trim()
+    const _keys =
+      keywords &&
+      keywords.some((keyword) =>
+        keyword.toLowerCase().trim().includes(_search)
+      )
+
+    return _keys ? 1 : 0
+  }
+
   return {
     inputSearchValue,
     isInviting,
     isSubmitting,
     friendOptions,
 
+    customFilter,
     handleAddNewFriend,
     handleInvite,
     setInputSearchValue,

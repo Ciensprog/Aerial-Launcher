@@ -26,6 +26,7 @@ export function InviteCard() {
     isInviting,
     isSubmitting,
 
+    customFilter,
     handleAddNewFriend,
     handleInvite,
     setInputSearchValue,
@@ -51,6 +52,7 @@ export function InviteCard() {
             options={friendOptions}
             inputSearchValue={inputSearchValue}
             value={value}
+            customFilter={customFilter}
             onInputSearchChange={setInputSearchValue}
             onChange={setValue}
             emptyContentClassname="p-1"

@@ -540,11 +540,30 @@ export class Party {
           })
         )
 
+        const accountIdsToIncrease: Array<string> = []
+
         response.forEach((item) => {
           if (item.status === 'fulfilled' && item.value !== null) {
             defaultResponse.push(item.value)
+
+            if (item.value.type === 'invite') {
+              accountIdsToIncrease.push(item.value.accountId)
+            }
           }
         })
+
+        if (accountIdsToIncrease.length > 0) {
+          const data = await DataDirectory.getFriendsFile()
+
+          accountIdsToIncrease.forEach((accountId) => {
+            if (data.friends[accountId]) {
+              data.friends[accountId].invitations++
+            }
+          })
+
+          await DataDirectory.updateFriendsFile(data.friends)
+          await Party.loadFriends(currentWindow)
+        }
       }
     } catch (error) {
       //
