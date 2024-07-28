@@ -443,6 +443,8 @@ app.on('ready', async () => {
       currentWindow.webContents.send(
         ElectronAPIEventKeys.ScheduleRequestAccounts
       )
+
+      WorldInfoManager.requestData(currentWindow)
     }
   )
 
