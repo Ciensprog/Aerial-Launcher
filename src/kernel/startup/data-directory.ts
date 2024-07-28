@@ -1,4 +1,5 @@
 import type { AccountList } from '../../types/accounts'
+import type { FriendRecord } from '../../types/friends'
 import type { GroupRecord } from '../../types/groups'
 import type { Settings } from '../../types/settings'
 import type { TagRecord } from '../../types/tags'
@@ -7,9 +8,10 @@ import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
+import { friendsSchema } from '../../lib/validations/schemas/friends'
+import { groupsSchema } from '../../lib/validations/schemas/groups'
 import { settingsSchema } from '../../lib/validations/schemas/settings'
 import { tagsSchema } from '../../lib/validations/schemas/tags'
-import { groupsSchema } from '../../lib/validations/schemas/groups'
 
 export class DataDirectory {
   private static devPrefix = 'dev-'
@@ -60,6 +62,12 @@ export class DataDirectory {
   )
   private static groupsDefaultData: GroupRecord = {}
 
+  private static friendsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'friends.json'
+  )
+  private static friendsDefaultData: FriendRecord = {}
+
   /**
    * Get Path
    */
@@ -82,6 +90,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateSettingsJsonFile()
     await DataDirectory.getOrCreateTagsJsonFile()
     await DataDirectory.getOrCreateGroupsJsonFile()
+    await DataDirectory.getOrCreateFriendsJsonFile()
   }
 
   /**
@@ -161,6 +170,26 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from friends.json
+   */
+  static async getFriendsFile(): Promise<{ friends: FriendRecord }> {
+    const result = await DataDirectory.getOrCreateFriendsJsonFile()
+
+    try {
+      const list = friendsSchema.safeParse(JSON.parse(result))
+      const friends = list.success
+        ? list.data
+        : DataDirectory.friendsDefaultData
+
+      return { friends }
+    } catch (error) {
+      //
+    }
+
+    return { friends: DataDirectory.friendsDefaultData }
+  }
+
+  /**
    * Update accounts.json
    */
   static async updateAccountsFile(data: AccountList) {
@@ -192,6 +221,13 @@ export class DataDirectory {
    */
   static async updateGroupsFile(data: GroupRecord) {
     await DataDirectory.updateJsonFile(DataDirectory.groupsFilePath, data)
+  }
+
+  /**
+   * Update friends.json
+   */
+  static async updateFriendsFile(data: FriendRecord) {
+    await DataDirectory.updateJsonFile(DataDirectory.friendsFilePath, data)
   }
 
   /**
@@ -294,6 +330,23 @@ export class DataDirectory {
   }
 
   /**
+   * Creating friends.json
+   */
+  private static async getOrCreateFriendsJsonFile() {
+    const initialData = DataDirectory.friendsDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.friendsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
    * Creating json file
    */
   private static async getOrCreateJsonFile(
@@ -343,7 +396,7 @@ export class DataDirectory {
         encoding: 'utf8',
       })
     } catch (error) {
-      //
+      console.log('error ->', error)
     }
   }
 }

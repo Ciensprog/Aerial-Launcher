@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { useState } from 'react'
 
 export type ComboboxOption = {
@@ -8,7 +10,14 @@ export type ComboboxOption = {
 
 export type ComboboxProps = {
   className?: string
-  emptyText?: string
+  defaultOpen?: boolean
+  doNotDisableIfThereAreNoOptions?: boolean
+  emptyContent?: ((value: string) => ReactNode) | string
+  emptyContentClassname?: string
+  emptyOptions?: string
+  emptyPlaceholder?: string
+  inputSearchIsDisabled?: boolean
+  inputSearchValue?: string
   isMulti?: boolean
   options: Array<ComboboxOption>
   placeholder?: string
@@ -21,9 +30,11 @@ export type ComboboxProps = {
     keywords?: Array<string>
   ) => number
   onChange?: (values: Array<ComboboxOption>) => void
+  onInputSearchChange?: (values: string) => void
 }
 
 export function useData({
+  defaultOpen,
   isMulti = false,
   options,
   showNames,
@@ -31,10 +42,16 @@ export function useData({
   onChange,
 }: Pick<
   ComboboxProps,
-  'isMulti' | 'options' | 'showNames' | 'value' | 'onChange'
+  | 'defaultOpen'
+  | 'isMulti'
+  | 'options'
+  | 'showNames'
+  | 'value'
+  | 'onChange'
 >) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen ?? false)
   const [__values, __setValues] = useState<Array<ComboboxOption>>([])
+  const [__searchValue, __setSearchValue] = useState('')
 
   const currentValues = value ?? __values
 
@@ -73,12 +90,18 @@ export function useData({
     update(newValues)
   }
 
+  const __onSearchValueChange = (value: string) => {
+    __setSearchValue(value)
+  }
+
   return {
+    __searchValue,
     currentValues,
     open,
     selectedName,
 
     setOpen,
     __onChange,
+    __onSearchValueChange,
   }
 }

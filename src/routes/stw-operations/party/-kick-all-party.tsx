@@ -37,14 +37,14 @@ export function KickAllPartyCard() {
           <Combobox
             placeholder="Select account"
             placeholderSearch={`Search on ${options.length} accounts`}
-            emptyText="No account found"
+            emptyContent="No account found"
             options={options}
             value={value}
             customFilter={customFilter}
             onChange={setValue}
           />
           <Button
-            className="relative disabled:cursor-not-allowed disabled:pointer-events-auto"
+            className="relative"
             size="sm"
             onClick={onKick()}
             disabled={!hasValues}

@@ -1,5 +1,7 @@
 import type { IpcRendererEvent } from 'electron'
 import type { AccountData, AccountDataList } from '../../types/accounts'
+import type { FriendRecord } from '../../types/friends'
+import type { AddNewFriendNotification } from '../../types/party'
 
 import { ipcRenderer } from 'electron'
 
@@ -32,6 +34,26 @@ export function leaveParty(
     selectedAccounts,
     accounts,
     claimState
+  )
+}
+
+export function loadFriends() {
+  ipcRenderer.send(ElectronAPIEventKeys.PartyLoadFriends)
+}
+
+export function addNewFriend(account: AccountData, displayName: string) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartyAddNewFriendAction,
+    account,
+    displayName
+  )
+}
+
+export function invite(account: AccountData, accountIds: Array<string>) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartyInviteAction,
+    account,
+    accountIds
   )
 }
 
@@ -92,6 +114,67 @@ export function notificationLeave(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.PartyLeaveActionNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationAddNewFriend(
+  callback: (value: AddNewFriendNotification) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: AddNewFriendNotification
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyAddNewFriendActionNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyAddNewFriendActionNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationLoadFriends(
+  callback: (value: FriendRecord) => Promise<void>
+) {
+  const customCallback = (_: IpcRendererEvent, value: FriendRecord) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyLoadFriendsNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyLoadFriendsNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationInvite(callback: () => Promise<void>) {
+  const customCallback = () => {
+    callback().catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyInviteActionNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyInviteActionNotification,
         customCallback
       ),
   }

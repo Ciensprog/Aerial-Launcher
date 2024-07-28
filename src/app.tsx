@@ -10,6 +10,7 @@ import { routeTree } from './routeTree.gen'
 import { LoadWorldInfoFiles } from './bootstrap/components/advanced-mode/load-world-info-files'
 import { LoadWorldInfoData } from './bootstrap/components/advanced-mode/load-world-info'
 import { LoadAccounts } from './bootstrap/components/load-accounts'
+import { LoadFriends } from './bootstrap/components/load-friends'
 import { LoadGroups } from './bootstrap/components/load-groups'
 import { LoadSettings } from './bootstrap/components/load-settings'
 import { LoadTags } from './bootstrap/components/load-tags'
@@ -33,6 +34,7 @@ root.render(
       <LoadTags />
       <LoadGroups />
       <LoadAccounts />
+      <LoadFriends />
       <LoadWorldInfoData />
       <LoadWorldInfoFiles />
 

@@ -1,15 +1,21 @@
 import type { PartyData } from '../../types/services/party'
 import type { AccountData, AccountDataList } from '../../types/accounts'
+import type { FriendRecord } from '../../types/friends'
+import type { AddNewFriendNotification } from '../../types/party'
 
 import { BrowserWindow } from 'electron'
 
 import { PartyRole } from '../../config/constants/fortnite/party'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { DataDirectory } from '../startup/data-directory'
 import { Authentication } from './authentication'
 import { ClaimRewards } from './claim-rewards'
+import { LookupManager } from './lookup'
 
 import { fetchParty, kick } from '../../services/endpoints/party'
+
+import { localeCompareForSorting } from '../../lib/utils'
 
 export class Party {
   static async kickPartyMembers(
@@ -308,6 +314,112 @@ export class Party {
   //     selectedAccounts.length
   //   )
   // }
+
+  static async loadFriends(currentWindow: BrowserWindow) {
+    try {
+      const fileJson = await DataDirectory.getFriendsFile()
+      const orderedData = Object.entries(fileJson.friends)
+        .toSorted(([, itemA], [, itemB]) =>
+          localeCompareForSorting(itemA.displayName, itemB.displayName)
+        )
+        .reduce((accumulator, [accountId, data]) => {
+          accumulator[accountId] = data
+
+          return accumulator
+        }, {} as FriendRecord)
+
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.PartyLoadFriendsNotification,
+        orderedData
+      )
+    } catch (error) {
+      //
+    }
+  }
+
+  static async addNewFriend(
+    currentWindow: BrowserWindow,
+    account: AccountData,
+    displayName: string
+  ) {
+    const defaultResponse: AddNewFriendNotification = {
+      displayName,
+      data: null,
+      errorMessage: null,
+      success: false,
+    }
+    const sendResponse = () => {
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.PartyAddNewFriendActionNotification,
+        defaultResponse
+      )
+    }
+
+    try {
+      const response = await LookupManager.searchUserByDisplayName({
+        account,
+        displayName,
+      })
+
+      if (response.success) {
+        const fileJson = await DataDirectory.getFriendsFile()
+        const newData: FriendRecord = {
+          ...fileJson.friends,
+          [response.data.id]: {
+            accountId: response.data.id,
+            displayName: response.data.displayName,
+            invitations: 0,
+          },
+        }
+        const orderedData = Object.entries(newData)
+          .toSorted(([, itemA], [, itemB]) =>
+            localeCompareForSorting(itemA.displayName, itemB.displayName)
+          )
+          .reduce((accumulator, [accountId, data]) => {
+            accumulator[accountId] = data
+
+            return accumulator
+          }, {} as FriendRecord)
+
+        await DataDirectory.updateFriendsFile(orderedData)
+        await Party.loadFriends(currentWindow)
+
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.PartyAddNewFriendActionNotification,
+          {
+            data: {
+              accountId: response.data.id,
+              displayName: response.data.displayName,
+            },
+            displayName: response.data.displayName,
+            errorMessage: null,
+            success: true,
+          } as AddNewFriendNotification
+        )
+
+        return
+      } else {
+        defaultResponse.errorMessage = response.errorMessage
+      }
+    } catch (error) {
+      //
+    }
+
+    sendResponse()
+  }
+
+  static async invite(
+    currentWindow: BrowserWindow,
+    account: AccountData,
+    accountIds: Array<string>
+  ) {
+    console.log('account ->', account.displayName)
+    console.log('accountIds ->', accountIds)
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.PartyInviteActionNotification
+    )
+  }
 
   private static async kickMember({
     account,

@@ -3,12 +3,14 @@ import type {
   ComboboxProps,
 } from '../../../components/ui/extended/combobox/hooks'
 import type { PartyCommonSelectorState } from '../../../state/stw-operations/party'
+import type { AccountData } from '../../../types/accounts'
 
 import { useEffect, useState } from 'react'
 
 import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useClaimedRewards } from '../../../hooks/stw-operations/claimed-rewards'
+import { usePartyFriendsForm } from '../../../hooks/stw-operations/party'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
@@ -189,4 +191,90 @@ export function useClaimedRewardsNotifications() {
       listener.removeListener()
     }
   }, [])
+}
+
+export function useInviteActions({
+  selected,
+}: {
+  selected: AccountData | null
+}) {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isInviting, setIsInviting] = useState(false)
+  const [inputSearchValue, setInputSearchValue] = useState('')
+  const { friends } = usePartyFriendsForm()
+
+  const friendOptions: Array<ComboboxOption> = Object.values(friends).map(
+    (item) => ({
+      keywords: [],
+      label: item.displayName,
+      value: item.accountId,
+    })
+  )
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationAddNewFriend(
+      async ({ displayName, errorMessage, success }) => {
+        if (success) {
+          setInputSearchValue('')
+        }
+
+        setIsSubmitting(false)
+
+        toast(
+          success
+            ? `${displayName} was added to friends`
+            : errorMessage
+              ? errorMessage
+              : `An error occurred while trying to add to ${displayName}`
+        )
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationInvite(async () => {
+      setIsInviting(false)
+    })
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  const handleAddNewFriend = (displayName: string) => () => {
+    if (isSubmitting || !selected) {
+      return
+    }
+
+    setIsSubmitting(true)
+
+    window.electronAPI.addNewFriend(selected, displayName)
+  }
+
+  const handleInvite = (value: Array<ComboboxOption>) => () => {
+    if (value.length <= 0 || !selected || isInviting) {
+      return
+    }
+
+    const accountIds = [...new Set(value.map(({ value }) => value))]
+
+    setIsInviting(true)
+
+    window.electronAPI.invite(selected, accountIds)
+  }
+
+  return {
+    inputSearchValue,
+    isInviting,
+    isSubmitting,
+    friendOptions,
+
+    handleAddNewFriend,
+    handleInvite,
+    setInputSearchValue,
+  }
 }

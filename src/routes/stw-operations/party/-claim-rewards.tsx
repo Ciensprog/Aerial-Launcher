@@ -25,7 +25,7 @@ export function ClaimRewardsCard() {
           <Combobox
             placeholder="Select account"
             placeholderSearch={`Search on ${options.length} accounts`}
-            emptyText="No account found"
+            emptyContent="No account found"
             options={options}
             value={value}
             customFilter={customFilter}
@@ -33,7 +33,7 @@ export function ClaimRewardsCard() {
             isMulti
           />
           <Button
-            className="disabled:cursor-not-allowed disabled:pointer-events-auto"
+            className=""
             size="sm"
             onClick={onClaim}
             disabled={!hasValues}

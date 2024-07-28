@@ -340,6 +340,24 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(ElectronAPIEventKeys.PartyLoadFriends, async () => {
+    await Party.loadFriends(currentWindow)
+  })
+
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyAddNewFriendAction,
+    async (_, account: AccountData, displayName: string) => {
+      await Party.addNewFriend(currentWindow, account, displayName)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyInviteAction,
+    async (_, account: AccountData, accountIds: Array<string>) => {
+      await Party.invite(currentWindow, account, accountIds)
+    }
+  )
+
   /**
    * Advanced Mode
    */

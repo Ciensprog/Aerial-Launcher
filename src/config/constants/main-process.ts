@@ -112,6 +112,13 @@ export enum ElectronAPIEventKeys {
 
   ClaimRewardsClientNotification = 'claim-rewards:client:notification',
 
+  PartyLoadFriends = 'party:load:friends',
+  PartyLoadFriendsNotification = 'party:load:friends:notification',
+  PartyAddNewFriendAction = 'party:add-new-friend',
+  PartyAddNewFriendActionNotification = 'party:add-new-friend:notification',
+  PartyInviteAction = 'party:invite',
+  PartyInviteActionNotification = 'party:invite:notification',
+
   /**
    * Advanced Mode
    */
