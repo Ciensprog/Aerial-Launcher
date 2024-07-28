@@ -236,9 +236,41 @@ export function useInviteActions({
   }, [])
 
   useEffect(() => {
-    const listener = window.electronAPI.notificationInvite(async () => {
-      setIsInviting(false)
-    })
+    const listener = window.electronAPI.notificationInvite(
+      async (response) => {
+        setIsInviting(false)
+
+        if (response.length <= 0) {
+          toast('An error occurred while sending invitations')
+        } else {
+          const totalInvitations = response.filter(
+            (item) => item.type === 'invite'
+          ).length
+          const totalFriendRequests = response.filter(
+            (item) => item.type === 'friend-request'
+          ).length
+          const messages: Array<string> = []
+
+          if (totalInvitations > 0) {
+            messages.push(
+              totalInvitations > 1
+                ? `${totalInvitations} invitations were sent`
+                : `${totalInvitations} invitation was sent`
+            )
+          }
+
+          if (totalFriendRequests > 0) {
+            messages.push(
+              totalFriendRequests > 1
+                ? `${totalFriendRequests} friend requests were sent`
+                : `${totalFriendRequests} friend request was sent`
+            )
+          }
+
+          toast(messages.join('. '))
+        }
+      }
+    )
 
     return () => {
       listener.removeListener()

@@ -81,7 +81,7 @@ export function InviteCard() {
             showNames
           />
           <Button
-            className=""
+            className="w-16"
             size="sm"
             onClick={handleInvite(value)}
             disabled={!hasValues || isInviting}

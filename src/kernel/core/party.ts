@@ -1,7 +1,10 @@
 import type { PartyData } from '../../types/services/party'
 import type { AccountData, AccountDataList } from '../../types/accounts'
 import type { FriendRecord } from '../../types/friends'
-import type { AddNewFriendNotification } from '../../types/party'
+import type {
+  AddNewFriendNotification,
+  InviteNotification,
+} from '../../types/party'
 
 import { BrowserWindow } from 'electron'
 
@@ -13,7 +16,13 @@ import { Authentication } from './authentication'
 import { ClaimRewards } from './claim-rewards'
 import { LookupManager } from './lookup'
 
-import { fetchParty, kick } from '../../services/endpoints/party'
+import { addFriend, getFriend } from '../../services/endpoints/friends'
+import {
+  removeInvite,
+  fetchParty,
+  invite,
+  kick,
+} from '../../services/endpoints/party'
 
 import { localeCompareForSorting } from '../../lib/utils'
 
@@ -413,11 +422,137 @@ export class Party {
     account: AccountData,
     accountIds: Array<string>
   ) {
-    console.log('account ->', account.displayName)
-    console.log('accountIds ->', accountIds)
+    const defaultResponse: Array<InviteNotification> = []
+
+    try {
+      const accessToken = await Authentication.verifyAccessToken(account)
+
+      if (!accessToken) {
+        return
+      }
+
+      const partyResponse = await fetchParty({
+        accessToken,
+        accountId: account.accountId,
+      })
+      const party = partyResponse.data.current[0]
+
+      if (party) {
+        const response = await Promise.allSettled(
+          accountIds.map(async (accountId) => {
+            try {
+              const accessToken =
+                await Authentication.verifyAccessToken(account)
+
+              if (!accessToken) {
+                return null
+              }
+
+              await getFriend({
+                accessToken,
+                accountId: account.accountId,
+                friendId: accountId,
+              })
+
+              try {
+                await invite({
+                  accessToken,
+                  friendAccountId: accountId,
+                  partyId: party.id,
+                })
+
+                return {
+                  accountId,
+                  type: 'invite',
+                } as const
+
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              } catch (error: any) {
+                if (
+                  error?.response?.data?.errorCode ===
+                  'errors.com.epicgames.social.party.invite_already_exists'
+                ) {
+                  const accessToken =
+                    await Authentication.verifyAccessToken(account)
+
+                  if (!accessToken) {
+                    return null
+                  }
+
+                  try {
+                    await removeInvite({
+                      accessToken,
+                      friendAccountId: accountId,
+                      partyId: party.id,
+                    })
+                  } catch (error) {
+                    //
+                  }
+
+                  try {
+                    await invite({
+                      accessToken,
+                      friendAccountId: accountId,
+                      partyId: party.id,
+                    })
+
+                    return {
+                      accountId,
+                      type: 'invite',
+                    } as const
+                  } catch (error) {
+                    //
+                  }
+                }
+              }
+
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (error: any) {
+              if (
+                error?.response?.data.errorCode ===
+                'errors.com.epicgames.friends.friendship_not_found'
+              ) {
+                const accessToken =
+                  await Authentication.verifyAccessToken(account)
+
+                if (!accessToken) {
+                  return null
+                }
+
+                try {
+                  await addFriend({
+                    accessToken,
+                    accountId: account.accountId,
+                    friendId: accountId,
+                  })
+
+                  return {
+                    accountId,
+                    type: 'friend-request',
+                  } as const
+                } catch (error) {
+                  //
+                }
+              }
+            }
+
+            return null
+          })
+        )
+
+        response.forEach((item) => {
+          if (item.status === 'fulfilled' && item.value !== null) {
+            defaultResponse.push(item.value)
+          }
+        })
+      }
+    } catch (error) {
+      //
+    }
 
     currentWindow.webContents.send(
-      ElectronAPIEventKeys.PartyInviteActionNotification
+      ElectronAPIEventKeys.PartyInviteActionNotification,
+      defaultResponse
     )
   }
 

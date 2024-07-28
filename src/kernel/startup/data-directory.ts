@@ -396,7 +396,7 @@ export class DataDirectory {
         encoding: 'utf8',
       })
     } catch (error) {
-      console.log('error ->', error)
+      //
     }
   }
 }

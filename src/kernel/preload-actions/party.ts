@@ -1,7 +1,10 @@
 import type { IpcRendererEvent } from 'electron'
 import type { AccountData, AccountDataList } from '../../types/accounts'
 import type { FriendRecord } from '../../types/friends'
-import type { AddNewFriendNotification } from '../../types/party'
+import type {
+  AddNewFriendNotification,
+  InviteNotification,
+} from '../../types/party'
 
 import { ipcRenderer } from 'electron'
 
@@ -162,9 +165,14 @@ export function notificationLoadFriends(
   }
 }
 
-export function notificationInvite(callback: () => Promise<void>) {
-  const customCallback = () => {
-    callback().catch(() => {})
+export function notificationInvite(
+  callback: (value: Array<InviteNotification>) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: Array<InviteNotification>
+  ) => {
+    callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.PartyInviteActionNotification,

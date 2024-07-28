@@ -14,3 +14,8 @@ export type AddNewFriendNotification =
       errorMessage: null
       success: true
     }
+
+export type InviteNotification = {
+  accountId: string
+  type: 'friend-request' | 'invite'
+}
