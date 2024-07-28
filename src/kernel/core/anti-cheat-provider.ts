@@ -24,6 +24,7 @@ export class AntiCheatProvider {
           account,
           data: {
             accessToken: undefined,
+            displayName: account.displayName,
             provider: undefined,
           },
           error: null,
@@ -63,6 +64,7 @@ export class AntiCheatProvider {
         account,
         data: {
           accessToken: responseDevice.data.access_token,
+          displayName: responseDevice.data.displayName,
           provider: responseACProvider.data.provider ?? null,
         },
         error: null,

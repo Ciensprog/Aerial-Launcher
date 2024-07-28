@@ -39,6 +39,7 @@ export function LoadAccounts() {
         async ({ account, data }) => {
           addOrUpdate(account.accountId, {
             ...account,
+            displayName: data?.displayName ?? account.displayName,
             provider: data?.provider ?? null,
             token: data?.accessToken ?? null,
           })

@@ -20,6 +20,7 @@ export type AntiCheatProviderCallbackResponseParam =
       account: AccountData
       data: Partial<{
         accessToken: string
+        displayName: string
         provider: string | null
       }>
       error: null
