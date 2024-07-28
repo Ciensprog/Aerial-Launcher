@@ -38,7 +38,7 @@ export function LeavePartyCard() {
             className="max-w-40"
             placeholder="Select account"
             placeholderSearch={`Search on ${options.length} accounts`}
-            emptyText="No account found"
+            emptyContent="No account found"
             options={options}
             value={value}
             customFilter={customFilter}
@@ -46,7 +46,7 @@ export function LeavePartyCard() {
             isMulti
           />
           <Button
-            className="leading-none disabled:cursor-not-allowed disabled:pointer-events-auto"
+            className="leading-none"
             size="sm"
             onClick={onKick(true)}
             disabled={!hasValues}

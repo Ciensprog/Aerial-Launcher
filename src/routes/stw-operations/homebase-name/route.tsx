@@ -109,7 +109,7 @@ function Content() {
           </CardContent>
           <CardFooter className="space-x-6">
             <Button
-              className="disabled:cursor-not-allowed disabled:pointer-events-auto disabled:select-none w-full"
+              className="w-full"
               onClick={handleSave}
               disabled={isDisabledForm}
             >

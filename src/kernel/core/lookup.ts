@@ -11,7 +11,7 @@ export class LookupManager {
   static async searchUserByDisplayName({
     account,
     displayName,
-  }: XPBoostsSearchUserConfig) {
+  }: Pick<XPBoostsSearchUserConfig, 'account' | 'displayName'>) {
     const defaultResponse: {
       data: null
       success: false

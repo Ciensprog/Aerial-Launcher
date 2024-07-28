@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { useState } from 'react'
 
 export type ComboboxOption = {
@@ -8,11 +10,20 @@ export type ComboboxOption = {
 
 export type ComboboxProps = {
   className?: string
-  emptyText?: string
+  defaultOpen?: boolean
+  disabled?: boolean
+  doNotDisableIfThereAreNoOptions?: boolean
+  emptyContent?: ((value: string) => ReactNode) | string
+  emptyContentClassname?: string
+  emptyOptions?: string
+  emptyPlaceholder?: string
+  inputSearchIsDisabled?: boolean
+  inputSearchValue?: string
   isMulti?: boolean
   options: Array<ComboboxOption>
   placeholder?: string
   placeholderSearch?: string
+  showNames?: boolean
   value?: Array<ComboboxOption>
   customFilter?: (
     value: string,
@@ -20,22 +31,36 @@ export type ComboboxProps = {
     keywords?: Array<string>
   ) => number
   onChange?: (values: Array<ComboboxOption>) => void
+  onInputSearchChange?: (values: string) => void
 }
 
 export function useData({
+  defaultOpen,
   isMulti = false,
   options,
+  showNames,
   value,
   onChange,
-}: Pick<ComboboxProps, 'isMulti' | 'options' | 'value' | 'onChange'>) {
-  const [open, setOpen] = useState(false)
+}: Pick<
+  ComboboxProps,
+  | 'defaultOpen'
+  | 'isMulti'
+  | 'options'
+  | 'showNames'
+  | 'value'
+  | 'onChange'
+>) {
+  const [open, setOpen] = useState(defaultOpen ?? false)
   const [__values, __setValues] = useState<Array<ComboboxOption>>([])
+  const [__searchValue, __setSearchValue] = useState('')
 
   const currentValues = value ?? __values
 
   const selectedName = isMulti
     ? currentValues.length > 1
-      ? `${currentValues.length} selected`
+      ? showNames
+        ? `${currentValues.map(({ label }) => label).join(', ')}`
+        : `${currentValues.length} selected`
       : currentValues[0]?.label
     : options.find((item) => item.value === currentValues[0]?.value)?.label
 
@@ -66,12 +91,18 @@ export function useData({
     update(newValues)
   }
 
+  const __onSearchValueChange = (value: string) => {
+    __setSearchValue(value)
+  }
+
   return {
+    __searchValue,
     currentValues,
     open,
     selectedName,
 
     setOpen,
     __onChange,
+    __onSearchValueChange,
   }
 }

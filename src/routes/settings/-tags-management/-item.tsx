@@ -43,7 +43,7 @@ export function TagItem({ data }: { data: Tag }) {
         <Button
           type="submit"
           variant="secondary"
-          className="absolute h-8 px-2 right-1 w-auto disabled:cursor-not-allowed disabled:pointer-events-auto"
+          className="absolute h-8 px-2 right-1 w-auto"
         >
           Update
         </Button>

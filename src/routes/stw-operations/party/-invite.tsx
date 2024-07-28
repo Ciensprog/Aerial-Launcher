@@ -1,3 +1,5 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
+
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { Alert, AlertDescription } from '../../../components/ui/alert'
 import { Button } from '../../../components/ui/button'
@@ -8,7 +10,7 @@ import {
 } from '../../../components/ui/card'
 
 import { useInviteFriendsForm } from '../../../hooks/stw-operations/party'
-import { useComboboxAccounts } from './-hooks'
+import { useInviteActions } from './-hooks'
 import { BellRing } from 'lucide-react'
 
 import { useGetSelectedAccount } from '../../../hooks/accounts'
@@ -17,9 +19,19 @@ import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function InviteCard() {
   const { selected } = useGetSelectedAccount()
-  const { setValue, value } = useInviteFriendsForm()
-  const { customFilter, hasValues, options } = useComboboxAccounts({
-    value,
+  const { hasValues, setValue, value } = useInviteFriendsForm()
+  const {
+    friendOptions,
+    inputSearchValue,
+    isInviting,
+    isSubmitting,
+
+    customFilter,
+    handleAddNewFriend,
+    handleInvite,
+    setInputSearchValue,
+  } = useInviteActions({
+    selected,
   })
 
   return (
@@ -33,22 +45,55 @@ export function InviteCard() {
         </CardDescription>
         <div className="flex gap-4">
           <Combobox
+            emptyPlaceholder="No friends"
+            emptyOptions="Type to add them to the list"
             placeholder="Select friends"
-            placeholderSearch="Recently invited players"
-            emptyText="No friend found"
-            options={options}
+            placeholderSearch="Invite people"
+            options={friendOptions}
+            inputSearchValue={inputSearchValue}
             value={value}
             customFilter={customFilter}
+            onInputSearchChange={setInputSearchValue}
             onChange={setValue}
+            emptyContentClassname="p-1"
+            emptyContent={(displayName) => (
+              <div className="">
+                <Button
+                  variant="ghost"
+                  className="h-[39px] w-full"
+                  onClick={handleAddNewFriend(displayName)}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <UpdateIcon className="animate-spin" />
+                  ) : (
+                    <>
+                      Add
+                      <span className="max-w-32 ml-1.5 truncate">
+                        {displayName.trim()}
+                      </span>
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+            disabled={!selected}
+            inputSearchIsDisabled={isSubmitting}
+            doNotDisableIfThereAreNoOptions
             isMulti
+            showNames
           />
           <Button
-            className="disabled:cursor-not-allowed disabled:pointer-events-auto"
+            className="w-16"
             size="sm"
-            onClick={() => {}}
-            disabled={!hasValues}
+            onClick={handleInvite(value)}
+            disabled={!selected || !hasValues || isInviting}
           >
-            Invite
+            {isInviting ? (
+              <UpdateIcon className="animate-spin" />
+            ) : (
+              'Invite'
+            )}
           </Button>
         </div>
         <Alert className="border-none pb-0">

@@ -38,3 +38,7 @@ export type FetchPartyResponse = {
 export type PartyKickResponse = {
   //
 }
+
+export type PartyInviteResponse = {
+  //
+}
