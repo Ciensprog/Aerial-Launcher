@@ -11,6 +11,7 @@ export type ComboboxOption = {
 export type ComboboxProps = {
   className?: string
   defaultOpen?: boolean
+  disabled?: boolean
   doNotDisableIfThereAreNoOptions?: boolean
   emptyContent?: ((value: string) => ReactNode) | string
   emptyContentClassname?: string

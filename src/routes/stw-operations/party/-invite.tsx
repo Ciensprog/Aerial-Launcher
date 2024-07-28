@@ -46,7 +46,7 @@ export function InviteCard() {
         <div className="flex gap-4">
           <Combobox
             emptyPlaceholder="No friends"
-            emptyOptions="Use search above to add a new friend"
+            emptyOptions="Type to add them to the list"
             placeholder="Select friends"
             placeholderSearch="Invite people"
             options={friendOptions}
@@ -60,7 +60,7 @@ export function InviteCard() {
               <div className="">
                 <Button
                   variant="ghost"
-                  className="w-full"
+                  className="h-[39px] w-full"
                   onClick={handleAddNewFriend(displayName)}
                   disabled={isSubmitting}
                 >
@@ -77,6 +77,7 @@ export function InviteCard() {
                 </Button>
               </div>
             )}
+            disabled={!selected}
             inputSearchIsDisabled={isSubmitting}
             doNotDisableIfThereAreNoOptions
             isMulti
@@ -86,7 +87,7 @@ export function InviteCard() {
             className="w-16"
             size="sm"
             onClick={handleInvite(value)}
-            disabled={!hasValues || isInviting}
+            disabled={!selected || !hasValues || isInviting}
           >
             {isInviting ? (
               <UpdateIcon className="animate-spin" />

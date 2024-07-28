@@ -20,6 +20,7 @@ import { cn } from '../../../../lib/utils'
 export function Combobox({
   className,
   defaultOpen,
+  disabled,
   doNotDisableIfThereAreNoOptions,
   emptyContent,
   emptyContentClassname,
@@ -60,7 +61,10 @@ export function Combobox({
       open={open}
       onOpenChange={setOpen}
     >
-      <PopoverTrigger asChild>
+      <PopoverTrigger
+        disabled={disabled}
+        asChild
+      >
         <Button
           className={cn(
             'flex justify-between max-w-96 pl-3 pr-2 select-none w-full disabled:hover:bg-background',
@@ -71,7 +75,11 @@ export function Combobox({
           role="combobox"
           aria-expanded={open}
           disabled={
-            doNotDisableIfThereAreNoOptions ? false : options.length < 1
+            disabled
+              ? true
+              : doNotDisableIfThereAreNoOptions
+                ? false
+                : options.length < 1
           }
         >
           <div
@@ -104,7 +112,7 @@ export function Combobox({
               __onSearchValueChange?.(value)
               onInputSearchChange?.(value)
             }}
-            disabled={inputSearchIsDisabled}
+            disabled={disabled || inputSearchIsDisabled}
           />
           <CommandListWithScrollArea>
             <CommandEmpty
@@ -141,7 +149,7 @@ export function Combobox({
                     <CommandItem
                       value={option.value}
                       keywords={option.keywords}
-                      onSelect={__onChange}
+                      onSelect={disabled ? undefined : __onChange}
                       key={option.value}
                     >
                       <Check
