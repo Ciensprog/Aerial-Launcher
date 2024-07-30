@@ -189,8 +189,6 @@ app.on('ready', async () => {
     async (_, account: AccountData) => {
       const response = await AntiCheatProvider.request(account)
 
-      // console.log(response)
-
       currentWindow.webContents.send(
         ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
         response

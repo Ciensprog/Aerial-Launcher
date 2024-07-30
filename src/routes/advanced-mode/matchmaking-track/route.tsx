@@ -10,6 +10,8 @@ import { Route as RootRoute } from '../../__root'
 
 import { SearchedUserData } from '../../stw-operations/xpboosts/route'
 
+import { Combobox } from '../../../components/ui/extended/combobox'
+import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -30,11 +32,13 @@ import { Label } from '../../../components/ui/label'
 
 import { useSearchUser } from '../../stw-operations/xpboosts/-hooks'
 
-import { useMatchmakingPath } from '../../../hooks/advanced-mode/matchmaking'
+import {
+  useMatchmakingPath,
+  useMatchmakingPlayersPath,
+} from '../../../hooks/advanced-mode/matchmaking'
 import { useCurrentActions } from './-hooks'
 
 import { extractXPBoosts } from '../../../lib/parsers/query-profile'
-// import { relativeTime } from '../../../lib/dates'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -67,6 +71,7 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { updateRecentlyPlayers } = useMatchmakingPlayersPath()
   const {
     inputSearchButtonIsDisabled,
     inputSearchDisplayName,
@@ -74,10 +79,26 @@ function Content() {
     searchedUser,
 
     handleChangeSearchDisplayName,
+    handleManualChangeSearchDisplayName,
     handleSearchUser,
-  } = useSearchUser()
+  } = useSearchUser({
+    callback: (value) => {
+      if (value.data?.lookup) {
+        updateRecentlyPlayers(value.data.lookup)
+      }
+    },
+  })
   const { path } = useMatchmakingPath()
-  const { isLoading, handleSave } = useCurrentActions()
+  const {
+    isLoading,
+    options,
+    autoCompletePlayer,
+    customFilter,
+    handleSave,
+  } = useCurrentActions({
+    searchedUser,
+    handleManualChangeSearchDisplayName,
+  })
 
   const userBoosts = extractXPBoosts(
     searchedUser?.success && searchedUser?.data
@@ -112,6 +133,30 @@ function Content() {
             </CardHeader>
             <CardContent className="pt-6 px-0 space-y-4">
               <div className="grid gap-4 px-6">
+                <div className="">
+                  <Label
+                    className="text-muted-foreground text-sm"
+                    htmlFor="global-input-recently-players"
+                  >
+                    Note: This players are stored temporarily
+                  </Label>
+                  <Combobox
+                    className="max-w-full"
+                    emptyPlaceholder="No recently players"
+                    placeholder="Select a recently player"
+                    placeholderSearch="Search on 1 players"
+                    options={options}
+                    value={[]}
+                    customFilter={customFilter}
+                    onChange={() => {}}
+                    onSelectItem={autoCompletePlayer}
+                    emptyContentClassname="p-1"
+                    disabled={searchUserIsSubmitting}
+                    disabledItem={searchUserIsSubmitting}
+                    inputSearchIsDisabled={searchUserIsSubmitting}
+                  />
+                </div>
+                <SeparatorWithTitle>Or</SeparatorWithTitle>
                 <Label htmlFor="global-input-search-player">
                   Search player by accountId or display name (epic, xbl or
                   psn)
@@ -216,6 +261,7 @@ function Content() {
                     <Button
                       className="w-48"
                       onClick={handleSave(searchedUser.data.lookup.id)}
+                      disabled={searchUserIsSubmitting}
                     >
                       {isLoading ? (
                         <UpdateIcon className="animate-spin h-4" />

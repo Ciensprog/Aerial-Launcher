@@ -163,18 +163,6 @@ export function SidebarMenu({
             <ul className="list-disc ml-5">
               <li className="item">
                 <Link
-                  to="/advanced-mode/world-info"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                >
-                  World Info
-                </Link>
-              </li>
-              <li className="item">
-                <Link
                   to="/advanced-mode/matchmaking-track"
                   className={cn({
                     [currentClassNameHover]: areThereAccounts,
@@ -189,6 +177,18 @@ export function SidebarMenu({
                   disabled={!areThereAccounts}
                 >
                   Matchmaking Track
+                </Link>
+              </li>
+              <li className="item">
+                <Link
+                  to="/advanced-mode/world-info"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  World Info
                 </Link>
               </li>
             </ul>

@@ -21,6 +21,7 @@ export function Combobox({
   className,
   defaultOpen,
   disabled,
+  disabledItem,
   doNotDisableIfThereAreNoOptions,
   emptyContent,
   emptyContentClassname,
@@ -37,6 +38,7 @@ export function Combobox({
   customFilter,
   onChange,
   onInputSearchChange,
+  onSelectItem,
 }: ComboboxProps) {
   const {
     __searchValue,
@@ -55,6 +57,12 @@ export function Combobox({
     showNames,
     value,
   })
+
+  const customOnChange = (value: string) => {
+    onSelectItem?.(value)
+    __onChange(value)
+    setOpen(false)
+  }
 
   return (
     <Popover
@@ -149,7 +157,8 @@ export function Combobox({
                     <CommandItem
                       value={option.value}
                       keywords={option.keywords}
-                      onSelect={disabled ? undefined : __onChange}
+                      onSelect={disabled ? undefined : customOnChange}
+                      disabled={disabledItem}
                       key={option.value}
                     >
                       <Check

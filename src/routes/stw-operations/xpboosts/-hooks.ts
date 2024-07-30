@@ -31,7 +31,10 @@ import { compactNumber } from '../../../lib/parsers/numbers'
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
 
-export function useSearchUser() {
+export function useSearchUser(config?: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  callback?: (param: XPBoostsSearchUserResponse) => void
+}) {
   const [inputSearchDisplayName, setInputSearchDisplayName] = useState('')
   const [searchUserIsSubmitting, setSearchUserIsSubmitting] =
     useState(false)
@@ -50,6 +53,10 @@ export function useSearchUser() {
         async (response) => {
           setSearchedUser(response)
           setSearchUserIsSubmitting(false)
+
+          if (typeof config?.callback === 'function') {
+            config.callback?.(response)
+          }
         }
       )
 
@@ -64,6 +71,20 @@ export function useSearchUser() {
     const value = event.target.value
 
     setInputSearchDisplayName(value)
+  }
+  const handleManualChangeSearchDisplayName = (value: string) => {
+    if (!selected || value === '' || searchUserIsSubmitting) {
+      return
+    }
+
+    setInputSearchDisplayName(value.trim())
+    setSearchUserIsSubmitting(true)
+
+    window.electronAPI.generalFindAPlayerWhoWillReceiveXPBoosts({
+      account: selected,
+      displayName: value.trim(),
+      originalAccounts: accountsArray,
+    })
   }
 
   const handleSearchUser = () => {
@@ -92,6 +113,7 @@ export function useSearchUser() {
     searchedUser,
 
     handleChangeSearchDisplayName,
+    handleManualChangeSearchDisplayName,
     handleSearchUser,
   }
 }

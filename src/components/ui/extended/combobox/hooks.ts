@@ -12,6 +12,7 @@ export type ComboboxProps = {
   className?: string
   defaultOpen?: boolean
   disabled?: boolean
+  disabledItem?: boolean
   doNotDisableIfThereAreNoOptions?: boolean
   emptyContent?: ((value: string) => ReactNode) | string
   emptyContentClassname?: string
@@ -32,6 +33,7 @@ export type ComboboxProps = {
   ) => number
   onChange?: (values: Array<ComboboxOption>) => void
   onInputSearchChange?: (values: string) => void
+  onSelectItem?: (value: string) => void
 }
 
 export function useData({
