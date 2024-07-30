@@ -5,6 +5,23 @@ import type {
 
 import { publicAccountService } from '../config/public-account'
 
+export function findUserByAccountId({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return publicAccountService.get<LookupFindOneByDisplayNameResponse>(
+    `/${accountId}`,
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+    }
+  )
+}
+
 export function findUserByDisplayName({
   accessToken,
   displayName,

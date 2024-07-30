@@ -113,7 +113,8 @@ function Content() {
             <CardContent className="pt-6 px-0 space-y-4">
               <div className="grid gap-4 px-6">
                 <Label htmlFor="global-input-search-player">
-                  Search player by display name (epic, xbl or psn)
+                  Search player by accountId or display name (epic, xbl or
+                  psn)
                 </Label>
                 <div className="flex items-center relative">
                   <Input

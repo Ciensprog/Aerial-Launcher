@@ -3,6 +3,7 @@ import type { XPBoostsSearchUserConfig } from '../../types/xpboosts'
 import { Authentication } from './authentication'
 
 import {
+  findUserByAccountId,
   findUserByDisplayName,
   findUserByExternalDisplayName,
 } from '../../services/endpoints/lookup'
@@ -27,6 +28,23 @@ export class LookupManager {
 
       if (!accessToken) {
         return defaultResponse
+      }
+
+      try {
+        const response = await findUserByAccountId({
+          accessToken,
+          accountId: displayName,
+        })
+
+        if (response.data) {
+          return {
+            data: response.data,
+            errorMessage: null,
+            success: true,
+          } as const
+        }
+      } catch (error) {
+        //
       }
 
       const response = await findUserByDisplayName({

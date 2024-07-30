@@ -3,7 +3,7 @@ import type { StringUnion } from '../utils'
 export type LookupFindOneByDisplayNameResponse = {
   id: string
   displayName: string
-  externalAuths: Partial<Record<string, unknown>>
+  externalAuths?: Partial<Record<string, unknown>>
 }
 
 export type LookupFindManyByDisplayNameResponse =
