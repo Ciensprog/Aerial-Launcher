@@ -31,6 +31,7 @@ import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
+import { MatchmakingTrack } from './core/matchmaking-track'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
 import { XPBoostsManager } from './core/xpboosts'
@@ -99,6 +100,17 @@ app.on('ready', async () => {
   await DataDirectory.createDataResources()
 
   const currentWindow = await createWindow()
+
+  /**
+   * Paths
+   */
+
+  ipcMain.on(ElectronAPIEventKeys.GetMatchmakingTrackPath, async () => {
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.GetMatchmakingTrackPathNotification,
+      DataDirectory.matchmakingFilePath
+    )
+  })
 
   /**
    * Settings
@@ -404,6 +416,13 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.WorldInfoRenameFile,
     async (_, data: WorldInfoFileData, newFilename: string) => {
       await WorldInfoManager.renameFile(currentWindow, data, newFilename)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.MatchmakingTrackSaveFile,
+    async (_, account: AccountData, accountId: string) => {
+      await MatchmakingTrack.saveFile(currentWindow, account, accountId)
     }
   )
 

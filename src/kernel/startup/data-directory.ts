@@ -10,6 +10,7 @@ import path from 'node:path'
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
 import { friendsSchema } from '../../lib/validations/schemas/friends'
 import { groupsSchema } from '../../lib/validations/schemas/groups'
+import { matchmakingsSchema } from '../../lib/validations/schemas/matchmaking'
 import { settingsSchema } from '../../lib/validations/schemas/settings'
 import { tagsSchema } from '../../lib/validations/schemas/tags'
 
@@ -68,6 +69,12 @@ export class DataDirectory {
   )
   private static friendsDefaultData: FriendRecord = {}
 
+  static matchmakingFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'matchmaking.json'
+  )
+  private static matchmakingDefaultData: Array<unknown> = []
+
   /**
    * Get Path
    */
@@ -91,6 +98,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateTagsJsonFile()
     await DataDirectory.getOrCreateGroupsJsonFile()
     await DataDirectory.getOrCreateFriendsJsonFile()
+    await DataDirectory.getOrCreateMatchmakingJsonFile()
   }
 
   /**
@@ -190,6 +198,28 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from matchmaking.json
+   */
+  static async getMatchmakingFile(): Promise<{
+    matchmaking: Array<unknown>
+  }> {
+    const result = await DataDirectory.getOrCreateMatchmakingJsonFile()
+
+    try {
+      const list = matchmakingsSchema.safeParse(JSON.parse(result))
+      const matchmaking = list.success
+        ? list.data
+        : DataDirectory.matchmakingDefaultData
+
+      return { matchmaking }
+    } catch (error) {
+      //
+    }
+
+    return { matchmaking: DataDirectory.matchmakingDefaultData }
+  }
+
+  /**
    * Update accounts.json
    */
   static async updateAccountsFile(data: AccountList) {
@@ -228,6 +258,16 @@ export class DataDirectory {
    */
   static async updateFriendsFile(data: FriendRecord) {
     await DataDirectory.updateJsonFile(DataDirectory.friendsFilePath, data)
+  }
+
+  /**
+   * Update matchmaking.json
+   */
+  static async updateMatchmakingFile(data: Array<unknown>) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.matchmakingFilePath,
+      data
+    )
   }
 
   /**
@@ -337,6 +377,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.friendsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating matchmaking.json
+   */
+  private static async getOrCreateMatchmakingJsonFile() {
+    const initialData = DataDirectory.matchmakingDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.matchmakingFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),

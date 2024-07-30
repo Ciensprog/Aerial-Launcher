@@ -19,6 +19,7 @@ import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/
 import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
 import { Route as InformationCreditsRouteImport } from './routes/information/credits/route'
 import { Route as AdvancedModeWorldInfoRouteImport } from './routes/advanced-mode/world-info/route'
+import { Route as AdvancedModeMatchmakingTrackRouteImport } from './routes/advanced-mode/matchmaking-track/route'
 import { Route as AccountsRemoveRouteImport } from './routes/accounts/remove/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
 import { Route as AccountsAddTypeImport } from './routes/accounts/add/$type'
@@ -71,6 +72,12 @@ const AdvancedModeWorldInfoRouteRoute = AdvancedModeWorldInfoRouteImport.update(
   } as any,
 )
 
+const AdvancedModeMatchmakingTrackRouteRoute =
+  AdvancedModeMatchmakingTrackRouteImport.update({
+    path: '/advanced-mode/matchmaking-track',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 const AccountsRemoveRouteRoute = AccountsRemoveRouteImport.update({
   path: '/accounts/remove',
   getParentRoute: () => rootRoute,
@@ -105,6 +112,10 @@ declare module '@tanstack/react-router' {
     }
     '/accounts/remove': {
       preLoaderRoute: typeof AccountsRemoveRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/advanced-mode/matchmaking-track': {
+      preLoaderRoute: typeof AdvancedModeMatchmakingTrackRouteImport
       parentRoute: typeof rootRoute
     }
     '/advanced-mode/world-info': {
@@ -145,6 +156,7 @@ export const routeTree = rootRoute.addChildren([
   SettingsRouteRoute,
   AccountManagementEpicGamesSettingsRouteRoute,
   AccountsRemoveRouteRoute,
+  AdvancedModeMatchmakingTrackRouteRoute,
   AdvancedModeWorldInfoRouteRoute,
   InformationCreditsRouteRoute,
   StwOperationsHomebaseNameRouteRoute,

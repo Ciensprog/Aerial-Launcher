@@ -173,6 +173,24 @@ export function SidebarMenu({
                   World Info
                 </Link>
               </li>
+              <li className="item">
+                <Link
+                  to="/advanced-mode/matchmaking-track"
+                  className={cn({
+                    [currentClassNameHover]: areThereAccounts,
+                    'cursor-not-allowed opacity-60': !areThereAccounts,
+                  })}
+                  activeProps={{
+                    className: cn({
+                      [activeClassName]: areThereAccounts,
+                    }),
+                  }}
+                  onClick={goToPage}
+                  disabled={!areThereAccounts}
+                >
+                  Matchmaking Track
+                </Link>
+              </li>
             </ul>
           </div>
 

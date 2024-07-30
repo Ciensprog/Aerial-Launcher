@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { IndexComponent } from './routes'
 import { routeTree } from './routeTree.gen'
 
+import { LoadMatchmakingPath } from './bootstrap/components/advanced-mode/load-matchmaking-path'
 import { LoadWorldInfoFiles } from './bootstrap/components/advanced-mode/load-world-info-files'
 import { LoadWorldInfoData } from './bootstrap/components/advanced-mode/load-world-info'
 import { LoadAccounts } from './bootstrap/components/load-accounts'
@@ -37,6 +38,7 @@ root.render(
       <LoadFriends />
       <LoadWorldInfoData />
       <LoadWorldInfoFiles />
+      <LoadMatchmakingPath />
 
       <RouterProvider
         router={router}

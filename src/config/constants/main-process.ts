@@ -1,5 +1,12 @@
 export enum ElectronAPIEventKeys {
   /**
+   * Paths
+   */
+
+  GetMatchmakingTrackPath = 'on:load:get:matchmaking-track:path',
+  GetMatchmakingTrackPathNotification = 'on:load:get:matchmaking-track:path:notification',
+
+  /**
    * Settings
    */
 
@@ -137,6 +144,9 @@ export enum ElectronAPIEventKeys {
   WorldInfoOpenFileNotification = 'advanced-mode:world-info:open:notification',
   WorldInfoRenameFile = 'advanced-mode:world-info:rename:file',
   WorldInfoRenameFileNotification = 'advanced-mode:world-info:rename:notification',
+
+  MatchmakingTrackSaveFile = 'advanced-mode:matchmaking-track:save:file',
+  MatchmakingTrackSaveFileNotification = 'advanced-mode:matchmaking-track:save:file:notification',
 
   /**
    * Schedules

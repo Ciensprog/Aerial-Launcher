@@ -859,7 +859,7 @@ function AccountBasicInformationSection({
   )
 }
 
-function SearchedUserData({
+export function SearchedUserData({
   boostedXP,
   collectionBookLevel,
   commanderLevel,
@@ -867,6 +867,8 @@ function SearchedUserData({
   founderStatus,
   personalXPBoosts,
   teammateXPBoosts,
+
+  hideXPBoostsData,
 }: {
   boostedXP?: MCPQueryProfileChanges
   collectionBookLevel: number
@@ -875,6 +877,8 @@ function SearchedUserData({
   founderStatus?: MCPQueryProfileChanges
   personalXPBoosts: number
   teammateXPBoosts: number
+
+  hideXPBoostsData?: boolean
 }) {
   const extractedBoostedXP = extractBoostedXP(boostedXP)
   const individualBoosts = Math.round(extractedBoostedXP / 864191)
@@ -911,36 +915,40 @@ function SearchedUserData({
         title="Collection Book Level:"
         value={numberWithCommaSeparator(collectionBookLevel)}
       />
-      <AccountBasicInformationSection
-        title={
-          <>
-            <figure className="size-5">
-              <img
-                src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
-                className="size-[18px]"
-                alt="FNDB Profile"
-              />
-            </figure>
-            Personal XP Boosts:
-          </>
-        }
-        value={numberWithCommaSeparator(personalXPBoosts)}
-      />
-      <AccountBasicInformationSection
-        title={
-          <>
-            <figure className="size-5">
-              <img
-                src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
-                className="size-[18px]"
-                alt="FNDB Profile"
-              />
-            </figure>
-            Teammate XP Boosts:
-          </>
-        }
-        value={numberWithCommaSeparator(teammateXPBoosts)}
-      />
+      {!hideXPBoostsData && (
+        <>
+          <AccountBasicInformationSection
+            title={
+              <>
+                <figure className="size-5">
+                  <img
+                    src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
+                    className="size-[18px]"
+                    alt="FNDB Profile"
+                  />
+                </figure>
+                Personal XP Boosts:
+              </>
+            }
+            value={numberWithCommaSeparator(personalXPBoosts)}
+          />
+          <AccountBasicInformationSection
+            title={
+              <>
+                <figure className="size-5">
+                  <img
+                    src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
+                    className="size-[18px]"
+                    alt="FNDB Profile"
+                  />
+                </figure>
+                Teammate XP Boosts:
+              </>
+            }
+            value={numberWithCommaSeparator(teammateXPBoosts)}
+          />
+        </>
+      )}
       <AccountBasicInformationSection
         title={
           <>
