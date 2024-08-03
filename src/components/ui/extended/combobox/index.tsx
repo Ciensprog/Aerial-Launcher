@@ -27,6 +27,7 @@ export function Combobox({
   emptyContentClassname,
   emptyOptions,
   emptyPlaceholder,
+  hideSelectorOnSelectItem,
   inputSearchIsDisabled,
   inputSearchValue,
   isMulti = false,
@@ -61,7 +62,10 @@ export function Combobox({
   const customOnChange = (value: string) => {
     onSelectItem?.(value)
     __onChange(value)
-    setOpen(false)
+
+    if (hideSelectorOnSelectItem) {
+      setOpen(false)
+    }
   }
 
   return (

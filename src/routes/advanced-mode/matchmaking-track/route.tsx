@@ -154,6 +154,7 @@ function Content() {
                     disabled={searchUserIsSubmitting}
                     disabledItem={searchUserIsSubmitting}
                     inputSearchIsDisabled={searchUserIsSubmitting}
+                    hideSelectorOnSelectItem
                   />
                 </div>
                 <SeparatorWithTitle>Or</SeparatorWithTitle>
