@@ -1,4 +1,7 @@
-import type { SelectOption } from '../../../components/ui/third-party/extended/input-tags'
+import type {
+  SelectCustomFilter,
+  SelectOption,
+} from '../../../components/ui/third-party/extended/input-tags'
 
 import { defaultColor } from '../../../config/constants/colors'
 
@@ -6,6 +9,7 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
+import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import {
   localeCompareForSorting,
   parseCustomDisplayName,
@@ -97,5 +101,40 @@ export function useAccountSelectorData({
     tags,
 
     getAccounts,
+  }
+}
+
+export function useAccountsInputTagsCustomFilter() {
+  const { accountList } = useGetAccounts()
+  const { getGroupTagsByAccountId } = useGetGroups()
+
+  const filter: SelectCustomFilter = (option, input) => {
+    const currentItem = accountList[option.value]
+
+    if (currentItem) {
+      const _search = input.toLowerCase().trim()
+      const keywords: Array<string> = [currentItem.displayName]
+      const tags = getGroupTagsByAccountId(currentItem.accountId)
+
+      if (checkIfCustomDisplayNameIsValid(currentItem.customDisplayName)) {
+        keywords.push(currentItem.customDisplayName)
+      }
+
+      if (tags.length > 0) {
+        tags.forEach((tagName) => {
+          keywords.push(tagName)
+        })
+      }
+
+      return keywords.some((keyword) =>
+        keyword.toLowerCase().trim().includes(_search)
+      )
+    }
+
+    return false
+  }
+
+  return {
+    filter,
   }
 }

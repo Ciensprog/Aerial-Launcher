@@ -1,10 +1,16 @@
-import type { SelectOption } from '../../ui/third-party/extended/input-tags'
+import type {
+  SelectCustomFilter,
+  SelectOption,
+} from '../../ui/third-party/extended/input-tags'
 
 import { SeparatorWithTitle } from '../../ui/extended/separator'
 import { InputTags } from '../../ui/third-party/extended/input-tags'
 
+import { useAccountsInputTagsCustomFilter } from './hooks'
+
 export function AccountSelectors({
   accounts,
+  customFilters,
   isDisabled,
   tags,
   onUpdateAccounts,
@@ -14,6 +20,10 @@ export function AccountSelectors({
     options: Array<SelectOption>
     value: Array<SelectOption>
   }
+  customFilters?: Partial<{
+    accounts: SelectCustomFilter
+    tags: SelectCustomFilter
+  }>
   isDisabled?: boolean
   tags: {
     options: Array<SelectOption>
@@ -22,6 +32,8 @@ export function AccountSelectors({
   onUpdateAccounts?: (value: Array<SelectOption>) => void
   onUpdateTags?: (value: Array<SelectOption>) => void
 }) {
+  const { filter } = useAccountsInputTagsCustomFilter()
+
   return (
     <div className="grid gap-4">
       <InputTags
@@ -30,6 +42,7 @@ export function AccountSelectors({
         value={accounts.value}
         onChange={onUpdateAccounts ?? (() => {})}
         isDisabled={isDisabled}
+        customFilter={customFilters?.accounts ?? filter}
       />
       <SeparatorWithTitle>Or</SeparatorWithTitle>
       <InputTags
@@ -38,6 +51,7 @@ export function AccountSelectors({
         value={tags.value}
         onChange={onUpdateTags ?? (() => {})}
         isDisabled={isDisabled}
+        customFilter={customFilters?.tags}
       />
     </div>
   )

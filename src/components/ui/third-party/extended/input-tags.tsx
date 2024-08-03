@@ -1,3 +1,4 @@
+import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters'
 import type { StylesConfig } from 'react-select'
 
 import chroma from 'chroma-js'
@@ -11,7 +12,15 @@ export type SelectOption = {
   value: string
 }
 
+export type SelectCustomFilter =
+  | ((
+      candidate: FilterOptionOption<SelectOption>,
+      input: string
+    ) => boolean)
+  | null
+
 export function InputTags({
+  customFilter,
   isDisabled,
   options,
   placeholder,
@@ -19,6 +28,7 @@ export function InputTags({
 
   onChange,
 }: {
+  customFilter?: SelectCustomFilter
   isDisabled?: boolean
   options: Array<SelectOption>
   placeholder: string
@@ -54,6 +64,7 @@ export function InputTags({
 
         return
       }}
+      filterOption={customFilter}
       isDisabled={isDisabled}
       isMulti
       unstyled
