@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { History, Menu, Minus, Rocket, Settings, X } from 'lucide-react'
 
-import imgFNDB from '../../_assets/fndb.webp'
+import { repositoryAssetsURL } from '../../config/about/links'
 
 import { Button } from '../../components/ui/button'
 import {
@@ -61,7 +61,9 @@ export function Header() {
           </div>
         </SheetContent>
       </Sheet>
+
       <AccountList />
+
       <Button
         size={isMinWith ? 'icon' : 'default'}
         variant="outline"
@@ -117,7 +119,7 @@ export function Header() {
         onClick={handleOpenFNDBProfile}
       >
         <img
-          src={imgFNDB}
+          src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
           className="w-8"
         />
         <span className="sr-only">Go to FortniteDB profile</span>

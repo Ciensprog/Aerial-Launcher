@@ -146,7 +146,7 @@ export function useActions() {
   const onSubmitCustomDisplayName =
     ({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      account: { provider, token, ...account },
+      account: { provider, accessToken: token, ...account },
       value,
     }: {
       account: AccountData

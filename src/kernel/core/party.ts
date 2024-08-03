@@ -34,8 +34,10 @@ export class Party {
     claimState: boolean
   ) {
     try {
-      const accessToken =
-        await Authentication.verifyAccessToken(selectedAccount)
+      const accessToken = await Authentication.verifyAccessToken(
+        selectedAccount,
+        currentWindow
+      )
 
       if (!accessToken) {
         return
@@ -84,6 +86,7 @@ export class Party {
           await Promise.allSettled(
             _members.map(({ account_id }) =>
               Party.kickMember({
+                currentWindow,
                 party,
                 account: accountLeader,
                 accountIdToKick: account_id,
@@ -93,6 +96,7 @@ export class Party {
 
           try {
             await Party.kickMember({
+              currentWindow,
               party,
               account: accountLeader,
               accountIdToKick: accountLeader.accountId,
@@ -112,6 +116,7 @@ export class Party {
             filteredMyAccountsInParty.map((account) =>
               Party.kickMember({
                 account,
+                currentWindow,
                 party,
                 accountIdToKick: account.accountId,
               })
@@ -122,14 +127,16 @@ export class Party {
         }
 
         if (claimState) {
-          ClaimRewards.core(filteredMyAccountsInParty).then((response) => {
-            if (response) {
-              currentWindow.webContents.send(
-                ElectronAPIEventKeys.ClaimRewardsClientNotification,
-                response
-              )
+          ClaimRewards.core(currentWindow, filteredMyAccountsInParty).then(
+            (response) => {
+              if (response) {
+                currentWindow.webContents.send(
+                  ElectronAPIEventKeys.ClaimRewardsClientNotification,
+                  response
+                )
+              }
             }
-          })
+          )
         }
 
         currentWindow.webContents.send(
@@ -162,7 +169,10 @@ export class Party {
       selectedAccounts.map(async (account) => {
         account
 
-        const accessToken = await Authentication.verifyAccessToken(account)
+        const accessToken = await Authentication.verifyAccessToken(
+          account,
+          currentWindow
+        )
 
         if (!accessToken) {
           return
@@ -188,9 +198,10 @@ export class Party {
 
         return await Party.kickMember({
           party,
+          currentWindow,
           account: {
             ...account,
-            token: accessToken,
+            accessToken: accessToken,
           },
           accountIdToKick: account.accountId,
         })
@@ -198,14 +209,16 @@ export class Party {
     )
 
     if (claimState) {
-      ClaimRewards.core(selectedAccounts).then((response) => {
-        if (response) {
-          currentWindow.webContents.send(
-            ElectronAPIEventKeys.ClaimRewardsClientNotification,
-            response
-          )
+      ClaimRewards.core(currentWindow, selectedAccounts).then(
+        (response) => {
+          if (response) {
+            currentWindow.webContents.send(
+              ElectronAPIEventKeys.ClaimRewardsClientNotification,
+              response
+            )
+          }
         }
-      })
+      )
     }
 
     currentWindow.webContents.send(
@@ -237,7 +250,7 @@ export class Party {
 
   //   for (const account of selectedAccounts) {
   //     try {
-  //       const accessToken = await Authentication.verifyAccessToken(account)
+  //       const accessToken = await Authentication.verifyAccessToken(account, currentWindow)
 
   //       if (!accessToken) {
   //         continue
@@ -367,6 +380,7 @@ export class Party {
     try {
       const response = await LookupManager.searchUserByDisplayName({
         account,
+        currentWindow,
         displayName,
       })
 
@@ -425,7 +439,10 @@ export class Party {
     const defaultResponse: Array<InviteNotification> = []
 
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
       if (!accessToken) {
         return
@@ -441,8 +458,10 @@ export class Party {
         const response = await Promise.allSettled(
           accountIds.map(async (accountId) => {
             try {
-              const accessToken =
-                await Authentication.verifyAccessToken(account)
+              const accessToken = await Authentication.verifyAccessToken(
+                account,
+                currentWindow
+              )
 
               if (!accessToken) {
                 return null
@@ -473,7 +492,10 @@ export class Party {
                   'errors.com.epicgames.social.party.invite_already_exists'
                 ) {
                   const accessToken =
-                    await Authentication.verifyAccessToken(account)
+                    await Authentication.verifyAccessToken(
+                      account,
+                      currentWindow
+                    )
 
                   if (!accessToken) {
                     return null
@@ -512,8 +534,10 @@ export class Party {
                 error?.response?.data.errorCode ===
                 'errors.com.epicgames.friends.friendship_not_found'
               ) {
-                const accessToken =
-                  await Authentication.verifyAccessToken(account)
+                const accessToken = await Authentication.verifyAccessToken(
+                  account,
+                  currentWindow
+                )
 
                 if (!accessToken) {
                   return null
@@ -578,16 +602,21 @@ export class Party {
   private static async kickMember({
     account,
     accountIdToKick,
+    currentWindow,
     party,
   }: {
     account: AccountData
     accountIdToKick: string
+    currentWindow: BrowserWindow
     party: PartyData
   }) {
     let newAccessToken: string | null = null
 
     try {
-      newAccessToken = await Authentication.verifyAccessToken(account)
+      newAccessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
       if (!newAccessToken) {
         return false

@@ -27,7 +27,7 @@ export function getQueryProfile({
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -49,7 +49,7 @@ export function getQueryPublicProfile({
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -78,7 +78,7 @@ export function setActivateConsumable({
     },
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -100,7 +100,7 @@ export function setClaimDifficultyIncreaseRewards({
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -122,7 +122,7 @@ export function setClaimMissionAlertRewards({
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -149,7 +149,7 @@ export function setClaimQuestReward({
     },
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -171,7 +171,7 @@ export function setClientQuestLogin({
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -197,7 +197,7 @@ export function setHomebaseName({
     },
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'common_public',
@@ -222,7 +222,7 @@ export function setOpenCardPackBatch({
     } as MCPOpenCardPackBatchPayload,
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'campaign',
@@ -244,7 +244,7 @@ export function setRedeemSTWAccoladeTokens({
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
       params: {
         profileId: 'athena',

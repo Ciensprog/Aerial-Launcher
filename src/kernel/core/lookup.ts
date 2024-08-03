@@ -1,5 +1,7 @@
 import type { XPBoostsSearchUserConfig } from '../../types/xpboosts'
 
+import { BrowserWindow } from 'electron'
+
 import { Authentication } from './authentication'
 
 import {
@@ -11,8 +13,11 @@ import {
 export class LookupManager {
   static async searchUserByDisplayName({
     account,
+    currentWindow,
     displayName,
-  }: Pick<XPBoostsSearchUserConfig, 'account' | 'displayName'>) {
+  }: {
+    currentWindow: BrowserWindow
+  } & Pick<XPBoostsSearchUserConfig, 'account' | 'displayName'>) {
     const defaultResponse: {
       data: null
       success: false
@@ -24,7 +29,10 @@ export class LookupManager {
     }
 
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
       if (!accessToken) {
         return defaultResponse
@@ -70,8 +78,10 @@ export class LookupManager {
         'errors.com.epicgames.account.account_not_found'
       ) {
         try {
-          const accessToken =
-            await Authentication.verifyAccessToken(account)
+          const accessToken = await Authentication.verifyAccessToken(
+            account,
+            currentWindow
+          )
 
           if (!accessToken) {
             return defaultResponse

@@ -11,8 +11,8 @@ export const accountBasicInformationSchema = z.object({
 export const accountDataSchema = z.intersection(
   accountBasicInformationSchema,
   z.object({
+    accessToken: z.string().nullable().optional(),
     provider: z.string().nullable().optional(),
-    token: z.string().nullable().optional(),
   })
 )
 

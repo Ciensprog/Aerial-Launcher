@@ -1,5 +1,9 @@
 import type { CommonErrorResponse } from '../../types/services/errors'
-import type { AccountData, AccountDataRecord } from '../../types/accounts'
+import type {
+  AccountData,
+  AccountDataRecord,
+  SyncAccountDataResponse,
+} from '../../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
 import type { GenerateExchangeCodeNotificationCallbackResponseParam } from '../../types/preload'
 
@@ -124,7 +128,10 @@ export class Authentication {
     account: AccountData
   ) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
       if (!accessToken) {
         currentWindow.webContents.send(
@@ -172,7 +179,10 @@ export class Authentication {
     account: AccountData
   ) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
       if (!accessToken) {
         currentWindow.webContents.send(
@@ -216,24 +226,46 @@ export class Authentication {
     )
   }
 
-  static async verifyAccessToken(account: AccountData) {
-    if (!account.token) {
-      return null
+  static async verifyAccessToken(
+    account: AccountData,
+    currentWindow: BrowserWindow
+  ) {
+    const generateAccessToken = async () => {
+      const response = await getAccessTokenUsingDeviceAuth(account)
+      const accessToken = response.data.access_token ?? null
+
+      syncAccessToken(accessToken)
+
+      return accessToken
+    }
+    const syncAccessToken = (accessToken: string | null) => {
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.SyncAccessToken,
+        {
+          accountId: account.accountId,
+          data: { accessToken },
+        } as SyncAccountDataResponse
+      )
     }
 
     try {
-      const response = await oauthVerify(account.token)
+      if (!account.accessToken) {
+        return await generateAccessToken()
+      }
 
-      return response.data.token ?? null
+      const response = await oauthVerify(account.accessToken)
+      const accessToken = response.data.token ?? null
+
+      syncAccessToken(accessToken)
+
+      return accessToken
     } catch (error) {
       if (
         (error as Record<string, { status: number }>).response?.status ===
         401
       ) {
         try {
-          const response = await getAccessTokenUsingDeviceAuth(account)
-
-          return response.data.access_token ?? null
+          return await generateAccessToken()
         } catch (error) {
           //
         }
@@ -261,7 +293,7 @@ export class Authentication {
       displayName,
       secret,
       provider: undefined,
-      token: undefined,
+      accessToken: undefined,
     }
 
     await AccountsManager.add({

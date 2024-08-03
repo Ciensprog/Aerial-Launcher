@@ -58,7 +58,7 @@ export function getAccessTokenUsingDeviceAuth(
 export function getExchangeCodeUsingAccessToken(accessToken: string) {
   return oauthService.get<CreateExchangeCodeResponse>('/exchange', {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `bearer ${accessToken}`,
     },
   })
 }
@@ -93,7 +93,7 @@ export function createDeviceAuthCredentials({
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
     }
   )
@@ -111,7 +111,7 @@ export function oauthVerify(
     ...(config ?? {}),
     headers: {
       ...config?.headers,
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `bearer ${accessToken}`,
     },
   })
 }

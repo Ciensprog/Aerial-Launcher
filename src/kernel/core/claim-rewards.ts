@@ -21,7 +21,7 @@ export class ClaimRewards {
     currentWindow: BrowserWindow,
     accounts: AccountDataList
   ) {
-    ClaimRewards.core(accounts).then((response) => {
+    ClaimRewards.core(currentWindow, accounts).then((response) => {
       if (response) {
         currentWindow.webContents.send(
           ElectronAPIEventKeys.ClaimRewardsClientNotification,
@@ -35,7 +35,10 @@ export class ClaimRewards {
     })
   }
 
-  static async core(accounts: AccountDataList) {
+  static async core(
+    currentWindow: BrowserWindow,
+    accounts: AccountDataList
+  ) {
     if (accounts.length <= 0) {
       return null
     }
@@ -43,8 +46,10 @@ export class ClaimRewards {
     try {
       const response = await Promise.allSettled(
         accounts.map(async (account) => {
-          const accessToken =
-            await Authentication.verifyAccessToken(account)
+          const accessToken = await Authentication.verifyAccessToken(
+            account,
+            currentWindow
+          )
 
           if (!accessToken) {
             return null
@@ -72,7 +77,7 @@ export class ClaimRewards {
 
           const pendingMissionAlertRewardsTotal =
             profileChanges?.profile.stats.attributes
-              .mission_alert_redemption_record.pendingMissionAlertRewards
+              .mission_alert_redemption_record?.pendingMissionAlertRewards
               ?.items.length ?? 0
           const pendingDifficultyIncreaseRewardsTotal =
             profileChanges?.profile.stats.attributes

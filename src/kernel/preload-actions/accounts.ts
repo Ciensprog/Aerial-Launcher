@@ -1,4 +1,8 @@
-import type { AccountBasicInfo } from '../../types/accounts'
+import type { IpcRendererEvent } from 'electron'
+import type {
+  AccountBasicInfo,
+  SyncAccountDataResponse,
+} from '../../types/accounts'
 
 import { ipcRenderer } from 'electron'
 
@@ -25,6 +29,29 @@ export function responseCustomDisplayName(callback: () => Promise<void>) {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.ResponseUpdateAccountBasicInfo,
+        customCallback
+      ),
+  }
+}
+
+export function syncAccountData(
+  callback: (value: SyncAccountDataResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: SyncAccountDataResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.SyncAccessToken,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.SyncAccessToken,
         customCallback
       ),
   }

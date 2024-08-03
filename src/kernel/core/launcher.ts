@@ -38,7 +38,10 @@ export class FortniteLauncher {
       // }
 
       const { settings } = await DataDirectory.getSettingsFile()
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
       if (!accessToken) {
         sendError()
@@ -59,7 +62,7 @@ export class FortniteLauncher {
         accountExchangeCode.data.code,
         {
           headers: {
-            Authorization: `Basic ${launcherAppClient2.auth}`,
+            Authorization: `basic ${launcherAppClient2.auth}`,
           },
         }
       )

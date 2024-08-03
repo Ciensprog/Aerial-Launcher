@@ -11,8 +11,7 @@ export function useAttributesStates() {
   const [open, setOpen] = useState(false)
   const { selected } = useGetSelectedAccount()
 
-  const isButtonDisabled =
-    selected === null || selected.token === undefined
+  const isButtonDisabled = selected === null // || selected.accessToken === undefined
 
   return {
     isButtonDisabled,

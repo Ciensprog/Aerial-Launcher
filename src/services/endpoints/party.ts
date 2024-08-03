@@ -15,7 +15,7 @@ export function fetchParty({
 }) {
   return partyService.get<FetchPartyResponse>(`/user/${accountId}`, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `bearer ${accessToken}`,
     },
   })
 }
@@ -33,7 +33,7 @@ export function kick({
     `/parties/${partyId}/members/${accountId}`,
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
     }
   )
@@ -55,7 +55,7 @@ export function invite({
     },
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
     }
   )
@@ -74,7 +74,7 @@ export function removeInvite({
     `/parties/${partyId}/invites/${friendAccountId}`,
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `bearer ${accessToken}`,
       },
     }
   )

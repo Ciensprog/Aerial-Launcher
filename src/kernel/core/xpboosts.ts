@@ -50,8 +50,10 @@ export class XPBoostsManager {
           }
 
           try {
-            const accessToken =
-              await Authentication.verifyAccessToken(account)
+            const accessToken = await Authentication.verifyAccessToken(
+              account,
+              currentWindow
+            )
 
             if (!accessToken) {
               return defaultValue
@@ -174,7 +176,8 @@ export class XPBoostsManager {
                 async () => {
                   const accessToken =
                     await Authentication.verifyAccessToken(
-                      account as AccountData
+                      account as AccountData,
+                      currentWindow
                     )
 
                   if (!accessToken) {
@@ -276,7 +279,8 @@ export class XPBoostsManager {
             Array.from({ length: currentTotal }, () => null).map(
               async () => {
                 const accessToken = await Authentication.verifyAccessToken(
-                  account as AccountData
+                  account as AccountData,
+                  currentWindow
                 )
 
                 if (!accessToken) {
@@ -349,7 +353,10 @@ export class XPBoostsManager {
       currentWindow.webContents.send(notificationId, defaultResponse)
     }
 
-    const response = await LookupManager.searchUserByDisplayName(config)
+    const response = await LookupManager.searchUserByDisplayName({
+      ...config,
+      currentWindow,
+    })
 
     if (response.success) {
       defaultResponse.data = {
@@ -361,7 +368,8 @@ export class XPBoostsManager {
           (item) => item.accountId === response.data.id
         )
         const accessToken = await Authentication.verifyAccessToken(
-          accountDestinationInLauncher ?? config.account
+          accountDestinationInLauncher ?? config.account,
+          currentWindow
         )
 
         if (!accessToken) {

@@ -10,18 +10,18 @@ export function scheduleResponseAccounts(accounts: Array<AccountData>) {
   ipcRenderer.send(ElectronAPIEventKeys.ScheduleResponseAccounts, accounts)
 }
 
-export function scheduleRequestAccounts(callback: () => Promise<void>) {
-  const eventKey = ElectronAPIEventKeys.ScheduleRequestAccounts
-  const customCallback = () => {
-    callback().catch(() => {})
-  }
-  const rendererInstance = ipcRenderer.on(eventKey, customCallback)
+// export function scheduleRequestAccounts(callback: () => Promise<void>) {
+//   const eventKey = ElectronAPIEventKeys.ScheduleRequestAccounts
+//   const customCallback = () => {
+//     callback().catch(() => {})
+//   }
+//   const rendererInstance = ipcRenderer.on(eventKey, customCallback)
 
-  return {
-    removeListener: () =>
-      rendererInstance.removeListener(eventKey, customCallback),
-  }
-}
+//   return {
+//     removeListener: () =>
+//       rendererInstance.removeListener(eventKey, customCallback),
+//   }
+// }
 
 export function scheduleResponseProviders(
   callback: (

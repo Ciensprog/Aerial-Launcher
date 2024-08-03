@@ -77,6 +77,8 @@ export enum ElectronAPIEventKeys {
   GenerateExchangeCode = 'auth:generate:exchange',
   ResponseGenerateExchangeCode = 'auth:generate:exchange:response',
 
+  SyncAccessToken = 'auth:access-token:sync',
+
   /**
    * Launcher
    */

@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 import { useAccountList } from './hooks'
 
-import { getStatusProvider } from '../../lib/statuses'
+// import { getStatusProvider } from '../../lib/statuses'
 import { cn, parseCustomDisplayName } from '../../lib/utils'
 
 export function AccountList() {
@@ -40,7 +40,7 @@ export function AccountList() {
               'justify-center px-0': accounts.length < 1,
             }
           )}
-          size="lg"
+          // size="lg"
           variant="outline"
           role="combobox"
           aria-expanded={open}
@@ -53,9 +53,9 @@ export function AccountList() {
                   <span className="block truncate max-w-[10rem] w-full">
                     {parseCustomDisplayName(selected)}
                   </span>
-                  <span className="block text-muted-foreground text-xs truncate">
+                  {/* <span className="block text-muted-foreground text-xs truncate">
                     {getStatusProvider(selected.provider)}
-                  </span>
+                  </span> */}
                 </span>
               ) : (
                 'Select account...'
@@ -104,9 +104,9 @@ export function AccountList() {
                       <div className="max-w-[10rem] truncate">
                         {displayName}
                       </div>
-                      <div className="text-muted-foreground text-xs">
+                      {/* <div className="text-muted-foreground text-xs">
                         {getStatusProvider(account.provider)}
-                      </div>
+                      </div> */}
                     </div>
                   </CommandItem>
                 )

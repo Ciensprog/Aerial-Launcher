@@ -24,8 +24,10 @@ export class MCPHomebaseName {
           }
 
           try {
-            const accessToken =
-              await Authentication.verifyAccessToken(account)
+            const accessToken = await Authentication.verifyAccessToken(
+              account,
+              currentWindow
+            )
 
             if (!accessToken) {
               result.errorMessage = 'Unknown Error'

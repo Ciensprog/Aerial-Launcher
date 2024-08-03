@@ -33,7 +33,7 @@ axiosRetry(oauthService, {
   },
   onRetry(_retryCount, _error, requestConfig) {
     if (requestConfig.headers) {
-      requestConfig.headers.Authorization = `Basic ${fortniteIOSGameClient.auth}`
+      requestConfig.headers.Authorization = `basic ${fortniteIOSGameClient.auth}`
     }
 
     return
@@ -52,7 +52,7 @@ oauthService.interceptors.request.use((config) => {
      * Load Authorization header with default client on every request
      */
     config.headers.setAuthorization(
-      `Basic ${defaultFortniteClient.use.auth}`
+      `basic ${defaultFortniteClient.use.auth}`
     )
   }
 

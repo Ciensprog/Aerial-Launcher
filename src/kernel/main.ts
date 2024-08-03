@@ -184,17 +184,17 @@ app.on('ready', async () => {
    * Requests
    */
 
-  ipcMain.on(
-    ElectronAPIEventKeys.RequestProviderAndAccessTokenOnStartup,
-    async (_, account: AccountData) => {
-      const response = await AntiCheatProvider.request(account)
+  // ipcMain.on(
+  //   ElectronAPIEventKeys.RequestProviderAndAccessTokenOnStartup,
+  //   async (_, account: AccountData) => {
+  //     const response = await AntiCheatProvider.request(account)
 
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
-        response
-      )
-    }
-  )
+  //     currentWindow.webContents.send(
+  //       ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
+  //       response
+  //     )
+  //   }
+  // )
 
   /**
    * Authentication
@@ -457,9 +457,9 @@ app.on('ready', async () => {
       tz: 'UTC',
     },
     () => {
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.ScheduleRequestAccounts
-      )
+      // currentWindow.webContents.send(
+      //   ElectronAPIEventKeys.ScheduleRequestAccounts
+      // )
 
       WorldInfoManager.requestData(currentWindow)
     }

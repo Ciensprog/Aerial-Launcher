@@ -29,54 +29,60 @@ export function LoadAccounts() {
           changeSelected(accountsToArray[0].accountId)
         }
 
-        Object.values(accounts).forEach((account) => {
-          window.electronAPI.requestProviderAndAccessToken(account)
-        })
+        // Object.values(accounts).forEach((account) => {
+        //   window.electronAPI.requestProviderAndAccessToken(account)
+        // })
       }
     )
-    const acProviderListener =
-      window.electronAPI.responseProviderAndAccessToken(
-        async ({ account, data }) => {
-          addOrUpdate(account.accountId, {
-            ...account,
-            displayName: data?.displayName ?? account.displayName,
-            provider: data?.provider ?? null,
-            token: data?.accessToken ?? null,
-          })
-        }
-      )
+    // const acProviderListener =
+    //   window.electronAPI.responseProviderAndAccessToken(
+    //     async ({ account, data }) => {
+    //       addOrUpdate(account.accountId, {
+    //         ...account,
+    //         displayName: data?.displayName ?? account.displayName,
+    //         provider: data?.provider ?? null,
+    //         token: data?.accessToken ?? null,
+    //       })
+    //     }
+    //   )
 
     window.electronAPI.requestAccounts()
 
     return () => {
       accountsLoaderListener.removeListener()
-      acProviderListener.removeListener()
+      // acProviderListener.removeListener()
     }
   }, [])
 
   useEffect(() => {
-    const scheduleRequestAccountsListener =
-      window.electronAPI.scheduleRequestAccounts(async () => {
-        const accountsToArray: Array<AccountData> = Object.values(
-          sortAccounts(accounts)
-        )
+    // const scheduleRequestAccountsListener =
+    //   window.electronAPI.scheduleRequestAccounts(async () => {
+    //     const accountsToArray: Array<AccountData> = Object.values(
+    //       sortAccounts(accounts)
+    //     )
 
-        window.electronAPI.scheduleResponseAccounts(accountsToArray)
-      })
-    const scheduleResponseProvidersListener =
-      window.electronAPI.scheduleResponseProviders(
-        async ({ account, data }) => {
-          addOrUpdate(account.accountId, {
-            ...account,
-            provider: data?.provider ?? null,
-            token: data?.accessToken ?? null,
-          })
-        }
-      )
+    //     window.electronAPI.scheduleResponseAccounts(accountsToArray)
+    //   })
+    // const scheduleResponseProvidersListener =
+    //   window.electronAPI.scheduleResponseProviders(
+    //     async ({ account, data }) => {
+    //       addOrUpdate(account.accountId, {
+    //         ...account,
+    //         provider: data?.provider ?? null,
+    //         token: data?.accessToken ?? null,
+    //       })
+    //     }
+    //   )
+    const syncAccessTokenListener = window.electronAPI.syncAccountData(
+      async ({ accountId, data }) => {
+        addOrUpdate(accountId, data as AccountData)
+      }
+    )
 
     return () => {
-      scheduleRequestAccountsListener.removeListener()
-      scheduleResponseProvidersListener.removeListener()
+      // scheduleRequestAccountsListener.removeListener()
+      // scheduleResponseProvidersListener.removeListener()
+      syncAccessTokenListener.removeListener()
     }
   }, [accounts])
 

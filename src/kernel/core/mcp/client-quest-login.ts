@@ -17,8 +17,10 @@ export class MCPClientQuestLogin {
       await Promise.allSettled(
         accounts.map(async (account) => {
           try {
-            const accessToken =
-              await Authentication.verifyAccessToken(account)
+            const accessToken = await Authentication.verifyAccessToken(
+              account,
+              currentWindow
+            )
 
             if (!accessToken) {
               return

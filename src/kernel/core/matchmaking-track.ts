@@ -19,7 +19,10 @@ export class MatchmakingTrack {
     let status = false
 
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
       if (accessToken) {
         const response = await findPlayer({
