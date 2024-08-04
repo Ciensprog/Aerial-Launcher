@@ -7,18 +7,7 @@ import type {
 
 import { Link, createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
-import {
-  // BookUp2,
-  // ChevronsUp,
-  ExternalLink,
-  Info,
-  Send,
-  // LogIn,
-  Trash2,
-  // TrendingUp,
-  Undo2,
-  X,
-} from 'lucide-react'
+import { ExternalLink, Info, Send, Trash2, Undo2, X } from 'lucide-react'
 
 import { repositoryAssetsURL } from '../../../config/about/links'
 import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
@@ -237,8 +226,12 @@ function Content() {
                       </a>
                     </div>
                     <div className="border-l-4 pl-3 space-y-0.5 text-muted-foreground text-sm [&_.icon-wrapper]:flex [&_.icon-wrapper]:items-center [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:size-5">
-                      {searchedUser?.isPrivate ? (
+                      {searchedUser.isPrivate ? (
                         <>
+                          <AccountBasicInformationSection
+                            title="Account Id:"
+                            value={searchedUser.data.lookup.id}
+                          />
                           <div className="py-1.5">
                             <div>Note:</div>
                             This user has "Public Game Stats" disabled,
@@ -246,8 +239,9 @@ function Content() {
                           </div>
                         </>
                       ) : (
-                        searchedUser?.success && (
+                        searchedUser.success && (
                           <SearchedUserData
+                            accountId={searchedUser.data.lookup.id}
                             boostedXP={searchedUser.data.profileChanges}
                             collectionBookLevel={
                               searchedUser.data.profileChanges.profile
@@ -533,7 +527,7 @@ function SendBoostsSheet({
             </div>
           ) : (
             <>
-              <div className="p-1 space-y-2">
+              <div className="p-1">
                 <form
                   className="space-y-1"
                   onSubmit={(event) => {
@@ -608,8 +602,12 @@ function SendBoostsSheet({
                         </a>
                       </div>
                       <div className="border-l-4 pl-3 space-y-0.5 text-muted-foreground text-sm [&_.icon-wrapper]:flex [&_.icon-wrapper]:items-center [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:size-5">
-                        {searchedUser?.isPrivate ? (
+                        {searchedUser.isPrivate ? (
                           <>
+                            <AccountBasicInformationSection
+                              title="Account Id:"
+                              value={searchedUser.data.lookup.id}
+                            />
                             <div className="py-1.5">
                               <div>Note:</div>
                               This user has "Public Game Stats" disabled,
@@ -617,8 +615,9 @@ function SendBoostsSheet({
                             </div>
                           </>
                         ) : (
-                          searchedUser?.success && (
+                          searchedUser.success && (
                             <SearchedUserData
+                              accountId={searchedUser.data.lookup.id}
                               boostedXP={searchedUser.data.profileChanges}
                               collectionBookLevel={
                                 searchedUser.data.profileChanges.profile
@@ -867,7 +866,7 @@ function AccountSummaryItem({
   )
 }
 
-function AccountBasicInformationSection({
+export function AccountBasicInformationSection({
   title,
   value,
 }: {
@@ -875,7 +874,7 @@ function AccountBasicInformationSection({
   value: ReactNode
 }) {
   return (
-    <div className="flex gap-1.5 items-center">
+    <div className="break-all flex gap-1.5 items-center">
       <div className="flex flex-shrink-0 gap-1.5 items-center text-muted-foreground">
         {title}
       </div>
@@ -885,6 +884,7 @@ function AccountBasicInformationSection({
 }
 
 export function SearchedUserData({
+  accountId,
   boostedXP,
   collectionBookLevel,
   commanderLevel,
@@ -895,6 +895,7 @@ export function SearchedUserData({
 
   hideXPBoostsData,
 }: {
+  accountId: string
   boostedXP?: MCPQueryProfileChanges
   collectionBookLevel: number
   commanderLevel: number
@@ -910,6 +911,10 @@ export function SearchedUserData({
 
   return (
     <>
+      <AccountBasicInformationSection
+        title="Account Id:"
+        value={accountId}
+      />
       {/* <AccountBasicInformationSection
         title="Power Level:"
         value="⚡130"

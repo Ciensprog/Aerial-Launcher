@@ -8,7 +8,10 @@ import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 
 import { Route as RootRoute } from '../../__root'
 
-import { SearchedUserData } from '../../stw-operations/xpboosts/route'
+import {
+  AccountBasicInformationSection,
+  SearchedUserData,
+} from '../../stw-operations/xpboosts/route'
 
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
@@ -145,6 +148,7 @@ function Content() {
                   <Combobox
                     className="max-w-full"
                     emptyPlaceholder="No recently players"
+                    emptyContent="No player found"
                     placeholder="Select a recently player"
                     placeholderSearch="Search on 1 players"
                     options={options}
@@ -152,7 +156,7 @@ function Content() {
                     customFilter={customFilter}
                     onChange={() => {}}
                     onSelectItem={autoCompletePlayer}
-                    emptyContentClassname="p-1"
+                    emptyContentClassname="py-6 text-center text-sm"
                     disabled={searchUserIsSubmitting}
                     disabledItem={searchUserIsSubmitting}
                     inputSearchIsDisabled={searchUserIsSubmitting}
@@ -233,17 +237,29 @@ function Content() {
                       </a>
                     </div>
                     <div className="border-l-4 pl-3 space-y-0.5 text-muted-foreground text-sm [&_.icon-wrapper]:flex [&_.icon-wrapper]:items-center [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:size-5">
-                      {searchedUser?.isPrivate ? (
+                      {searchedUser.isPrivate ? (
                         <>
+                          <AccountBasicInformationSection
+                            title="Account Id:"
+                            value={searchedUser.data.lookup.id}
+                          />
                           <div className="py-1.5">
-                            <div>Note:</div>
-                            This user has "Public Game Stats" disabled,
-                            more information can't be displayed.
+                            <div>Notes:</div>
+                            <ul className="list-disc pl-5">
+                              <li className="">
+                                This user has "Public Game Stats" disabled,
+                                more information can't be displayed.
+                              </li>
+                              <li className="italic">
+                                Of course, you can still generate the file.
+                              </li>
+                            </ul>
                           </div>
                         </>
                       ) : (
-                        searchedUser?.success && (
+                        searchedUser.success && (
                           <SearchedUserData
+                            accountId={searchedUser.data.lookup.id}
                             boostedXP={searchedUser.data.profileChanges}
                             collectionBookLevel={
                               searchedUser.data.profileChanges.profile
