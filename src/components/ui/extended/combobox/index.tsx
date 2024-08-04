@@ -1,6 +1,6 @@
 import type { ComboboxProps } from './hooks'
 
-import { Check, ChevronsUpDown } from 'lucide-react'
+import { Check, ChevronsUpDown, X } from 'lucide-react'
 
 import { Button } from '../../button'
 import {
@@ -46,8 +46,9 @@ export function Combobox({
     currentValues,
     open,
     selectedName,
-    setOpen,
 
+    setOpen,
+    clearValues,
     __onChange,
     __onSearchValueChange,
   } = useData({
@@ -73,41 +74,52 @@ export function Combobox({
       open={open}
       onOpenChange={setOpen}
     >
-      <PopoverTrigger
-        disabled={disabled}
-        asChild
-      >
-        <Button
-          className={cn(
-            'flex justify-between max-w-96 pl-3 pr-2 select-none w-full disabled:hover:bg-background',
-            className
-          )}
-          size="sm"
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          disabled={
-            disabled
-              ? true
-              : doNotDisableIfThereAreNoOptions
-                ? false
-                : options.length < 1
-          }
+      <div className="flex items-center relative w-full">
+        <PopoverTrigger
+          disabled={disabled}
+          asChild
         >
-          <div
-            className={cn('max-w-72 truncate', {
-              'text-muted-foreground': currentValues.length <= 0,
-            })}
+          <Button
+            className={cn(
+              'flex justify-between max-w-96 pl-3 pr-2 select-none w-full disabled:hover:bg-background',
+              className
+            )}
+            size="sm"
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            disabled={
+              disabled
+                ? true
+                : doNotDisableIfThereAreNoOptions
+                  ? false
+                  : options.length < 1
+            }
           >
-            {options.length > 0
-              ? currentValues.length > 0
-                ? selectedName
-                : placeholder ?? 'Select options'
-              : emptyPlaceholder ?? 'No options'}
-          </div>
-          <ChevronsUpDown className="h-4 ml-auto opacity-50 shrink-0 w-4" />
-        </Button>
-      </PopoverTrigger>
+            <div
+              className={cn('max-w-72 truncate', {
+                'text-muted-foreground': currentValues.length <= 0,
+              })}
+            >
+              {options.length > 0
+                ? currentValues.length > 0
+                  ? selectedName
+                  : placeholder ?? 'Select options'
+                : emptyPlaceholder ?? 'No options'}
+            </div>
+            <ChevronsUpDown className="h-4 ml-auto opacity-50 shrink-0 w-4" />
+          </Button>
+        </PopoverTrigger>
+        {currentValues.length > 0 && (
+          <button
+            className="absolute p-0.5 right-7 text-muted-foreground hover:text-white"
+            onClick={clearValues}
+          >
+            <X className="size-4" />
+            <span className="sr-only">clear values</span>
+          </button>
+        )}
+      </div>
       <PopoverContent
         className="max-w-52 p-0 w-full"
         align="start"

@@ -67,6 +67,11 @@ export function useData({
       : currentValues[0]?.label
     : options.find((item) => item.value === currentValues[0]?.value)?.label
 
+  const clearValues = () => {
+    __setValues([])
+    onChange?.([])
+  }
+
   const __onChange = (value: string) => {
     const current = options.find((item) => item.value === value)
     const hasItem = currentValues.find((item) => item.value === value)
@@ -105,6 +110,7 @@ export function useData({
     selectedName,
 
     setOpen,
+    clearValues,
     __onChange,
     __onSearchValueChange,
   }
