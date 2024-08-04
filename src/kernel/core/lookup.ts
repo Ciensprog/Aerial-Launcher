@@ -38,21 +38,23 @@ export class LookupManager {
         return defaultResponse
       }
 
-      try {
-        const response = await findUserByAccountId({
-          accessToken,
-          accountId: displayName,
-        })
+      if (displayName.length >= 28 && displayName.length <= 34) {
+        try {
+          const response = await findUserByAccountId({
+            accessToken,
+            accountId: displayName,
+          })
 
-        if (response.data) {
-          return {
-            data: response.data,
-            errorMessage: null,
-            success: true,
-          } as const
+          if (response.data) {
+            return {
+              data: response.data,
+              errorMessage: null,
+              success: true,
+            } as const
+          }
+        } catch (error) {
+          //
         }
-      } catch (error) {
-        //
       }
 
       const response = await findUserByDisplayName({
