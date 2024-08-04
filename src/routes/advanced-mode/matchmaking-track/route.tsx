@@ -10,6 +10,7 @@ import { Route as RootRoute } from '../../__root'
 
 import {
   AccountBasicInformationSection,
+  ExternalAuthTypeImage,
   SearchedUserData,
 } from '../../stw-operations/xpboosts/route'
 
@@ -214,7 +215,7 @@ function Content() {
                   )}
               </div>
 
-              {searchedUser?.data && (
+              {searchedUser && searchedUser.data && (
                 <div className="px-6">
                   <div>
                     <div>
@@ -227,6 +228,11 @@ function Content() {
                           searchedUser.data.lookup.displayName
                         )}
                       >
+                        <ExternalAuthTypeImage
+                          externalAuthType={
+                            searchedUser.data.lookup.externalAuthType
+                          }
+                        />
                         <span className="max-w-72 text-lg truncate">
                           {searchedUser.data.lookup.displayName}
                         </span>
@@ -246,7 +252,7 @@ function Content() {
                           <div className="py-1.5">
                             <div>Notes:</div>
                             <ul className="list-disc pl-5">
-                              <li className="">
+                              <li>
                                 This user has "Public Game Stats" disabled,
                                 more information can't be displayed.
                               </li>

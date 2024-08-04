@@ -74,6 +74,9 @@ export type XPBoostsSearchUserResponse =
     }
 
 export type XPBoostsSearchUserData = {
-  lookup: LookupFindOneByDisplayNameResponse
+  lookup: LookupFindOneByDisplayNameResponse &
+    Partial<{
+      externalAuthType: 'psn' | 'xbl'
+    }>
   profileChanges: MCPQueryProfileChanges
 }

@@ -409,6 +409,11 @@ export class XPBoostsManager {
           'errors.com.epicgames.fortnite.operation_forbidden'
         ) {
           defaultResponse.isPrivate = true
+        } else {
+          defaultResponse.data = null
+          defaultResponse.errorMessage = null
+          defaultResponse.isPrivate = false
+          defaultResponse.success = false
         }
       }
     } else {

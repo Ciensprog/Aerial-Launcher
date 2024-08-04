@@ -1,4 +1,7 @@
-import type { XPBoostsSearchUserConfig } from '../../types/xpboosts'
+import type {
+  XPBoostsSearchUserConfig,
+  XPBoostsSearchUserData,
+} from '../../types/xpboosts'
 
 import { BrowserWindow } from 'electron'
 
@@ -17,7 +20,18 @@ export class LookupManager {
     displayName,
   }: {
     currentWindow: BrowserWindow
-  } & Pick<XPBoostsSearchUserConfig, 'account' | 'displayName'>) {
+  } & Pick<XPBoostsSearchUserConfig, 'account' | 'displayName'>): Promise<
+    | {
+        data: null
+        success: false
+        errorMessage: number | string | null
+      }
+    | {
+        data: XPBoostsSearchUserData['lookup']
+        success: true
+        errorMessage: number | string | null
+      }
+  > {
     const defaultResponse: {
       data: null
       success: false
@@ -103,6 +117,7 @@ export class LookupManager {
                 return {
                   data: {
                     ...current,
+                    externalAuthType,
                     displayName:
                       current.externalAuths[externalAuthType]
                         ?.externalDisplayName ?? current.displayName,

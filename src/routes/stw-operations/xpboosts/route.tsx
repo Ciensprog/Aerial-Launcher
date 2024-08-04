@@ -216,6 +216,11 @@ function Content() {
                           searchedUser.data.lookup.displayName
                         )}
                       >
+                        <ExternalAuthTypeImage
+                          externalAuthType={
+                            searchedUser.data.lookup.externalAuthType
+                          }
+                        />
                         <span className="max-w-72 text-lg truncate">
                           {searchedUser.data.lookup.displayName}
                         </span>
@@ -592,6 +597,11 @@ function SendBoostsSheet({
                             searchedUser.data.lookup.displayName
                           )}
                         >
+                          <ExternalAuthTypeImage
+                            externalAuthType={
+                              searchedUser.data.lookup.externalAuthType
+                            }
+                          />
                           <span className="max-w-72 text-lg truncate">
                             {searchedUser.data.lookup.displayName}
                           </span>
@@ -863,6 +873,24 @@ function AccountSummaryItem({
         </div>
       </div>
     </div>
+  )
+}
+
+export function ExternalAuthTypeImage({
+  externalAuthType,
+}: {
+  externalAuthType?: 'psn' | 'xbl'
+}) {
+  return (
+    <figure>
+      <img
+        src={`${repositoryAssetsURL}/images/logos/${
+          externalAuthType ?? 'epicgames'
+        }.png`}
+        className="size-5"
+        alt={externalAuthType ?? 'epicgames'}
+      />
+    </figure>
   )
 }
 
