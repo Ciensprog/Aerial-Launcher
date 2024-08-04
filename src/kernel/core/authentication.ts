@@ -230,33 +230,54 @@ export class Authentication {
     account: AccountData,
     currentWindow: BrowserWindow
   ) {
-    const generateAccessToken = async () => {
-      const response = await getAccessTokenUsingDeviceAuth(account)
-      const accessToken = response.data.access_token ?? null
+    const currentAccount =
+      AccountsManager.getAccountById(account.accountId) ?? account
 
-      syncAccessToken(accessToken)
+    const syncAccessToken = (data: {
+      accessToken: string | null
+      displayName: string
+    }) => {
+      const newData = {
+        ...data,
+        displayName: data.displayName ?? currentAccount.displayName,
+      }
 
-      return accessToken
-    }
-    const syncAccessToken = (accessToken: string | null) => {
+      AccountsManager.syncAccount(currentAccount.accountId, data)
+
       currentWindow.webContents.send(
         ElectronAPIEventKeys.SyncAccessToken,
         {
-          accountId: account.accountId,
-          data: { accessToken },
+          data: newData,
+          accountId: currentAccount.accountId,
         } as SyncAccountDataResponse
       )
     }
+    const generateAccessToken = async () => {
+      const response = await getAccessTokenUsingDeviceAuth(currentAccount)
+      const accessToken = response.data.access_token ?? null
+
+      syncAccessToken({
+        accessToken,
+        displayName: response.data.displayName,
+      })
+
+      return accessToken
+    }
 
     try {
-      if (!account.accessToken) {
-        return await generateAccessToken()
+      if (!currentAccount.accessToken) {
+        const response = await generateAccessToken()
+
+        return response
       }
 
-      const response = await oauthVerify(account.accessToken)
+      const response = await oauthVerify(currentAccount.accessToken)
       const accessToken = response.data.token ?? null
 
-      syncAccessToken(accessToken)
+      syncAccessToken({
+        accessToken,
+        displayName: response.data.display_name,
+      })
 
       return accessToken
     } catch (error) {
@@ -265,7 +286,9 @@ export class Authentication {
         401
       ) {
         try {
-          return await generateAccessToken()
+          const response = await generateAccessToken()
+
+          return response
         } catch (error) {
           //
         }

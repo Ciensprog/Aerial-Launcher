@@ -5,6 +5,7 @@ import type {
   CreateExchangeCodeResponse,
   DeviceAuthResponse,
   ExchangeCodeResponse,
+  VerifyAccessTokenResponse,
 } from '../../types/services/authorizations'
 
 import { oauthService } from '../config/oauth'
@@ -104,7 +105,7 @@ export function oauthVerify(
   config?: AxiosRequestConfig
 ) {
   return oauthService.get<
-    Omit<AuthorizationCodeResponse, 'access_token'> & {
+    Omit<VerifyAccessTokenResponse, 'access_token'> & {
       token: string
     }
   >('/verify', {

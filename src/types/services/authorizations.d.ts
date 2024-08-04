@@ -25,6 +25,13 @@ export type AuthorizationCodeResponse = AuthorizationCommonResponse<{
   scope: Array<string>
 }>
 
+export type VerifyAccessTokenResponse = Omit<
+  AuthorizationCommonResponse,
+  'displayName'
+> & {
+  display_name: string
+}
+
 export type ExchangeCodeResponse = AuthorizationCommonResponse
 
 export type CreateExchangeCodeResponse = {

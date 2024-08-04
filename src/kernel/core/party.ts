@@ -1,5 +1,9 @@
 import type { PartyData } from '../../types/services/party'
-import type { AccountData, AccountDataList } from '../../types/accounts'
+import type {
+  AccountBasicInfo,
+  AccountData,
+  AccountDataList,
+} from '../../types/accounts'
 import type { FriendRecord } from '../../types/friends'
 import type {
   AddNewFriendNotification,
@@ -40,6 +44,11 @@ export class Party {
       )
 
       if (!accessToken) {
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.PartyKickActionNotification,
+          0
+        )
+
         return
       }
 
@@ -156,6 +165,80 @@ export class Party {
     )
   }
 
+  // static async leaveParty(
+  //   currentWindow: BrowserWindow,
+  //   selectedAccounts: AccountDataList,
+
+  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   _accounts: AccountDataList,
+
+  //   claimState: boolean
+  // ) {
+  //   await Promise.allSettled(
+  //     selectedAccounts.map(async (account) => {
+  //       account
+
+  //       const accessToken = await Authentication.verifyAccessToken(
+  //         account,
+  //         currentWindow
+  //       )
+
+  //       if (!accessToken) {
+  //         return
+  //       }
+
+  //       const result = await fetchParty({
+  //         accessToken,
+  //         accountId: account.accountId,
+  //       })
+  //       const party = result.data.current[0]
+
+  //       if (!party) {
+  //         return
+  //       }
+
+  //       const member = party.members.find(
+  //         (member) => account.accountId === member.account_id
+  //       )
+
+  //       if (!member) {
+  //         return
+  //       }
+
+  //       return await Party.kickMember({
+  //         party,
+  //         // currentWindow,
+  //         account: {
+  //           ...account,
+  //           accessToken: accessToken,
+  //         },
+  //         accountIdToKick: account.accountId,
+  //       })
+  //     })
+  //   )
+
+  //   if (claimState) {
+  //     ClaimRewards.core(currentWindow, selectedAccounts).then(
+  //       (response) => {
+  //         if (response) {
+  //           currentWindow.webContents.send(
+  //             ElectronAPIEventKeys.ClaimRewardsClientNotification,
+  //             response
+  //           )
+  //         }
+  //       }
+  //     )
+  //   }
+
+  //   currentWindow.webContents.send(
+  //     ElectronAPIEventKeys.PartyLeaveActionNotification,
+  //     selectedAccounts.length
+  //   )
+  // }
+
+  /**
+   * With optimization (avoid party re-fetching)
+   */
   static async leaveParty(
     currentWindow: BrowserWindow,
     selectedAccounts: AccountDataList,
@@ -165,46 +248,104 @@ export class Party {
 
     claimState: boolean
   ) {
-    await Promise.allSettled(
-      selectedAccounts.map(async (account) => {
-        account
+    const tmpParties: Record<
+      string,
+      {
+        party: PartyData
+        members: Array<string>
+      }
+    > = {}
+    const selectedAccountsIds = selectedAccounts.map(
+      ({ accountId }) => accountId
+    )
 
+    for (const account of selectedAccounts) {
+      try {
         const accessToken = await Authentication.verifyAccessToken(
           account,
           currentWindow
         )
 
         if (!accessToken) {
-          return
+          continue
         }
 
-        const result = await fetchParty({
-          accessToken,
-          accountId: account.accountId,
+        const fetchAndSaveNewPartyInCache = async () => {
+          const result = await fetchParty({
+            accessToken,
+            accountId: account.accountId,
+          })
+
+          const party = result.data.current[0]
+
+          if (party) {
+            tmpParties[party.id] = {
+              party,
+              members: party.members
+                .filter(({ account_id }) =>
+                  selectedAccountsIds.includes(account_id)
+                )
+                .map(({ account_id }) => account_id),
+            }
+          }
+        }
+
+        if (Object.keys(tmpParties).length > 0) {
+          // Get it from cache
+
+          const findParty = Object.entries(tmpParties).find(
+            ([, tmpParty]) => tmpParty.members.includes(account.accountId)
+          )
+
+          if (!findParty) {
+            await fetchAndSaveNewPartyInCache()
+          }
+        } else {
+          // Save new party in cache
+
+          await fetchAndSaveNewPartyInCache()
+        }
+      } catch (error) {
+        //
+      }
+    }
+
+    const parsedAccounts = Object.values(tmpParties).reduce(
+      (accumulator, current) => {
+        const tmpValues = [...accumulator]
+
+        current.members.forEach((memberId) => {
+          const currentAccount = selectedAccounts.find(
+            ({ accountId }) => memberId === accountId
+          )
+
+          if (currentAccount) {
+            tmpValues.push({
+              account: currentAccount,
+              party: current.party,
+            })
+          }
         })
-        const party = result.data.current[0]
 
-        if (!party) {
-          return
-        }
+        return tmpValues
+      },
+      [] as Array<{
+        account: AccountBasicInfo
+        party: PartyData
+      }>
+    )
 
-        const member = party.members.find(
-          (member) => account.accountId === member.account_id
-        )
-
-        if (!member) {
-          return
-        }
-
-        return await Party.kickMember({
-          party,
-          currentWindow,
-          account: {
-            ...account,
-            accessToken: accessToken,
+    await Promise.allSettled(
+      parsedAccounts.map(async ({ account, party }) => {
+        return await Party.kickMember(
+          {
+            account,
+            currentWindow,
+            party,
+            accountIdToKick: account.accountId,
           },
-          accountIdToKick: account.accountId,
-        })
+          true
+        )
       })
     )
 
@@ -226,116 +367,6 @@ export class Party {
       selectedAccounts.length
     )
   }
-
-  /**
-   * With optimization (avoid party re-fetching)
-   */
-  // static async leaveParty(
-  //   currentWindow: BrowserWindow,
-  //   selectedAccounts: AccountList,
-
-  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //   _accounts: AccountList
-  // ) {
-  //   const tmpParties: Record<
-  //     string,
-  //     {
-  //       party: PartyData
-  //       members: Array<string>
-  //     }
-  //   > = {}
-  //   const selectedAccountsIds = selectedAccounts.map(
-  //     ({ accountId }) => accountId
-  //   )
-
-  //   for (const account of selectedAccounts) {
-  //     try {
-  //       const accessToken = await Authentication.verifyAccessToken(account, currentWindow)
-
-  //       if (!accessToken) {
-  //         continue
-  //       }
-
-  //       const fetchAndSaveNewPartyInCache = async () => {
-  //         const result = await fetchParty({
-  //           accessToken,
-  //           accountId: account.accountId,
-  //         })
-
-  //         const party = result.data.current[0]
-
-  //         if (party) {
-  //           tmpParties[party.id] = {
-  //             party,
-  //             members: party.members
-  //               .filter(({ account_id }) =>
-  //                 selectedAccountsIds.includes(account_id)
-  //               )
-  //               .map(({ account_id }) => account_id),
-  //           }
-  //         }
-  //       }
-
-  //       if (Object.keys(tmpParties).length > 0) {
-  //         // Get it from cache
-
-  //         const findParty = Object.entries(tmpParties).find(
-  //           ([, tmpParty]) => tmpParty.members.includes(account.accountId)
-  //         )
-
-  //         if (!findParty) {
-  //           await fetchAndSaveNewPartyInCache()
-  //         }
-  //       } else {
-  //         // Save new party in cache
-
-  //         await fetchAndSaveNewPartyInCache()
-  //       }
-  //     } catch (error) {
-  //       //
-  //     }
-  //   }
-
-  //   const parsedAccounts = Object.values(tmpParties).reduce(
-  //     (accumulator, current) => {
-  //       const tmpValues = [...accumulator]
-
-  //       current.members.forEach((memberId) => {
-  //         const currentAccount = selectedAccounts.find(
-  //           ({ accountId }) => memberId === accountId
-  //         )
-
-  //         if (currentAccount) {
-  //           tmpValues.push({
-  //             account: currentAccount,
-  //             party: current.party,
-  //           })
-  //         }
-  //       })
-
-  //       return tmpValues
-  //     },
-  //     [] as Array<{
-  //       account: AccountBasicInfo
-  //       party: PartyData
-  //     }>
-  //   )
-
-  //   await Promise.allSettled(
-  //     parsedAccounts.map(async ({ account, party }) => {
-  //       return await Party.kickMember({
-  //         account,
-  //         party,
-  //         accountIdToKick: account.accountId,
-  //       })
-  //     })
-  //   )
-
-  //   currentWindow.webContents.send(
-  //     ElectronAPIEventKeys.PartyLeaveActionNotification,
-  //     selectedAccounts.length
-  //   )
-  // }
 
   static async loadFriends(currentWindow: BrowserWindow) {
     try {
@@ -445,6 +476,11 @@ export class Party {
       )
 
       if (!accessToken) {
+        currentWindow.webContents.send(
+          ElectronAPIEventKeys.PartyInviteActionNotification,
+          defaultResponse
+        )
+
         return
       }
 
@@ -458,14 +494,14 @@ export class Party {
         const response = await Promise.allSettled(
           accountIds.map(async (accountId) => {
             try {
-              const accessToken = await Authentication.verifyAccessToken(
-                account,
-                currentWindow
-              )
+              // const accessToken = await Authentication.verifyAccessToken(
+              //   account,
+              //   currentWindow
+              // )
 
-              if (!accessToken) {
-                return null
-              }
+              // if (!accessToken) {
+              //   return null
+              // }
 
               await getFriend({
                 accessToken,
@@ -599,39 +635,46 @@ export class Party {
     )
   }
 
-  private static async kickMember({
-    account,
-    accountIdToKick,
-    currentWindow,
-    party,
-  }: {
-    account: AccountData
-    accountIdToKick: string
-    currentWindow: BrowserWindow
-    party: PartyData
-  }) {
+  private static async kickMember(
+    {
+      account,
+      accountIdToKick,
+      currentWindow,
+      party,
+    }: {
+      account: AccountData
+      accountIdToKick: string
+      currentWindow: BrowserWindow
+      party: PartyData
+    },
+    generateNewAccessToken?: boolean
+  ) {
     let newAccessToken: string | null = null
 
-    try {
-      newAccessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+    if (generateNewAccessToken) {
+      try {
+        newAccessToken = await Authentication.verifyAccessToken(
+          account,
+          currentWindow
+        )
 
-      if (!newAccessToken) {
-        return false
+        // if (!newAccessToken) {
+        //   return false
+        // }
+      } catch (error) {
+        //
       }
-    } catch (error) {
-      //
-    }
 
-    if (!newAccessToken) {
-      return false
+      // if (!newAccessToken) {
+      //   return false
+      // }
     }
 
     return await kick({
       partyId: party.id,
-      accessToken: newAccessToken,
+      accessToken: (generateNewAccessToken
+        ? newAccessToken ?? account.accessToken
+        : account.accessToken) as string,
       accountId: accountIdToKick,
     })
   }
