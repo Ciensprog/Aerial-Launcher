@@ -10,6 +10,15 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
+      className="flex justify-center text-sm"
+      toastOptions={{
+        classNames: {
+          toast:
+            'bg-zinc-50 px-3 py-2 rounded text-muted w-auto max-[600px]:!left-auto max-[600px]:!right-auto max-[600px]:!w-auto',
+        },
+        duration: 2700,
+        unstyled: true,
+      }}
       // className="toaster group"
       // toastOptions={{
       //   classNames: {

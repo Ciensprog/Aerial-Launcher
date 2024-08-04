@@ -93,3 +93,9 @@ img {
   background-color: #151515;
   border: 1px solid hsl(var(--border));
 }
+
+@media (max-width: 600px) {
+  [data-sonner-toaster] {
+    --mobile-offset: 0px !important;
+  }
+}
