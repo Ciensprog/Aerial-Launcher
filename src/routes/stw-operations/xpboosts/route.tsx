@@ -158,7 +158,7 @@ function Content() {
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center mb-10 w-full">
-        <div className="flex flex-col gap-5 max-w-lg w-full">
+        <div className="flex flex-col max-w-lg w-full">
           <Card>
             <CardHeader className="border-b">
               <CardDescription>
@@ -167,30 +167,41 @@ function Content() {
             </CardHeader>
             <CardContent className="pt-6 px-0 space-y-4">
               <div className="grid gap-4 px-6">
-                <Label htmlFor="global-input-search-player">
-                  Search player by accountId or display name (epic, xbl or
-                  psn)
-                </Label>
-                <div className="flex items-center relative">
-                  <Input
-                    placeholder="Example: Sample"
-                    className="pr-32 pl-3 py-1"
-                    value={inputSearchDisplayName}
-                    onChange={handleChangeSearchDisplayName}
-                    disabled={searchUserIsSubmitting}
-                    id="global-input-search-player"
-                  />
-                  <Button
-                    className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
-                    onClick={handleSearchUser}
-                    disabled={inputSearchButtonIsDisabled}
+                <div className="space-y-2">
+                  <Label htmlFor="global-input-search-player">
+                    Search player by accountId or display name (epic, xbl
+                    or psn)
+                  </Label>
+                  <form
+                    className="flex items-center relative"
+                    onSubmit={(event) => {
+                      event.preventDefault()
+
+                      if (!inputSearchButtonIsDisabled) {
+                        handleSearchUser()
+                      }
+                    }}
                   >
-                    {searchUserIsSubmitting ? (
-                      <UpdateIcon className="animate-spin h-4" />
-                    ) : (
-                      'Search'
-                    )}
-                  </Button>
+                    <Input
+                      placeholder="Example: Sample"
+                      className="pr-32 pl-3 py-1"
+                      value={inputSearchDisplayName}
+                      onChange={handleChangeSearchDisplayName}
+                      disabled={searchUserIsSubmitting}
+                      id="global-input-search-player"
+                    />
+                    <Button
+                      type="submit"
+                      className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
+                      disabled={inputSearchButtonIsDisabled}
+                    >
+                      {searchUserIsSubmitting ? (
+                        <UpdateIcon className="animate-spin h-4" />
+                      ) : (
+                        'Search'
+                      )}
+                    </Button>
+                  </form>
                 </div>
 
                 {searchedUser &&
@@ -205,8 +216,8 @@ function Content() {
               </div>
               {searchedUser?.data && (
                 <div className="px-6">
-                  <div className="">
-                    <div className="">
+                  <div>
+                    <div>
                       <a
                         href={fortniteDBProfileURL(
                           searchedUser.data.lookup.displayName
@@ -229,7 +240,7 @@ function Content() {
                       {searchedUser?.isPrivate ? (
                         <>
                           <div className="py-1.5">
-                            <div className="">Note:</div>
+                            <div>Note:</div>
                             This user has "Public Game Stats" disabled,
                             more information can't be displayed.
                           </div>
@@ -270,7 +281,7 @@ function Content() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="mt-5">
             <CardHeader className="border-b">
               <CardDescription>
                 Manage XP Boosts of the selected accounts.
@@ -429,7 +440,7 @@ function SendBoostsSheet({
         </Button>
       </SheetTrigger>
       <SheetContent
-        className="flex flex-col gap-2 pb-0 w-96"
+        className="flex flex-col gap-2 pb-0 px-4 w-96"
         hideCloseButton
       >
         <div className="flex justify-center w-full">
@@ -522,32 +533,46 @@ function SendBoostsSheet({
             </div>
           ) : (
             <>
-              <div className="p-1 space-y-1">
-                <Label htmlFor="sheet-input-search-player">
-                  Search player by accountId or display name (epic, xbl or
-                  psn)
-                </Label>
-                <div className="flex items-center relative">
-                  <Input
-                    placeholder="Example: Sample"
-                    className="pr-20 pl-3 py-1"
-                    value={inputSearchDisplayName}
-                    onChange={handleChangeSearchDisplayName}
-                    disabled={inputSearchIsDisabled}
-                    id="sheet-input-search-player"
-                  />
-                  <Button
-                    className="absolute h-8 px-2 py-1.5 right-1 text-sm w-16"
-                    onClick={handleSearchUser}
-                    disabled={inputSearchButtonIsDisabled}
+              <div className="p-1 space-y-2">
+                <form
+                  className="space-y-1"
+                  onSubmit={(event) => {
+                    event.preventDefault()
+
+                    if (!inputSearchButtonIsDisabled) {
+                      handleSearchUser()
+                    }
+                  }}
+                >
+                  <Label
+                    className="text-xs"
+                    htmlFor="sheet-input-search-player"
                   >
-                    {searchUserIsSubmitting ? (
-                      <UpdateIcon className="animate-spin h-4" />
-                    ) : (
-                      'Search'
-                    )}
-                  </Button>
-                </div>
+                    Search player by accountId or display name (epic, xbl
+                    or psn)
+                  </Label>
+                  <div className="flex items-center relative">
+                    <Input
+                      placeholder="Example: Sample"
+                      className="pr-20 pl-3 py-1"
+                      value={inputSearchDisplayName}
+                      onChange={handleChangeSearchDisplayName}
+                      disabled={inputSearchIsDisabled}
+                      id="sheet-input-search-player"
+                    />
+                    <Button
+                      type="submit"
+                      className="absolute h-8 px-2 py-1.5 right-1 text-sm w-16"
+                      disabled={inputSearchButtonIsDisabled}
+                    >
+                      {searchUserIsSubmitting ? (
+                        <UpdateIcon className="animate-spin h-4" />
+                      ) : (
+                        'Search'
+                      )}
+                    </Button>
+                  </div>
+                </form>
 
                 {searchedUser &&
                   !searchedUser.success &&
@@ -563,7 +588,7 @@ function SendBoostsSheet({
                 <>
                   <ScrollArea>
                     <div className="flex flex-col gap-1 overflow-auto px-1 pt-4">
-                      <div className="">
+                      <div>
                         <a
                           href={fortniteDBProfileURL(
                             searchedUser.data.lookup.displayName
@@ -586,7 +611,7 @@ function SendBoostsSheet({
                         {searchedUser?.isPrivate ? (
                           <>
                             <div className="py-1.5">
-                              <div className="">Note:</div>
+                              <div>Note:</div>
                               This user has "Public Game Stats" disabled,
                               more information can't be displayed.
                             </div>
@@ -623,7 +648,7 @@ function SendBoostsSheet({
                       </div>
                       <div className="mb-4 mt-4 px-1">
                         <div className="flex gap-1 items-center mb-4 px-1 text-muted-foreground text-xs">
-                          <Info className="flex-shrink-0 size-3.5" />
+                          <Info className="flex-shrink-0 relative size-3.5 top-[1px]" />
                           Some boosts might not send if your ping is not
                           stable.
                         </div>
@@ -657,9 +682,7 @@ function SendBoostsSheet({
                             Success:
                           </div>{' '}
                           {numberWithCommaSeparator(success)}/
-                          {numberWithCommaSeparator(
-                            amountToSendParsedToNumber
-                          )}
+                          {numberWithCommaSeparator(newCalculatedTotal)}
                         </div>
                       </div>
                     </div>
@@ -899,10 +922,8 @@ export function SearchedUserData({
         title="Boosted XP:"
         value={
           <div className="space-x-1.5">
-            <span className="">
-              {numberWithCommaSeparator(extractedBoostedXP)}
-            </span>
-            <span className="">
+            <span>{numberWithCommaSeparator(extractedBoostedXP)}</span>
+            <span>
               ({numberWithCommaSeparator(individualBoosts)}{' '}
               {individualBoosts > 1 ? 'Boosts' : 'Boost'})
             </span>

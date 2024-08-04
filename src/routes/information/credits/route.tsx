@@ -70,9 +70,7 @@ export function ComponentRoute() {
                 >
                   Ciensprog <ExternalLink className="h-3 w-3" />
                 </a>
-                <div className="">
-                  The one and only developer of Aerial Launcher.
-                </div>
+                <div>The one and only developer of Aerial Launcher.</div>
               </li>
               <li className="item">
                 <a
@@ -82,7 +80,7 @@ export function ComponentRoute() {
                 >
                   Kuda <ExternalLink className="h-3 w-3" />
                 </a>
-                <div className="">
+                <div>
                   Helped with the logos, design and suggested many cool
                   features along the way.
                 </div>
@@ -103,14 +101,14 @@ export function ComponentRoute() {
                 >
                   HyperionCSharp <ExternalLink className="h-3 w-3" />
                 </a>
-                <div className="">
+                <div>
                   Their endpoint list helped me a lot during the
                   development.
                 </div>
               </li>
               <li className="item">
                 <span className="text-muted-foreground">eric_guest1</span>
-                <div className="">
+                <div>
                   Tester of new features before new version releases to
                   detect and fix possible bugs.
                 </div>

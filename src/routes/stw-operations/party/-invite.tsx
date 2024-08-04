@@ -57,7 +57,7 @@ export function InviteCard() {
             onChange={setValue}
             emptyContentClassname="p-1"
             emptyContent={(displayName) => (
-              <div className="">
+              <div>
                 <Button
                   variant="ghost"
                   className="h-[39px] w-full"

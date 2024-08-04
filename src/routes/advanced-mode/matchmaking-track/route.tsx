@@ -125,15 +125,17 @@ function Content() {
                 for their matchmaking information.
               </CardDescription>
               {path && (
-                <CardDescription>
-                  Default path file:
-                  <span className="block">{path}</span>
+                <CardDescription className="border-l-4 pl-2 space-y-1">
+                  <span>Default path file:</span>
+                  <span className="bg-muted/20 block px-2 py-1 rounded">
+                    {path}
+                  </span>
                 </CardDescription>
               )}
             </CardHeader>
             <CardContent className="pt-6 px-0 space-y-4">
               <div className="grid gap-4 px-6">
-                <div className="">
+                <div className="space-y-2">
                   <Label
                     className="text-muted-foreground text-sm"
                     htmlFor="global-input-recently-players"
@@ -157,32 +159,45 @@ function Content() {
                     hideSelectorOnSelectItem
                   />
                 </div>
+
                 <SeparatorWithTitle>Or</SeparatorWithTitle>
-                <Label htmlFor="global-input-search-player">
-                  Search player by accountId or display name (epic, xbl or
-                  psn)
-                </Label>
-                <div className="flex items-center relative">
-                  <Input
-                    placeholder="Example: Sample"
-                    className="pr-32 pl-3 py-1"
-                    value={inputSearchDisplayName}
-                    onChange={handleChangeSearchDisplayName}
-                    disabled={searchUserIsSubmitting}
-                    id="global-input-search-player"
-                  />
-                  <Button
-                    className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
-                    onClick={handleSearchUser}
-                    disabled={inputSearchButtonIsDisabled}
-                  >
-                    {searchUserIsSubmitting ? (
-                      <UpdateIcon className="animate-spin h-4" />
-                    ) : (
-                      'Search'
-                    )}
-                  </Button>
-                </div>
+
+                <form
+                  className="space-y-2"
+                  onSubmit={(event) => {
+                    event.preventDefault()
+
+                    if (!inputSearchButtonIsDisabled) {
+                      handleSearchUser()
+                    }
+                  }}
+                >
+                  <Label htmlFor="global-input-search-player">
+                    Search player by accountId or display name (epic, xbl
+                    or psn)
+                  </Label>
+                  <div className="flex items-center relative">
+                    <Input
+                      placeholder="Example: Sample"
+                      className="pr-32 pl-3 py-1"
+                      value={inputSearchDisplayName}
+                      onChange={handleChangeSearchDisplayName}
+                      disabled={searchUserIsSubmitting}
+                      id="global-input-search-player"
+                    />
+                    <Button
+                      type="submit"
+                      className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
+                      disabled={inputSearchButtonIsDisabled}
+                    >
+                      {searchUserIsSubmitting ? (
+                        <UpdateIcon className="animate-spin h-4" />
+                      ) : (
+                        'Search'
+                      )}
+                    </Button>
+                  </div>
+                </form>
 
                 {searchedUser &&
                   !searchedUser.success &&
@@ -194,10 +209,11 @@ function Content() {
                     </div>
                   )}
               </div>
+
               {searchedUser?.data && (
                 <div className="px-6">
-                  <div className="">
-                    <div className="">
+                  <div>
+                    <div>
                       <a
                         href={fortniteDBProfileURL(
                           searchedUser.data.lookup.displayName
@@ -220,7 +236,7 @@ function Content() {
                       {searchedUser?.isPrivate ? (
                         <>
                           <div className="py-1.5">
-                            <div className="">Note:</div>
+                            <div>Note:</div>
                             This user has "Public Game Stats" disabled,
                             more information can't be displayed.
                           </div>

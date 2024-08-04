@@ -33,7 +33,6 @@ export function ClaimRewardsCard() {
             isMulti
           />
           <Button
-            className=""
             size="sm"
             onClick={onClaim}
             disabled={!hasValues}

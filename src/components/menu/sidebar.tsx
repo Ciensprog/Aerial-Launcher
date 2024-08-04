@@ -266,7 +266,7 @@ export function SidebarMenu({
 
           <Separator className="my-2" />
 
-          <div className="">
+          <div>
             <Button
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
@@ -314,7 +314,7 @@ export function SidebarMenu({
           </div>
         </nav>
         <div className="px-5 text-center text-xs text-muted-foreground/60 lg:pl-7">
-          <p className="">
+          <p>
             Release v{packageJson.version} -{' '}
             <a
               href={repositoryReleasesURL}

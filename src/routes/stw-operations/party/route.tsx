@@ -68,7 +68,7 @@ export function RouteComponent() {
             <Alert className="border-0 border-l-4 max-w-lg rounded-none w-full">
               <Info className="h-4 w-4" />
               <AlertTitle>Note:</AlertTitle>
-              <AlertDescription className="">
+              <AlertDescription>
                 If you get some bug/issues with these features you can
                 report in the Discord Server. Or you can consider
                 contributing if you like.

@@ -215,7 +215,7 @@ function Item({ data }: { data: WorldInfoFileData }) {
   } = useItemData({ data })
 
   return (
-    <Card className="">
+    <Card>
       <CardContent className="flex items-center px-2 py-2">
         <div className="flex-shrink-0 pl-2 pr-3">
           <FileJson
@@ -243,7 +243,7 @@ function Item({ data }: { data: WorldInfoFileData }) {
         </form>
       </CardContent>
       <CardFooter className="bg-muted-foreground/5 px-2 py-1 rounded-b">
-        <div className="">
+        <div>
           <span className="flex-shrink-0 px-1.5- py-0.5 rounded text-muted-foreground text-sm">
             Date: {data.date}
             <span className="italic ml-1">
