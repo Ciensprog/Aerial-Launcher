@@ -25,12 +25,16 @@ export class AccountsManager {
   static async load(currentWindow: BrowserWindow) {
     const result = await DataDirectory.getAccountsFile()
     const accounts: AccountDataList = result.accounts
-      .map((account) => ({
-        ...account,
-        customDisplayName: account.customDisplayName ?? '',
-        provider: undefined,
-        token: undefined,
-      }))
+      .map((account) => {
+        const data: AccountData = {
+          ...account,
+          accessToken: undefined,
+          customDisplayName: account.customDisplayName ?? '',
+          provider: undefined,
+        }
+
+        return data
+      })
       .toSorted((itemA, itemB) =>
         localeCompareForSorting(
           parseCustomDisplayName(itemA),
@@ -70,6 +74,13 @@ export class AccountsManager {
       accounts = [...result.accounts, data]
     }
 
+    AccountsManager._accounts.set(data.accountId, {
+      ...data,
+      accessToken: undefined,
+      customDisplayName: data.customDisplayName ?? '',
+      provider: undefined,
+    })
+
     accounts = accounts.toSorted((itemA, itemB) =>
       localeCompareForSorting(
         parseCustomDisplayName(itemA),
@@ -86,6 +97,7 @@ export class AccountsManager {
       (account) => account.accountId !== accountId
     )
 
+    AccountsManager._accounts.delete(accountId)
     await DataDirectory.updateAccountsFile(accounts)
   }
 

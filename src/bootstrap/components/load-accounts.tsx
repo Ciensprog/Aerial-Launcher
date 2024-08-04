@@ -39,9 +39,9 @@ export function LoadAccounts() {
     //     async ({ account, data }) => {
     //       addOrUpdate(account.accountId, {
     //         ...account,
+    //         accessToken: data?.accessToken ?? null,
     //         displayName: data?.displayName ?? account.displayName,
     //         provider: data?.provider ?? null,
-    //         token: data?.accessToken ?? null,
     //       })
     //     }
     //   )
@@ -68,8 +68,8 @@ export function LoadAccounts() {
     //     async ({ account, data }) => {
     //       addOrUpdate(account.accountId, {
     //         ...account,
+    //         accessToken: data?.accessToken ?? null,
     //         provider: data?.provider ?? null,
-    //         token: data?.accessToken ?? null,
     //       })
     //     }
     //   )
