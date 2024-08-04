@@ -1,7 +1,7 @@
 import type { Tag } from '../../../types/tags'
 
 import { ColorInput } from '@mantine/core'
-import { TrashIcon } from '@radix-ui/react-icons'
+import { Trash2 } from 'lucide-react'
 
 import { defaultColor } from '../../../config/constants/colors'
 
@@ -55,7 +55,7 @@ export function TagItem({ data }: { data: Tag }) {
         className="flex flex-shrink-0 justify-center text-[#ff6868]/60 hover:text-[#ff6868]"
         onClick={onDeleteTag(data.name)}
       >
-        <TrashIcon className="w-full" />
+        <Trash2 size={16} />
         <span className="sr-only">remove tag</span>
       </Button>
     </div>
