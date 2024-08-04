@@ -1,9 +1,7 @@
+import type { SelectOption } from '../../../components/ui/third-party/extended/input-tags'
 import type { AccountData } from '../../../types/accounts'
 
-import {
-  type SelectOption,
-  InputTags,
-} from '../../../components/ui/third-party/extended/input-tags'
+import { InputTags } from '../../../components/ui/third-party/extended/input-tags'
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 

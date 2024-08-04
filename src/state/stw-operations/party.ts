@@ -87,11 +87,8 @@ export const usePartyFriendsStore = create<PartyFriends>()((set, get) => ({
 
     set({ friends: newValue })
   },
-  syncFriends: (friends) => {
-    const newValue = Object.entries({
-      ...get().friends,
-      ...friends,
-    })
+  syncFriends: (newList) => {
+    const newValue = Object.entries(newList)
       .toSorted(([, itemA], [, itemB]) =>
         localeCompareForSorting(itemA.displayName, itemB.displayName)
       )

@@ -60,6 +60,13 @@ export function invite(account: AccountData, accountIds: Array<string>) {
   )
 }
 
+export function removeFriend(data: {
+  accountId: string
+  displayName: string
+}) {
+  ipcRenderer.send(ElectronAPIEventKeys.PartyRemoveFriendAction, data)
+}
+
 /**
  * Notifications
  */
@@ -183,6 +190,35 @@ export function notificationInvite(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.PartyInviteActionNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationRemoveFriend(
+  callback: (value: {
+    displayName: string
+    status: boolean
+  }) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: {
+      displayName: string
+      status: boolean
+    }
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyRemoveFriendActionNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyRemoveFriendActionNotification,
         customCallback
       ),
   }

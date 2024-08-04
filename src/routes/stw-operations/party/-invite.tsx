@@ -1,4 +1,5 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { BellRing, Trash2 } from 'lucide-react'
 
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { Alert, AlertDescription } from '../../../components/ui/alert'
@@ -11,7 +12,6 @@ import {
 
 import { useInviteFriendsForm } from '../../../hooks/stw-operations/party'
 import { useInviteActions } from './-hooks'
-import { BellRing } from 'lucide-react'
 
 import { useGetSelectedAccount } from '../../../hooks/accounts'
 
@@ -29,6 +29,7 @@ export function InviteCard() {
     customFilter,
     handleAddNewFriend,
     handleInvite,
+    handleRemoveFriend,
     setInputSearchValue,
   } = useInviteActions({
     selected,
@@ -45,6 +46,7 @@ export function InviteCard() {
         </CardDescription>
         <div className="flex gap-4">
           <Combobox
+            classNamePopoverContent="max-w-60 w-60-"
             emptyPlaceholder="No friends"
             emptyOptions="Type to add them to the list"
             placeholder="Select friends"
@@ -77,7 +79,33 @@ export function InviteCard() {
                 </Button>
               </div>
             )}
+            customItem={({ renderItem, item }) => {
+              return (
+                <div
+                  className="flex gap-2 items-center"
+                  key={item.value}
+                >
+                  {renderItem({
+                    className: 'flex-grow',
+                    classNameTitle: 'max-w-[9rem]',
+                  })}
+                  <Button
+                    className="flex-shrink-0 size-8 text-[#ff6868]/60 hover:!text-[#ff6868]"
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleRemoveFriend({
+                      accountId: item.value,
+                      displayName: item.label,
+                    })}
+                    disabled={isSubmitting}
+                  >
+                    <Trash2 size={12} />
+                  </Button>
+                </div>
+              )
+            }}
             disabled={!selected}
+            disabledItem={isSubmitting}
             inputSearchIsDisabled={isSubmitting}
             doNotDisableIfThereAreNoOptions
             isMulti

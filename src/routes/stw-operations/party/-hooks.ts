@@ -243,6 +243,24 @@ export function useInviteActions({
   }, [])
 
   useEffect(() => {
+    const listener = window.electronAPI.notificationRemoveFriend(
+      async ({ displayName, status }) => {
+        setIsSubmitting(false)
+
+        toast(
+          status
+            ? `${displayName} was removed from the list`
+            : `An error occurred trying to remove to ${displayName}`
+        )
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
     const listener = window.electronAPI.notificationInvite(
       async (response) => {
         setIsInviting(false)
@@ -306,6 +324,17 @@ export function useInviteActions({
     window.electronAPI.invite(selected, accountIds)
   }
 
+  const handleRemoveFriend =
+    (data: { accountId: string; displayName: string }) => () => {
+      if (isSubmitting) {
+        return
+      }
+
+      setIsSubmitting(true)
+
+      window.electronAPI.removeFriend(data)
+    }
+
   const customFilter: ComboboxProps['customFilter'] = (
     _value,
     search,
@@ -330,6 +359,7 @@ export function useInviteActions({
     customFilter,
     handleAddNewFriend,
     handleInvite,
+    handleRemoveFriend,
     setInputSearchValue,
   }
 }

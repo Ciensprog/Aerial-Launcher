@@ -123,10 +123,12 @@ export enum ElectronAPIEventKeys {
 
   PartyLoadFriends = 'party:load:friends',
   PartyLoadFriendsNotification = 'party:load:friends:notification',
-  PartyAddNewFriendAction = 'party:add-new-friend',
-  PartyAddNewFriendActionNotification = 'party:add-new-friend:notification',
+  PartyAddNewFriendAction = 'party:friend:add',
+  PartyAddNewFriendActionNotification = 'party:friend:add:notification',
   PartyInviteAction = 'party:invite',
   PartyInviteActionNotification = 'party:invite:notification',
+  PartyRemoveFriendAction = 'party:friend:remove',
+  PartyRemoveFriendActionNotification = 'party:friend:remove:notification',
 
   /**
    * Advanced Mode

@@ -635,6 +635,45 @@ export class Party {
     )
   }
 
+  static async removeFriend(
+    currentWindow: BrowserWindow,
+    data: {
+      accountId: string
+      displayName: string
+    }
+  ) {
+    let status = false
+
+    try {
+      const fileJson = await DataDirectory.getFriendsFile()
+      const newList = Object.entries(fileJson.friends).reduce(
+        (accumulator, [accountId, current]) => {
+          if (data.accountId !== accountId) {
+            accumulator[accountId] = current
+          }
+
+          return accumulator
+        },
+        {} as FriendRecord
+      )
+
+      await DataDirectory.updateFriendsFile(newList)
+      await Party.loadFriends(currentWindow)
+
+      status = true
+    } catch (error) {
+      //
+    }
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.PartyRemoveFriendActionNotification,
+      {
+        status,
+        displayName: data.displayName,
+      }
+    )
+  }
+
   private static async kickMember(
     {
       account,

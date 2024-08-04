@@ -1,4 +1,7 @@
-import type { ComboboxProps } from './hooks'
+import type {
+  ComboboxCustomItemRenderFunction,
+  ComboboxProps,
+} from './hooks'
 
 import { Check, ChevronsUpDown, X } from 'lucide-react'
 
@@ -19,6 +22,8 @@ import { cn } from '../../../../lib/utils'
 
 export function Combobox({
   className,
+  classNamePopoverContent,
+  customItem,
   defaultOpen,
   disabled,
   disabledItem,
@@ -59,6 +64,7 @@ export function Combobox({
     showNames,
     value,
   })
+  const innerInputSearchValue = inputSearchValue ?? __searchValue
 
   const customOnChange = (value: string) => {
     onSelectItem?.(value)
@@ -121,7 +127,7 @@ export function Combobox({
         )}
       </div>
       <PopoverContent
-        className="max-w-52 p-0 w-full"
+        className={cn('max-w-52 p-0 w-full', classNamePopoverContent)}
         align="start"
       >
         <Command
@@ -131,7 +137,7 @@ export function Combobox({
           <CommandInput
             className="select-none"
             placeholder={placeholderSearch ?? 'Placeholder'}
-            value={inputSearchValue}
+            value={innerInputSearchValue}
             onValueChange={(value) => {
               __onSearchValueChange?.(value)
               onInputSearchChange?.(value)
@@ -140,16 +146,19 @@ export function Combobox({
           />
           <CommandListWithScrollArea>
             <CommandEmpty
-              {...(options.length > 0 || __searchValue.trim() !== ''
+              {...(options.length > 0 ||
+              innerInputSearchValue.trim() !== ''
                 ? emptyContentClassname
                   ? { className: emptyContentClassname }
                   : {}
                 : {})}
             >
-              {options.length > 0 || __searchValue.trim() !== '' ? (
+              {options.length > 0 ||
+              innerInputSearchValue.trim() !== '' ? (
                 emptyContent ? (
                   typeof emptyContent === 'function' ? (
-                    emptyContent?.(__searchValue) ?? 'No item found'
+                    emptyContent?.(innerInputSearchValue) ??
+                    'No item found'
                   ) : (
                     emptyContent
                   )
@@ -168,25 +177,41 @@ export function Combobox({
                   const hasItem = currentValues.find(
                     (item) => item.value === option.value
                   )
+                  const renderItem: ComboboxCustomItemRenderFunction = (
+                    props
+                  ) => {
+                    return (
+                      <CommandItem
+                        className={cn(props?.className)}
+                        value={option.value}
+                        keywords={option.keywords}
+                        onSelect={disabled ? undefined : customOnChange}
+                        disabled={disabledItem}
+                        key={option.value}
+                      >
+                        <Check
+                          className={cn(
+                            'mr-2 h-4 w-4',
+                            hasItem ? 'opacity-100' : 'opacity-0'
+                          )}
+                        />
+                        <div
+                          className={cn(
+                            'max-w-[10rem] truncate',
+                            props?.classNameTitle
+                          )}
+                        >
+                          {option.label}
+                        </div>
+                      </CommandItem>
+                    )
+                  }
 
                   return (
-                    <CommandItem
-                      value={option.value}
-                      keywords={option.keywords}
-                      onSelect={disabled ? undefined : customOnChange}
-                      disabled={disabledItem}
-                      key={option.value}
-                    >
-                      <Check
-                        className={cn(
-                          'mr-2 h-4 w-4',
-                          hasItem ? 'opacity-100' : 'opacity-0'
-                        )}
-                      />
-                      <div className="max-w-[10rem] truncate">
-                        {option.label}
-                      </div>
-                    </CommandItem>
+                    customItem?.({
+                      renderItem,
+                      item: option,
+                    }) ?? renderItem()
                   )
                 })}
               </CommandGroup>

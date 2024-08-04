@@ -370,6 +370,19 @@ app.on('ready', async () => {
     }
   )
 
+  ipcMain.on(
+    ElectronAPIEventKeys.PartyRemoveFriendAction,
+    async (
+      _,
+      data: {
+        accountId: string
+        displayName: string
+      }
+    ) => {
+      await Party.removeFriend(currentWindow, data)
+    }
+  )
+
   /**
    * Advanced Mode
    */

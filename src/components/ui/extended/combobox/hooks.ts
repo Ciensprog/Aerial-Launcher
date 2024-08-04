@@ -8,8 +8,20 @@ export type ComboboxOption = {
   keywords: Array<string>
 }
 
+export type ComboboxCustomItemRenderFunction = (
+  props?: Partial<{
+    className: string
+    classNameTitle: string
+  }>
+) => ReactNode
+
 export type ComboboxProps = {
   className?: string
+  classNamePopoverContent?: string
+  customItem?: (props: {
+    renderItem: ComboboxCustomItemRenderFunction
+    item: ComboboxOption
+  }) => ReactNode
   defaultOpen?: boolean
   disabled?: boolean
   disabledItem?: boolean
