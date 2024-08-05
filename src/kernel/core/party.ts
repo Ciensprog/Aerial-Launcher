@@ -15,6 +15,7 @@ import { BrowserWindow } from 'electron'
 import { PartyRole } from '../../config/constants/fortnite/party'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { AccountsManager } from '../startup/accounts'
 import { DataDirectory } from '../startup/data-directory'
 import { Authentication } from './authentication'
 import { ClaimRewards } from './claim-rewards'
@@ -92,7 +93,7 @@ export class Party {
             (member) => member.account_id !== leader.account_id
           )
 
-          await Promise.allSettled(
+          const kickStatuses = await Promise.allSettled(
             _members.map(({ account_id }) =>
               Party.kickMember({
                 currentWindow,
@@ -103,25 +104,34 @@ export class Party {
             )
           )
 
+          kickStatuses.forEach((item) => {
+            if (item.status === 'fulfilled' && item.value === true) {
+              total += 1
+            }
+          })
+
           try {
-            await Party.kickMember({
+            // Leader
+
+            const kickStatus = await Party.kickMember({
               currentWindow,
               party,
               account: accountLeader,
               accountIdToKick: accountLeader.accountId,
             })
+
+            if (kickStatus) {
+              total += 1
+            }
           } catch (error) {
             //
           }
-
-          total += _members.length
-          total += 1 // Leader
         } else {
           /**
            * Leave the party for each account within
            */
 
-          await Promise.allSettled(
+          const kickStatuses = await Promise.allSettled(
             filteredMyAccountsInParty.map((account) =>
               Party.kickMember({
                 account,
@@ -132,7 +142,11 @@ export class Party {
             )
           )
 
-          total += filteredMyAccountsInParty.length
+          kickStatuses.forEach((item) => {
+            if (item.status === 'fulfilled' && item.value === true) {
+              total += 1
+            }
+          })
         }
 
         if (claimState) {
@@ -174,6 +188,8 @@ export class Party {
 
     claimState: boolean
   ) {
+    let total = 0
+
     const tmpParties: Record<
       string,
       {
@@ -261,7 +277,7 @@ export class Party {
       }>
     )
 
-    await Promise.allSettled(
+    const kickStatuses = await Promise.allSettled(
       parsedAccounts.map(async ({ account, party }) => {
         return await Party.kickMember(
           {
@@ -274,6 +290,12 @@ export class Party {
         )
       })
     )
+
+    kickStatuses.forEach((item) => {
+      if (item.status === 'fulfilled' && item.value === true) {
+        total += 1
+      }
+    })
 
     if (claimState) {
       ClaimRewards.core(currentWindow, selectedAccounts).then(
@@ -290,7 +312,7 @@ export class Party {
 
     currentWindow.webContents.send(
       ElectronAPIEventKeys.PartyLeaveActionNotification,
-      selectedAccounts.length
+      total
     )
   }
 
@@ -612,35 +634,43 @@ export class Party {
       currentWindow: BrowserWindow
       party: PartyData
     },
-    generateNewAccessToken?: boolean
+    generateNewAccessToken = false
   ) {
+    const currentAccount = AccountsManager.getAccountById(
+      account.accountId
+    )
+
+    if (!currentAccount) {
+      return false
+    }
+
+    const useNewAccessToken =
+      !currentAccount.accessToken || generateNewAccessToken
     let newAccessToken: string | null = null
 
-    if (generateNewAccessToken) {
+    if (useNewAccessToken) {
       try {
         newAccessToken = await Authentication.verifyAccessToken(
-          account,
+          currentAccount,
           currentWindow
         )
-
-        // if (!newAccessToken) {
-        //   return false
-        // }
       } catch (error) {
         //
       }
 
-      // if (!newAccessToken) {
-      //   return false
-      // }
+      if (!newAccessToken) {
+        return false
+      }
     }
 
-    return await kick({
+    await kick({
       partyId: party.id,
-      accessToken: (generateNewAccessToken
-        ? newAccessToken ?? account.accessToken
-        : account.accessToken) as string,
+      accessToken: (useNewAccessToken
+        ? newAccessToken ?? currentAccount.accessToken
+        : currentAccount.accessToken) as string,
       accountId: accountIdToKick,
     })
+
+    return true
   }
 }

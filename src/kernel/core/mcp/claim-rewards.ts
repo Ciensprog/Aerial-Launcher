@@ -7,6 +7,8 @@ import type {
   MCPQueryProfile,
 } from '../../../types/services/mcp'
 
+import { BrowserWindow } from 'electron'
+
 import { Authentication } from '../authentication'
 
 import {
@@ -24,6 +26,7 @@ import {
 
 export class MCPClaimRewards {
   static async openCardPackBatch(
+    currentWindow: BrowserWindow,
     queryProfile: MCPQueryProfile,
     account: AccountData
   ) {
@@ -51,17 +54,22 @@ export class MCPClaimRewards {
         return defaultResponse
       }
 
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
-      if (accessToken) {
-        const response = await setOpenCardPackBatch({
-          accessToken,
-          accountId: account.accountId,
-          cardPackItemIds: cardPackIds,
-        })
-
-        return [response.data]
+      if (!accessToken) {
+        return defaultResponse
       }
+
+      const response = await setOpenCardPackBatch({
+        accessToken,
+        accountId: account.accountId,
+        cardPackItemIds: cardPackIds,
+      })
+
+      return [response.data]
     } catch (error) {
       //
     }
@@ -70,6 +78,7 @@ export class MCPClaimRewards {
   }
 
   static async claimQuestReward(
+    currentWindow: BrowserWindow,
     queryProfile: MCPQueryProfile,
     account: AccountData
   ) {
@@ -98,20 +107,22 @@ export class MCPClaimRewards {
 
       const response = await Promise.allSettled(
         questIds.map(async (questId) => {
-          const accessToken =
-            await Authentication.verifyAccessToken(account)
+          const accessToken = await Authentication.verifyAccessToken(
+            account,
+            currentWindow
+          )
 
-          if (accessToken) {
-            const response = await setClaimQuestReward({
-              accessToken,
-              questId,
-              accountId: account.accountId,
-            })
-
-            return response.data
+          if (!accessToken) {
+            return null
           }
 
-          return null
+          const response = await setClaimQuestReward({
+            accessToken,
+            questId,
+            accountId: account.accountId,
+          })
+
+          return response.data
         })
       )
 
@@ -129,18 +140,26 @@ export class MCPClaimRewards {
     return defaultResponse
   }
 
-  static async claimMissionAlertRewards(account: AccountData) {
+  static async claimMissionAlertRewards(
+    currentWindow: BrowserWindow,
+    account: AccountData
+  ) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
-      if (accessToken) {
-        const response = await setClaimMissionAlertRewards({
-          accessToken,
-          accountId: account.accountId,
-        })
-
-        return [response.data]
+      if (!accessToken) {
+        return []
       }
+
+      const response = await setClaimMissionAlertRewards({
+        accessToken,
+        accountId: account.accountId,
+      })
+
+      return [response.data]
     } catch (error) {
       //
     }
@@ -148,18 +167,26 @@ export class MCPClaimRewards {
     return [] as Array<MCPClaimMissionAlertRewardsResponse>
   }
 
-  static async claimDifficultyIncreaseRewards(account: AccountData) {
+  static async claimDifficultyIncreaseRewards(
+    currentWindow: BrowserWindow,
+    account: AccountData
+  ) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
-      if (accessToken) {
-        const response = await setClaimDifficultyIncreaseRewards({
-          accessToken,
-          accountId: account.accountId,
-        })
-
-        return [response.data]
+      if (!accessToken) {
+        return []
       }
+
+      const response = await setClaimDifficultyIncreaseRewards({
+        accessToken,
+        accountId: account.accountId,
+      })
+
+      return [response.data]
     } catch (error) {
       //
     }
@@ -167,18 +194,26 @@ export class MCPClaimRewards {
     return [] as Array<MCPClaimDifficultyIncreaseRewardsResponse>
   }
 
-  static async redeemSTWAccoladeTokens(account: AccountData) {
+  static async redeemSTWAccoladeTokens(
+    currentWindow: BrowserWindow,
+    account: AccountData
+  ) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const accessToken = await Authentication.verifyAccessToken(
+        account,
+        currentWindow
+      )
 
-      if (accessToken) {
-        const response = await setRedeemSTWAccoladeTokens({
-          accessToken,
-          accountId: account.accountId,
-        })
-
-        return response.data
+      if (!accessToken) {
+        return null
       }
+
+      const response = await setRedeemSTWAccoladeTokens({
+        accessToken,
+        accountId: account.accountId,
+      })
+
+      return response.data
     } catch (error) {
       //
     }

@@ -71,8 +71,16 @@ export class ClaimRewards {
               >
             >
           > = [
-            MCPClaimRewards.openCardPackBatch(response.data, account),
-            MCPClaimRewards.claimQuestReward(response.data, account),
+            MCPClaimRewards.openCardPackBatch(
+              currentWindow,
+              response.data,
+              account
+            ),
+            MCPClaimRewards.claimQuestReward(
+              currentWindow,
+              response.data,
+              account
+            ),
           ]
 
           const pendingMissionAlertRewardsTotal =
@@ -86,19 +94,28 @@ export class ClaimRewards {
 
           if (pendingMissionAlertRewardsTotal > 0) {
             rewardsToClaim.push(
-              MCPClaimRewards.claimMissionAlertRewards(account)
+              MCPClaimRewards.claimMissionAlertRewards(
+                currentWindow,
+                account
+              )
             )
           }
 
           if (pendingDifficultyIncreaseRewardsTotal > 0) {
             rewardsToClaim.push(
-              MCPClaimRewards.claimDifficultyIncreaseRewards(account)
+              MCPClaimRewards.claimDifficultyIncreaseRewards(
+                currentWindow,
+                account
+              )
             )
           }
 
           const claimsResponse = await Promise.allSettled(rewardsToClaim)
           const accoladesResponse =
-            await MCPClaimRewards.redeemSTWAccoladeTokens(account)
+            await MCPClaimRewards.redeemSTWAccoladeTokens(
+              currentWindow,
+              account
+            )
 
           const notifications: Array<{
             itemType: string
