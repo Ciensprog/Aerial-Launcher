@@ -1,7 +1,12 @@
+import type { MouseEventHandler } from 'react'
+
+import { ExternalLinkIcon } from '@radix-ui/react-icons'
 import { createRoute } from '@tanstack/react-router'
+// import { ExternalLink } from 'lucide-react'
 
-import { Route as RootRoute } from './__root'
+import { supportDiscordServerURL } from '../config/about/links'
 
+import { CheckNewVersion } from '../bootstrap/components/check-new-version'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +14,7 @@ import {
   BreadcrumbPage,
 } from '../components/ui/breadcrumb'
 
-import { CheckNewVersion } from '../bootstrap/components/check-new-version'
+import { Route as RootRoute } from './__root'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -18,6 +23,11 @@ export const Route = createRoute({
 })
 
 export function IndexComponent() {
+  const handleOpenDiscord: MouseEventHandler = (event) => {
+    event.preventDefault()
+    window.electronAPI.openExternalURL(supportDiscordServerURL)
+  }
+
   return (
     <>
       <Breadcrumb>
@@ -29,8 +39,21 @@ export function IndexComponent() {
       </Breadcrumb>
       <CheckNewVersion />
       <div className="flex flex-grow">
-        <div className="flex items-center justify-center w-full">
-          Coming Soon!
+        <div className="flex flex-col items-center justify-center w-full">
+          <div className="max-w-[330px] w-full">
+            <h1 className="text-center">
+              Join our{' '}
+              <a
+                href="/"
+                className="gap-1 inline-flex items-center text-muted-foreground underline underline-offset-2 hover:opacity-70"
+                onClick={handleOpenDiscord}
+              >
+                Discord Community
+                <ExternalLinkIcon className="relative top-0.5" />
+              </a>{' '}
+              to know more about what's coming on next updates!!!
+            </h1>
+          </div>
         </div>
       </div>
     </>
