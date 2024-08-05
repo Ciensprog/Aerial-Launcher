@@ -40,7 +40,6 @@ But what does it mean that this project is Open-Source? It is very simple, to en
       - [Add Accounts](#add-accounts)
       - [Remove Accounts](#remove-accounts)
       - [Launch Game](#launch-game)
-      - [Request Provider](#request-provider)
       - [Generate Exchange Code](#generate-exchange-code)
       - [FortniteDB Profile](#fortnitedb-profile)
   - [🤝 Contributing](#-contributing)
@@ -106,10 +105,6 @@ You can remove any account previously added.
 #### Launch Game
 
 If you want, you can launch game using "Launch Game" button, this open Fortnite Game using account selected.
-
-#### Request Provider
-
-When this app is launched you will see which provider each account is using, it can be BattlEye or EasyAntiCheatEOS.
 
 #### Generate Exchange Code
 
