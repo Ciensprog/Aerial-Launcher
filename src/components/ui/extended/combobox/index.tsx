@@ -207,13 +207,19 @@ export function Combobox({
                     )
                   }
 
-                  if (
-                    innerInputSearchValue &&
-                    !option.label
+                  if (customItem && innerInputSearchValue.trim() !== '') {
+                    const _search = innerInputSearchValue
                       .toLowerCase()
-                      .includes(innerInputSearchValue.toLowerCase())
-                  ) {
-                    return null
+                      .trim()
+                    const _keys =
+                      option.keywords &&
+                      option.keywords.some((keyword) =>
+                        keyword.toLowerCase().trim().includes(_search)
+                      )
+
+                    if (!_keys) {
+                      return null
+                    }
                   }
 
                   return (
