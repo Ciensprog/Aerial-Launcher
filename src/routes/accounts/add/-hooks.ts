@@ -9,6 +9,9 @@ import {
   epicGamesLoginURL,
 } from '../../../config/fortnite/links'
 
+import { useAddAccountUpdateSubmittingState } from '../../../hooks/accounts'
+
+import { AddAccountsLoadingsState } from '../../../state/accounts/add'
 import { useAccountListStore } from '../../../state/accounts/list'
 
 import { toast } from '../../../lib/notifications'
@@ -35,13 +38,17 @@ export function useHandlers() {
 
 export function useBaseSetupForm({
   fetcher,
+  type,
 }: {
   fetcher: (
     callback: (response: AuthCallbackResponseParam) => Promise<void>
   ) => {
     removeListener: () => Electron.IpcRenderer
   }
+  type: keyof AddAccountsLoadingsState
 }) {
+  const { updateSubmittingState } =
+    useAddAccountUpdateSubmittingState(type)
   const { changeSelected, register } = useAccountListStore(
     useShallow((state) => ({
       changeSelected: state.changeSelected,
@@ -62,14 +69,16 @@ export function useBaseSetupForm({
           changeSelected(accountsToArray[0].accountId)
         }
 
-        window.electronAPI.requestProviderAndAccessToken(
-          data.currentAccount
-        )
+        // window.electronAPI.requestProviderAndAccessToken(
+        //   data.currentAccount
+        // )
 
         toast(`New account added: ${data.currentAccount.displayName}`)
       } else if (error) {
         toast(error ?? 'Unknown error :c')
       }
+
+      updateSubmittingState(false)
     })
 
     return () => {

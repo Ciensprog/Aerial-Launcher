@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { useGetSelectedAccount } from '../../../../hooks/accounts'
+import {
+  useAddAccountUpdateSubmittingState,
+  useGetSelectedAccount,
+} from '../../../../hooks/accounts'
 import { useBaseSetupForm } from '../-hooks'
 
 import { toast } from '../../../../lib/notifications'
@@ -15,6 +18,8 @@ const formSchema = z.object({
 })
 
 export function useSetupForm() {
+  const { isSubmitting, updateSubmittingState } =
+    useAddAccountUpdateSubmittingState('exchangeCode')
   const { selected } = useGetSelectedAccount()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -25,14 +30,20 @@ export function useSetupForm() {
 
   useBaseSetupForm({
     fetcher: window.electronAPI.responseAuthWithExchange,
+    type: 'exchangeCode',
   })
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (isSubmitting) {
+      return
+    }
+
+    updateSubmittingState(true)
     window.electronAPI.createAuthWithExchange(values.code)
     form.reset()
   }
 
-  return { form, selected, onSubmit }
+  return { form, isSubmitting, selected, onSubmit }
 }
 
 export function useGenerateHandlers() {

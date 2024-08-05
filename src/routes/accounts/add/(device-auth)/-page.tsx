@@ -1,3 +1,5 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
+
 import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
 import { Button } from '../../../../components/ui/button'
 import {
@@ -17,7 +19,7 @@ import {
 import { useSetupForm } from './-hooks'
 
 export function DeviceAuthPage() {
-  const { form, onSubmit } = useSetupForm()
+  const { form, isSubmitting, onSubmit } = useSetupForm()
 
   return (
     <Form {...form}>
@@ -39,6 +41,7 @@ export function DeviceAuthPage() {
                   <FormMessage />
                 </FormItem>
               )}
+              disabled={isSubmitting}
             />
             <FormField
               control={form.control}
@@ -52,6 +55,7 @@ export function DeviceAuthPage() {
                   <FormMessage />
                 </FormItem>
               )}
+              disabled={isSubmitting}
             />
             <FormField
               control={form.control}
@@ -65,14 +69,20 @@ export function DeviceAuthPage() {
                   <FormMessage />
                 </FormItem>
               )}
+              disabled={isSubmitting}
             />
           </CardContent>
           <CardFooter>
             <Button
               type="submit"
               className="w-full"
+              disabled={isSubmitting}
             >
-              Login
+              {isSubmitting ? (
+                <UpdateIcon className="animate-spin" />
+              ) : (
+                'Login'
+              )}
             </Button>
           </CardFooter>
         </Card>

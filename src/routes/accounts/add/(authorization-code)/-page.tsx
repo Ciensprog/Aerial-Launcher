@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from '@radix-ui/react-icons'
+import { ExternalLinkIcon, UpdateIcon } from '@radix-ui/react-icons'
 
 import { exampleCode } from '../../../../config/constants/examples'
 import {
@@ -35,7 +35,7 @@ import { useSetupForm } from './-hooks'
 
 export function AuthorizationCodePage() {
   const { goToAuthorizationCodeURL, goToEpicGamesLogin } = useHandlers()
-  const { form, onSubmit } = useSetupForm()
+  const { form, isSubmitting, onSubmit } = useSetupForm()
 
   return (
     <Form {...form}>
@@ -112,6 +112,7 @@ export function AuthorizationCodePage() {
                   <FormMessage />
                 </FormItem>
               )}
+              disabled={isSubmitting}
             />
           </CardContent>
           <CardFooter className="space-x-6">
@@ -131,8 +132,13 @@ export function AuthorizationCodePage() {
             <Button
               type="submit"
               className="w-full"
+              disabled={isSubmitting}
             >
-              Login
+              {isSubmitting ? (
+                <UpdateIcon className="animate-spin" />
+              ) : (
+                'Login'
+              )}
             </Button>
           </CardFooter>
         </Card>

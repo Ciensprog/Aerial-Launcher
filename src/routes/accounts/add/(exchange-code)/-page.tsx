@@ -1,3 +1,5 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
+
 import { exampleCode } from '../../../../config/constants/examples'
 
 import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
@@ -22,7 +24,7 @@ import { GenerateExchangeCodePage } from './-generate'
 import { useSetupForm } from './-hooks'
 
 export function ExchangeCodePage() {
-  const { form, selected, onSubmit } = useSetupForm()
+  const { form, isSubmitting, selected, onSubmit } = useSetupForm()
 
   return (
     <div className="flex flex-col gap-8 justify-center max-w-sm w-full">
@@ -57,14 +59,20 @@ export function ExchangeCodePage() {
                     <FormMessage />
                   </FormItem>
                 )}
+                disabled={isSubmitting}
               />
             </CardContent>
             <CardFooter>
               <Button
                 type="submit"
                 className="w-full"
+                disabled={isSubmitting}
               >
-                Login
+                {isSubmitting ? (
+                  <UpdateIcon className="animate-spin" />
+                ) : (
+                  'Login'
+                )}
               </Button>
             </CardFooter>
           </Card>

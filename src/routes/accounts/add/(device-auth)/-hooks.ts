@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { useAddAccountUpdateSubmittingState } from '../../../../hooks/accounts'
 import { useBaseSetupForm } from '../-hooks'
 
 const formSchema = z.object({
@@ -17,6 +18,8 @@ const formSchema = z.object({
 })
 
 export function useSetupForm() {
+  const { isSubmitting, updateSubmittingState } =
+    useAddAccountUpdateSubmittingState('deviceAuth')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,12 +31,18 @@ export function useSetupForm() {
 
   useBaseSetupForm({
     fetcher: window.electronAPI.responseAuthWithDevice,
+    type: 'deviceAuth',
   })
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (isSubmitting) {
+      return
+    }
+
+    updateSubmittingState(true)
     window.electronAPI.createAuthWithDevice(values)
     form.reset()
   }
 
-  return { form, onSubmit }
+  return { form, isSubmitting, onSubmit }
 }
