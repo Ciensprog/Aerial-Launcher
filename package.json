@@ -47,7 +47,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@tanstack/react-router": "^1.29.2",
+    "@tanstack/react-router": "^1.46.4",
     "axios": "^1.6.8",
     "axios-retry": "^4.1.0",
     "chroma-js": "^2.4.2",
