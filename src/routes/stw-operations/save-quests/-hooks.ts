@@ -6,12 +6,17 @@ import {
   useGetSaveQuestsActions,
   useGetSaveQuestsData,
 } from '../../../hooks/stw-operations/save-quests'
+import { useGetAccounts } from '../../../hooks/accounts'
 
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
   const [isLoading, setIsLoading] = useState(false)
-  const { selectedAccounts, selectedTags } = useGetSaveQuestsData()
+  const [isLeavePartyLoading, setIsLeavePartyLoading] = useState(false)
+
+  const { accountsArray } = useGetAccounts()
+  const { claimState, selectedAccounts, selectedTags, changeClaimState } =
+    useGetSaveQuestsData()
   const { saveQuestsUpdateAccounts, saveQuestsUpdateTags } =
     useGetSaveQuestsActions()
   const {
@@ -28,6 +33,11 @@ export function useData() {
     selectedTags,
   })
 
+  const saveQuestsButtonIsDisabled =
+    isSelectedEmpty || isLoading || !areThereAccounts
+  const leavePartyButtonIsDisabled =
+    isSelectedEmpty || isLeavePartyLoading || !areThereAccounts
+
   useEffect(() => {
     const listener = window.electronAPI.notificationClientQuestLogin(
       async () => {
@@ -41,8 +51,26 @@ export function useData() {
     }
   }, [])
 
+  useEffect(() => {
+    const listener = window.electronAPI.notificationLeave(
+      async (total) => {
+        setIsLeavePartyLoading(false)
+
+        toast(
+          total === 0
+            ? 'No user has been kicked'
+            : `Kicked ${total} user${total > 1 ? 's' : ''}`
+        )
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   const handleSave = () => {
-    if (isSelectedEmpty || !areThereAccounts) {
+    if (saveQuestsButtonIsDisabled) {
       return
     }
 
@@ -55,18 +83,45 @@ export function useData() {
     }
 
     setIsLoading(true)
+
     window.electronAPI.setClientQuestLogin(selectedAccounts)
+  }
+
+  const handleLeaveParty = () => {
+    if (leavePartyButtonIsDisabled) {
+      return
+    }
+
+    const selectedAccounts = getAccounts()
+
+    if (selectedAccounts.length <= 0) {
+      toast('No linked accounts')
+
+      return
+    }
+
+    setIsLeavePartyLoading(true)
+
+    window.electronAPI.leaveParty(
+      selectedAccounts,
+      accountsArray,
+      claimState
+    )
   }
 
   return {
     accounts,
-    areThereAccounts,
+    claimState,
+    isLeavePartyLoading,
     isLoading,
-    isSelectedEmpty,
+    leavePartyButtonIsDisabled,
     parsedSelectedAccounts,
     parsedSelectedTags,
     tags,
+    saveQuestsButtonIsDisabled,
 
+    changeClaimState,
+    handleLeaveParty,
     handleSave,
     saveQuestsUpdateAccounts,
     saveQuestsUpdateTags,

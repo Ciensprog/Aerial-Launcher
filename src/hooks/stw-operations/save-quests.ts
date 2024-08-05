@@ -5,16 +5,23 @@ import { useShallow } from 'zustand/react/shallow'
 import { useSaveQuestsStore } from '../../state/stw-operations/save-quests'
 
 export function useGetSaveQuestsData() {
-  const { accounts, tags } = useSaveQuestsStore(
-    useShallow((state) => ({
-      accounts: state.accounts,
-      tags: state.tags,
-    }))
-  )
+  const { accounts, changeClaimState, claimState, tags } =
+    useSaveQuestsStore(
+      useShallow((state) => ({
+        accounts: state.accounts,
+        claimState: state.claimState,
+        tags: state.tags,
+
+        changeClaimState: state.changeClaimState,
+      }))
+    )
 
   return {
+    claimState,
     selectedAccounts: accounts,
     selectedTags: tags,
+
+    changeClaimState,
   }
 }
 

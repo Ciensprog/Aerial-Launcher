@@ -20,8 +20,11 @@ import {
   CardFooter,
   CardHeader,
 } from '../../../components/ui/card'
+import { Switch } from '../../../components/ui/switch'
 
 import { useData } from './-hooks'
+
+// import { cn } from '../../../lib/utils'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -55,13 +58,17 @@ export const Route = createRoute({
 function Content() {
   const {
     accounts,
-    areThereAccounts,
+    claimState,
+    isLeavePartyLoading,
     isLoading,
-    isSelectedEmpty,
+    leavePartyButtonIsDisabled,
     parsedSelectedAccounts,
     parsedSelectedTags,
     tags,
+    saveQuestsButtonIsDisabled,
 
+    changeClaimState,
+    handleLeaveParty,
     handleSave,
     saveQuestsUpdateAccounts,
     saveQuestsUpdateTags,
@@ -70,40 +77,71 @@ function Content() {
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
-        <Card className="max-w-lg w-full">
-          <CardHeader className="border-b">
-            <CardDescription>
-              Save quests progression of the selected accounts.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4 pt-6">
-            <AccountSelectors
-              accounts={{
-                options: accounts,
-                value: parsedSelectedAccounts,
-              }}
-              tags={{
-                options: tags,
-                value: parsedSelectedTags,
-              }}
-              onUpdateAccounts={saveQuestsUpdateAccounts}
-              onUpdateTags={saveQuestsUpdateTags}
-            />
-          </CardContent>
-          <CardFooter className="space-x-6">
-            <Button
-              className="w-full"
-              onClick={handleSave}
-              disabled={isSelectedEmpty || isLoading || !areThereAccounts}
-            >
-              {isLoading ? (
-                <UpdateIcon className="animate-spin" />
-              ) : (
-                'Save Quests'
-              )}
-            </Button>
-          </CardFooter>
-        </Card>
+        <div className="max-w-lg space-y-4 w-full">
+          <Card className="w-full">
+            <CardHeader className="border-b">
+              <CardDescription>
+                Save quests progression of the selected accounts.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4 pt-6">
+              <AccountSelectors
+                accounts={{
+                  options: accounts,
+                  value: parsedSelectedAccounts,
+                }}
+                tags={{
+                  options: tags,
+                  value: parsedSelectedTags,
+                }}
+                onUpdateAccounts={saveQuestsUpdateAccounts}
+                onUpdateTags={saveQuestsUpdateTags}
+              />
+            </CardContent>
+            <CardFooter className="space-x-6">
+              <Button
+                className="w-full"
+                onClick={handleSave}
+                disabled={saveQuestsButtonIsDisabled}
+              >
+                {isLoading ? (
+                  <UpdateIcon className="animate-spin" />
+                ) : (
+                  'Save Quests'
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card className="flex flex-col flex-shrink-0 justify-center w-full">
+            <CardContent className="block pt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="pr-5">
+                  Claim rewards after leaving mission
+                </span>
+                <Switch
+                  onCheckedChange={changeClaimState}
+                  checked={claimState}
+                  disabled={leavePartyButtonIsDisabled}
+                />
+              </div>
+              <div className="flex gap-4">
+                <Button
+                  className="w-full"
+                  size="sm"
+                  onClick={handleLeaveParty}
+                  disabled={leavePartyButtonIsDisabled}
+                >
+                  {isLeavePartyLoading ? (
+                    <UpdateIcon className="animate-spin" />
+                  ) : (
+                    'Leave Party'
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
