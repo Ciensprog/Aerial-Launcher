@@ -8,9 +8,17 @@ import { useEffect, useState } from 'react'
 import { defaultColor } from '../../../config/constants/colors'
 
 import {
+  useGetHomebaseNameActions,
+  useGetHomebaseNameData,
+} from '../../../hooks/stw-operations/homebase-name'
+import {
   useGetSaveQuestsActions,
   useGetSaveQuestsData,
 } from '../../../hooks/stw-operations/save-quests'
+import {
+  useGetXPBoostsActions,
+  useGetXPBoostsFormData,
+} from '../../../hooks/stw-operations/xpboosts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
@@ -113,8 +121,14 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
 
   const { groupList, registerGroups } = useGetGroups()
 
-  const { selectedTags } = useGetSaveQuestsData()
+  const saveQuestsData = useGetSaveQuestsData()
   const { rawSaveQuestsUpdateTags } = useGetSaveQuestsActions()
+
+  const homebaseNameData = useGetHomebaseNameData()
+  const { rawHomebaseNameUpdateTags } = useGetHomebaseNameActions()
+
+  const xpBoostsFormData = useGetXPBoostsFormData()
+  const { rawXPBoostsUpdateTags } = useGetXPBoostsActions()
 
   useEffect(() => {
     setColor((rawData.color ?? defaultColor) as string)
@@ -176,12 +190,24 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
     )
 
     registerGroups(newGroups)
+
     rawSaveQuestsUpdateTags(
-      selectedTags.map((currentTag) =>
+      saveQuestsData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawHomebaseNameUpdateTags(
+      homebaseNameData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawXPBoostsUpdateTags(
+      xpBoostsFormData.selectedTags.map((currentTag) =>
         currentTag === rawData.name ? newData.name : currentTag
       )
     )
     tagsStore.updateTags(newTags, true)
+
     window.electronAPI.updateTags(newTags)
     window.electronAPI.updateGroups(newGroups)
 
@@ -202,10 +228,24 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
     )
 
     registerGroups(newGroups)
+
     rawSaveQuestsUpdateTags(
-      selectedTags.filter((currentTag) => currentTag !== tagName)
+      saveQuestsData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawHomebaseNameUpdateTags(
+      homebaseNameData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawXPBoostsUpdateTags(
+      xpBoostsFormData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
     )
     tagsStore.updateTags(rawTagsRecord, true)
+
     window.electronAPI.updateTags(rawTagsRecord)
     window.electronAPI.updateGroups(newGroups)
   }

@@ -10,7 +10,10 @@ import { useEffect, useState } from 'react'
 import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 import { useClaimedRewards } from '../../../hooks/stw-operations/claimed-rewards'
-import { usePartyFriendsForm } from '../../../hooks/stw-operations/party'
+import {
+  useInviteFriendsForm,
+  usePartyFriendsForm,
+} from '../../../hooks/stw-operations/party'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { toast } from '../../../lib/notifications'
@@ -205,6 +208,7 @@ export function useInviteActions({
   const [isInviting, setIsInviting] = useState(false)
   const [inputSearchValue, setInputSearchValue] = useState('')
   const { friends } = usePartyFriendsForm()
+  const { setValue, value } = useInviteFriendsForm()
 
   const friendOptions: Array<ComboboxOption> = Object.values(friends)
     .toSorted(
@@ -245,6 +249,7 @@ export function useInviteActions({
   useEffect(() => {
     const listener = window.electronAPI.notificationRemoveFriend(
       async ({ displayName, status }) => {
+        setValue(value.filter((item) => friends[item.value] !== undefined))
         setIsSubmitting(false)
 
         toast(
