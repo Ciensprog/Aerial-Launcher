@@ -16,6 +16,8 @@ import {
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
 
+import { useActions } from './-hooks'
+
 import { cn } from '../../../lib/utils'
 
 const links = {
@@ -33,6 +35,8 @@ export const Route = createRoute({
 })
 
 export function ComponentRoute() {
+  const { handleEricDejaDeJoder } = useActions()
+
   const openURL = (url: string) => (event: MouseEvent) => {
     event.preventDefault()
     window.electronAPI.openExternalURL(url)
@@ -107,7 +111,12 @@ export function ComponentRoute() {
                 </div>
               </li>
               <li className="item">
-                <span className="text-muted-foreground">eric_guest1</span>
+                <span
+                  className="text-muted-foreground"
+                  onClick={handleEricDejaDeJoder}
+                >
+                  eric_guest1
+                </span>
                 <div>
                   Tester of new features before new version releases to
                   detect and fix possible bugs.

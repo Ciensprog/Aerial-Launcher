@@ -70,6 +70,7 @@ export function useHomebaseNameData() {
     }
 
     setIsLoading(true)
+
     window.electronAPI.setHomebaseName(selectedAccounts, name.trim())
   }
   const handleUpdateName: ChangeEventHandler<HTMLInputElement> = (

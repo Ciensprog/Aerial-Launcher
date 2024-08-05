@@ -4,6 +4,7 @@ import type {
 } from '../../../components/ui/third-party/extended/input-tags'
 
 import { defaultColor } from '../../../config/constants/colors'
+import { getBulkTags } from '../../../config/constants/tags'
 
 import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
@@ -70,6 +71,15 @@ export function useAccountSelectorData({
 
   const getAccounts = () => {
     const currentTags = parsedSelectedTags.map(({ value }) => value)
+    const bulkTags = getBulkTags()
+    const hasBulkTag = currentTags.some((tag) =>
+      bulkTags.includes(tag.trim().toLowerCase())
+    )
+
+    if (hasBulkTag) {
+      return accountsArray
+    }
+
     const accountIds = [
       ...new Set([
         ...parsedSelectedAccounts.map(({ value }) => value),
