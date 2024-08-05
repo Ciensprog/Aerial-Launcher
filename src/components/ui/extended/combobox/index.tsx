@@ -207,6 +207,15 @@ export function Combobox({
                     )
                   }
 
+                  if (
+                    innerInputSearchValue &&
+                    !option.label
+                      .toLowerCase()
+                      .includes(innerInputSearchValue.toLowerCase())
+                  ) {
+                    return null
+                  }
+
                   return (
                     customItem?.({
                       renderItem,
