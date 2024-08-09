@@ -24,6 +24,7 @@ export function useAutomationData() {
   const { selectedAccounts } = useGetAutomationData()
   const {
     addAccount,
+    removeAccount,
     updateAccountAction,
     updateAccountStatus,
     updateAccountSubmitting,
@@ -78,6 +79,19 @@ export function useAutomationData() {
     }
   }, [])
 
+  useEffect(() => {
+    const listener =
+      window.electronAPI.notificationAutomationServiceRemove(
+        async (accountId) => {
+          removeAccount(accountId)
+        }
+      )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   const customFilter: ComboboxProps['customFilter'] = (
     _value,
     search,
@@ -107,6 +121,7 @@ export function useAutomationData() {
       accountId,
       value: true,
     })
+    window.electronAPI.automationServiceRemove(accountId)
   }
 
   // const handleReloadAccount = (accountId: string) => () => {

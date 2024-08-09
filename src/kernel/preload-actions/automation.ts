@@ -15,8 +15,12 @@ export function automationServiceStart(accountId: string) {
   ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceStart, accountId)
 }
 
-export function automationServiceReload(accountId: string) {
-  ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceReload, accountId)
+// export function automationServiceReload(accountId: string) {
+//   ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceReload, accountId)
+// }
+
+export function automationServiceRemove(accountId: string) {
+  ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceRemove, accountId)
 }
 
 export function notificationAutomationServiceData(
@@ -73,24 +77,44 @@ export function notificationAutomationServiceStart(
   }
 }
 
-export function notificationAutomationServiceReload(
-  callback: (value: AutomationServiceStatusResponse) => Promise<void>
+// export function notificationAutomationServiceReload(
+//   callback: (value: AutomationServiceStatusResponse) => Promise<void>
+// ) {
+//   const customCallback = (
+//     _: IpcRendererEvent,
+//     value: AutomationServiceStatusResponse
+//   ) => {
+//     callback(value).catch(() => {})
+//   }
+//   const rendererInstance = ipcRenderer.on(
+//     ElectronAPIEventKeys.AutomationServiceReloadNotification,
+//     customCallback
+//   )
+
+//   return {
+//     removeListener: () =>
+//       rendererInstance.removeListener(
+//         ElectronAPIEventKeys.AutomationServiceReloadNotification,
+//         customCallback
+//       ),
+//   }
+// }
+
+export function notificationAutomationServiceRemove(
+  callback: (value: string) => Promise<void>
 ) {
-  const customCallback = (
-    _: IpcRendererEvent,
-    value: AutomationServiceStatusResponse
-  ) => {
+  const customCallback = (_: IpcRendererEvent, value: string) => {
     callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
-    ElectronAPIEventKeys.AutomationServiceReloadNotification,
+    ElectronAPIEventKeys.AutomationServiceRemoveNotification,
     customCallback
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
-        ElectronAPIEventKeys.AutomationServiceReloadNotification,
+        ElectronAPIEventKeys.AutomationServiceRemoveNotification,
         customCallback
       ),
   }

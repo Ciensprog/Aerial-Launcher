@@ -156,7 +156,8 @@ export function Content() {
             const current = selectedAccounts[account.accountId]
             const isLoading =
               current.status === null ||
-              current.status === AutomationStatusType.LOADING
+              current.status === AutomationStatusType.LOADING ||
+              current.submittings.removing
             const disabledActions =
               current.submittings.connecting ||
               current.submittings.removing ||

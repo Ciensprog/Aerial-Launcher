@@ -160,8 +160,10 @@ export enum ElectronAPIEventKeys {
   AutomationServiceResponseData = 'automation:service:response:data',
   AutomationServiceStart = 'automation:service:start',
   AutomationServiceStartNotification = 'automation:service:start:notification',
-  AutomationServiceReload = 'automation:service:reload',
-  AutomationServiceReloadNotification = 'automation:service:reload:notification',
+  // AutomationServiceReload = 'automation:service:reload',
+  // AutomationServiceReloadNotification = 'automation:service:reload:notification',
+  AutomationServiceRemove = 'automation:service:remove',
+  AutomationServiceRemoveNotification = 'automation:service:remove:notification',
 
   /**
    * Schedules

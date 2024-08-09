@@ -67,6 +67,21 @@ export class Automation {
     await Automation.start(currentWindow, data)
   }
 
+  static async removeAccount(
+    currentWindow: BrowserWindow,
+    accountId: string
+  ) {
+    Automation.updateAccountData(accountId, {
+      status: AutomationStatusType.LOADING,
+    })
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1500)
+    })
+
+    await Automation.refreshData(currentWindow, accountId, true)
+  }
+
   static async start(
     currentWindow: BrowserWindow,
     data: AutomationAccountFileData,
@@ -109,37 +124,50 @@ export class Automation {
     )
   }
 
-  static async reload(currentWindow: BrowserWindow, accountId: string) {
-    const current = Automation._accounts.get(accountId)
+  // static async reload(currentWindow: BrowserWindow, accountId: string) {
+  //   const current = Automation._accounts.get(accountId)
 
-    if (!current) {
-      const automation = Automation._accounts
-        .filter((account) => account.accountId !== accountId)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .map((account) => account)
-        .reduce(
-          (accumulator, account) => {
-            accumulator[account.accountId] = {
-              ...account,
-            }
+  //   if (!current) {
+  //     await Automation.refreshData(currentWindow, accountId)
 
-            return accumulator
-          },
-          {} as Parameters<AutomationState['refreshAccounts']>[0]
-        )
+  //     return
+  //   }
 
-      await DataDirectory.updateAutomationFile(automation)
+  //   await Automation.start(currentWindow, current, true)
+  // }
 
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.AutomationServiceResponseData,
-        automation,
-        true
+  private static async refreshData(
+    currentWindow: BrowserWindow,
+    accountId: string,
+    removeAccount?: boolean
+  ) {
+    // const result = await DataDirectory.getAutomationFile()
+    const automation = Automation._accounts
+      .filter((account) => account.accountId !== accountId)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .map((account) => account)
+      .reduce(
+        (accumulator, account) => {
+          accumulator[account.accountId] = {
+            ...account,
+          }
+
+          return accumulator
+        },
+        {} as Parameters<AutomationState['refreshAccounts']>[0]
       )
 
-      return
+    if (removeAccount) {
+      Automation._accounts.delete(accountId)
     }
 
-    await Automation.start(currentWindow, current, true)
+    await DataDirectory.updateAutomationFile(automation)
+
+    currentWindow.webContents.send(
+      ElectronAPIEventKeys.AutomationServiceResponseData,
+      automation,
+      true
+    )
   }
 
   private static updateAccountData(

@@ -456,10 +456,17 @@ app.on('ready', async () => {
     }
   )
 
+  // ipcMain.on(
+  //   ElectronAPIEventKeys.AutomationServiceReload,
+  //   async (_, accountId: string) => {
+  //     await Automation.reload(currentWindow, accountId)
+  //   }
+  // )
+
   ipcMain.on(
-    ElectronAPIEventKeys.AutomationServiceReload,
+    ElectronAPIEventKeys.AutomationServiceRemove,
     async (_, accountId: string) => {
-      await Automation.reload(currentWindow, accountId)
+      await Automation.removeAccount(currentWindow, accountId)
     }
   )
 
