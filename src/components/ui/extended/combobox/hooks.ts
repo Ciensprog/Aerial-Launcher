@@ -30,6 +30,7 @@ export type ComboboxProps = {
   emptyContentClassname?: string
   emptyOptions?: string
   emptyPlaceholder?: string
+  hideInputSearchWhenOnlyOneOptionIsAvailable?: boolean
   hideSelectorOnSelectItem?: boolean
   inputSearchIsDisabled?: boolean
   inputSearchValue?: string

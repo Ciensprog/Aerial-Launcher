@@ -57,6 +57,7 @@
     "color": "^4.2.3",
     "dayjs": "^1.11.11",
     "electron-squirrel-startup": "^1.0.0",
+    "immer": "^10.1.1",
     "lucide-react": "^0.372.0",
     "next-themes": "^0.3.0",
     "node-schedule": "^2.1.1",
