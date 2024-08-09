@@ -32,6 +32,8 @@ export function Combobox({
   emptyContentClassname,
   emptyOptions,
   emptyPlaceholder,
+  hideInputSearchWhenOnlyOneOptionIsAvailable:
+    hideInputSearchWhenOneOptionIsAvailable,
   hideSelectorOnSelectItem,
   inputSearchIsDisabled,
   inputSearchValue,
@@ -134,16 +136,18 @@ export function Combobox({
           filter={customFilter}
           loop
         >
-          <CommandInput
-            className="select-none"
-            placeholder={placeholderSearch ?? 'Placeholder'}
-            value={innerInputSearchValue}
-            onValueChange={(value) => {
-              __onSearchValueChange?.(value)
-              onInputSearchChange?.(value)
-            }}
-            disabled={disabled || inputSearchIsDisabled}
-          />
+          {!hideInputSearchWhenOneOptionIsAvailable && (
+            <CommandInput
+              className="select-none"
+              placeholder={placeholderSearch ?? 'Placeholder'}
+              value={innerInputSearchValue}
+              onValueChange={(value) => {
+                __onSearchValueChange?.(value)
+                onInputSearchChange?.(value)
+              }}
+              disabled={disabled || inputSearchIsDisabled}
+            />
+          )}
           <CommandListWithScrollArea>
             <CommandEmpty
               {...(options.length > 0 ||
@@ -172,7 +176,7 @@ export function Combobox({
               )}
             </CommandEmpty>
             {options.length > 0 && (
-              <CommandGroup>
+              <CommandGroup className="w-52">
                 {options?.map((option) => {
                   const hasItem = currentValues.find(
                     (item) => item.value === option.value

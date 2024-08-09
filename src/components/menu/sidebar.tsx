@@ -76,6 +76,21 @@ export function SidebarMenu({
             <ul className="list-disc ml-5">
               <li className="item">
                 <Link
+                  to="/stw-operations/automation"
+                  className={cn(currentClassNameHover, 'gap-2')}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                >
+                  Auto Kick
+                  {/* <span className="border border-green-700 flex font-bold items-center leading-none px-2 rounded text-[0.65rem] text-green-700 uppercase">
+                    Active
+                  </span> */}
+                </Link>
+              </li>
+              <li className="item">
+                <Link
                   to="/stw-operations/party"
                   className={currentClassNameHover}
                   activeProps={{

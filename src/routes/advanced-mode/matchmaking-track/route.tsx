@@ -151,7 +151,7 @@ function Content() {
                     emptyPlaceholder="No recently players"
                     emptyContent="No player found"
                     placeholder="Select a recently player"
-                    placeholderSearch="Search on 1 players"
+                    placeholderSearch={`Search on ${options.length} player(s)`}
                     options={options}
                     value={[]}
                     customFilter={customFilter}
