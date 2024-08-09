@@ -11,6 +11,7 @@ import {
   repositoryURL,
   supportDiscordServerURL,
 } from '../../config/about/links'
+import { AutomationStatusType } from '../../config/constants/automation'
 
 import { Button } from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
@@ -21,6 +22,8 @@ import { Separator } from '../ui/separator'
 //   TooltipProvider,
 //   TooltipTrigger,
 // } from '../ui/tooltip'
+
+import { useGetAutomationDataStatus } from '../../hooks/stw-operations/automation'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
@@ -36,6 +39,8 @@ export function SidebarMenu({
   onOpenChange?: (open: boolean) => void
 }) {
   const accounts = useAccountListStore((state) => state.accounts)
+  const { status } = useGetAutomationDataStatus()
+
   const total = Object.keys(accounts).length
   const areThereAccounts = total > 0
   const totalInText = new Intl.NumberFormat().format(total)
@@ -69,7 +74,7 @@ export function SidebarMenu({
           <Title className="pb-0">STW Operations</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
@@ -77,16 +82,29 @@ export function SidebarMenu({
               <li className="item">
                 <Link
                   to="/stw-operations/automation"
-                  className={cn(currentClassNameHover, 'gap-2')}
+                  className={cn(currentClassNameHover)}
                   activeProps={{
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
                 >
-                  Auto Kick
-                  {/* <span className="border border-green-700 flex font-bold items-center leading-none px-2 rounded text-[0.65rem] text-green-700 uppercase">
-                    Active
-                  </span> */}
+                  <span className="flex relative">
+                    Auto Kick
+                    {status !== null && (
+                      <span
+                        className={cn(
+                          'absolute left-[calc(100%+0.5rem)] border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
+                          status === AutomationStatusType.ISSUE
+                            ? 'border-yellow-600 text-yellow-600'
+                            : 'border-green-600 text-green-600'
+                        )}
+                      >
+                        {status === AutomationStatusType.ISSUE
+                          ? 'Issue'
+                          : 'Active'}
+                      </span>
+                    )}
+                  </span>
                 </Link>
               </li>
               <li className="item">
@@ -142,7 +160,7 @@ export function SidebarMenu({
           <Title className="pb-0">Account Management</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
@@ -171,7 +189,7 @@ export function SidebarMenu({
           <Title className="pb-0">Advanced Mode</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
@@ -214,7 +232,7 @@ export function SidebarMenu({
           <Title className="pb-0">My Accounts ({totalInText}):</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
