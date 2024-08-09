@@ -1,5 +1,3 @@
-// import type { SelectOption } from '../../components/ui/third-party/extended/input-tags'
-
 import { useShallow } from 'zustand/react/shallow'
 
 import { useAutomationStore } from '../../state/stw-operations/automation'
@@ -17,12 +15,14 @@ export function useGetAutomationActions() {
     addAccount,
     removeAccount,
     updateAccountAction,
+    updateAccountStatus,
     updateAccountSubmitting,
   } = useAutomationStore(
     useShallow((state) => ({
       removeAccount: state.removeAccount,
-      addAccount: state.addAccount,
+      addAccount: state.addOrUpdateAccount,
       updateAccountAction: state.updateAccountAction,
+      updateAccountStatus: state.updateAccountStatus,
       updateAccountSubmitting: state.updateAccountSubmitting,
     }))
   )
@@ -31,6 +31,7 @@ export function useGetAutomationActions() {
     addAccount,
     removeAccount,
     updateAccountAction,
+    updateAccountStatus,
     updateAccountSubmitting,
   }
 }

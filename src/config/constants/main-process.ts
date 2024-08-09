@@ -153,6 +153,17 @@ export enum ElectronAPIEventKeys {
   MatchmakingTrackSaveFileNotification = 'advanced-mode:matchmaking-track:save:file:notification',
 
   /**
+   * Automation
+   */
+
+  AutomationServiceRequestData = 'automation:service:request:data',
+  AutomationServiceResponseData = 'automation:service:response:data',
+  AutomationServiceStart = 'automation:service:start',
+  AutomationServiceStartNotification = 'automation:service:start:notification',
+  AutomationServiceReload = 'automation:service:reload',
+  AutomationServiceReloadNotification = 'automation:service:reload:notification',
+
+  /**
    * Schedules
    */
 

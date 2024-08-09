@@ -2,7 +2,7 @@ import type {
   ComboboxOption,
   ComboboxProps,
 } from '../../../components/ui/extended/combobox/hooks'
-import type { AutomationAccountData } from '../../../state/stw-operations/automation'
+import type { AutomationAccountData } from '../../../types/automation'
 
 import {
   useGetAutomationActions,
@@ -16,13 +16,18 @@ import {
   localeCompareForSorting,
   parseCustomDisplayName,
 } from '../../../lib/utils'
+import { useEffect } from 'react'
 
 export function useAutomationData() {
   const { accountsArray, accountList } = useGetAccounts()
   const { getGroupTagsByAccountId } = useGetGroups()
   const { selectedAccounts } = useGetAutomationData()
-  const { addAccount, updateAccountAction, updateAccountSubmitting } =
-    useGetAutomationActions()
+  const {
+    addAccount,
+    updateAccountAction,
+    updateAccountStatus,
+    updateAccountSubmitting,
+  } = useGetAutomationActions()
 
   const options = accountsArray
     .filter((account) => !selectedAccounts[account.accountId])
@@ -57,6 +62,22 @@ export function useAutomationData() {
     )
   const accountSelectorIsDisabled = options.length <= 0
 
+  useEffect(() => {
+    const listener = window.electronAPI.notificationAutomationServiceStart(
+      async (response) => {
+        updateAccountStatus(response.accountId, response.status)
+        updateAccountSubmitting('connecting', {
+          accountId: response.accountId,
+          value: false,
+        })
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   const customFilter: ComboboxProps['customFilter'] = (
     _value,
     search,
@@ -74,6 +95,11 @@ export function useAutomationData() {
 
   const onSelectItem = (accountId: string) => {
     addAccount(accountId)
+    updateAccountSubmitting('connecting', {
+      accountId,
+      value: true,
+    })
+    window.electronAPI.automationServiceStart(accountId)
   }
 
   const handleRemoveAccount = (accountId: string) => () => {
@@ -82,6 +108,14 @@ export function useAutomationData() {
       value: true,
     })
   }
+
+  // const handleReloadAccount = (accountId: string) => () => {
+  //   updateAccountSubmitting('connecting', {
+  //     accountId,
+  //     value: true,
+  //   })
+  //   window.electronAPI.automationServiceReload(accountId)
+  // }
 
   const handleUpdateClaimAction =
     (type: keyof AutomationAccountData['actions'], accountId: string) =>
@@ -99,6 +133,7 @@ export function useAutomationData() {
     selectedAccounts,
 
     customFilter,
+    // handleReloadAccount,
     handleRemoveAccount,
     handleUpdateClaimAction,
     onSelectItem,

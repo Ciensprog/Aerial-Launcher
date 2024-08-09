@@ -1,6 +1,7 @@
 export enum AutomationStatusType {
   LISTENING = 'listening',
   LOADING = 'loading',
-  ISSUES = 'issues',
+  ISSUE = 'issue',
   DISCONNECTED = 'disconnected',
+  ERROR = 'error',
 }

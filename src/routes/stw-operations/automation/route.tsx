@@ -70,10 +70,11 @@ function StatusItem({
         'before:content-[""] before:block before:size-2 before:rounded-full',
         {
           'before:bg-green-600': status === AutomationStatusType.LISTENING,
-          'before:bg-gray-600': status === AutomationStatusType.LOADING,
-          'before:bg-red-600':
+          // 'before:bg-gray-600': status === AutomationStatusType.LOADING,
+          'before:bg-gray-600':
             status === AutomationStatusType.DISCONNECTED,
-          'before:bg-yellow-600': status === AutomationStatusType.ISSUES,
+          'before:bg-red-400': status === AutomationStatusType.ERROR,
+          // 'before:bg-yellow-600': status === AutomationStatusType.ISSUE,
         }
       )}
     >
@@ -90,6 +91,7 @@ export function Content() {
     selectedAccounts,
 
     customFilter,
+    // handleReloadAccount,
     handleRemoveAccount,
     handleUpdateClaimAction,
     onSelectItem,
@@ -109,9 +111,13 @@ export function Content() {
                 status={AutomationStatusType.LISTENING}
                 title="Listening"
               />
-              <StatusItem
-                status={AutomationStatusType.ISSUES}
+              {/* <StatusItem
+                status={AutomationStatusType.ISSUE}
                 title="Issue"
+              /> */}
+              <StatusItem
+                status={AutomationStatusType.ERROR}
+                title="Credential Error"
               />
               <StatusItem
                 status={AutomationStatusType.DISCONNECTED}
@@ -149,12 +155,17 @@ export function Content() {
           {accounts.map((account) => {
             const current = selectedAccounts[account.accountId]
             const isLoading =
-              current.status === AutomationStatusType.LOADING ||
-              current.status === null
+              current.status === null ||
+              current.status === AutomationStatusType.LOADING
             const disabledActions =
               current.submittings.connecting ||
               current.submittings.removing ||
               isLoading
+            const isDisconnected =
+              current.status === AutomationStatusType.DISCONNECTED
+            const isError = current.status === AutomationStatusType.ERROR
+            const isListening =
+              current.status === AutomationStatusType.LISTENING
 
             return (
               <article
@@ -167,17 +178,16 @@ export function Content() {
                       'flex gap-1.5 items-center px-2 truncate',
                       {
                         'before:content-[""] before:block before:size-2 before:rounded-full':
+                          current.status !==
+                            AutomationStatusType.LOADING &&
                           current.status !== null,
-                        'before:bg-green-600':
-                          current.status ===
-                          AutomationStatusType.LISTENING,
-                        'before:bg-gray-600':
-                          current.status === AutomationStatusType.LOADING,
-                        'before:bg-red-600':
-                          current.status ===
-                          AutomationStatusType.DISCONNECTED,
-                        'before:bg-yellow-600':
-                          current.status === AutomationStatusType.ISSUES,
+                        'before:bg-green-600': isListening,
+                        // 'before:bg-gray-600':
+                        //   current.status === AutomationStatusType.LOADING,
+                        'before:bg-gray-600': isDisconnected,
+                        'before:bg-red-400': isError,
+                        // 'before:bg-yellow-600':
+                        //   current.status === AutomationStatusType.ISSUE,
                       }
                     )}
                   >

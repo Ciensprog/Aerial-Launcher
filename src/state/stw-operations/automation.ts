@@ -1,37 +1,43 @@
+import type {
+  AutomationAccountData,
+  AutomationAccountDataList,
+} from '../../types/automation'
+
 import { immer } from 'zustand/middleware/immer'
 import { create } from 'zustand'
-
-import { AutomationStatusType } from '../../config/constants/automation'
-
-export type AutomationAccountData = {
-  accountId: string
-  actions: {
-    claim: boolean
-    kick: boolean
-  }
-  submittings: {
-    connecting: boolean
-    removing: boolean
-  }
-  status: AutomationStatusType | null
-}
-
-export type AutomationAccountDataList = Record<
-  string,
-  AutomationAccountData
->
 
 export type AutomationState = {
   accounts: AutomationAccountDataList
 
-  addAccount: (accountId: string) => void
+  addOrUpdateAccount: (
+    accountId: string,
+    defaultConfig?: Partial<{
+      actions: Partial<AutomationAccountData['actions']>
+      status: Partial<AutomationAccountData['status']>
+      submittings: Partial<AutomationAccountData['submittings']>
+    }>
+  ) => void
+  refreshAccounts: (
+    data: Record<
+      string,
+      Omit<AutomationAccountData, 'submittings'> &
+        Partial<{
+          submittings: Partial<AutomationAccountData['submittings']>
+        }>
+    >
+  ) => void
   removeAccount: (accountId: string) => void
+  removeAllAccounts: () => void
   updateAccountAction: (
     type: keyof AutomationAccountData['actions'],
     config: {
       accountId: string
       value: boolean
     }
+  ) => void
+  updateAccountStatus: (
+    accountId: string,
+    value: AutomationAccountData['status']
   ) => void
   updateAccountSubmitting: (
     type: keyof AutomationAccountData['submittings'],
@@ -46,20 +52,50 @@ export const useAutomationStore = create<AutomationState>()(
   immer((set, get) => ({
     accounts: {},
 
-    addAccount: (accountId) => {
+    addOrUpdateAccount: (accountId, defaultConfig) => {
       set((state) => {
+        const current = state.accounts[accountId] ?? {}
+
         state.accounts[accountId] = {
           accountId,
           actions: {
-            claim: false,
-            kick: false,
+            claim:
+              defaultConfig?.actions?.claim ??
+              current?.actions?.claim ??
+              false,
+            kick:
+              defaultConfig?.actions?.kick ??
+              current?.actions?.kick ??
+              false,
           },
-          status: null,
+          status: defaultConfig?.status ?? current?.status ?? null,
           submittings: {
-            connecting: false,
-            removing: false,
+            connecting:
+              defaultConfig?.submittings?.connecting ??
+              current?.submittings?.connecting ??
+              false,
+            removing:
+              defaultConfig?.submittings?.removing ??
+              current?.submittings?.removing ??
+              false,
           },
         }
+      })
+    },
+    refreshAccounts: (data) => {
+      const accounts = get().accounts
+      const filteredAccounts = Object.values(data)
+        .map((account) => ({
+          ...accounts[account.accountId],
+        }))
+        .reduce((accumulator, current) => {
+          accumulator[current.accountId] = current
+
+          return accumulator
+        }, {} as AutomationAccountDataList)
+
+      set({
+        accounts: filteredAccounts,
       })
     },
     removeAccount: (accountId) => {
@@ -76,9 +112,17 @@ export const useAutomationStore = create<AutomationState>()(
         accounts: filtered,
       })
     },
+    removeAllAccounts: () => {
+      set({ accounts: {} })
+    },
     updateAccountAction: (type, config) => {
       set((state) => {
         state.accounts[config.accountId].actions[type] = config.value
+      })
+    },
+    updateAccountStatus: (accountId, value) => {
+      set((state) => {
+        state.accounts[accountId].status = value
       })
     },
     updateAccountSubmitting: (type, config) => {

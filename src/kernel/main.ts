@@ -38,6 +38,7 @@ import { XPBoostsManager } from './core/xpboosts'
 import { WorldInfoManager } from './core/world-info'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
+import { Automation } from './startup/automation'
 import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
 import { TagsManager } from './startup/tags'
@@ -434,6 +435,31 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.MatchmakingTrackSaveFile,
     async (_, account: AccountData, accountId: string) => {
       await MatchmakingTrack.saveFile(currentWindow, account, accountId)
+    }
+  )
+
+  /**
+   * Automation
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceRequestData,
+    async () => {
+      await Automation.load(currentWindow)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceStart,
+    async (_, accountId: string) => {
+      await Automation.addAccount(currentWindow, accountId)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceReload,
+    async (_, accountId: string) => {
+      await Automation.reload(currentWindow, accountId)
     }
   )
 
