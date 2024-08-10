@@ -139,6 +139,10 @@ export function useAutomationData() {
         accountId,
         value,
       })
+      window.electronAPI.automationServiceUpdateAction(accountId, {
+        type,
+        value,
+      })
     }
 
   return {

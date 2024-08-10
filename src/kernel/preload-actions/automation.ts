@@ -1,5 +1,8 @@
 import type { IpcRendererEvent } from 'electron'
-import type { AutomationServiceStatusResponse } from '../../types/automation'
+import type {
+  AutomationServiceActionConfig,
+  AutomationServiceStatusResponse,
+} from '../../types/automation'
 
 import { ipcRenderer } from 'electron'
 
@@ -21,6 +24,17 @@ export function automationServiceStart(accountId: string) {
 
 export function automationServiceRemove(accountId: string) {
   ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceRemove, accountId)
+}
+
+export function automationServiceUpdateAction(
+  accountId: string,
+  config: AutomationServiceActionConfig
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.AutomationServiceActionUpdate,
+    accountId,
+    config
+  )
 }
 
 export function notificationAutomationServiceData(

@@ -46,3 +46,8 @@ export type AutomationServiceStatusResponse = {
   accountId: string
   status: AutomationStatusType
 }
+
+export type AutomationServiceActionConfig = {
+  type: keyof AutomationAccountData['actions']
+  value: boolean
+}

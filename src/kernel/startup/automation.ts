@@ -2,6 +2,7 @@ import type {
   AutomationAccountData,
   AutomationAccountFileData,
   AutomationAccountServerData,
+  AutomationServiceActionConfig,
   AutomationServiceStatusResponse,
 } from '../../types/automation'
 
@@ -80,6 +81,38 @@ export class Automation {
     })
 
     await Automation.refreshData(currentWindow, accountId, true)
+  }
+
+  static async updateAction(
+    currentWindow: BrowserWindow,
+    accountId: string,
+    config: AutomationServiceActionConfig
+  ) {
+    Automation.updateAccountData(accountId, {
+      actions: {
+        [config.type]: config.value,
+      },
+    })
+
+    const current = Automation._accounts.get(accountId)
+
+    if (!current) {
+      return
+    }
+
+    const result = await DataDirectory.getAutomationFile()
+    const data = {
+      accountId,
+      actions: {
+        ...current.actions,
+        [config.type]: config.value,
+      },
+    }
+
+    await DataDirectory.updateAutomationFile({
+      ...result.automation,
+      [accountId]: data,
+    })
   }
 
   static async start(

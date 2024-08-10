@@ -9,6 +9,7 @@ import type {
   AccountList,
 } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
+import type { AutomationServiceActionConfig } from '../types/automation'
 import type { GroupRecord } from '../types/groups'
 import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
@@ -467,6 +468,17 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.AutomationServiceRemove,
     async (_, accountId: string) => {
       await Automation.removeAccount(currentWindow, accountId)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceActionUpdate,
+    async (
+      _,
+      accountId: string,
+      config: AutomationServiceActionConfig
+    ) => {
+      await Automation.updateAction(currentWindow, accountId, config)
     }
   )
 
