@@ -2,6 +2,7 @@ import type { MouseEventHandler, PropsWithChildren } from 'react'
 
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Link } from '@tanstack/react-router'
+import { Copyright } from 'lucide-react'
 import { forwardRef } from 'react'
 
 import packageJson from '../../../package.json'
@@ -28,6 +29,7 @@ import { useGetAutomationDataStatus } from '../../hooks/stw-operations/automatio
 import { useAccountListStore } from '../../state/accounts/list'
 
 import { cn } from '../../lib/utils'
+import { whatIsThis } from '../../lib/callbacks'
 
 const currentClassNameHover =
   'hover:opacity-75 dark:opacity-100 dark:hover:text-white'
@@ -87,9 +89,10 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   <span className="flex relative">
-                    Auto Kick
+                    Auto-kick
                     {status !== null && (
                       <span
                         className={cn(
@@ -115,6 +118,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Party
                 </Link>
@@ -127,6 +131,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Save Quests
                 </Link>
@@ -139,6 +144,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Homebase Name
                 </Link>
@@ -151,6 +157,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   XP Boosts
                 </Link>
@@ -178,6 +185,7 @@ export function SidebarMenu({
                     }),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                   disabled={!areThereAccounts}
                 >
                   Epic Games Settings
@@ -207,6 +215,7 @@ export function SidebarMenu({
                     }),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                   disabled={!areThereAccounts}
                 >
                   Matchmaking Track
@@ -220,6 +229,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   World Info
                 </Link>
@@ -246,6 +256,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Authorization Code
                 </Link>
@@ -259,6 +270,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Exchange Code
                 </Link>
@@ -272,6 +284,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Device Auth
                 </Link>
@@ -289,6 +302,7 @@ export function SidebarMenu({
                     }),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                   disabled={!areThereAccounts}
                 >
                   Remove Account
@@ -309,6 +323,7 @@ export function SidebarMenu({
               size="sm"
               variant="ghost"
               onClick={goToDiscordServerURL}
+              onAuxClick={whatIsThis()}
               asChild
             >
               <a href={supportDiscordServerURL}>
@@ -337,12 +352,29 @@ export function SidebarMenu({
               size="sm"
               variant="ghost"
               onClick={goToRepositoryURL}
+              onAuxClick={whatIsThis()}
               asChild
             >
               <a href={repositoryURL}>
                 <GitHubLogoIcon />
                 View on GitHub
               </a>
+            </Button>
+            <Button
+              className={cn(
+                'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
+                'text-muted-foreground',
+                'hover:bg-muted hover:text-primary'
+              )}
+              size="sm"
+              variant="ghost"
+              onAuxClick={whatIsThis()}
+              asChild
+            >
+              <Link to="/information/credits">
+                <Copyright className="size-4" />
+                <span className="-m-0.5">Credits & Greetings</span>
+              </Link>
             </Button>
           </div>
         </nav>
@@ -353,18 +385,11 @@ export function SidebarMenu({
               href={repositoryReleasesURL}
               className="underline hover:text-muted-foreground"
               onClick={goToReleasesURL}
+              onAuxClick={whatIsThis()}
             >
               All Releases
             </a>
           </p>
-        </div>
-        <div className="px-5 text-xs text-muted-foreground/60 lg:px-7">
-          <Link
-            to="/information/credits"
-            className="flex justify-center mt-3 underline hover:text-muted-foreground"
-          >
-            Credits
-          </Link>
         </div>
       </div>
     </ScrollArea>

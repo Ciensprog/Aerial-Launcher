@@ -1,14 +1,14 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
-import { createRoute, Link } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { Trash2 } from 'lucide-react'
 
 import { AutomationStatusType } from '../../../config/constants/automation'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import { Combobox } from '../../../components/ui/extended/combobox'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -36,11 +36,7 @@ export const Route = createRoute({
     <>
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+          <HomeBreadcrumb />
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>STW Operations</BreadcrumbPage>
@@ -103,8 +99,15 @@ export function Content() {
         <Card className="max-w-lg w-full">
           <CardHeader className="border-b">
             <CardDescription>
-              Autokick will listen to the events on your selected accounts
+              Auto-kick will listen to the events on your selected accounts
               and run kicking process when it detects the match has ended.
+            </CardDescription>
+            <CardDescription>
+              Also, remember kicking is intelligent. There's no need of
+              enabling two autokick's on your accounts if they are in the
+              same party, both of your accounts will get kicked/leave (and
+              claim rewards if you had auto-claim active) depending on the
+              case.
             </CardDescription>
             <CardDescription className="flex gap-2">
               <StatusItem
@@ -220,7 +223,7 @@ export function Content() {
                 </div>
                 <div className="flex flex-col gap-2 px-3 py-2 text-sm">
                   <div className="flex flex-grow items-center justify-between">
-                    <span>Auto Kick</span>
+                    <span>Auto-kick</span>
                     <Switch
                       checked={current.actions.kick}
                       onCheckedChange={
@@ -235,7 +238,7 @@ export function Content() {
                     />
                   </div>
                   <div className="flex flex-grow items-center justify-between">
-                    <span>Auto Claim</span>
+                    <span>Auto-claim</span>
                     <Switch
                       checked={current.actions.claim}
                       onCheckedChange={

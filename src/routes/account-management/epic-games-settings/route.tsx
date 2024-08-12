@@ -1,11 +1,11 @@
-import { Link, createRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 
 import { Route as RootRoute } from '../../__root'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -31,11 +31,7 @@ export const Route = createRoute({
       <>
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+            <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>Account Management</BreadcrumbPage>

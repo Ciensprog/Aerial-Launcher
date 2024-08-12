@@ -494,10 +494,10 @@ export function useSendBoostsSheet({
   }, [])
 
   const handleOpenExternalFNDBProfileUrl =
-    (displayName: string): MouseEventHandler =>
+    (accountId: string): MouseEventHandler =>
     (event) => {
       event.preventDefault()
-      window.electronAPI.openExternalURL(fortniteDBProfileURL(displayName))
+      window.electronAPI.openExternalURL(fortniteDBProfileURL(accountId))
     }
 
   const handleSetXPBoostsType = (value: boolean) => {

@@ -19,18 +19,23 @@ import { getQueryProfile } from '../../services/endpoints/mcp'
 export class ClaimRewards {
   static async start(
     currentWindow: BrowserWindow,
-    accounts: AccountDataList
+    accounts: AccountDataList,
+    useGlobalNotification?: boolean
   ) {
     ClaimRewards.core(currentWindow, accounts).then((response) => {
       if (response) {
         currentWindow.webContents.send(
-          ElectronAPIEventKeys.ClaimRewardsClientNotification,
+          useGlobalNotification
+            ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
+            : ElectronAPIEventKeys.ClaimRewardsClientNotification,
           response
         )
       }
 
       currentWindow.webContents.send(
-        ElectronAPIEventKeys.PartyClaimActionNotification
+        useGlobalNotification
+          ? ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
+          : ElectronAPIEventKeys.PartyClaimActionNotification
       )
     })
   }
@@ -44,6 +49,10 @@ export class ClaimRewards {
     }
 
     try {
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(true), 1_400) // 1.4 seconds
+      })
+
       const response = await Promise.allSettled(
         accounts.map(async (account) => {
           const accessToken = await Authentication.verifyAccessToken(

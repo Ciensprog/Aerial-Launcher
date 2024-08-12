@@ -116,10 +116,13 @@ export enum ElectronAPIEventKeys {
   PartyClaimActionNotification = 'party:claim:notification',
   PartyKickAction = 'party:kick',
   PartyKickActionNotification = 'party:kick:notification',
+  PartyKickActionGlobalNotification = 'party:kick:global:notification',
   PartyLeaveAction = 'party:leave',
   PartyLeaveActionNotification = 'party:leave:notification',
 
   ClaimRewardsClientNotification = 'claim-rewards:client:notification',
+  ClaimRewardsClientGlobalSyncNotification = 'claim-rewards:client:global:sync:notification',
+  ClaimRewardsClientGlobalAutoClaimedNotification = 'claim-rewards:client:global-auto-claimed:notification',
 
   PartyLoadFriends = 'party:load:friends',
   PartyLoadFriendsNotification = 'party:load:friends:notification',

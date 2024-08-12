@@ -48,7 +48,7 @@ export function useHandlers() {
   const handleOpenFNDBProfile = () => {
     if (selected) {
       window.electronAPI.openExternalURL(
-        fortniteDBProfileURL(selected.displayName)
+        fortniteDBProfileURL(selected.accountId)
       )
     }
   }

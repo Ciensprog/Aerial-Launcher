@@ -9,6 +9,8 @@ import { Button } from '../../components/ui/button'
 
 import { useCheckNewVersion } from './hooks'
 
+import { whatIsThis } from '../../lib/callbacks'
+
 export function CheckNewVersion() {
   const { data, handleGoToNewRelease } = useCheckNewVersion()
 
@@ -26,14 +28,11 @@ export function CheckNewVersion() {
           className="px-0 underline whitespace-normal"
           size="sm"
           variant="link"
+          onClick={handleGoToNewRelease}
+          onAuxClick={whatIsThis()}
           asChild
         >
-          <a
-            href={data.link}
-            onClick={handleGoToNewRelease}
-          >
-            {data.link}
-          </a>
+          <a href={data.link}>{data.link}</a>
         </Button>
       </AlertDescription>
     </Alert>

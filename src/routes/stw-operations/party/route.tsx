@@ -1,8 +1,9 @@
-import { Link, createRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { Info } from 'lucide-react'
 
 import { Route as RootRoute } from '../../__root'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import {
   Alert,
   AlertDescription,
@@ -11,7 +12,6 @@ import {
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -38,11 +38,7 @@ export function RouteComponent() {
     <>
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+          <HomeBreadcrumb />
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>STW Operations</BreadcrumbPage>

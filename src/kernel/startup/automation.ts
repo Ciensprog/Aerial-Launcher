@@ -12,6 +12,7 @@ import { BrowserWindow } from 'electron'
 import { AutomationStatusType } from '../../config/constants/automation'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { Service } from '../core/service'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
 
@@ -22,6 +23,7 @@ export class Automation {
     string,
     AutomationAccountServerData
   > = new Collection()
+  private static _services: Collection<string, Service> = new Collection()
 
   static async load(currentWindow: BrowserWindow) {
     const { automation } = await DataDirectory.getAutomationFile()
@@ -75,16 +77,13 @@ export class Automation {
     Automation.updateAccountData(accountId, {
       status: AutomationStatusType.LOADING,
     })
-
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1500)
-    })
+    Automation.getServiceByAccountId(accountId)?.destroy()
 
     await Automation.refreshData(currentWindow, accountId, true)
   }
 
   static async updateAction(
-    currentWindow: BrowserWindow,
+    _currentWindow: BrowserWindow,
     accountId: string,
     config: AutomationServiceActionConfig
   ) {
@@ -120,41 +119,137 @@ export class Automation {
     data: AutomationAccountFileData,
     isReload?: boolean
   ) {
-    const defaultResponse: AutomationServiceStatusResponse = {
-      accountId: data.accountId,
-      status: AutomationStatusType.LOADING,
+    const setDisconnected = () => {
+      Automation.updateAccountData(data.accountId, {
+        status: AutomationStatusType.DISCONNECTED,
+      })
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.AutomationServiceStartNotification,
+        {
+          accountId: data.accountId,
+          status: AutomationStatusType.DISCONNECTED,
+        } as AutomationServiceStatusResponse,
+        isReload
+      )
     }
 
-    Automation.updateAccountData(data.accountId, {
-      status: defaultResponse.status,
-    })
-    currentWindow.webContents.send(
-      ElectronAPIEventKeys.AutomationServiceStartNotification,
-      defaultResponse,
-      isReload
-    )
+    try {
+      const defaultResponse: AutomationServiceStatusResponse = {
+        accountId: data.accountId,
+        status: AutomationStatusType.LOADING,
+      }
 
-    const randomValue = Math.random()
-    const randomStatus =
-      randomValue >= 0.75
-        ? AutomationStatusType.ERROR
-        : randomValue >= 0.5
-          ? AutomationStatusType.DISCONNECTED
-          : AutomationStatusType.LISTENING
+      Automation.updateAccountData(data.accountId, {
+        status: defaultResponse.status,
+      })
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.AutomationServiceStartNotification,
+        defaultResponse,
+        isReload
+      )
 
-    defaultResponse.status = randomStatus
+      Automation.getServiceByAccountId(data.accountId)?.destroy()
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1500)
-    })
+      const accounts = AccountsManager.getAccounts()
+      const currentAccount = accounts.get(data.accountId)!
+      const service = new Service({
+        currentWindow,
+        account: currentAccount,
+      })
 
-    Automation.updateAccountData(data.accountId, {
-      status: defaultResponse.status,
-    })
-    currentWindow.webContents.send(
-      ElectronAPIEventKeys.AutomationServiceStartNotification,
-      defaultResponse
-    )
+      service.onConnected(() => {
+        service.checkMatchAtStartUp()
+      })
+
+      service.onDisconnected(() => {
+        setDisconnected()
+      })
+      service.onMemberDisconnected(() => {
+        setDisconnected()
+      })
+      service.onMemberExpired(() => {
+        setDisconnected()
+      })
+
+      service.onMemberJoined(async (response) => {
+        const current = Automation._accounts.get(data.accountId)
+
+        if (!current) {
+          return
+        }
+
+        if (
+          current.accountId === response.account_id &&
+          current.status === AutomationStatusType.DISCONNECTED
+        ) {
+          const newInitStatus = await service.init({
+            force: true,
+          })
+          let newStatus: AutomationStatusType | undefined
+
+          if (newInitStatus) {
+            newStatus = AutomationStatusType.LISTENING
+          } else if (newInitStatus === false) {
+            newStatus = AutomationStatusType.ERROR
+          }
+
+          if (newStatus) {
+            Automation.updateAccountData(current.accountId, {
+              status: newStatus,
+            })
+            currentWindow.webContents.send(
+              ElectronAPIEventKeys.AutomationServiceStartNotification,
+              {
+                accountId: current.accountId,
+                status: newStatus,
+              } as AutomationServiceStatusResponse,
+              isReload
+            )
+          }
+        }
+
+        if (current.accountId !== response.account_id) {
+          service.clearMissionInterval()
+        }
+      })
+
+      service.onMemberLeft((response) => {
+        if (data.accountId === response.account_id) {
+          service.clearMissionInterval()
+        }
+      })
+
+      // service.onMemberStateUpdated((response) => {
+      //   //
+      // })
+
+      // service.onPartyUpdated((response) => {
+      //   //
+      // })
+
+      // service.onDestroy(() => {
+      //   //
+      // })
+
+      const initStatus = await service.init()
+      Automation._services.set(currentAccount.accountId, service)
+
+      if (initStatus) {
+        defaultResponse.status = AutomationStatusType.LISTENING
+      } else if (initStatus === false) {
+        defaultResponse.status = AutomationStatusType.ERROR
+      }
+
+      Automation.updateAccountData(data.accountId, {
+        status: defaultResponse.status,
+      })
+      currentWindow.webContents.send(
+        ElectronAPIEventKeys.AutomationServiceStartNotification,
+        defaultResponse
+      )
+    } catch (error) {
+      setDisconnected()
+    }
   }
 
   // static async reload(currentWindow: BrowserWindow, accountId: string) {
@@ -168,6 +263,16 @@ export class Automation {
 
   //   await Automation.start(currentWindow, current, true)
   // }
+
+  static getServices() {
+    return Automation._services.clone()
+  }
+
+  static getServiceByAccountId(accountId: string) {
+    return Automation._services.find(
+      (service) => service.accountId === accountId
+    )
+  }
 
   private static async refreshData(
     currentWindow: BrowserWindow,
@@ -192,6 +297,7 @@ export class Automation {
 
     if (removeAccount) {
       Automation._accounts.delete(accountId)
+      Automation._services.delete(accountId)
     }
 
     await DataDirectory.updateAutomationFile(automation)
@@ -211,16 +317,43 @@ export class Automation {
     }>
   ) {
     const current = Automation._accounts.get(accountId)
+    const currentAutomationAccount = Automation._services.get(accountId)
 
     if (current) {
+      const actionsNewValueClaim =
+        data.actions?.claim ?? current.actions.claim
+      const actionsNewValueKick =
+        data.actions?.kick ?? current.actions.kick
+
+      if (currentAutomationAccount && data.actions) {
+        if (
+          (!current.actions.claim && actionsNewValueClaim) ||
+          (!current.actions.kick && actionsNewValueKick)
+        ) {
+          if (!currentAutomationAccount.startedTracking) {
+            currentAutomationAccount.setStartedTracking(true)
+            currentAutomationAccount.checkMatchAtStartUp()
+          }
+        } else if (!actionsNewValueClaim && !actionsNewValueKick) {
+          currentAutomationAccount.setStartedTracking(false)
+          currentAutomationAccount.clearMissionInterval()
+        }
+      }
+
       Automation._accounts.set(accountId, {
         accountId,
         actions: {
-          claim: data.actions?.claim ?? current.actions.claim,
-          kick: data.actions?.kick ?? current.actions.kick,
+          claim: actionsNewValueClaim,
+          kick: actionsNewValueKick,
         },
         status: data.status ?? current.status,
       })
     }
+  }
+
+  static getAccountById(
+    accountId: string
+  ): AutomationAccountServerData | undefined {
+    return Automation._accounts.get(accountId)
   }
 }

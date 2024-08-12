@@ -178,7 +178,7 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.OnRemoveAccount,
     async (_, accountId: string) => {
-      await AccountsManager.remove(accountId)
+      await AccountsManager.remove(currentWindow, accountId)
     }
   )
 
@@ -332,7 +332,10 @@ app.on('ready', async () => {
         currentWindow,
         selectedAccount,
         accounts,
-        claimState
+        claimState,
+        {
+          force: true,
+        }
       )
     }
   )
@@ -536,6 +539,10 @@ app.on('ready', async () => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    Automation.getServices().forEach((service) => {
+      service.destroy()
+    })
+
     app.quit()
     schedule.gracefulShutdown().catch(() => {})
   }

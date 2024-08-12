@@ -3,9 +3,15 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { AutomationStatusType } from '../../config/constants/automation'
 
+import { useClaimedRewards } from '../../hooks/stw-operations/claimed-rewards'
+
 import { useAutomationStore } from '../../state/stw-operations/automation'
 
+import { toast } from '../../lib/notifications'
+
 export function LoadAutomation() {
+  const { updateData } = useClaimedRewards()
+
   const { addOrUpdateAccount, refreshAccounts, removeAllAccounts } =
     useAutomationStore(
       useShallow((state) => ({
@@ -61,6 +67,47 @@ export function LoadAutomation() {
             removing: false,
           },
         })
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
+    const listener =
+      window.electronAPI.notificationGlobalSyncClaimedRewards(
+        async (notifications) => {
+          updateData(notifications)
+        }
+      )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationGlobalClaimedRewards(
+      async () => {
+        toast('Automation: claimed rewards')
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationAutoKick(
+      async (total) => {
+        toast(
+          total === 0
+            ? 'Automation: no user has been kicked'
+            : `Automation: kicked ${total} user${total > 1 ? 's' : ''}`
+        )
       }
     )
 

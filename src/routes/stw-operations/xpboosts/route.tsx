@@ -5,7 +5,7 @@ import type {
   XPBoostType,
 } from '../../../types/xpboosts'
 
-import { Link, createRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { ExternalLink, Info, Send, Trash2, Undo2, X } from 'lucide-react'
 
@@ -15,11 +15,11 @@ import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 
 import { Route as RootRoute } from '../../__root'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import { AccountSelectors } from '../../../components/selectors/accounts'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -52,6 +52,7 @@ import {
   useSearchUser,
   useSendBoostsSheet,
 } from './-hooks'
+import { useWhy } from './-why'
 
 import {
   compactNumber,
@@ -62,6 +63,7 @@ import {
   extractXPBoosts,
   extractFounderStatus,
 } from '../../../lib/parsers/query-profile'
+import { whatIsThis } from '../../../lib/callbacks'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
 
 export const Route = createRoute({
@@ -72,11 +74,7 @@ export const Route = createRoute({
       <>
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+            <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>STW Operations</BreadcrumbPage>
@@ -124,6 +122,9 @@ function Content() {
     handleChangeSearchDisplayName,
     handleSearchUser,
   } = useSearchUser()
+  const { showLink, handleXD, handleWhy } = useWhy({
+    inputSearchValue: inputSearchDisplayName,
+  })
   const { recalculateTotal, teammateXPBoostsFiltered } = useFilterXPBoosts(
     {
       data,
@@ -137,11 +138,11 @@ function Content() {
   )
 
   const handleOpenExternalFNDBProfileUrl =
-    (displayName: string): MouseEventHandler<HTMLAnchorElement> =>
+    (accountId: string): MouseEventHandler<HTMLAnchorElement> =>
     (event) => {
       event.preventDefault()
 
-      window.electronAPI.openExternalURL(fortniteDBProfileURL(displayName))
+      window.electronAPI.openExternalURL(fortniteDBProfileURL(accountId))
     }
 
   return (
@@ -168,6 +169,8 @@ function Content() {
 
                       if (!inputSearchButtonIsDisabled) {
                         handleSearchUser()
+                        handleXD()
+                        handleWhy()
                       }
                     }}
                   >
@@ -193,6 +196,8 @@ function Content() {
                   </form>
                 </div>
 
+                {showLink && <PrayForXPBoosts />}
+
                 {searchedUser &&
                   !searchedUser.success &&
                   !searchedUser.isPrivate && (
@@ -209,12 +214,13 @@ function Content() {
                     <div>
                       <a
                         href={fortniteDBProfileURL(
-                          searchedUser.data.lookup.displayName
+                          searchedUser.data.lookup.id
                         )}
                         className="inline-flex gap-2 items-center hover:opacity-75"
                         onClick={handleOpenExternalFNDBProfileUrl(
-                          searchedUser.data.lookup.displayName
+                          searchedUser.data.lookup.id
                         )}
+                        onAuxClick={whatIsThis()}
                       >
                         <ExternalAuthTypeImage
                           externalAuthType={
@@ -222,7 +228,7 @@ function Content() {
                           }
                         />
                         <span className="max-w-72 text-lg truncate">
-                          {searchedUser.data.lookup.displayName}
+                          {searchedUser.data.lookup.id}
                         </span>
                         <ExternalLink
                           className="stroke-muted-foreground"
@@ -590,12 +596,13 @@ function SendBoostsSheet({
                       <div>
                         <a
                           href={fortniteDBProfileURL(
-                            searchedUser.data.lookup.displayName
+                            searchedUser.data.lookup.id
                           )}
                           className="inline-flex gap-2 items-center hover:opacity-75"
                           onClick={handleOpenExternalFNDBProfileUrl(
-                            searchedUser.data.lookup.displayName
+                            searchedUser.data.lookup.id
                           )}
+                          onAuxClick={whatIsThis()}
                         >
                           <ExternalAuthTypeImage
                             externalAuthType={
@@ -1021,5 +1028,46 @@ export function SearchedUserData({
         value={extractFounderStatus(founderStatus)}
       />
     </>
+  )
+}
+
+function PrayForXPBoosts() {
+  const link = [
+    'ht',
+    'tps://',
+    'do',
+    'cs.g',
+    'oog',
+    'le.c',
+    'om/doc',
+    'ument/d',
+    '/1nZo6T',
+    'A3aTlb1u',
+    '7SwxvnpJbg5',
+    '5U0MQ',
+    'RGcyNV0',
+    'i-Xk',
+    '1q',
+    'Y',
+  ]
+  const handleClick: MouseEventHandler<HTMLAnchorElement> = (event) => {
+    event.preventDefault()
+
+    window.electronAPI.openExternalURL(link.join(''))
+  }
+
+  return (
+    <div className="flex flex-col gap-2 text-center">
+      <div className="text-2xl">🙏</div>
+      <div className="font-bold text-lg">Súplica Al Potenciador</div>
+      <a
+        className="bg-muted/50 break-all flex px-2 py-1 rounded text-xs hover:opacity-85"
+        href={link.join('')}
+        onClick={handleClick}
+        onAuxClick={whatIsThis()}
+      >
+        {link.join('')}
+      </a>
+    </div>
   )
 }
