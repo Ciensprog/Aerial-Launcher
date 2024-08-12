@@ -1,7 +1,7 @@
 import type { WorldInfoFileData } from '../../../types/data/advanced-mode/world-info'
 
 import { UpdateIcon } from '@radix-ui/react-icons'
-import { Link, createRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import {
   CloudDownload,
   Eye,
@@ -15,10 +15,10 @@ import {
 
 import { Route as RootRoute } from '../../__root'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -45,11 +45,7 @@ export const Route = createRoute({
       <>
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+            <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>Advanced Mode</BreadcrumbPage>

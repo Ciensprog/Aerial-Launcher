@@ -1,16 +1,16 @@
 import type { MouseEvent } from 'react'
 
-import { Link, createRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { ExternalLink } from 'lucide-react'
 
 import packageJson from '../../../../package.json'
 
 import { Route as RootRoute } from '../../__root'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -18,6 +18,7 @@ import {
 
 import { useActions } from './-hooks'
 
+import { whatIsThis } from '../../../lib/callbacks'
 import { cn } from '../../../lib/utils'
 
 const links = {
@@ -46,11 +47,7 @@ export function ComponentRoute() {
     <>
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+          <HomeBreadcrumb />
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>Credits</BreadcrumbPage>
@@ -58,19 +55,22 @@ export function ComponentRoute() {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex flex-grow">
-        <div className="flex items-center- justify-center- w-full">
-          <div className="flex flex-col max-w-md">
-            <ul
-              className={cn(
-                'space-y-5 w-full',
-                '[&_.link]:gap-1 [&_.link]:inline-flex [&_.link]:items-center [&_.link]:text-muted-foreground [&_.link:hover]:text-muted-foreground/80'
-              )}
-            >
+        <div className="flex w-full">
+          <div
+            className={cn(
+              'flex flex-col max-w-md',
+              '[&_.list]:space-y-5 [&_.list]:w-full',
+              '[&_.link]:gap-1 [&_.link]:inline-flex [&_.link]:items-center [&_.link]:text-muted-foreground [&_.link:hover]:text-muted-foreground/80'
+            )}
+          >
+            <h2 className="mb-5 text-3xl">Credits</h2>
+            <ul className="list">
               <li className="item">
                 <a
                   href={packageJson.repository.url}
                   className="link"
                   onClick={openURL(packageJson.repository.url)}
+                  onAuxClick={whatIsThis()}
                 >
                   Ciensprog <ExternalLink className="h-3 w-3" />
                 </a>
@@ -81,12 +81,13 @@ export function ComponentRoute() {
                   href={links.kuda}
                   className="link"
                   onClick={openURL(links.kuda)}
+                  onAuxClick={whatIsThis()}
                 >
                   Kuda <ExternalLink className="h-3 w-3" />
                 </a>
                 <div>
                   Helped with the logos, design and suggested many cool
-                  features along the way.
+                  features along the way. Lleva meses con la misma tos ☠️
                 </div>
               </li>
               <li className="item">
@@ -94,6 +95,7 @@ export function ComponentRoute() {
                   href={links.LeleDerGrasshalmi}
                   className="link"
                   onClick={openURL(links.LeleDerGrasshalmi)}
+                  onAuxClick={whatIsThis()}
                 >
                   LeleDerGrasshalmi <ExternalLink className="h-3 w-3" />
                 </a>{' '}
@@ -102,6 +104,7 @@ export function ComponentRoute() {
                   href={links.HyperionCSharp}
                   className="link"
                   onClick={openURL(links.HyperionCSharp)}
+                  onAuxClick={whatIsThis()}
                 >
                   HyperionCSharp <ExternalLink className="h-3 w-3" />
                 </a>
@@ -110,6 +113,9 @@ export function ComponentRoute() {
                   development.
                 </div>
               </li>
+            </ul>
+            <h2 className="mb-5 mt-5 text-3xl">Greetings</h2>
+            <ul className="list">
               <li className="item">
                 <span
                   className="text-muted-foreground"
@@ -118,8 +124,9 @@ export function ComponentRoute() {
                   eric_guest1
                 </span>
                 <div>
-                  Tester of new features before new version releases to
-                  detect and fix possible bugs.
+                  Eric helped me test some of the first versions of Aerial,
+                  aswell as being many hours in voice chat sharing his
+                  opinions and ideas about the project.
                 </div>
               </li>
             </ul>

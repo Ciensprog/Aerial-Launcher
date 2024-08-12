@@ -8,6 +8,8 @@ import { SidebarMenu } from '../components/menu/sidebar'
 
 import logoLaucher from '../_assets/aerial-launcher.png'
 
+import { whatIsThis } from '../lib/callbacks'
+
 export function MainLayout({ children }: PropsWithChildren) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[var(--sidebar-width-md)_1fr] lg:grid-cols-[var(--sidebar-width-lg)_1fr]">
@@ -15,7 +17,10 @@ export function MainLayout({ children }: PropsWithChildren) {
         <div className="flex h-full max-h-screen flex-col">
           <div className="app-draggable-region flex h-[var(--header-height)] items-center justify-center border-b px-4 shrink-0 lg:px-6">
             <div className="flex gap-2 items-center font-semibold">
-              <Link to="/">
+              <Link
+                to="/"
+                onAuxClick={whatIsThis()}
+              >
                 <img
                   src={logoLaucher}
                   className="w-20"

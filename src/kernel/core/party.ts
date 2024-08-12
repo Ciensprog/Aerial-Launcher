@@ -16,6 +16,7 @@ import { PartyRole } from '../../config/constants/fortnite/party'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { AccountsManager } from '../startup/accounts'
+import { Automation } from '../startup/automation'
 import { DataDirectory } from '../startup/data-directory'
 import { Authentication } from './authentication'
 import { ClaimRewards } from './claim-rewards'
@@ -36,8 +37,16 @@ export class Party {
     currentWindow: BrowserWindow,
     selectedAccount: AccountData,
     accounts: AccountDataList,
-    claimState: boolean
+    claimState: boolean,
+    config?: Partial<{
+      force: boolean
+      useGlobalNotification: boolean
+    }>
   ) {
+    const kickNotification = config?.useGlobalNotification
+      ? ElectronAPIEventKeys.PartyKickActionGlobalNotification
+      : ElectronAPIEventKeys.PartyKickActionNotification
+
     try {
       const accessToken = await Authentication.verifyAccessToken(
         selectedAccount,
@@ -45,10 +54,7 @@ export class Party {
       )
 
       if (!accessToken) {
-        currentWindow.webContents.send(
-          ElectronAPIEventKeys.PartyKickActionNotification,
-          0
-        )
+        currentWindow.webContents.send(kickNotification, 0)
 
         return
       }
@@ -60,7 +66,7 @@ export class Party {
       const party = result.data.current[0]
 
       if (party) {
-        const { members } = party
+        const members = party.members
 
         const memberListId = members.map(({ account_id }) => account_id)
         // const accountListId = accounts.map(({ accountId }) => accountId)
@@ -68,18 +74,37 @@ export class Party {
         const filteredMyAccountsInParty = accounts.filter((account) =>
           memberListId.includes(account.accountId)
         )
-        const filteredMyAccountsInPartyIds = filteredMyAccountsInParty.map(
+        const filteredMyAccountIdsInParty = filteredMyAccountsInParty.map(
           ({ accountId }) => accountId
         )
 
         const filteredMyAccounts = members.filter((member) =>
-          filteredMyAccountsInPartyIds.includes(member.account_id)
+          filteredMyAccountIdsInParty.includes(member.account_id)
         )
         const leader = filteredMyAccounts.find(
           (member) => member.role === PartyRole.CAPTAIN
         )
 
         let total = 0
+
+        const membersWithAutoKick = memberListId.filter((accountId) => {
+          const automationAccount = Automation.getAccountById(accountId)
+
+          if (automationAccount) {
+            return automationAccount.actions.kick
+          }
+
+          return false
+        })
+        const membersWithAutoClaim = memberListId.filter((accountId) => {
+          const automationAccount = Automation.getAccountById(accountId)
+
+          if (automationAccount) {
+            return automationAccount.actions.claim
+          }
+
+          return false
+        })
 
         if (leader) {
           /**
@@ -89,9 +114,18 @@ export class Party {
           const accountLeader = filteredMyAccountsInParty.find(
             ({ accountId }) => accountId === leader.account_id
           )!
-          const _members = members.filter(
-            (member) => member.account_id !== leader.account_id
-          )
+          const _members = config?.force
+            ? members.filter(
+                (member) => member.account_id !== leader.account_id
+              )
+            : members.filter(
+                (member) =>
+                  member.account_id !== selectedAccount.accountId &&
+                  !membersWithAutoKick.includes(member.account_id)
+              )
+          const newAccountLeader = config?.force
+            ? accountLeader
+            : selectedAccount
 
           const kickStatuses = await Promise.allSettled(
             _members.map(({ account_id }) =>
@@ -111,13 +145,15 @@ export class Party {
           })
 
           try {
-            // Leader
+            /**
+             * Leader
+             */
 
             const kickStatus = await Party.kickMember({
               currentWindow,
               party,
-              account: accountLeader,
-              accountIdToKick: accountLeader.accountId,
+              account: newAccountLeader,
+              accountIdToKick: newAccountLeader.accountId,
             })
 
             if (kickStatus) {
@@ -131,8 +167,16 @@ export class Party {
            * Leave the party for each account within
            */
 
+          const filteredMyAccountsInPartyToKick = config?.force
+            ? filteredMyAccountsInParty
+            : filteredMyAccountsInParty.filter(
+                (account) =>
+                  selectedAccount.accountId === account.accountId ||
+                  !membersWithAutoKick.includes(account.accountId)
+              )
+
           const kickStatuses = await Promise.allSettled(
-            filteredMyAccountsInParty.map((account) =>
+            filteredMyAccountsInPartyToKick.map((account) =>
               Party.kickMember({
                 account,
                 currentWindow,
@@ -150,22 +194,30 @@ export class Party {
         }
 
         if (claimState) {
-          ClaimRewards.core(currentWindow, filteredMyAccountsInParty).then(
-            (response) => {
-              if (response) {
-                currentWindow.webContents.send(
-                  ElectronAPIEventKeys.ClaimRewardsClientNotification,
-                  response
-                )
-              }
+          const filteredMyAccountsInPartyToClaimRewards = config?.force
+            ? filteredMyAccountsInParty
+            : filteredMyAccountsInParty.filter(
+                (account) =>
+                  selectedAccount.accountId === account.accountId ||
+                  !membersWithAutoClaim.includes(account.accountId)
+              )
+
+          ClaimRewards.core(
+            currentWindow,
+            filteredMyAccountsInPartyToClaimRewards
+          ).then((response) => {
+            if (response) {
+              currentWindow.webContents.send(
+                config?.useGlobalNotification
+                  ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
+                  : ElectronAPIEventKeys.ClaimRewardsClientNotification,
+                response
+              )
             }
-          )
+          })
         }
 
-        currentWindow.webContents.send(
-          ElectronAPIEventKeys.PartyKickActionNotification,
-          total
-        )
+        currentWindow.webContents.send(kickNotification, total)
 
         return
       }
@@ -173,10 +225,7 @@ export class Party {
       //
     }
 
-    currentWindow.webContents.send(
-      ElectronAPIEventKeys.PartyKickActionNotification,
-      0
-    )
+    currentWindow.webContents.send(kickNotification, 0)
   }
 
   static async leaveParty(

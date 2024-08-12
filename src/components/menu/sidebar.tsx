@@ -2,6 +2,7 @@ import type { MouseEventHandler, PropsWithChildren } from 'react'
 
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Link } from '@tanstack/react-router'
+import { Copyright } from 'lucide-react'
 import { forwardRef } from 'react'
 
 import packageJson from '../../../package.json'
@@ -11,6 +12,7 @@ import {
   repositoryURL,
   supportDiscordServerURL,
 } from '../../config/about/links'
+import { AutomationStatusType } from '../../config/constants/automation'
 
 import { Button } from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
@@ -22,9 +24,12 @@ import { Separator } from '../ui/separator'
 //   TooltipTrigger,
 // } from '../ui/tooltip'
 
+import { useGetAutomationDataStatus } from '../../hooks/stw-operations/automation'
+
 import { useAccountListStore } from '../../state/accounts/list'
 
 import { cn } from '../../lib/utils'
+import { whatIsThis } from '../../lib/callbacks'
 
 const currentClassNameHover =
   'hover:opacity-75 dark:opacity-100 dark:hover:text-white'
@@ -36,6 +41,8 @@ export function SidebarMenu({
   onOpenChange?: (open: boolean) => void
 }) {
   const accounts = useAccountListStore((state) => state.accounts)
+  const { status } = useGetAutomationDataStatus()
+
   const total = Object.keys(accounts).length
   const areThereAccounts = total > 0
   const totalInText = new Intl.NumberFormat().format(total)
@@ -69,11 +76,40 @@ export function SidebarMenu({
           <Title className="pb-0">STW Operations</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
             <ul className="list-disc ml-5">
+              <li className="item">
+                <Link
+                  to="/stw-operations/automation"
+                  className={cn(currentClassNameHover)}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                  onAuxClick={whatIsThis()}
+                >
+                  <span className="flex relative">
+                    Auto-kick
+                    {status !== null && (
+                      <span
+                        className={cn(
+                          'absolute left-[calc(100%+0.5rem)] border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
+                          status === AutomationStatusType.ISSUE
+                            ? 'border-yellow-600 text-yellow-600'
+                            : 'border-green-600 text-green-600'
+                        )}
+                      >
+                        {status === AutomationStatusType.ISSUE
+                          ? 'Issue'
+                          : 'Active'}
+                      </span>
+                    )}
+                  </span>
+                </Link>
+              </li>
               <li className="item">
                 <Link
                   to="/stw-operations/party"
@@ -82,6 +118,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Party
                 </Link>
@@ -94,6 +131,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Save Quests
                 </Link>
@@ -106,6 +144,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Homebase Name
                 </Link>
@@ -118,6 +157,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   XP Boosts
                 </Link>
@@ -127,7 +167,7 @@ export function SidebarMenu({
           <Title className="pb-0">Account Management</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
@@ -145,6 +185,7 @@ export function SidebarMenu({
                     }),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                   disabled={!areThereAccounts}
                 >
                   Epic Games Settings
@@ -156,7 +197,7 @@ export function SidebarMenu({
           <Title className="pb-0">Advanced Mode</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
@@ -174,6 +215,7 @@ export function SidebarMenu({
                     }),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                   disabled={!areThereAccounts}
                 >
                   Matchmaking Track
@@ -187,6 +229,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   World Info
                 </Link>
@@ -199,7 +242,7 @@ export function SidebarMenu({
           <Title className="pb-0">My Accounts ({totalInText}):</Title>
           <div
             className={cn(
-              'px-3 py-2 text-muted-foreground',
+              'pl-3 py-2 text-muted-foreground',
               '[&_.item>a]:flex'
             )}
           >
@@ -213,6 +256,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Authorization Code
                 </Link>
@@ -226,6 +270,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Exchange Code
                 </Link>
@@ -239,6 +284,7 @@ export function SidebarMenu({
                     className: cn(activeClassName),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                 >
                   Device Auth
                 </Link>
@@ -256,6 +302,7 @@ export function SidebarMenu({
                     }),
                   }}
                   onClick={goToPage}
+                  onAuxClick={whatIsThis()}
                   disabled={!areThereAccounts}
                 >
                   Remove Account
@@ -276,6 +323,7 @@ export function SidebarMenu({
               size="sm"
               variant="ghost"
               onClick={goToDiscordServerURL}
+              onAuxClick={whatIsThis()}
               asChild
             >
               <a href={supportDiscordServerURL}>
@@ -304,12 +352,29 @@ export function SidebarMenu({
               size="sm"
               variant="ghost"
               onClick={goToRepositoryURL}
+              onAuxClick={whatIsThis()}
               asChild
             >
               <a href={repositoryURL}>
                 <GitHubLogoIcon />
                 View on GitHub
               </a>
+            </Button>
+            <Button
+              className={cn(
+                'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
+                'text-muted-foreground',
+                'hover:bg-muted hover:text-primary'
+              )}
+              size="sm"
+              variant="ghost"
+              onAuxClick={whatIsThis()}
+              asChild
+            >
+              <Link to="/information/credits">
+                <Copyright className="size-4" />
+                <span className="-m-0.5">Credits & Greetings</span>
+              </Link>
             </Button>
           </div>
         </nav>
@@ -320,18 +385,11 @@ export function SidebarMenu({
               href={repositoryReleasesURL}
               className="underline hover:text-muted-foreground"
               onClick={goToReleasesURL}
+              onAuxClick={whatIsThis()}
             >
               All Releases
             </a>
           </p>
-        </div>
-        <div className="px-5 text-xs text-muted-foreground/60 lg:px-7">
-          <Link
-            to="/information/credits"
-            className="flex justify-center mt-3 underline hover:text-muted-foreground"
-          >
-            Credits
-          </Link>
         </div>
       </div>
     </ScrollArea>

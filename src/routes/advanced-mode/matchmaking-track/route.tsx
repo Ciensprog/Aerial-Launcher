@@ -1,7 +1,7 @@
 import type { MouseEventHandler } from 'react'
 
 import { UpdateIcon } from '@radix-ui/react-icons'
-import { Link, createRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { ExternalLink } from 'lucide-react'
 
 import { fortniteDBProfileURL } from '../../../config/fortnite/links'
@@ -14,12 +14,12 @@ import {
   SearchedUserData,
 } from '../../stw-operations/xpboosts/route'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -43,6 +43,7 @@ import {
 import { useCurrentActions } from './-hooks'
 
 import { extractXPBoosts } from '../../../lib/parsers/query-profile'
+import { whatIsThis } from '../../../lib/callbacks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -52,11 +53,7 @@ export const Route = createRoute({
       <>
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+            <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>Advanced Mode</BreadcrumbPage>
@@ -111,11 +108,11 @@ function Content() {
   )
 
   const handleOpenExternalFNDBProfileUrl =
-    (displayName: string): MouseEventHandler<HTMLAnchorElement> =>
+    (accountId: string): MouseEventHandler<HTMLAnchorElement> =>
     (event) => {
       event.preventDefault()
 
-      window.electronAPI.openExternalURL(fortniteDBProfileURL(displayName))
+      window.electronAPI.openExternalURL(fortniteDBProfileURL(accountId))
     }
 
   return (
@@ -151,7 +148,7 @@ function Content() {
                     emptyPlaceholder="No recently players"
                     emptyContent="No player found"
                     placeholder="Select a recently player"
-                    placeholderSearch="Search on 1 players"
+                    placeholderSearch={`Search on ${options.length} player(s)`}
                     options={options}
                     value={[]}
                     customFilter={customFilter}
@@ -221,12 +218,13 @@ function Content() {
                     <div>
                       <a
                         href={fortniteDBProfileURL(
-                          searchedUser.data.lookup.displayName
+                          searchedUser.data.lookup.id
                         )}
                         className="inline-flex gap-2 items-center hover:opacity-75"
                         onClick={handleOpenExternalFNDBProfileUrl(
-                          searchedUser.data.lookup.displayName
+                          searchedUser.data.lookup.id
                         )}
+                        onAuxClick={whatIsThis()}
                       >
                         <ExternalAuthTypeImage
                           externalAuthType={

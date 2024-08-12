@@ -116,10 +116,13 @@ export enum ElectronAPIEventKeys {
   PartyClaimActionNotification = 'party:claim:notification',
   PartyKickAction = 'party:kick',
   PartyKickActionNotification = 'party:kick:notification',
+  PartyKickActionGlobalNotification = 'party:kick:global:notification',
   PartyLeaveAction = 'party:leave',
   PartyLeaveActionNotification = 'party:leave:notification',
 
   ClaimRewardsClientNotification = 'claim-rewards:client:notification',
+  ClaimRewardsClientGlobalSyncNotification = 'claim-rewards:client:global:sync:notification',
+  ClaimRewardsClientGlobalAutoClaimedNotification = 'claim-rewards:client:global-auto-claimed:notification',
 
   PartyLoadFriends = 'party:load:friends',
   PartyLoadFriendsNotification = 'party:load:friends:notification',
@@ -151,6 +154,21 @@ export enum ElectronAPIEventKeys {
 
   MatchmakingTrackSaveFile = 'advanced-mode:matchmaking-track:save:file',
   MatchmakingTrackSaveFileNotification = 'advanced-mode:matchmaking-track:save:file:notification',
+
+  /**
+   * Automation
+   */
+
+  AutomationServiceRequestData = 'automation:service:request:data',
+  AutomationServiceResponseData = 'automation:service:response:data',
+  AutomationServiceStart = 'automation:service:start',
+  AutomationServiceStartNotification = 'automation:service:start:notification',
+  // AutomationServiceReload = 'automation:service:reload',
+  // AutomationServiceReloadNotification = 'automation:service:reload:notification',
+  AutomationServiceRemove = 'automation:service:remove',
+  AutomationServiceRemoveNotification = 'automation:service:remove:notification',
+  AutomationServiceActionUpdate = 'automation:service:action:update',
+  AutomationServiceActionUpdateNotification = 'automation:service:action:update:notification',
 
   /**
    * Schedules

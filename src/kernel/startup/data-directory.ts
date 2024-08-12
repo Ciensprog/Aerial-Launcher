@@ -1,4 +1,5 @@
 import type { AccountList } from '../../types/accounts'
+import type { AutomationAccountFileDataList } from '../../types/automation'
 import type { FriendRecord } from '../../types/friends'
 import type { GroupRecord } from '../../types/groups'
 import type { Settings } from '../../types/settings'
@@ -8,6 +9,7 @@ import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
+import { automationFileSchema } from '../../lib/validations/schemas/automation'
 import { friendsSchema } from '../../lib/validations/schemas/friends'
 import { groupsSchema } from '../../lib/validations/schemas/groups'
 import { matchmakingsSchema } from '../../lib/validations/schemas/matchmaking'
@@ -75,6 +77,12 @@ export class DataDirectory {
   )
   private static matchmakingDefaultData: Array<unknown> = []
 
+  static automationFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'automation.json'
+  )
+  private static automationDefaultData: AutomationAccountFileDataList = {}
+
   /**
    * Get Path
    */
@@ -99,6 +107,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateGroupsJsonFile()
     await DataDirectory.getOrCreateFriendsJsonFile()
     await DataDirectory.getOrCreateMatchmakingJsonFile()
+    await DataDirectory.getOrCreateAutomationJsonFile()
   }
 
   /**
@@ -220,6 +229,28 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from automation.json
+   */
+  static async getAutomationFile(): Promise<{
+    automation: AutomationAccountFileDataList
+  }> {
+    const result = await DataDirectory.getOrCreateAutomationJsonFile()
+
+    try {
+      const list = automationFileSchema.safeParse(JSON.parse(result))
+      const automation = list.success
+        ? list.data
+        : DataDirectory.automationDefaultData
+
+      return { automation }
+    } catch (error) {
+      //
+    }
+
+    return { automation: DataDirectory.automationDefaultData }
+  }
+
+  /**
    * Update accounts.json
    */
   static async updateAccountsFile(data: AccountList) {
@@ -266,6 +297,16 @@ export class DataDirectory {
   static async updateMatchmakingFile(data: Array<unknown>) {
     await DataDirectory.updateJsonFile(
       DataDirectory.matchmakingFilePath,
+      data
+    )
+  }
+
+  /**
+   * Update automation.json
+   */
+  static async updateAutomationFile(data: AutomationAccountFileDataList) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.automationFilePath,
       data
     )
   }
@@ -394,6 +435,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.matchmakingFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating automation.json
+   */
+  private static async getOrCreateAutomationJsonFile() {
+    const initialData = DataDirectory.automationDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.automationFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),

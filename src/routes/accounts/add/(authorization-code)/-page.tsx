@@ -33,6 +33,8 @@ import {
 import { useHandlers } from '../-hooks'
 import { useSetupForm } from './-hooks'
 
+import { whatIsThis } from '../../../../lib/callbacks'
+
 export function AuthorizationCodePage() {
   const { goToAuthorizationCodeURL, goToEpicGamesLogin } = useHandlers()
   const { form, isSubmitting, onSubmit } = useSetupForm()
@@ -57,6 +59,7 @@ export function AuthorizationCodePage() {
                       className="font-medium text-primary underline-offset-4 hover:underline"
                       title={epicGamesLoginURL}
                       onClick={goToEpicGamesLogin}
+                      onAuxClick={whatIsThis()}
                     >
                       {epicGamesLoginURL}
                     </a>
@@ -68,6 +71,7 @@ export function AuthorizationCodePage() {
                       className="font-medium text-primary underline-offset-4 hover:underline"
                       title={epicGamesAuthorizationCodeURL}
                       onClick={goToAuthorizationCodeURL}
+                      onAuxClick={whatIsThis()}
                     >
                       this link
                     </a>{' '}
@@ -125,6 +129,7 @@ export function AuthorizationCodePage() {
                 href={epicGamesAuthorizationCodeURL}
                 title={epicGamesAuthorizationCodeURL}
                 onClick={goToAuthorizationCodeURL}
+                onAuxClick={whatIsThis()}
               >
                 Get Code <ExternalLinkIcon className="ml-1" />
               </a>

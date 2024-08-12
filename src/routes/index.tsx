@@ -16,6 +16,8 @@ import {
 
 import { Route as RootRoute } from './__root'
 
+import { whatIsThis } from '../lib/callbacks'
+
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/',
@@ -25,6 +27,7 @@ export const Route = createRoute({
 export function IndexComponent() {
   const handleOpenDiscord: MouseEventHandler = (event) => {
     event.preventDefault()
+
     window.electronAPI.openExternalURL(supportDiscordServerURL)
   }
 
@@ -47,6 +50,7 @@ export function IndexComponent() {
                 href="/"
                 className="gap-1 inline-flex items-center text-muted-foreground underline underline-offset-2 hover:opacity-70"
                 onClick={handleOpenDiscord}
+                onAuxClick={whatIsThis()}
               >
                 Discord Community
                 <ExternalLinkIcon className="relative top-0.5" />

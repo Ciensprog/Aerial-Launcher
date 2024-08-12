@@ -11,6 +11,7 @@ import { LoadMatchmakingPath } from './bootstrap/components/advanced-mode/load-m
 import { LoadWorldInfoFiles } from './bootstrap/components/advanced-mode/load-world-info-files'
 import { LoadWorldInfoData } from './bootstrap/components/advanced-mode/load-world-info'
 import { LoadAccounts } from './bootstrap/components/load-accounts'
+import { LoadAutomation } from './bootstrap/components/load-automation'
 import { LoadFriends } from './bootstrap/components/load-friends'
 import { LoadGroups } from './bootstrap/components/load-groups'
 import { LoadSettings } from './bootstrap/components/load-settings'
@@ -39,6 +40,7 @@ root.render(
       <LoadWorldInfoData />
       <LoadWorldInfoFiles />
       <LoadMatchmakingPath />
+      <LoadAutomation />
 
       <RouterProvider
         router={router}

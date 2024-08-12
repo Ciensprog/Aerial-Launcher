@@ -18,6 +18,8 @@ import { SidebarMenu } from '../../components/menu/sidebar'
 import { useUISidebarHistory } from '../../hooks/ui/sidebars'
 import { useAttributesStates, useHandlers, useWindowEvents } from './hooks'
 
+import { whatIsThis } from '../../lib/callbacks'
+
 export function Header() {
   const { changeVisibility, visibility } = useUISidebarHistory()
   const { isButtonDisabled, open, setOpen } = useAttributesStates()
@@ -75,6 +77,7 @@ export function Header() {
       <Button
         size="icon"
         variant="ghost"
+        onAuxClick={whatIsThis()}
         asChild
       >
         <Link to="/settings">

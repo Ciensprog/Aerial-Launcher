@@ -1,13 +1,13 @@
-import { Link, createRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
 
 import { Route as RootRoute } from '../../__root'
 
+import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import { AccountSelectors } from '../../../components/selectors/accounts'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -22,9 +22,8 @@ import {
 } from '../../../components/ui/card'
 import { Switch } from '../../../components/ui/switch'
 
+import { useClaimedRewardsNotifications } from '../party/-hooks'
 import { useData } from './-hooks'
-
-// import { cn } from '../../../lib/utils'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -34,11 +33,7 @@ export const Route = createRoute({
       <>
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+            <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>STW Operations</BreadcrumbPage>
@@ -73,6 +68,8 @@ function Content() {
     saveQuestsUpdateAccounts,
     saveQuestsUpdateTags,
   } = useData()
+
+  useClaimedRewardsNotifications()
 
   return (
     <div className="flex flex-grow">

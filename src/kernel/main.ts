@@ -9,6 +9,7 @@ import type {
   AccountList,
 } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
+import type { AutomationServiceActionConfig } from '../types/automation'
 import type { GroupRecord } from '../types/groups'
 import type { Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
@@ -38,6 +39,7 @@ import { XPBoostsManager } from './core/xpboosts'
 import { WorldInfoManager } from './core/world-info'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
+import { Automation } from './startup/automation'
 import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
 import { TagsManager } from './startup/tags'
@@ -176,7 +178,7 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.OnRemoveAccount,
     async (_, accountId: string) => {
-      await AccountsManager.remove(accountId)
+      await AccountsManager.remove(currentWindow, accountId)
     }
   )
 
@@ -330,7 +332,10 @@ app.on('ready', async () => {
         currentWindow,
         selectedAccount,
         accounts,
-        claimState
+        claimState,
+        {
+          force: true,
+        }
       )
     }
   )
@@ -438,6 +443,49 @@ app.on('ready', async () => {
   )
 
   /**
+   * Automation
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceRequestData,
+    async () => {
+      await Automation.load(currentWindow)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceStart,
+    async (_, accountId: string) => {
+      await Automation.addAccount(currentWindow, accountId)
+    }
+  )
+
+  // ipcMain.on(
+  //   ElectronAPIEventKeys.AutomationServiceReload,
+  //   async (_, accountId: string) => {
+  //     await Automation.reload(currentWindow, accountId)
+  //   }
+  // )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceRemove,
+    async (_, accountId: string) => {
+      await Automation.removeAccount(currentWindow, accountId)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.AutomationServiceActionUpdate,
+    async (
+      _,
+      accountId: string,
+      config: AutomationServiceActionConfig
+    ) => {
+      await Automation.updateAction(currentWindow, accountId, config)
+    }
+  )
+
+  /**
    * Accounts
    */
 
@@ -491,6 +539,10 @@ app.on('ready', async () => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    Automation.getServices().forEach((service) => {
+      service.destroy()
+    })
+
     app.quit()
     schedule.gracefulShutdown().catch(() => {})
   }

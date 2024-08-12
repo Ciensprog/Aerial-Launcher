@@ -3,6 +3,7 @@ import type { GroupRecord } from '../../../types/groups'
 import { useNavigate } from '@tanstack/react-router'
 import { useShallow } from 'zustand/react/shallow'
 
+import { useGetAutomationActions } from '../../../hooks/stw-operations/automation'
 import {
   useGetSaveQuestsActions,
   useGetSaveQuestsData,
@@ -84,6 +85,8 @@ export function useHandleRemove() {
   // Clear forms
   const clearPartySelectors = useClearPartySelectors()
   const clearForms = useClearForms()
+  const { removeAccount: removeAccountFromAutoKick } =
+    useGetAutomationActions()
 
   const handleRemove = () => {
     if (!selected) {
@@ -116,6 +119,7 @@ export function useHandleRemove() {
       )
     })
 
+    removeAccountFromAutoKick(selected.accountId)
     registerGroups(newGroups)
     rawSaveQuestsUpdateAccounts(
       selectedAccounts.filter(

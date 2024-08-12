@@ -17,6 +17,7 @@ import { Route as StwOperationsXpboostsRouteImport } from './routes/stw-operatio
 import { Route as StwOperationsSaveQuestsRouteImport } from './routes/stw-operations/save-quests/route'
 import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/party/route'
 import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
+import { Route as StwOperationsAutomationRouteImport } from './routes/stw-operations/automation/route'
 import { Route as InformationCreditsRouteImport } from './routes/information/credits/route'
 import { Route as AdvancedModeWorldInfoRouteImport } from './routes/advanced-mode/world-info/route'
 import { Route as AdvancedModeMatchmakingTrackRouteImport } from './routes/advanced-mode/matchmaking-track/route'
@@ -57,6 +58,12 @@ const StwOperationsPartyRouteRoute = StwOperationsPartyRouteImport.update({
 const StwOperationsHomebaseNameRouteRoute =
   StwOperationsHomebaseNameRouteImport.update({
     path: '/stw-operations/homebase-name',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const StwOperationsAutomationRouteRoute =
+  StwOperationsAutomationRouteImport.update({
+    path: '/stw-operations/automation',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -126,6 +133,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InformationCreditsRouteImport
       parentRoute: typeof rootRoute
     }
+    '/stw-operations/automation': {
+      preLoaderRoute: typeof StwOperationsAutomationRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/stw-operations/homebase-name': {
       preLoaderRoute: typeof StwOperationsHomebaseNameRouteImport
       parentRoute: typeof rootRoute
@@ -159,6 +170,7 @@ export const routeTree = rootRoute.addChildren([
   AdvancedModeMatchmakingTrackRouteRoute,
   AdvancedModeWorldInfoRouteRoute,
   InformationCreditsRouteRoute,
+  StwOperationsAutomationRouteRoute,
   StwOperationsHomebaseNameRouteRoute,
   StwOperationsPartyRouteRoute,
   StwOperationsSaveQuestsRouteRoute,

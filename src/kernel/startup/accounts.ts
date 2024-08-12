@@ -17,6 +17,7 @@ import {
   localeCompareForSorting,
   parseCustomDisplayName,
 } from '../../lib/utils'
+import { Automation } from './automation'
 
 export class AccountsManager {
   private static _accounts: Collection<string, AccountData> =
@@ -91,13 +92,15 @@ export class AccountsManager {
     await DataDirectory.updateAccountsFile(accounts)
   }
 
-  static async remove(accountId: string) {
+  static async remove(currentWindow: BrowserWindow, accountId: string) {
     const result = await DataDirectory.getAccountsFile()
     const accounts = result.accounts.filter(
       (account) => account.accountId !== accountId
     )
 
     AccountsManager._accounts.delete(accountId)
+    Automation.removeAccount(currentWindow, accountId)
+
     await DataDirectory.updateAccountsFile(accounts)
   }
 
