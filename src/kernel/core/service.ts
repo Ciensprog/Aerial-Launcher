@@ -153,17 +153,6 @@ export class Service {
               }
 
               try {
-                // Password has been changed (session expired), client close/disconnect from FN, etc... then:
-                // com.epicgames.social.party.notification.v0.MEMBER_DISCONNECTED
-                // com.epicgames.social.party.notification.v0.MEMBER_EXPIRED
-
-                // com.epicgames.social.party.notification.v0.PARTY_UPDATED
-                //    -> party_state_updated.Default:PartyState_s = Matchmaking
-                //    -> party_state_updated.Default:PartyState_s = PostMatchmaking
-
-                // com.epicgames.social.party.notification.v0.MEMBER_LEFT
-                // com.epicgames.social.party.notification.v0.MEMBER_JOINED
-
                 switch (body?.type) {
                   case EventNotification.MEMBER_CONNECTED:
                     this.emit<ServiceEventMemberConnected>(
@@ -237,14 +226,36 @@ export class Service {
                         body as ServiceEventInteractionNotification
 
                       if (newBody.interactions?.length > 0) {
-                        const gamePlayed = newBody.interactions.some(
+                        const gamePlayed = newBody.interactions.find(
                           (interaction) =>
+                            interaction.fromAccountId ===
+                              this._accountId &&
                             interaction.namespace?.toLowerCase() ===
                               'fortnite' &&
                             interaction.app?.toLowerCase() ===
                               'save_the_world' &&
                             interaction.interactionType?.toLowerCase() ===
                               'gameplayed'
+                        )
+                        const earlyGamePlayed = newBody.interactions.find(
+                          (interaction) =>
+                            interaction.fromAccountId !==
+                              this._accountId &&
+                            interaction.namespace?.toLowerCase() ===
+                              'fortnite' &&
+                            interaction.app?.toLowerCase() ===
+                              'save_the_world' &&
+                            interaction.interactionType?.toLowerCase() ===
+                              'gameplayed'
+                        )
+                        const memberLeft = newBody.interactions.find(
+                          (interaction) =>
+                            interaction.fromAccountId !==
+                              this._accountId &&
+                            interaction.namespace?.toLowerCase() ===
+                              'fortnite' &&
+                            interaction.interactionType?.toLowerCase() ===
+                              'partyleft'
                         )
 
                         if (gamePlayed) {
@@ -296,8 +307,13 @@ export class Service {
                             EventNotification.INTERACTION_NOTIFICATION,
                             newBody
                           )
-                        } else {
-                          this.clearMissionInterval()
+                        } else if (earlyGamePlayed) {
+                          this.initMissionInterval()
+                        } else if (memberLeft) {
+                          this.matchmaking.partyState =
+                            PartyState.POST_MATCHMAKING
+
+                          this.initMissionInterval()
                         }
                       }
                     }
@@ -420,12 +436,7 @@ export class Service {
         const data = response.data?.[0]
 
         if (data) {
-          if (
-            data.publicPlayers.includes(this.account.accountId) &&
-            data.publicPlayers.length > 1
-          ) {
-            this.clearMissionInterval()
-          } else if (data.started !== undefined) {
+          if (data.started !== undefined) {
             if (
               this.matchmaking.partyState ===
                 PartyState.POST_MATCHMAKING &&
