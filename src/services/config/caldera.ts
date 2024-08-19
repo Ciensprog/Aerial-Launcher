@@ -11,12 +11,10 @@ export const calderaService = axios.create({
     'https://caldera-service-prod.ecosec.on.epicgames.com/caldera/api/v1/launcher',
 })
 
-calderaService.interceptors.request.use((config) => {
-  const manifest = Manifest.get()
+calderaService.interceptors.request.use(async (config) => {
+  const userAgent = await Manifest.getUserAgent()
 
-  if (manifest) {
-    config.headers.setUserAgent(manifest.UserAgent)
-  }
+  config.headers.setUserAgent(userAgent)
 
   return config
 })

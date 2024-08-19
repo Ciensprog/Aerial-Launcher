@@ -11,12 +11,10 @@ export const publicAccountService = axios.create({
     'https://account-public-service-prod.ol.epicgames.com/account/api/public/account',
 })
 
-publicAccountService.interceptors.request.use((config) => {
-  const manifest = Manifest.get()
+publicAccountService.interceptors.request.use(async (config) => {
+  const userAgent = await Manifest.getUserAgent()
 
-  if (manifest) {
-    config.headers.setUserAgent(manifest.UserAgent)
-  }
+  config.headers.setUserAgent(userAgent)
 
   return config
 })

@@ -51,6 +51,7 @@ export class DataDirectory {
   )
   private static settingsDefaultData: Settings = {
     path: 'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64',
+    userAgent: 'Fortnite/++Fortnite+Release-31.00-CL-35447195-Windows',
   }
 
   private static tagsFilePath = path.join(
@@ -82,6 +83,14 @@ export class DataDirectory {
     'automation.json'
   )
   private static automationDefaultData: AutomationAccountFileDataList = {}
+
+  /**
+   * Get default values
+   */
+
+  static getSettingsDefaultData() {
+    return DataDirectory.settingsDefaultData
+  }
 
   /**
    * Get Path

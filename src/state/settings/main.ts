@@ -8,6 +8,23 @@ export type SettingsState = Settings & {
 
 export const useSettingsStore = create<SettingsState>()((set) => ({
   path: '',
+  userAgent: '',
 
-  updateSettings: (settings) => set(settings),
+  updateSettings: (settings) => {
+    const newData: Partial<Record<keyof Settings, string>> = {}
+
+    if (settings.path) {
+      newData.path = settings.path
+    }
+
+    if (settings.userAgent) {
+      newData.userAgent = settings.userAgent
+    }
+
+    const total = Object.keys(newData).length
+
+    if (total > 0) {
+      set(settings)
+    }
+  },
 }))

@@ -77,6 +77,25 @@ function Content() {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="userAgent"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Custom User Agent{' '}
+                          <span className="block text-muted-foreground text-xs">
+                            (Only is applied if you don't have Fortnite
+                            installed)
+                          </span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </CardContent>
                 <CardFooter className="space-x-6">
                   <Button

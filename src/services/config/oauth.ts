@@ -40,12 +40,10 @@ axiosRetry(oauthService, {
   },
 })
 
-oauthService.interceptors.request.use((config) => {
-  const manifest = Manifest.get()
+oauthService.interceptors.request.use(async (config) => {
+  const userAgent = await Manifest.getUserAgent()
 
-  if (manifest) {
-    config.headers.setUserAgent(manifest.UserAgent)
-  }
+  config.headers.setUserAgent(userAgent)
 
   if (!config.headers.getAuthorization()) {
     /**

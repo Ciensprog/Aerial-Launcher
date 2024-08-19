@@ -36,7 +36,7 @@ export const Route = createRoute({
 })
 
 export function ComponentRoute() {
-  const { handleEricDejaDeJoder } = useActions()
+  const { handleEricDejaDeJoder, handleSick } = useActions()
 
   const openURL = (url: string) => (event: MouseEvent) => {
     event.preventDefault()
@@ -87,7 +87,8 @@ export function ComponentRoute() {
                 </a>
                 <div>
                   Helped with the logos, design and suggested many cool
-                  features along the way. Lleva meses con la misma tos ☠️
+                  features along the way. Lleva meses con la misma{' '}
+                  <span onClick={handleSick}>tos ☠️</span>
                 </div>
               </li>
               <li className="item">

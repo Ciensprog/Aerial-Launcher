@@ -11,12 +11,10 @@ export const baseGameService = axios.create({
     'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/game/v2',
 })
 
-baseGameService.interceptors.request.use((config) => {
-  const manifest = Manifest.get()
+baseGameService.interceptors.request.use(async (config) => {
+  const userAgent = await Manifest.getUserAgent()
 
-  if (manifest) {
-    config.headers.setUserAgent(manifest.UserAgent)
-  }
+  config.headers.setUserAgent(userAgent)
 
   return config
 })

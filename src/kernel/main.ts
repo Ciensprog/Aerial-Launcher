@@ -68,7 +68,7 @@ async function createWindow() {
     },
   })
 
-  const manifest = Manifest.get()
+  const manifest = Manifest.getData()
 
   if (manifest) {
     mainWindow.webContents.setUserAgent(manifest.UserAgent)

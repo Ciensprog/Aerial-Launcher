@@ -1,8 +1,9 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
+import { SettingsManager } from '../startup/settings'
 
 export class Manifest {
-  static get() {
+  static getData() {
     try {
       const manifestsDirectory =
         'C:\\ProgramData\\Epic\\EpicGamesLauncher\\Data\\Manifests'
@@ -46,5 +47,12 @@ export class Manifest {
     }
 
     return null
+  }
+
+  static async getUserAgent() {
+    const userAgent = Manifest.getData()?.UserAgent
+    const settings = await SettingsManager.getData()
+
+    return userAgent ?? settings.userAgent
   }
 }

@@ -11,12 +11,10 @@ export const partyService = axios.create({
     'https://party-service-prod.ol.epicgames.com/party/api/v1/Fortnite',
 })
 
-partyService.interceptors.request.use((config) => {
-  const manifest = Manifest.get()
+partyService.interceptors.request.use(async (config) => {
+  const userAgent = await Manifest.getUserAgent()
 
-  if (manifest) {
-    config.headers.setUserAgent(manifest.UserAgent)
-  }
+  config.headers.setUserAgent(userAgent)
 
   return config
 })

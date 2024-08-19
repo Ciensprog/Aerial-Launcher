@@ -11,12 +11,10 @@ export const matchmakingService = axios.create({
     'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/matchmaking/session',
 })
 
-matchmakingService.interceptors.request.use((config) => {
-  const manifest = Manifest.get()
+matchmakingService.interceptors.request.use(async (config) => {
+  const userAgent = await Manifest.getUserAgent()
 
-  if (manifest) {
-    config.headers.setUserAgent(manifest.UserAgent)
-  }
+  config.headers.setUserAgent(userAgent)
 
   return config
 })
