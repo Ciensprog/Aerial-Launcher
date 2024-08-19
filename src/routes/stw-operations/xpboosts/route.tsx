@@ -228,7 +228,7 @@ function Content() {
                           }
                         />
                         <span className="max-w-72 text-lg truncate">
-                          {searchedUser.data.lookup.id}
+                          {searchedUser.data.lookup.displayName}
                         </span>
                         <ExternalLink
                           className="stroke-muted-foreground"
