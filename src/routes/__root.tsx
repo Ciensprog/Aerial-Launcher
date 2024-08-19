@@ -29,7 +29,7 @@ function useScrollToTop() {
 
   useEffect(() => {
     if (!$main.current) {
-      $main.current = document.querySelector('main')
+      $main.current = document.querySelector('.main-wrapper-content')
     }
 
     $main.current?.scroll({

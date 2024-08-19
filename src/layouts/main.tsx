@@ -5,10 +5,12 @@ import { Link } from '@tanstack/react-router'
 import { Header } from './header'
 
 import { SidebarMenu } from '../components/menu/sidebar'
+import { ScrollArea } from '../components/ui/scroll-area'
 
 import logoLaucher from '../_assets/aerial-launcher.png'
 
 import { whatIsThis } from '../lib/callbacks'
+import { cn } from '../lib/utils'
 
 export function MainLayout({ children }: PropsWithChildren) {
   return (
@@ -34,8 +36,14 @@ export function MainLayout({ children }: PropsWithChildren) {
       </div>
       <div className="flex flex-col">
         <Header />
-        <main className="flex flex-col gap-4 h-[calc(100vh-var(--header-height))] overflow-y-auto p-4 relative lg:gap-6 lg:p-6">
-          {children}
+        <main className="">
+          <ScrollArea
+            viewportClassName={cn(
+              'main-wrapper-content [&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:h-[calc(100vh-var(--header-height))] [&>div]:p-4 [&>div]:relative [&>div]:lg:gap-6 [&>div]:lg:p-6'
+            )}
+          >
+            {children}
+          </ScrollArea>
         </main>
       </div>
     </div>
