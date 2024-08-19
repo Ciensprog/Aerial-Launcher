@@ -4,6 +4,7 @@ import type {
   MCPClaimQuestRewardResponse,
   MCPOpenCardPackBatchPayload,
   MCPOpenCardPackBatchResponse,
+  MCPRecordCampaignMatchEndedResponse,
   MCPRedeemSTWAccoladeTokensResponse,
 } from '../../types/services/mcp/claim-rewards'
 import type { MCPHomebaseNameResponse } from '../../types/services/mcp/homebase-name'
@@ -226,6 +227,31 @@ export function setOpenCardPackBatch({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setRecordCampaignMatchEnded({
+  accessToken,
+  accountId,
+  sessionId,
+}: {
+  accessToken: string
+  accountId: string
+  sessionId: string
+}) {
+  return baseGameService.post<MCPRecordCampaignMatchEndedResponse>(
+    `/profile/${accountId}/client/RecordCampaignMatchEnded`,
+    {},
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+        'X-EpicGames-GameSessionId': sessionId,
+      },
+      params: {
+        profileId: 'athena',
         rvn: -1,
       },
     }

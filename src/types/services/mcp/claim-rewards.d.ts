@@ -146,6 +146,16 @@ export type MCPClaimDifficultyIncreaseRewardsResponse = {
   notifications?: MCPCommonNotification
 }
 
+export type MCPRecordCampaignMatchEndedResponse = {
+  profileRevision: number
+  profileId: StringUnion<'athena'>
+  profileChangesBaseRevision: number
+  profileChanges: Array<unknown>
+  profileCommandRevision: number
+  serverTime: string
+  responseVersion: number
+}
+
 export type MCPRedeemSTWAccoladeTokensResponse = {
   profileRevision: number
   profileId: StringUnion<'athena'>

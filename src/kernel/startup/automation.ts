@@ -11,19 +11,28 @@ import { BrowserWindow } from 'electron'
 
 import { AutomationStatusType } from '../../config/constants/automation'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+import { PartyState } from '../../config/fortnite/events'
 
-import { Service } from '../core/service'
+import { AccountProcess } from '../core/automation/account-processes'
+import { AccountService } from '../core/automation/account-service'
+import { Authentication } from '../core/authentication'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
 
 import { AutomationState } from '../../state/stw-operations/automation'
+import { ClaimRewards } from '../core/claim-rewards'
+
+// import { getRawDate } from '../../lib/dates'
 
 export class Automation {
   private static _accounts: Collection<
     string,
     AutomationAccountServerData
   > = new Collection()
-  private static _services: Collection<string, Service> = new Collection()
+  private static _processes: Collection<string, AccountProcess> =
+    new Collection()
+  private static _services: Collection<string, AccountService> =
+    new Collection()
 
   static async load(currentWindow: BrowserWindow) {
     const { automation } = await DataDirectory.getAutomationFile()
@@ -67,7 +76,7 @@ export class Automation {
       ...data,
       status: AutomationStatusType.LOADING,
     })
-    await Automation.start(currentWindow, data)
+    Automation.start(currentWindow, data)
   }
 
   static async removeAccount(
@@ -77,6 +86,7 @@ export class Automation {
     Automation.updateAccountData(accountId, {
       status: AutomationStatusType.LOADING,
     })
+    Automation.getProcessByAccountId(accountId)?.clearMissionIntervalId()
     Automation.getServiceByAccountId(accountId)?.destroy()
 
     await Automation.refreshData(currentWindow, accountId, true)
@@ -114,142 +124,168 @@ export class Automation {
     })
   }
 
-  static async start(
+  static start(
     currentWindow: BrowserWindow,
-    data: AutomationAccountFileData,
-    isReload?: boolean
+    data: AutomationAccountFileData
   ) {
-    const setDisconnected = () => {
+    const setNewStatus = (status: AutomationStatusType) => {
       Automation.updateAccountData(data.accountId, {
-        status: AutomationStatusType.DISCONNECTED,
+        status,
       })
       currentWindow.webContents.send(
         ElectronAPIEventKeys.AutomationServiceStartNotification,
         {
           accountId: data.accountId,
-          status: AutomationStatusType.DISCONNECTED,
-        } as AutomationServiceStatusResponse,
-        isReload
+          status,
+        } as AutomationServiceStatusResponse
       )
     }
 
-    try {
-      const defaultResponse: AutomationServiceStatusResponse = {
-        accountId: data.accountId,
-        status: AutomationStatusType.LOADING,
-      }
+    setNewStatus(AutomationStatusType.LOADING)
 
-      Automation.updateAccountData(data.accountId, {
-        status: defaultResponse.status,
-      })
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.AutomationServiceStartNotification,
-        defaultResponse,
-        isReload
-      )
+    const account = AccountsManager.getAccountById(data.accountId)!
 
-      Automation.getServiceByAccountId(data.accountId)?.destroy()
+    Authentication.verifyAccessToken(account, currentWindow)
+      .then((accessToken) => {
+        if (accessToken) {
+          const accountProcess = new AccountProcess({
+            accessToken,
+            account,
+            currentWindow,
+          })
+          const accountService = new AccountService({
+            accessToken,
+            account,
+          })
 
-      const accounts = AccountsManager.getAccounts()
-      const currentAccount = accounts.get(data.accountId)!
-      const service = new Service({
-        currentWindow,
-        account: currentAccount,
-      })
+          const initTimeout = setTimeout(() => {
+            setNewStatus(AutomationStatusType.ERROR)
+          }, 10_000) // 10 seconds
 
-      service.onConnected(() => {
-        service.checkMatchAtStartUp()
-      })
+          accountService.onceSessionStarted(() => {
+            setNewStatus(AutomationStatusType.LISTENING)
+            clearTimeout(initTimeout)
 
-      service.onDisconnected(() => {
-        setDisconnected()
-      })
-      service.onMemberDisconnected(() => {
-        setDisconnected()
-      })
-      service.onMemberExpired(() => {
-        setDisconnected()
-      })
+            if (accountProcess.matchmaking.partyState === null) {
+              accountProcess.checkMatchAtStartUp()
+            }
+          })
 
-      service.onMemberJoined(async (response) => {
-        const current = Automation._accounts.get(data.accountId)
+          accountService.onDisconnected(() => {
+            setNewStatus(AutomationStatusType.DISCONNECTED)
+          })
+          accountService.onMemberDisconnected((member) => {
+            if (!member.ns || member.ns?.toLowerCase() !== 'fortnite') {
+              return
+            }
 
-        if (!current) {
+            if (member.account_id === accountService.accountId) {
+              setNewStatus(AutomationStatusType.DISCONNECTED)
+            }
+          })
+          accountService.onMemberExpired((member) => {
+            if (!member.ns || member.ns?.toLowerCase() !== 'fortnite') {
+              return
+            }
+
+            if (member.account_id === accountService.accountId) {
+              setNewStatus(AutomationStatusType.DISCONNECTED)
+            }
+          })
+
+          accountService.onMemberJoined((member) => {
+            if (!member.ns || member.ns?.toLowerCase() !== 'fortnite') {
+              return
+            }
+
+            if (member.account_id === accountService.accountId) {
+              const automationAccount = Automation.getAccountById(
+                data.accountId
+              )
+
+              if (automationAccount) {
+                const wasItDisconnected =
+                  automationAccount.status ===
+                  AutomationStatusType.DISCONNECTED
+
+                if (wasItDisconnected) {
+                  setNewStatus(AutomationStatusType.LISTENING)
+                }
+
+                if (
+                  automationAccount.status ===
+                  AutomationStatusType.LISTENING
+                ) {
+                  accountProcess.preInit({
+                    timeout: 20_000, // 20 seconds
+                  })
+                }
+              }
+            }
+          })
+
+          accountService.onMemberKicked(async (member) => {
+            if (!member.ns || member.ns?.toLowerCase() !== 'fortnite') {
+              return
+            }
+
+            if (member.account_id === accountService.accountId) {
+              if (
+                accountProcess.matchmaking.partyState ===
+                  PartyState.POST_MATCHMAKING &&
+                accountProcess.matchmaking.started === true
+              ) {
+                const automationAccount = Automation.getAccountById(
+                  accountService.accountId
+                )
+
+                if (automationAccount?.actions.claim === true) {
+                  await ClaimRewards.start(currentWindow, [account], true)
+                }
+              }
+            }
+          })
+
+          accountService.onPartyUpdated((party) => {
+            if (party.ns?.toLowerCase() !== 'fortnite') {
+              return
+            }
+
+            const partyState = party.party_state_updated[
+              'Default:PartyState_s'
+            ] as PartyState | undefined
+
+            if (partyState !== undefined) {
+              accountProcess.setMatchmaking({
+                partyState: partyState,
+              })
+
+              if (
+                accountProcess.matchmaking.partyState ===
+                PartyState.POST_MATCHMAKING
+              ) {
+                accountProcess.preInit()
+              }
+            }
+          })
+
+          Automation._services.set(
+            accountService.accountId,
+            accountService
+          )
+          Automation._processes.set(
+            accountProcess.accountId,
+            accountProcess
+          )
+
           return
         }
 
-        if (
-          current.accountId === response.account_id &&
-          current.status === AutomationStatusType.DISCONNECTED
-        ) {
-          const newInitStatus = await service.init({
-            force: true,
-          })
-          let newStatus: AutomationStatusType | undefined
-
-          if (newInitStatus) {
-            newStatus = AutomationStatusType.LISTENING
-          } else if (newInitStatus === false) {
-            newStatus = AutomationStatusType.ERROR
-          }
-
-          if (newStatus) {
-            Automation.updateAccountData(current.accountId, {
-              status: newStatus,
-            })
-            currentWindow.webContents.send(
-              ElectronAPIEventKeys.AutomationServiceStartNotification,
-              {
-                accountId: current.accountId,
-                status: newStatus,
-              } as AutomationServiceStatusResponse,
-              isReload
-            )
-          }
-        }
-
-        if (current.accountId !== response.account_id) {
-          service.clearMissionInterval()
-        }
+        setNewStatus(AutomationStatusType.ERROR)
       })
-
-      service.onMemberLeft((response) => {
-        if (data.accountId === response.account_id) {
-          service.clearMissionInterval()
-        }
+      .catch(() => {
+        setNewStatus(AutomationStatusType.ERROR)
       })
-
-      // service.onMemberStateUpdated((response) => {
-      //   //
-      // })
-
-      // service.onPartyUpdated((response) => {
-      //   //
-      // })
-
-      // service.onDestroy(() => {
-      //   //
-      // })
-
-      const initStatus = await service.init()
-      Automation._services.set(currentAccount.accountId, service)
-
-      if (initStatus) {
-        defaultResponse.status = AutomationStatusType.LISTENING
-      } else if (initStatus === false) {
-        defaultResponse.status = AutomationStatusType.ERROR
-      }
-
-      Automation.updateAccountData(data.accountId, {
-        status: defaultResponse.status,
-      })
-      currentWindow.webContents.send(
-        ElectronAPIEventKeys.AutomationServiceStartNotification,
-        defaultResponse
-      )
-    } catch (error) {
-      setDisconnected()
-    }
   }
 
   // static async reload(currentWindow: BrowserWindow, accountId: string) {
@@ -264,13 +300,29 @@ export class Automation {
   //   await Automation.start(currentWindow, current, true)
   // }
 
+  static getAccountById(
+    accountId: string
+  ): AutomationAccountServerData | undefined {
+    return Automation._accounts.get(accountId)
+  }
+
+  static getProcesses() {
+    return Automation._processes.clone()
+  }
+
+  static getProcessByAccountId(accountId: string) {
+    return Automation._processes.find(
+      (accountProcess) => accountProcess.accountId === accountId
+    )
+  }
+
   static getServices() {
     return Automation._services.clone()
   }
 
   static getServiceByAccountId(accountId: string) {
     return Automation._services.find(
-      (service) => service.accountId === accountId
+      (accountService) => accountService.accountId === accountId
     )
   }
 
@@ -279,7 +331,6 @@ export class Automation {
     accountId: string,
     removeAccount?: boolean
   ) {
-    // const result = await DataDirectory.getAutomationFile()
     const automation = Automation._accounts
       .filter((account) => account.accountId !== accountId)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -297,6 +348,7 @@ export class Automation {
 
     if (removeAccount) {
       Automation._accounts.delete(accountId)
+      Automation._processes.delete(accountId)
       Automation._services.delete(accountId)
     }
 
@@ -316,27 +368,27 @@ export class Automation {
       status: Partial<AutomationAccountData['status']>
     }>
   ) {
-    const current = Automation._accounts.get(accountId)
-    const currentAutomationAccount = Automation._services.get(accountId)
+    const automationAccount = Automation.getAccountById(accountId)
+    const accountProcess = Automation.getProcessByAccountId(accountId)
 
-    if (current) {
+    if (automationAccount) {
       const actionsNewValueClaim =
-        data.actions?.claim ?? current.actions.claim
+        data.actions?.claim ?? automationAccount.actions.claim
       const actionsNewValueKick =
-        data.actions?.kick ?? current.actions.kick
+        data.actions?.kick ?? automationAccount.actions.kick
 
-      if (currentAutomationAccount && data.actions) {
+      if (accountProcess && data.actions) {
         if (
-          (!current.actions.claim && actionsNewValueClaim) ||
-          (!current.actions.kick && actionsNewValueKick)
+          (!automationAccount.actions.claim && actionsNewValueClaim) ||
+          (!automationAccount.actions.kick && actionsNewValueKick)
         ) {
-          if (!currentAutomationAccount.startedTracking) {
-            currentAutomationAccount.setStartedTracking(true)
-            currentAutomationAccount.checkMatchAtStartUp()
+          if (!accountProcess.startedTracking) {
+            accountProcess.setStartedTracking(true)
+            accountProcess.checkMatchAtStartUp()
           }
         } else if (!actionsNewValueClaim && !actionsNewValueKick) {
-          currentAutomationAccount.setStartedTracking(false)
-          currentAutomationAccount.clearMissionInterval()
+          accountProcess.setStartedTracking(false)
+          accountProcess.clearMissionIntervalId()
         }
       }
 
@@ -346,14 +398,8 @@ export class Automation {
           claim: actionsNewValueClaim,
           kick: actionsNewValueKick,
         },
-        status: data.status ?? current.status,
+        status: data.status ?? automationAccount.status,
       })
     }
-  }
-
-  static getAccountById(
-    accountId: string
-  ): AutomationAccountServerData | undefined {
-    return Automation._accounts.get(accountId)
   }
 }

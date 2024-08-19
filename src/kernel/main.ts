@@ -539,8 +539,11 @@ app.on('ready', async () => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    Automation.getServices().forEach((service) => {
-      service.destroy()
+    Automation.getProcesses().forEach((accountProcess) => {
+      accountProcess.clearMissionIntervalId()
+    })
+    Automation.getServices().forEach((accountService) => {
+      accountService.destroy()
     })
 
     app.quit()

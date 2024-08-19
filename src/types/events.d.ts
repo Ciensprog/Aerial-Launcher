@@ -13,7 +13,7 @@ export type ServiceEventMemberConnected = {
     yield_leadership: boolean
   }
   revision: number
-  ns: StringUnion<'Fortnite'>
+  ns?: StringUnion<'Fortnite'>
   party_id: string
   account_id: string
   account_dn: string
@@ -35,7 +35,7 @@ export type ServiceEventMemberDisconnected = {
   }
   revision: number
   expires: string
-  ns: StringUnion<'Fortnite'>
+  ns?: StringUnion<'Fortnite'>
   party_id: string
   account_id: string
   account_dn: string
@@ -48,7 +48,7 @@ export type ServiceEventMemberExpired = {
   type: EventNotification.MEMBER_EXPIRED
   sent: string
   revision: number
-  ns: StringUnion<'Fortnite'>
+  ns?: StringUnion<'Fortnite'>
   party_id: string
   account_id: string
   member_state_updated: Partial<Record<string, string>>
@@ -65,7 +65,7 @@ export type ServiceEventMemberJoined = {
     yield_leadership: boolean
   }
   revision: number
-  ns: StringUnion<'Fortnite'>
+  ns?: StringUnion<'Fortnite'>
   party_id: string
   account_id: string
   account_dn: string
@@ -74,11 +74,21 @@ export type ServiceEventMemberJoined = {
   updated_at: string
 }
 
+export type ServiceEventMemberKicked = {
+  sent: string
+  type: EventNotification.MEMBER_KICKED
+  revision: number
+  ns?: StringUnion<'Fortnite'>
+  party_id: string
+  account_id: string
+  member_state_updated: Partial<Record<string, string>>
+}
+
 export type ServiceEventMemberLeft = {
   type: EventNotification.MEMBER_LEFT
   sent: string
   revision: number
-  ns: StringUnion<'Fortnite'>
+  ns?: StringUnion<'Fortnite'>
   party_id: string
   account_id: string
   member_state_updated: Partial<Record<string, string>>
@@ -88,7 +98,7 @@ export type ServiceEventMemberStateUpdated = {
   type: EventNotification.MEMBER_STATE_UPDATED
   sent: string
   revision: 2
-  ns: StringUnion<'Fortnite'>
+  ns?: StringUnion<'Fortnite'>
   party_id: string
   account_id: string
   account_dn: string
@@ -102,7 +112,7 @@ export type ServiceEventMemberStateUpdated = {
 export type ServiceEventPartyUpdated = {
   type: EventNotification.PARTY_UPDATED
   sent: string
-  ns: StringUnion<'Fortnite'>
+  ns?: StringUnion<'Fortnite'>
   party_id: string
   captain_id: string
   party_state_removed: Array<unknown>

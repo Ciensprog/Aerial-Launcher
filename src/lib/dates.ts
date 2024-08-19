@@ -6,6 +6,10 @@ export function getDate(config?: ConfigType) {
   return dayjs(config).format('YYYY-MM-DD')
 }
 
+export function getRawDate(config?: ConfigType) {
+  return dayjs(config).format()
+}
+
 export function toDate(config?: ConfigType) {
   return dayjs(config).toDate()
 }

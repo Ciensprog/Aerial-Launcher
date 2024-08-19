@@ -3,11 +3,15 @@ export enum EventNotification {
   MEMBER_DISCONNECTED = 'com.epicgames.social.party.notification.v0.MEMBER_DISCONNECTED',
   MEMBER_EXPIRED = 'com.epicgames.social.party.notification.v0.MEMBER_EXPIRED',
   MEMBER_JOINED = 'com.epicgames.social.party.notification.v0.MEMBER_JOINED',
+  MEMBER_KICKED = 'com.epicgames.social.party.notification.v0.MEMBER_KICKED',
   MEMBER_LEFT = 'com.epicgames.social.party.notification.v0.MEMBER_LEFT',
   MEMBER_STATE_UPDATED = 'com.epicgames.social.party.notification.v0.MEMBER_STATE_UPDATED',
+
   PARTY_UPDATED = 'com.epicgames.social.party.notification.v0.PARTY_UPDATED',
 
   INTERACTION_NOTIFICATION = 'com.epicgames.social.interactions.notification.v2',
+
+  GENERIC_MESSAGE = 'event:notification:generic-message',
 }
 
 export enum ServiceEvent {
