@@ -44,8 +44,7 @@ export class AccountService {
       server: serverUrl,
       transports: {
         websocket: `wss://xmpp-service-${serverUrl}`,
-        // bosh: true,
-        bosh: 'http://fngw-mcp-gc-livefn.ol.epicgames.com:443',
+        bosh: true,
       },
       credentials: {
         host: serverUrl,
