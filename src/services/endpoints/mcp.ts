@@ -6,6 +6,8 @@ import type {
   MCPOpenCardPackBatchResponse,
   MCPRecordCampaignMatchEndedResponse,
   MCPRedeemSTWAccoladeTokensResponse,
+  MCPSetPinnedQuestsPayload,
+  MCPSetPinnedQuestsResponse,
 } from '../../types/services/mcp/claim-rewards'
 import type { MCPHomebaseNameResponse } from '../../types/services/mcp/homebase-name'
 import type {
@@ -274,6 +276,31 @@ export function setRedeemSTWAccoladeTokens({
       },
       params: {
         profileId: 'athena',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setSetPinnedQuests({
+  accessToken,
+  accountId,
+  pinnedQuestIds,
+}: {
+  accessToken: string
+  accountId: string
+} & MCPSetPinnedQuestsPayload) {
+  return baseGameService.post<MCPSetPinnedQuestsResponse>(
+    `/profile/${accountId}/client/SetPinnedQuests`,
+    {
+      pinnedQuestIds,
+    } as MCPSetPinnedQuestsPayload,
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
         rvn: -1,
       },
     }

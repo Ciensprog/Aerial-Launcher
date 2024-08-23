@@ -16,6 +16,7 @@ export type MCPCommonNotification = Array<{
   level?: number
   tier?: number
   overrideTier?: number
+  questId?: string
   loot?: {
     type?: StringUnion<'lootGrant'>
     primary?: boolean
@@ -175,4 +176,19 @@ export type MCPRedeemSTWAccoladeTokensResponse = {
   profileCommandRevision: number
   serverTime: string
   responseVersion: number
+}
+
+export type MCPSetPinnedQuestsResponse = {
+  profileRevision: number
+  profileId: ProfileId
+  profileChangesBaseRevision: number
+  profileCommandRevision: number
+  serverTime: string
+  responseVersion: number
+  profileChanges: MCPCommonProfileChanges
+  notifications?: MCPCommonNotification
+}
+
+export type MCPSetPinnedQuestsPayload = {
+  pinnedQuestIds: Array<string>
 }
