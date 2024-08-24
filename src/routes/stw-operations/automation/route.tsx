@@ -135,7 +135,7 @@ export function Content() {
                   emptyPlaceholder="No accounts"
                   emptyContent="No account found"
                   placeholder="Select an account"
-                  placeholderSearch={`Search on ${options.length} players`}
+                  placeholderSearch={`Search on ${options.length} accounts`}
                   options={options}
                   value={[]}
                   customFilter={customFilter}

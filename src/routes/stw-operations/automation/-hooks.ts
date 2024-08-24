@@ -4,6 +4,8 @@ import type {
 } from '../../../components/ui/extended/combobox/hooks'
 import type { AutomationAccountData } from '../../../types/automation'
 
+import { useEffect } from 'react'
+
 import {
   useGetAutomationActions,
   useGetAutomationData,
@@ -16,7 +18,6 @@ import {
   localeCompareForSorting,
   parseCustomDisplayName,
 } from '../../../lib/utils'
-import { useEffect } from 'react'
 
 export function useAutomationData() {
   const { accountsArray, accountList } = useGetAccounts()
