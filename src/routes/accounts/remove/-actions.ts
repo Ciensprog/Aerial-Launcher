@@ -8,6 +8,7 @@ import {
   useGetSaveQuestsActions,
   useGetSaveQuestsData,
 } from '../../../hooks/stw-operations/save-quests'
+import { useGetAutoPinUrnActions } from '../../../hooks/stw-operations/urns'
 import {
   useGetSelectedAccount,
   useRemoveSelectedAccount,
@@ -87,6 +88,8 @@ export function useHandleRemove() {
   const clearForms = useClearForms()
   const { removeAccount: removeAccountFromAutoKick } =
     useGetAutomationActions()
+  const { removeAccount: removeAccountFromUrns } =
+    useGetAutoPinUrnActions()
 
   const handleRemove = () => {
     if (!selected) {
@@ -120,6 +123,7 @@ export function useHandleRemove() {
     })
 
     removeAccountFromAutoKick(selected.accountId)
+    removeAccountFromUrns(selected.accountId)
     registerGroups(newGroups)
     rawSaveQuestsUpdateAccounts(
       selectedAccounts.filter(
@@ -127,6 +131,7 @@ export function useHandleRemove() {
       )
     )
 
+    window.electronAPI.autoPinUrnsRemove(selected.accountId)
     window.electronAPI.onRemoveAccount(selected.accountId)
     window.electronAPI.updateGroups(newGroups)
 
