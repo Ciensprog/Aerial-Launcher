@@ -171,6 +171,19 @@ export enum ElectronAPIEventKeys {
   AutomationServiceActionUpdateNotification = 'automation:service:action:update:notification',
 
   /**
+   * Urns
+   */
+
+  UrnsServiceRequestData = 'urns:service:request:data',
+  UrnsServiceResponseData = 'urns:service:response:data',
+  UrnsServiceAdd = 'urns:service:add',
+  UrnsServiceAddNotification = 'urns:service:add:notification',
+  UrnsServiceUpdate = 'urns:service:update',
+  UrnsServiceUpdateNotification = 'urns:service:update:notification',
+  UrnsServiceRemove = 'urns:service:remove',
+  UrnsServiceRemoveNotification = 'urns:service:remove:notification',
+
+  /**
    * Schedules
    */
 

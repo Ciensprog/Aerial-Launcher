@@ -42,7 +42,7 @@ export const Route = createRoute({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Automation</BreadcrumbPage>
+            <BreadcrumbPage>Auto-kick</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

@@ -4,11 +4,13 @@ import type { FriendRecord } from '../../types/friends'
 import type { GroupRecord } from '../../types/groups'
 import type { Settings } from '../../types/settings'
 import type { TagRecord } from '../../types/tags'
+import type { AutoPinUrnDataList } from '../../types/urns'
 
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
+import { autoPinUrnsDataSchema } from '../../lib/validations/schemas/auto-pin-urns-data'
 import { automationFileSchema } from '../../lib/validations/schemas/automation'
 import { friendsSchema } from '../../lib/validations/schemas/friends'
 import { groupsSchema } from '../../lib/validations/schemas/groups'
@@ -84,6 +86,12 @@ export class DataDirectory {
   )
   private static automationDefaultData: AutomationAccountFileDataList = {}
 
+  static urnsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'urns.json'
+  )
+  private static urnsDefaultData: AutoPinUrnDataList = {}
+
   /**
    * Get default values
    */
@@ -117,6 +125,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateFriendsJsonFile()
     await DataDirectory.getOrCreateMatchmakingJsonFile()
     await DataDirectory.getOrCreateAutomationJsonFile()
+    await DataDirectory.getOrCreateUrnsJsonFile()
   }
 
   /**
@@ -260,6 +269,26 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from urns.json
+   */
+  static async getUrnsFile(): Promise<{
+    urns: AutoPinUrnDataList
+  }> {
+    const result = await DataDirectory.getOrCreateUrnsJsonFile()
+
+    try {
+      const list = autoPinUrnsDataSchema.safeParse(JSON.parse(result))
+      const urns = list.success ? list.data : DataDirectory.urnsDefaultData
+
+      return { urns }
+    } catch (error) {
+      //
+    }
+
+    return { urns: DataDirectory.urnsDefaultData }
+  }
+
+  /**
    * Update accounts.json
    */
   static async updateAccountsFile(data: AccountList) {
@@ -318,6 +347,13 @@ export class DataDirectory {
       DataDirectory.automationFilePath,
       data
     )
+  }
+
+  /**
+   * Update urns.json
+   */
+  static async updateUrnsFile(data: AutoPinUrnDataList) {
+    await DataDirectory.updateJsonFile(DataDirectory.urnsFilePath, data)
   }
 
   /**
@@ -461,6 +497,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.automationFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating urns.json
+   */
+  private static async getOrCreateUrnsJsonFile() {
+    const initialData = DataDirectory.urnsDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.urnsFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),

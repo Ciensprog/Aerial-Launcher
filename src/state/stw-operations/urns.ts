@@ -6,7 +6,7 @@ import { create } from 'zustand'
 export type UrnDataState = {
   data: AutoPinUrnDataList
 
-  addAccount: (accountId: string) => void
+  addAccount: (accountId: string, value?: boolean) => void
   removeAccount: (accountId: string) => void
   updateAccount: (accountId: string, value: boolean) => void
 }
@@ -15,9 +15,9 @@ export const useAutoPinUrnDataStore = create<UrnDataState>()(
   immer((set, get) => ({
     data: {},
 
-    addAccount: (accountId) => {
+    addAccount: (accountId, value?: boolean) => {
       set((state) => {
-        state.data[accountId] = false
+        state.data[accountId] = value ?? false
       })
     },
     removeAccount: (accountId) => {

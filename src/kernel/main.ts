@@ -39,6 +39,7 @@ import { XPBoostsManager } from './core/xpboosts'
 import { WorldInfoManager } from './core/world-info'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
+import { AutoPinUrns } from './startup/auto-pin-urns'
 import { Automation } from './startup/automation'
 import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
@@ -482,6 +483,35 @@ app.on('ready', async () => {
       config: AutomationServiceActionConfig
     ) => {
       await Automation.updateAction(currentWindow, accountId, config)
+    }
+  )
+
+  /**
+   * Urns
+   */
+
+  ipcMain.on(ElectronAPIEventKeys.UrnsServiceRequestData, async () => {
+    await AutoPinUrns.load(currentWindow)
+  })
+
+  ipcMain.on(
+    ElectronAPIEventKeys.UrnsServiceAdd,
+    async (_, accountId: string) => {
+      await AutoPinUrns.addAccount(accountId)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.UrnsServiceUpdate,
+    async (_, accountId: string, value: boolean) => {
+      await AutoPinUrns.updateAccount(accountId, value)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.UrnsServiceRemove,
+    async (_, accountId: string) => {
+      await AutoPinUrns.removeAccount(accountId)
     }
   )
 

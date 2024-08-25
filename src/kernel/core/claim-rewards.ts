@@ -12,6 +12,7 @@ import { BrowserWindow } from 'electron'
 import { QuestEventRepeatable } from '../../config/constants/fortnite/quests'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { AutoPinUrns } from '../startup/auto-pin-urns'
 import { MCPClaimRewards } from './mcp/claim-rewards'
 import { Authentication } from './authentication'
 
@@ -138,46 +139,63 @@ export class ClaimRewards {
           claimsResponse.forEach((claimResponse) => {
             if (claimResponse.status === 'fulfilled') {
               claimResponse.value.forEach((item) => {
-                const pinUrns = item.notifications?.find(
-                  (notification) =>
-                    notification.questId ===
-                    QuestEventRepeatable.UrnYourKeep
+                const hasAutoPinUrns = AutoPinUrns.findById(
+                  account.accountId
                 )
 
-                if (pinUrns) {
-                  Authentication.verifyAccessToken(account, currentWindow)
-                    .then((accessToken) => {
-                      if (accessToken) {
-                        getQueryProfile({
-                          accessToken,
-                          accountId: account.accountId,
-                        })
-                          .then((newQueryProfile) => {
-                            const newProfileChanges =
-                              newQueryProfile.data.profileChanges[0] ??
-                              null
+                if (hasAutoPinUrns === true) {
+                  const pinUrns = item.notifications?.find(
+                    (notification) =>
+                      notification.questId ===
+                      QuestEventRepeatable.UrnYourKeep
+                  )
 
-                            Object.entries(
-                              newProfileChanges.profile.items ?? []
-                            ).forEach(([itemId, itemValue]) => {
-                              if (
-                                itemValue.templateId ===
-                                QuestEventRepeatable.UrnYourKeep
-                              ) {
-                                const data = {
-                                  accessToken,
-                                  accountId: account.accountId,
-                                  pinnedQuestIds: [itemId],
-                                }
-
-                                setSetPinnedQuests(data).catch(() => {})
-                              }
-                            })
+                  if (pinUrns) {
+                    Authentication.verifyAccessToken(
+                      account,
+                      currentWindow
+                    )
+                      .then((accessToken) => {
+                        if (accessToken) {
+                          getQueryProfile({
+                            accessToken,
+                            accountId: account.accountId,
                           })
-                          .catch(() => {})
-                      }
-                    })
-                    .catch(() => {})
+                            .then((newQueryProfile) => {
+                              const newProfileChanges =
+                                newQueryProfile.data.profileChanges[0] ??
+                                null
+
+                              Object.entries(
+                                newProfileChanges.profile.items ?? []
+                              ).forEach(([itemId, itemValue]) => {
+                                if (
+                                  itemValue.templateId ===
+                                  QuestEventRepeatable.UrnYourKeep
+                                ) {
+                                  const currentPinned =
+                                    newProfileChanges.profile.stats
+                                      .attributes.client_settings
+                                      ?.pinnedQuestInstances ?? []
+
+                                  const data = {
+                                    accessToken,
+                                    accountId: account.accountId,
+                                    pinnedQuestIds: [
+                                      ...currentPinned,
+                                      itemId,
+                                    ],
+                                  }
+
+                                  setSetPinnedQuests(data).catch(() => {})
+                                }
+                              })
+                            })
+                            .catch(() => {})
+                        }
+                      })
+                      .catch(() => {})
+                  }
                 }
 
                 item.notifications?.forEach((notification) => {

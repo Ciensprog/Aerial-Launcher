@@ -15,6 +15,7 @@ import {
   localeCompareForSorting,
   parseCustomDisplayName,
 } from '../../../lib/utils'
+import { useEffect } from 'react'
 
 export function useData() {
   const { accountsArray, accountList } = useGetAccounts()
@@ -56,6 +57,22 @@ export function useData() {
     )
   const accountSelectorIsDisabled = options.length <= 0
 
+  useEffect(() => {
+    const listener = window.electronAPI.notificationAutoPinUrnsData(
+      async (value) => {
+        Object.entries(value).forEach(([accountId, value]) => {
+          addAccount(accountId, value)
+        })
+      }
+    )
+
+    window.electronAPI.autoPinUrnsRequestData()
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
   const customFilter: ComboboxProps['customFilter'] = (
     _value,
     search,
@@ -73,14 +90,17 @@ export function useData() {
 
   const onSelectItem = (accountId: string) => {
     addAccount(accountId)
+    window.electronAPI.autoPinUrnsAdd(accountId)
   }
 
   const handleRemoveAccount = (accountId: string) => () => {
     removeAccount(accountId)
+    window.electronAPI.autoPinUrnsRemove(accountId)
   }
 
   const handleUpdateAccount = (accountId: string) => (value: boolean) => {
     updateAccount(accountId, value)
+    window.electronAPI.autoPinUrnsUpdate(accountId, value)
   }
 
   return {
