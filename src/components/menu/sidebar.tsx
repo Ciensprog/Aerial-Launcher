@@ -162,6 +162,19 @@ export function SidebarMenu({
                   XP Boosts
                 </Link>
               </li>
+              <li className="item">
+                <Link
+                  to="/stw-operations/urns"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                  onAuxClick={whatIsThis()}
+                >
+                  Auto-pin Urns
+                </Link>
+              </li>
             </ul>
           </div>
           <Title className="pb-0">Account Management</Title>

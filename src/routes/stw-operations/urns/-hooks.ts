@@ -2,14 +2,11 @@ import type {
   ComboboxOption,
   ComboboxProps,
 } from '../../../components/ui/extended/combobox/hooks'
-import type { AutomationAccountData } from '../../../types/automation'
-
-import { useEffect } from 'react'
 
 import {
-  useGetAutomationActions,
-  useGetAutomationData,
-} from '../../../hooks/stw-operations/automation'
+  useGetAutoPinUrnActions,
+  useGetAutoPinUrnData,
+} from '../../../hooks/stw-operations/urns'
 import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 
@@ -18,21 +15,17 @@ import {
   localeCompareForSorting,
   parseCustomDisplayName,
 } from '../../../lib/utils'
+import { useEffect } from 'react'
 
-export function useAutomationData() {
+export function useData() {
   const { accountsArray, accountList } = useGetAccounts()
   const { getGroupTagsByAccountId } = useGetGroups()
-  const { selectedAccounts } = useGetAutomationData()
-  const {
-    addAccount,
-    removeAccount,
-    updateAccountAction,
-    updateAccountStatus,
-    updateAccountSubmitting,
-  } = useGetAutomationActions()
+  const { selectedAccounts } = useGetAutoPinUrnData()
+  const { addAccount, removeAccount, updateAccount } =
+    useGetAutoPinUrnActions()
 
   const options = accountsArray
-    .filter((account) => !selectedAccounts[account.accountId])
+    .filter((account) => selectedAccounts[account.accountId] === undefined)
     .map((account) => {
       const _keys: Array<string> = [account.displayName]
       const tags = getGroupTagsByAccountId(account.accountId)
@@ -65,28 +58,15 @@ export function useAutomationData() {
   const accountSelectorIsDisabled = options.length <= 0
 
   useEffect(() => {
-    const listener = window.electronAPI.notificationAutomationServiceStart(
-      async (response) => {
-        updateAccountStatus(response.accountId, response.status)
-        updateAccountSubmitting('connecting', {
-          accountId: response.accountId,
-          value: false,
+    const listener = window.electronAPI.notificationAutoPinUrnsData(
+      async (value) => {
+        Object.entries(value).forEach(([accountId, value]) => {
+          addAccount(accountId, value)
         })
       }
     )
 
-    return () => {
-      listener.removeListener()
-    }
-  }, [])
-
-  useEffect(() => {
-    const listener =
-      window.electronAPI.notificationAutomationServiceRemove(
-        async (accountId) => {
-          removeAccount(accountId)
-        }
-      )
+    window.electronAPI.autoPinUrnsRequestData()
 
     return () => {
       listener.removeListener()
@@ -110,41 +90,18 @@ export function useAutomationData() {
 
   const onSelectItem = (accountId: string) => {
     addAccount(accountId)
-    updateAccountSubmitting('connecting', {
-      accountId,
-      value: true,
-    })
-    window.electronAPI.automationServiceStart(accountId)
+    window.electronAPI.autoPinUrnsAdd(accountId)
   }
 
   const handleRemoveAccount = (accountId: string) => () => {
-    updateAccountSubmitting('removing', {
-      accountId,
-      value: true,
-    })
-    window.electronAPI.automationServiceRemove(accountId)
+    removeAccount(accountId)
+    window.electronAPI.autoPinUrnsRemove(accountId)
   }
 
-  // const handleReloadAccount = (accountId: string) => () => {
-  //   updateAccountSubmitting('connecting', {
-  //     accountId,
-  //     value: true,
-  //   })
-  //   window.electronAPI.automationServiceReload(accountId)
-  // }
-
-  const handleUpdateClaimAction =
-    (type: keyof AutomationAccountData['actions'], accountId: string) =>
-    (value: boolean) => {
-      updateAccountAction(type, {
-        accountId,
-        value,
-      })
-      window.electronAPI.automationServiceUpdateAction(accountId, {
-        type,
-        value,
-      })
-    }
+  const handleUpdateAccount = (accountId: string) => (value: boolean) => {
+    updateAccount(accountId, value)
+    window.electronAPI.autoPinUrnsUpdate(accountId, value)
+  }
 
   return {
     accounts,
@@ -153,9 +110,8 @@ export function useAutomationData() {
     selectedAccounts,
 
     customFilter,
-    // handleReloadAccount,
     handleRemoveAccount,
-    handleUpdateClaimAction,
+    handleUpdateAccount,
     onSelectItem,
   }
 }

@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as StwOperationsXpboostsRouteImport } from './routes/stw-operations/xpboosts/route'
+import { Route as StwOperationsUrnsRouteImport } from './routes/stw-operations/urns/route'
 import { Route as StwOperationsSaveQuestsRouteImport } from './routes/stw-operations/save-quests/route'
 import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/party/route'
 import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
@@ -43,6 +44,11 @@ const StwOperationsXpboostsRouteRoute = StwOperationsXpboostsRouteImport.update(
     getParentRoute: () => rootRoute,
   } as any,
 )
+
+const StwOperationsUrnsRouteRoute = StwOperationsUrnsRouteImport.update({
+  path: '/stw-operations/urns',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const StwOperationsSaveQuestsRouteRoute =
   StwOperationsSaveQuestsRouteImport.update({
@@ -149,6 +155,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StwOperationsSaveQuestsRouteImport
       parentRoute: typeof rootRoute
     }
+    '/stw-operations/urns': {
+      preLoaderRoute: typeof StwOperationsUrnsRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/stw-operations/xpboosts': {
       preLoaderRoute: typeof StwOperationsXpboostsRouteImport
       parentRoute: typeof rootRoute
@@ -174,6 +184,7 @@ export const routeTree = rootRoute.addChildren([
   StwOperationsHomebaseNameRouteRoute,
   StwOperationsPartyRouteRoute,
   StwOperationsSaveQuestsRouteRoute,
+  StwOperationsUrnsRouteRoute,
   StwOperationsXpboostsRouteRoute,
   AccountsAddTypeRoute,
 ])

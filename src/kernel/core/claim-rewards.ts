@@ -9,12 +9,17 @@ import type { RewardsNotification } from '../../types/notifications'
 
 import { BrowserWindow } from 'electron'
 
+import { QuestEventRepeatable } from '../../config/constants/fortnite/quests'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { AutoPinUrns } from '../startup/auto-pin-urns'
 import { MCPClaimRewards } from './mcp/claim-rewards'
 import { Authentication } from './authentication'
 
-import { getQueryProfile } from '../../services/endpoints/mcp'
+import {
+  getQueryProfile,
+  setSetPinnedQuests,
+} from '../../services/endpoints/mcp'
 
 export class ClaimRewards {
   static async start(
@@ -134,6 +139,65 @@ export class ClaimRewards {
           claimsResponse.forEach((claimResponse) => {
             if (claimResponse.status === 'fulfilled') {
               claimResponse.value.forEach((item) => {
+                const hasAutoPinUrns = AutoPinUrns.findById(
+                  account.accountId
+                )
+
+                if (hasAutoPinUrns === true) {
+                  const pinUrns = item.notifications?.find(
+                    (notification) =>
+                      notification.questId ===
+                      QuestEventRepeatable.UrnYourKeep
+                  )
+
+                  if (pinUrns) {
+                    Authentication.verifyAccessToken(
+                      account,
+                      currentWindow
+                    )
+                      .then((accessToken) => {
+                        if (accessToken) {
+                          getQueryProfile({
+                            accessToken,
+                            accountId: account.accountId,
+                          })
+                            .then((newQueryProfile) => {
+                              const newProfileChanges =
+                                newQueryProfile.data.profileChanges[0] ??
+                                null
+
+                              Object.entries(
+                                newProfileChanges.profile.items ?? []
+                              ).forEach(([itemId, itemValue]) => {
+                                if (
+                                  itemValue.templateId ===
+                                  QuestEventRepeatable.UrnYourKeep
+                                ) {
+                                  const currentPinned =
+                                    newProfileChanges.profile.stats
+                                      .attributes.client_settings
+                                      ?.pinnedQuestInstances ?? []
+
+                                  const data = {
+                                    accessToken,
+                                    accountId: account.accountId,
+                                    pinnedQuestIds: [
+                                      ...currentPinned,
+                                      itemId,
+                                    ],
+                                  }
+
+                                  setSetPinnedQuests(data).catch(() => {})
+                                }
+                              })
+                            })
+                            .catch(() => {})
+                        }
+                      })
+                      .catch(() => {})
+                  }
+                }
+
                 item.notifications?.forEach((notification) => {
                   if (notification.loot) {
                     if (notification.loot.items) {

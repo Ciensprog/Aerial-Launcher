@@ -147,7 +147,7 @@ function Content() {
 
   return (
     <div className="flex flex-grow">
-      <div className="flex items-center justify-center mb-10 w-full">
+      <div className="flex items-center justify-center w-full">
         <div className="flex flex-col max-w-lg w-full">
           <Card>
             <CardHeader className="border-b">

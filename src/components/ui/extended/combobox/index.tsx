@@ -32,8 +32,7 @@ export function Combobox({
   emptyContentClassname,
   emptyOptions,
   emptyPlaceholder,
-  hideInputSearchWhenOnlyOneOptionIsAvailable:
-    hideInputSearchWhenOneOptionIsAvailable,
+  hideInputSearchWhenOnlyOneOptionIsAvailable,
   hideSelectorOnSelectItem,
   inputSearchIsDisabled,
   inputSearchValue,
@@ -67,6 +66,9 @@ export function Combobox({
     value,
   })
   const innerInputSearchValue = inputSearchValue ?? __searchValue
+  const showInputSearch = hideInputSearchWhenOnlyOneOptionIsAvailable
+    ? options.length > 1
+    : true
 
   const customOnChange = (value: string) => {
     onSelectItem?.(value)
@@ -136,7 +138,7 @@ export function Combobox({
           filter={customFilter}
           loop
         >
-          {!hideInputSearchWhenOneOptionIsAvailable && (
+          {showInputSearch && (
             <CommandInput
               className="select-none"
               placeholder={placeholderSearch ?? 'Placeholder'}

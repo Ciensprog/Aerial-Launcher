@@ -20,7 +20,6 @@ import {
   CardDescription,
   CardHeader,
 } from '../../../components/ui/card'
-// import { Label } from '@/components/ui/label'
 import { Switch } from '../../../components/ui/switch'
 
 import { Route as RootRoute } from '../../__root'
@@ -43,7 +42,7 @@ export const Route = createRoute({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Automation</BreadcrumbPage>
+            <BreadcrumbPage>Auto-kick</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -136,7 +135,7 @@ export function Content() {
                   emptyPlaceholder="No accounts"
                   emptyContent="No account found"
                   placeholder="Select an account"
-                  placeholderSearch={`Search on ${options.length} players`}
+                  placeholderSearch={`Search on ${options.length} accounts`}
                   options={options}
                   value={[]}
                   customFilter={customFilter}
