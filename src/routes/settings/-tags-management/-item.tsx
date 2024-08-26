@@ -52,7 +52,7 @@ export function TagItem({ data }: { data: Tag }) {
         type="button"
         size="icon"
         variant="ghost"
-        className="flex flex-shrink-0 justify-center text-[#ff6868]/60 hover:text-[#ff6868]"
+        className="flex flex-shrink-0 justify-center text-[#ff6868]/60 [&:not(:disabled)]:hover:text-[#ff6868]"
         onClick={onDeleteTag(data.name)}
       >
         <Trash2 size={16} />
