@@ -121,20 +121,32 @@ function DeviceItem({ deviceId }: { deviceId: string }) {
       className="border rounded"
       value={deviceId}
     >
-      <AccordionTrigger
-        className={cn(
-          'flex-none font-normal gap-2 px-4 py-2 w-full [&>svg]:ml-auto'
-        )}
-      >
-        a0b•••{' '}
-        {deviceId === 'item-0' && (
-          <span className="font-bold text-muted-foreground text-xs">
-            (Used In This Launcher)
+      <div className="flex items-center justify-center pr-3">
+        <AccordionTrigger
+          className={cn(
+            'flex-none font-normal gap-1 px-4 py-2 w-full [&>svg]:ml-auto'
+          )}
+        >
+          a0b•••{' 一'}
+          <span className="font-bold- text-muted-foreground text-xs">
+            Last Access: 2 mins ago
           </span>
-        )}
-      </AccordionTrigger>
-      <AccordionContent className="flex flex-col gap-3 pb-2 pt-4 px-4">
-        <div className="">
+          {deviceId === 'item-0' && (
+            <span className="font-bold text-muted-foreground text-xs">
+              (Aerial Launcher)
+            </span>
+          )}
+        </AccordionTrigger>
+        <Button
+          className="size-8 text-[#ff6868]/60 [&:not(:disabled)]:hover:text-[#ff6868]"
+          size="icon"
+          variant="ghost"
+        >
+          <Trash2 size={16} />
+        </Button>
+      </div>
+      <AccordionContent className="flex flex-col gap-3 pt-4 px-4">
+        <div>
           <div className="font-bold">User Agent</div>
           <p className="break-all text-muted-foreground">
             Fortnite/++Fortnite+Release-XX.YY-CL-XXXXXXXX
@@ -143,15 +155,6 @@ function DeviceItem({ deviceId }: { deviceId: string }) {
         </div>
         <ItemInformation title="Created" />
         <ItemInformation title="Last Access" />
-        <div className="border-t flex flex-col items-end justify-center pt-2">
-          <Button
-            className="size-8 text-[#ff6868]/60 [&:not(:disabled)]:hover:text-[#ff6868]"
-            size="icon"
-            variant="ghost"
-          >
-            <Trash2 size={16} />
-          </Button>
-        </div>
       </AccordionContent>
     </AccordionItem>
   )
@@ -161,7 +164,7 @@ function ItemInformation({ title }: { title: string }) {
   const [isPressed, setIsPressed] = useState(false)
 
   return (
-    <div className="">
+    <div>
       <div className="flex gap-2 items-center">
         <div className="font-bold">{title}</div>
         <Toggle
@@ -175,15 +178,15 @@ function ItemInformation({ title }: { title: string }) {
           {isPressed ? 'Hide Information' : 'Show Hidden Information'}
         </Toggle>
       </div>
-      <p className="">
+      <p>
         <span className="text-muted-foreground">Location:</span>{' '}
         {isPressed ? 'Sample' : dots}
       </p>
-      <p className="">
+      <p>
         <span className="text-muted-foreground">IP Address:</span>{' '}
         {isPressed ? '192.168.1.1' : dots}
       </p>
-      <p className="">
+      <p>
         <span className="text-muted-foreground">Date:</span>{' '}
         {isPressed ? '2024-01-01T00:00:00.000Z' : dots}
       </p>
