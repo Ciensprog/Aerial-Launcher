@@ -188,12 +188,18 @@ export function SidebarMenu({
               <li className="item">
                 <Link
                   to="/account-management/device-auth"
-                  className={currentClassNameHover}
+                  className={cn({
+                    [currentClassNameHover]: areThereAccounts,
+                    'cursor-not-allowed opacity-60': !areThereAccounts,
+                  })}
                   activeProps={{
-                    className: cn(activeClassName),
+                    className: cn({
+                      [activeClassName]: areThereAccounts,
+                    }),
                   }}
                   onClick={goToPage}
                   onAuxClick={whatIsThis()}
+                  disabled={!areThereAccounts}
                 >
                   Devices Auth
                 </Link>
