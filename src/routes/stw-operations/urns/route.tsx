@@ -124,7 +124,7 @@ export function Content() {
                         account.accountId
                       )}
                     />
-                    <div className="">
+                    <div>
                       <Button
                         className="text-[#ff6868]/60 [&:not(:disabled)]:hover:text-[#ff6868]"
                         size="icon"

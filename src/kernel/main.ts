@@ -45,6 +45,7 @@ import { DataDirectory } from './startup/data-directory'
 import { SettingsManager } from './startup/settings'
 import { TagsManager } from './startup/tags'
 import { GroupsManager } from './startup/groups'
+import { DevicesAuthManager } from './core/devices-auth'
 
 dayjs.extend(relativeTime)
 
@@ -526,6 +527,20 @@ app.on('ready', async () => {
       currentWindow.webContents.send(
         ElectronAPIEventKeys.ResponseUpdateAccountBasicInfo
       )
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.DevicesAuthRequestData,
+    async (_, account: AccountData) => {
+      await DevicesAuthManager.load(currentWindow, account)
+    }
+  )
+
+  ipcMain.on(
+    ElectronAPIEventKeys.DevicesAuthRemove,
+    async (_, account: AccountData, deviceId: string) => {
+      await DevicesAuthManager.remove(currentWindow, account, deviceId)
     }
   )
 

@@ -91,7 +91,7 @@ export function useHandleRemove() {
   const { removeAccount: removeAccountFromUrns } =
     useGetAutoPinUrnActions()
 
-  const handleRemove = () => {
+  const handleRemove = (config?: { defaultRedirect?: boolean }) => {
     if (!selected) {
       return
     }
@@ -139,7 +139,9 @@ export function useHandleRemove() {
 
     toast(`Account ${parseCustomDisplayName(selected)} was removed`)
 
-    if (total <= 0) {
+    const withRedirect = config?.defaultRedirect ?? true
+
+    if (total <= 0 && withRedirect) {
       navigate({ to: '/' })
     }
   }

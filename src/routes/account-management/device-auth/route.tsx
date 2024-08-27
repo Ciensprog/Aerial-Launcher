@@ -1,3 +1,7 @@
+import type { DeviceAuthInfoWithStates } from '../../../state/accounts/devices-auth'
+import type { AccountData } from '../../../types/accounts'
+
+import { UpdateIcon } from '@radix-ui/react-icons'
 import { createRoute } from '@tanstack/react-router'
 import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
@@ -5,7 +9,6 @@ import { useState } from 'react'
 import { Route as RootRoute } from '../../__root'
 
 import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
-import { Combobox } from '../../../components/ui/extended/combobox'
 import {
   Accordion,
   AccordionContent,
@@ -28,9 +31,11 @@ import {
 } from '../../../components/ui/card'
 import { Toggle } from '../../../components/ui/toggle'
 
-// import {  } from './-hooks'
+import { useActions, useData, useParseIdentities } from './-hooks'
 
-import { cn } from '../../../lib/utils'
+import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
+import { dateWithFormat, relativeTime } from '../../../lib/dates'
+import { cn, parseCustomDisplayName } from '../../../lib/utils'
 
 const dots = '•••'
 
@@ -60,6 +65,15 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const {
+    data,
+    disabledFetchButton,
+    isFetching,
+    selected,
+
+    handleFetchDevices,
+  } = useData()
+
   return (
     <div className="flex flex-grow">
       <div className="flex flex-col items-center justify-center w-full">
@@ -72,39 +86,45 @@ function Content() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 pt-6">
-            <div className="grid gap-4">
-              <div className="space-y-2">
-                <Combobox
-                  className="max-w-full"
-                  emptyPlaceholder="No accounts"
-                  emptyContent="No account found"
-                  placeholder="Select an account"
-                  placeholderSearch={`Search on 2 accounts`}
-                  options={[]}
-                  value={[]}
-                  // customFilter={customFilter}
-                  onChange={() => {}}
-                  // onSelectItem={onSelectItem}
-                  emptyContentClassname="py-6 text-center text-sm"
-                  // disabled={accountSelectorIsDisabled}
-                  // disabledItem={accountSelectorIsDisabled}
-                  // inputSearchIsDisabled={accountSelectorIsDisabled}
-                  hideInputSearchWhenOnlyOneOptionIsAvailable
-                  hideSelectorOnSelectItem
-                />
-              </div>
+            <CardDescription>
+              Account selected:{' '}
+              <span className="font-bold">
+                {parseCustomDisplayName(selected)}
+              </span>
+            </CardDescription>
+            <div>
+              <Button
+                className="w-full"
+                disabled={disabledFetchButton}
+                onClick={handleFetchDevices}
+              >
+                {isFetching ? (
+                  <UpdateIcon className="animate-spin h-4" />
+                ) : (
+                  'Request Devices Auth'
+                )}
+              </Button>
             </div>
           </CardContent>
         </Card>
 
         <div className="max-w-lg mt-5 w-full">
+          {data.length > 0 && (
+            <p className="leading-none mb-5 text-center uppercase">
+              Devices Found:
+              <span className="block font-bold text-4xl">
+                {numberWithCommaSeparator(data.length)}
+              </span>
+            </p>
+          )}
           <Accordion
             className="flex flex-col gap-2"
             type="multiple"
           >
-            {Array.from({ length: 3 }).map((_, index) => (
+            {data.map((device, index) => (
               <DeviceItem
-                deviceId={`item-${index}`}
+                account={selected!}
+                data={device}
                 key={index}
               />
             ))}
@@ -115,11 +135,20 @@ function Content() {
   )
 }
 
-function DeviceItem({ deviceId }: { deviceId: string }) {
+function DeviceItem({
+  account,
+  data,
+}: {
+  account: AccountData
+  data: DeviceAuthInfoWithStates
+}) {
+  const { identities } = useParseIdentities({ data })
+  const { isFetching, handleRemoveDevice } = useActions()
+
   return (
     <AccordionItem
       className="border rounded"
-      value={deviceId}
+      value={data.deviceId}
     >
       <div className="flex items-center justify-center pr-3">
         <AccordionTrigger
@@ -127,13 +156,17 @@ function DeviceItem({ deviceId }: { deviceId: string }) {
             'flex-none font-normal gap-1 px-4 py-2 w-full [&>svg]:ml-auto'
           )}
         >
-          a0b•••{' 一'}
+          <span>{data.deviceId.slice(0, 3)}•••</span>
+          {'一'}
           <span className="font-bold- text-muted-foreground text-xs">
-            Last Access: 2 mins ago
+            Last Access:{' '}
+            {data.lastAccess
+              ? relativeTime(data.lastAccess.dateTime)
+              : 'Unknown'}
           </span>
-          {deviceId === 'item-0' && (
+          {identities.length > 0 && (
             <span className="font-bold text-muted-foreground text-xs">
-              (Aerial Launcher)
+              ({identities.join(', ')})
             </span>
           )}
         </AccordionTrigger>
@@ -141,6 +174,8 @@ function DeviceItem({ deviceId }: { deviceId: string }) {
           className="size-8 text-[#ff6868]/60 [&:not(:disabled)]:hover:text-[#ff6868]"
           size="icon"
           variant="ghost"
+          onClick={handleRemoveDevice(account, data)}
+          disabled={isFetching || data.isDeleting}
         >
           <Trash2 size={16} />
         </Button>
@@ -149,19 +184,37 @@ function DeviceItem({ deviceId }: { deviceId: string }) {
         <div>
           <div className="font-bold">User Agent</div>
           <p className="break-all text-muted-foreground">
-            Fortnite/++Fortnite+Release-XX.YY-CL-XXXXXXXX
-            Windows/AA.BB.CCCCC.D.EEE.64bit
+            {data.userAgent ?? 'Unknown'}
           </p>
         </div>
-        <ItemInformation title="Created" />
-        <ItemInformation title="Last Access" />
+        <ItemInformation
+          title="Created"
+          data={data.created}
+        />
+        <ItemInformation
+          title="Last Access"
+          data={data.lastAccess}
+        />
       </AccordionContent>
     </AccordionItem>
   )
 }
 
-function ItemInformation({ title }: { title: string }) {
+function ItemInformation({
+  data,
+  title,
+}: {
+  data?: {
+    ipAddress: string
+    location: string
+    dateTime: string
+  }
+  title: string
+}) {
   const [isPressed, setIsPressed] = useState(false)
+  const parsedDate = data?.dateTime
+    ? relativeTime(data.dateTime)
+    : 'Unknown'
 
   return (
     <div>
@@ -180,15 +233,26 @@ function ItemInformation({ title }: { title: string }) {
       </div>
       <p>
         <span className="text-muted-foreground">Location:</span>{' '}
-        {isPressed ? 'Sample' : dots}
+        {isPressed ? data?.location ?? 'Unknown' : dots}
       </p>
       <p>
         <span className="text-muted-foreground">IP Address:</span>{' '}
-        {isPressed ? '192.168.1.1' : dots}
+        {isPressed ? data?.ipAddress ?? 'Unknown' : dots}
       </p>
       <p>
         <span className="text-muted-foreground">Date:</span>{' '}
-        {isPressed ? '2024-01-01T00:00:00.000Z' : dots}
+        {isPressed ? (
+          <>
+            {parsedDate}{' '}
+            {data?.dateTime !== undefined && (
+              <span className="text-muted-foreground text-xs">
+                ({dateWithFormat(data.dateTime, 'MM/DD/YYYY hh:mm:ss A')})
+              </span>
+            )}
+          </>
+        ) : (
+          dots
+        )}
       </p>
     </div>
   )
