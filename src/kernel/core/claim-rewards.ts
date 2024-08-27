@@ -7,11 +7,10 @@ import type {
 import type { AccountDataList } from '../../types/accounts'
 import type { RewardsNotification } from '../../types/notifications'
 
-import { BrowserWindow } from 'electron'
-
 import { QuestEventRepeatable } from '../../config/constants/fortnite/quests'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from '../startup/windows/main'
 import { AutoPinUrns } from '../startup/auto-pin-urns'
 import { MCPClaimRewards } from './mcp/claim-rewards'
 import { Authentication } from './authentication'
@@ -23,13 +22,12 @@ import {
 
 export class ClaimRewards {
   static async start(
-    currentWindow: BrowserWindow,
     accounts: AccountDataList,
     useGlobalNotification?: boolean
   ) {
-    ClaimRewards.core(currentWindow, accounts).then((response) => {
+    ClaimRewards.core(accounts).then((response) => {
       if (response) {
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           useGlobalNotification
             ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
             : ElectronAPIEventKeys.ClaimRewardsClientNotification,
@@ -37,7 +35,7 @@ export class ClaimRewards {
         )
       }
 
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         useGlobalNotification
           ? ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
           : ElectronAPIEventKeys.PartyClaimActionNotification
@@ -45,10 +43,7 @@ export class ClaimRewards {
     })
   }
 
-  static async core(
-    currentWindow: BrowserWindow,
-    accounts: AccountDataList
-  ) {
+  static async core(accounts: AccountDataList) {
     if (accounts.length <= 0) {
       return null
     }
@@ -60,10 +55,8 @@ export class ClaimRewards {
 
       const response = await Promise.allSettled(
         accounts.map(async (account) => {
-          const accessToken = await Authentication.verifyAccessToken(
-            account,
-            currentWindow
-          )
+          const accessToken =
+            await Authentication.verifyAccessToken(account)
 
           if (!accessToken) {
             return null
@@ -85,16 +78,8 @@ export class ClaimRewards {
               >
             >
           > = [
-            MCPClaimRewards.openCardPackBatch(
-              currentWindow,
-              response.data,
-              account
-            ),
-            MCPClaimRewards.claimQuestReward(
-              currentWindow,
-              response.data,
-              account
-            ),
+            MCPClaimRewards.openCardPackBatch(response.data, account),
+            MCPClaimRewards.claimQuestReward(response.data, account),
           ]
 
           const pendingMissionAlertRewardsTotal =
@@ -108,28 +93,19 @@ export class ClaimRewards {
 
           if (pendingMissionAlertRewardsTotal > 0) {
             rewardsToClaim.push(
-              MCPClaimRewards.claimMissionAlertRewards(
-                currentWindow,
-                account
-              )
+              MCPClaimRewards.claimMissionAlertRewards(account)
             )
           }
 
           if (pendingDifficultyIncreaseRewardsTotal > 0) {
             rewardsToClaim.push(
-              MCPClaimRewards.claimDifficultyIncreaseRewards(
-                currentWindow,
-                account
-              )
+              MCPClaimRewards.claimDifficultyIncreaseRewards(account)
             )
           }
 
           const claimsResponse = await Promise.allSettled(rewardsToClaim)
           const accoladesResponse =
-            await MCPClaimRewards.redeemSTWAccoladeTokens(
-              currentWindow,
-              account
-            )
+            await MCPClaimRewards.redeemSTWAccoladeTokens(account)
 
           const notifications: Array<{
             itemType: string
@@ -151,10 +127,7 @@ export class ClaimRewards {
                   )
 
                   if (pinUrns) {
-                    Authentication.verifyAccessToken(
-                      account,
-                      currentWindow
-                    )
+                    Authentication.verifyAccessToken(account)
                       .then((accessToken) => {
                         if (accessToken) {
                           getQueryProfile({

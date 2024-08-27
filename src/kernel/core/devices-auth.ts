@@ -1,11 +1,10 @@
 import type { DeviceAuthInfoWithStates } from '../../state/accounts/devices-auth'
 import type { AccountData } from '../../types/accounts'
 
-import { BrowserWindow } from 'electron'
-
 import { bots } from '../../config/constants/bots'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from '../startup/windows/main'
 import { AccountsManager } from '../startup/accounts'
 import { Authentication } from './authentication'
 
@@ -17,27 +16,20 @@ import {
 import { toDate } from '../../lib/dates'
 
 export class DevicesAuthManager {
-  static async load(currentWindow: BrowserWindow, account: AccountData) {
-    const devices = await DevicesAuthManager.getList(
-      currentWindow,
-      account
-    )
+  static async load(account: AccountData) {
+    const devices = await DevicesAuthManager.getList(account)
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.DevicesAuthResponseData,
       devices
     )
   }
 
   static async getList(
-    currentWindow: BrowserWindow,
     account: AccountData
   ): Promise<Array<DeviceAuthInfoWithStates>> {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
         return []
@@ -108,16 +100,9 @@ export class DevicesAuthManager {
     return []
   }
 
-  static async remove(
-    currentWindow: BrowserWindow,
-    account: AccountData,
-    deviceId: string
-  ) {
+  static async remove(account: AccountData, deviceId: string) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (accessToken) {
         await removeDeviceAuth({
@@ -126,7 +111,7 @@ export class DevicesAuthManager {
           accountId: account.accountId,
         })
 
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.DevicesAuthRemoveNotification,
           account,
           deviceId,
@@ -139,7 +124,7 @@ export class DevicesAuthManager {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.DevicesAuthRemoveNotification,
       account,
       deviceId,

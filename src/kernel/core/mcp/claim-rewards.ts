@@ -7,8 +7,6 @@ import type {
   MCPQueryProfile,
 } from '../../../types/services/mcp'
 
-import { BrowserWindow } from 'electron'
-
 import { Authentication } from '../authentication'
 
 import {
@@ -26,7 +24,6 @@ import {
 
 export class MCPClaimRewards {
   static async openCardPackBatch(
-    currentWindow: BrowserWindow,
     queryProfile: MCPQueryProfile,
     account: AccountData
   ) {
@@ -54,10 +51,7 @@ export class MCPClaimRewards {
         return defaultResponse
       }
 
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
         return defaultResponse
@@ -78,7 +72,6 @@ export class MCPClaimRewards {
   }
 
   static async claimQuestReward(
-    currentWindow: BrowserWindow,
     queryProfile: MCPQueryProfile,
     account: AccountData
   ) {
@@ -107,10 +100,8 @@ export class MCPClaimRewards {
 
       const response = await Promise.allSettled(
         questIds.map(async (questId) => {
-          const accessToken = await Authentication.verifyAccessToken(
-            account,
-            currentWindow
-          )
+          const accessToken =
+            await Authentication.verifyAccessToken(account)
 
           if (!accessToken) {
             return null
@@ -140,15 +131,9 @@ export class MCPClaimRewards {
     return defaultResponse
   }
 
-  static async claimMissionAlertRewards(
-    currentWindow: BrowserWindow,
-    account: AccountData
-  ) {
+  static async claimMissionAlertRewards(account: AccountData) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
         return []
@@ -167,15 +152,9 @@ export class MCPClaimRewards {
     return [] as Array<MCPClaimMissionAlertRewardsResponse>
   }
 
-  static async claimDifficultyIncreaseRewards(
-    currentWindow: BrowserWindow,
-    account: AccountData
-  ) {
+  static async claimDifficultyIncreaseRewards(account: AccountData) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
         return []
@@ -194,15 +173,9 @@ export class MCPClaimRewards {
     return [] as Array<MCPClaimDifficultyIncreaseRewardsResponse>
   }
 
-  static async redeemSTWAccoladeTokens(
-    currentWindow: BrowserWindow,
-    account: AccountData
-  ) {
+  static async redeemSTWAccoladeTokens(account: AccountData) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
         return null

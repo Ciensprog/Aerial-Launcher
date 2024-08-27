@@ -1,28 +1,19 @@
 import type { AccountData } from '../../types/accounts'
 
-import { BrowserWindow } from 'electron'
-
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
-import { Authentication } from './authentication'
-
+import { MainWindow } from '../startup/windows/main'
 import { DataDirectory } from '../startup/data-directory'
+import { Authentication } from './authentication'
 
 import { findPlayer } from '../../services/endpoints/matchmaking'
 
 export class MatchmakingTrack {
-  static async saveFile(
-    currentWindow: BrowserWindow,
-    account: AccountData,
-    accountId: string
-  ) {
+  static async saveFile(account: AccountData, accountId: string) {
     let status = false
 
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (accessToken) {
         const response = await findPlayer({
@@ -40,7 +31,7 @@ export class MatchmakingTrack {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.MatchmakingTrackSaveFileNotification,
       status
     )

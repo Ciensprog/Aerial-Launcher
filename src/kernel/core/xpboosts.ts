@@ -10,10 +10,9 @@ import type {
   XPBoostsSearchUserResponse,
 } from '../../types/xpboosts'
 
-import { BrowserWindow } from 'electron'
-
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from '../startup/windows/main'
 import { Authentication } from './authentication'
 import { LookupManager } from './lookup'
 
@@ -27,10 +26,7 @@ import { calculateTeammateXPBoostsToUse } from '../../lib/calculations/xpboosts'
 import { isMCPQueryProfileChangesConsumableAccountItem } from '../../lib/check-objects'
 
 export class XPBoostsManager {
-  static async requestAccounts(
-    currentWindow: BrowserWindow,
-    accounts: Array<AccountData>
-  ) {
+  static async requestAccounts(accounts: Array<AccountData>) {
     try {
       const queryProfileResponse = await Promise.allSettled(
         accounts.map(async (account) => {
@@ -50,10 +46,8 @@ export class XPBoostsManager {
           }
 
           try {
-            const accessToken = await Authentication.verifyAccessToken(
-              account,
-              currentWindow
-            )
+            const accessToken =
+              await Authentication.verifyAccessToken(account)
 
             if (!accessToken) {
               return defaultValue
@@ -128,7 +122,7 @@ export class XPBoostsManager {
         .filter((response) => response.status === 'fulfilled')
         .map((response) => response.value)
 
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.XPBoostsAccountProfileResponse,
         queryProfiles
       )
@@ -138,16 +132,13 @@ export class XPBoostsManager {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.XPBoostsAccountProfileResponse,
       []
     )
   }
 
-  static async consumePersonal(
-    currentWindow: BrowserWindow,
-    data: XPBoostsConsumePersonalData
-  ) {
+  static async consumePersonal(data: XPBoostsConsumePersonalData) {
     const defaultResponse: XPBoostsConsumePersonalResponse = {
       total: {
         accounts: data.accounts.length,
@@ -176,8 +167,7 @@ export class XPBoostsManager {
                 async () => {
                   const accessToken =
                     await Authentication.verifyAccessToken(
-                      account as AccountData,
-                      currentWindow
+                      account as AccountData
                     )
 
                   if (!accessToken) {
@@ -206,24 +196,18 @@ export class XPBoostsManager {
           })
       )
 
-      await XPBoostsManager.requestAccounts(
-        currentWindow,
-        data.originalAccounts
-      )
+      await XPBoostsManager.requestAccounts(data.originalAccounts)
     } catch (error) {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.XPBoostsConsumePersonalNotification,
       defaultResponse
     )
   }
 
-  static async consumeTeammate(
-    currentWindow: BrowserWindow,
-    data: XPBoostsConsumeTeammateData
-  ) {
+  static async consumeTeammate(data: XPBoostsConsumeTeammateData) {
     const defaultResponse: XPBoostsConsumeTeammateResponse = {
       total: {
         accounts: 0,
@@ -279,8 +263,7 @@ export class XPBoostsManager {
             Array.from({ length: currentTotal }, () => null).map(
               async () => {
                 const accessToken = await Authentication.verifyAccessToken(
-                  account as AccountData,
-                  currentWindow
+                  account as AccountData
                 )
 
                 if (!accessToken) {
@@ -300,7 +283,7 @@ export class XPBoostsManager {
                   return false
                 }
 
-                currentWindow.webContents.send(
+                MainWindow.instance.webContents.send(
                   ElectronAPIEventKeys.XPBoostsConsumeTeammateProgressionNotification
                 )
 
@@ -313,34 +296,26 @@ export class XPBoostsManager {
         })
       )
 
-      await XPBoostsManager.requestAccounts(
-        currentWindow,
-        data.originalAccounts
-      )
+      await XPBoostsManager.requestAccounts(data.originalAccounts)
     } catch (error) {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.XPBoostsConsumeTeammateNotification,
       defaultResponse
     )
   }
 
-  static async generalSearchUser(
-    currentWindow: BrowserWindow,
-    config: XPBoostsSearchUserConfig
-  ) {
+  static async generalSearchUser(config: XPBoostsSearchUserConfig) {
     await XPBoostsManager.searchUser(
       ElectronAPIEventKeys.XPBoostsGeneralSearchUserNotification,
-      currentWindow,
       config
     )
   }
 
   static async searchUser(
     notificationId: ElectronAPIEventKeys,
-    currentWindow: BrowserWindow,
     config: XPBoostsSearchUserConfig
   ) {
     const defaultResponse: XPBoostsSearchUserResponse = {
@@ -350,12 +325,11 @@ export class XPBoostsManager {
       success: false,
     }
     const sendDefaultResponse = () => {
-      currentWindow.webContents.send(notificationId, defaultResponse)
+      MainWindow.instance.webContents.send(notificationId, defaultResponse)
     }
 
     const response = await LookupManager.searchUserByDisplayName({
       ...config,
-      currentWindow,
     })
 
     if (response.success) {
@@ -368,8 +342,7 @@ export class XPBoostsManager {
           (item) => item.accountId === response.data.id
         )
         const accessToken = await Authentication.verifyAccessToken(
-          accountDestinationInLauncher ?? config.account,
-          currentWindow
+          accountDestinationInLauncher ?? config.account
         )
 
         if (!accessToken) {
@@ -386,7 +359,7 @@ export class XPBoostsManager {
           queryProfileResponse.data.profileChanges[0] ?? null
 
         if (profileChanges) {
-          currentWindow.webContents.send(notificationId, {
+          MainWindow.instance.webContents.send(notificationId, {
             data: {
               profileChanges,
               lookup: response.data,

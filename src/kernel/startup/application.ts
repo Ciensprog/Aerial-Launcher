@@ -1,13 +1,13 @@
-import { BrowserWindow } from 'electron'
-
 import packageJson from '../../../package.json'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from './windows/main'
+
 import { getAppReleases } from '../../services/endpoints/repository'
 
 export class Application {
-  static async checkVersion(currentWindow: BrowserWindow) {
+  static async checkVersion() {
     try {
       const currentVersion = `v${packageJson.version}`
 
@@ -15,7 +15,7 @@ export class Application {
       const latest = response.data[0]
 
       if (latest && latest.tag_name !== currentVersion) {
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.ResponseNewVersionStatus,
           {
             link: latest.html_url,
@@ -29,7 +29,7 @@ export class Application {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.ResponseNewVersionStatus,
       null
     )

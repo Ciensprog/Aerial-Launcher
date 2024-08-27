@@ -7,11 +7,12 @@ import type {
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
 import type { GenerateExchangeCodeNotificationCallbackResponseParam } from '../../types/preload'
 
-import { BrowserWindow, shell } from 'electron'
+import { shell } from 'electron'
 
 import { epicGamesAccountSettingsURL } from '../../config/fortnite/links'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from '../startup/windows/main'
 import { AccountsManager } from '../startup/accounts'
 import { DataDirectory } from '../startup/data-directory'
 
@@ -25,13 +26,12 @@ import {
 } from '../../services/endpoints/oauth'
 
 export class Authentication {
-  static async authorization(currentWindow: BrowserWindow, code: string) {
+  static async authorization(code: string) {
     try {
       const responseAuthorization =
         await getAccessTokenUsingAuthorizationCode(code)
       const responseDevice =
         await Authentication.generateDeviceAuthCredencials(
-          currentWindow,
           ElectronAPIEventKeys.ResponseAuthWithAuthorization,
           {
             accessToken: responseAuthorization.data.access_token,
@@ -41,7 +41,6 @@ export class Authentication {
 
       if (responseDevice) {
         await Authentication.registerAccount(
-          currentWindow,
           ElectronAPIEventKeys.ResponseAuthWithAuthorization,
           {
             accessToken: responseAuthorization.data.access_token,
@@ -54,22 +53,17 @@ export class Authentication {
       }
     } catch (error) {
       Authentication.responseError({
-        currentWindow,
         key: ElectronAPIEventKeys.ResponseAuthWithAuthorization,
         error,
       })
     }
   }
 
-  static async device(
-    currentWindow: BrowserWindow,
-    data: AuthenticationByDeviceProperties
-  ) {
+  static async device(data: AuthenticationByDeviceProperties) {
     try {
       const responseDevice = await getAccessTokenUsingDeviceAuth(data)
 
       await Authentication.registerAccount(
-        currentWindow,
         ElectronAPIEventKeys.ResponseAuthWithDevice,
         {
           accessToken: responseDevice.data.access_token,
@@ -81,19 +75,17 @@ export class Authentication {
       )
     } catch (error) {
       Authentication.responseError({
-        currentWindow,
         key: ElectronAPIEventKeys.ResponseAuthWithDevice,
         error,
       })
     }
   }
 
-  static async exchange(currentWindow: BrowserWindow, code: string) {
+  static async exchange(code: string) {
     try {
       const responseExchange = await getAccessTokenUsingExchangeCode(code)
       const responseDevice =
         await Authentication.generateDeviceAuthCredencials(
-          currentWindow,
           ElectronAPIEventKeys.ResponseAuthWithExchange,
           {
             accessToken: responseExchange.data.access_token,
@@ -103,7 +95,6 @@ export class Authentication {
 
       if (responseDevice) {
         await Authentication.registerAccount(
-          currentWindow,
           ElectronAPIEventKeys.ResponseAuthWithExchange,
           {
             accessToken: responseExchange.data.access_token,
@@ -116,25 +107,18 @@ export class Authentication {
       }
     } catch (error) {
       Authentication.responseError({
-        currentWindow,
         key: ElectronAPIEventKeys.ResponseAuthWithExchange,
         error,
       })
     }
   }
 
-  static async generateExchangeCode(
-    currentWindow: BrowserWindow,
-    account: AccountData
-  ) {
+  static async generateExchangeCode(account: AccountData) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.ResponseGenerateExchangeCode,
           {
             account,
@@ -149,7 +133,7 @@ export class Authentication {
       const exchange = await getExchangeCodeUsingAccessToken(accessToken)
 
       if (exchange.data.code) {
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.ResponseGenerateExchangeCode,
           {
             account,
@@ -164,7 +148,7 @@ export class Authentication {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.ResponseGenerateExchangeCode,
       {
         account,
@@ -174,18 +158,12 @@ export class Authentication {
     )
   }
 
-  static async openEpicGamesSettings(
-    currentWindow: BrowserWindow,
-    account: AccountData
-  ) {
+  static async openEpicGamesSettings(account: AccountData) {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
           {
             account,
@@ -203,7 +181,7 @@ export class Authentication {
           epicGamesAccountSettingsURL(exchange.data.code)
         )
 
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
           {
             account,
@@ -217,7 +195,7 @@ export class Authentication {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
       {
         account,
@@ -226,10 +204,7 @@ export class Authentication {
     )
   }
 
-  static async verifyAccessToken(
-    account: AccountData,
-    currentWindow: BrowserWindow
-  ) {
+  static async verifyAccessToken(account: AccountData) {
     const currentAccount =
       AccountsManager.getAccountById(account.accountId) ?? account
 
@@ -244,7 +219,7 @@ export class Authentication {
 
       AccountsManager.syncAccount(currentAccount.accountId, data)
 
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.SyncAccessToken,
         {
           data: newData,
@@ -299,7 +274,6 @@ export class Authentication {
   }
 
   private static async registerAccount(
-    currentWindow: BrowserWindow,
     eventKey: ElectronAPIEventKeys,
     data: {
       accessToken: string
@@ -333,7 +307,7 @@ export class Authentication {
       return accumulator
     }, {} as AccountDataRecord)
 
-    currentWindow.webContents.send(eventKey, {
+    MainWindow.instance.webContents.send(eventKey, {
       data: {
         currentAccount: newData,
         accounts: accountList,
@@ -344,7 +318,6 @@ export class Authentication {
   }
 
   private static async generateDeviceAuthCredencials(
-    currentWindow: BrowserWindow,
     key: ElectronAPIEventKeys,
     {
       accessToken,
@@ -363,7 +336,6 @@ export class Authentication {
       return response.data
     } catch (error) {
       Authentication.responseError({
-        currentWindow,
         key,
         error,
       })
@@ -373,16 +345,14 @@ export class Authentication {
   }
 
   private static responseError({
-    currentWindow,
     error,
     key,
   }: {
-    currentWindow: BrowserWindow
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     error: any
     key: ElectronAPIEventKeys
   }) {
-    currentWindow.webContents.send(key, {
+    MainWindow.instance.webContents.send(key, {
       accessToken: null,
       data: null,
       error: (error.response?.data as CommonErrorResponse).errorMessage,

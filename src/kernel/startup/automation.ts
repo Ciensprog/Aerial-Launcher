@@ -7,7 +7,6 @@ import type {
 } from '../../types/automation'
 
 import { Collection } from '@discordjs/collection'
-import { BrowserWindow } from 'electron'
 
 import { AutomationStatusType } from '../../config/constants/automation'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
@@ -16,13 +15,12 @@ import { PartyState } from '../../config/fortnite/events'
 import { AccountProcess } from '../core/automation/account-processes'
 import { AccountService } from '../core/automation/account-service'
 import { Authentication } from '../core/authentication'
+import { ClaimRewards } from '../core/claim-rewards'
+import { MainWindow } from './windows/main'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
 
 import { AutomationState } from '../../state/stw-operations/automation'
-import { ClaimRewards } from '../core/claim-rewards'
-
-// import { getRawDate } from '../../lib/dates'
 
 export class Automation {
   private static _accounts: Collection<
@@ -34,7 +32,7 @@ export class Automation {
   private static _services: Collection<string, AccountService> =
     new Collection()
 
-  static async load(currentWindow: BrowserWindow) {
+  static async load() {
     const { automation } = await DataDirectory.getAutomationFile()
     const accounts = AccountsManager.getAccounts()
 
@@ -44,21 +42,18 @@ export class Automation {
           ...data,
           status: AutomationStatusType.LOADING,
         })
-        Automation.start(currentWindow, data)
+        Automation.start(data)
       }
     })
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.AutomationServiceResponseData,
       automation,
       false
     )
   }
 
-  static async addAccount(
-    currentWindow: BrowserWindow,
-    accountId: string
-  ) {
+  static async addAccount(accountId: string) {
     const result = await DataDirectory.getAutomationFile()
     const data = {
       accountId,
@@ -76,24 +71,20 @@ export class Automation {
       ...data,
       status: AutomationStatusType.LOADING,
     })
-    Automation.start(currentWindow, data)
+    Automation.start(data)
   }
 
-  static async removeAccount(
-    currentWindow: BrowserWindow,
-    accountId: string
-  ) {
+  static async removeAccount(accountId: string) {
     Automation.updateAccountData(accountId, {
       status: AutomationStatusType.LOADING,
     })
     Automation.getProcessByAccountId(accountId)?.clearMissionIntervalId()
     Automation.getServiceByAccountId(accountId)?.destroy()
 
-    await Automation.refreshData(currentWindow, accountId, true)
+    await Automation.refreshData(accountId, true)
   }
 
   static async updateAction(
-    _currentWindow: BrowserWindow,
     accountId: string,
     config: AutomationServiceActionConfig
   ) {
@@ -124,15 +115,12 @@ export class Automation {
     })
   }
 
-  static start(
-    currentWindow: BrowserWindow,
-    data: AutomationAccountFileData
-  ) {
+  static start(data: AutomationAccountFileData) {
     const setNewStatus = (status: AutomationStatusType) => {
       Automation.updateAccountData(data.accountId, {
         status,
       })
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.AutomationServiceStartNotification,
         {
           accountId: data.accountId,
@@ -145,13 +133,12 @@ export class Automation {
 
     const account = AccountsManager.getAccountById(data.accountId)!
 
-    Authentication.verifyAccessToken(account, currentWindow)
+    Authentication.verifyAccessToken(account)
       .then((accessToken) => {
         if (accessToken) {
           const accountProcess = new AccountProcess({
             accessToken,
             account,
-            currentWindow,
           })
           const accountService = new AccountService({
             accessToken,
@@ -240,7 +227,7 @@ export class Automation {
                 )
 
                 if (automationAccount?.actions.claim === true) {
-                  await ClaimRewards.start(currentWindow, [account], true)
+                  await ClaimRewards.start([account], true)
                 }
               }
             }
@@ -288,16 +275,16 @@ export class Automation {
       })
   }
 
-  // static async reload(currentWindow: BrowserWindow, accountId: string) {
+  // static async reload(accountId: string) {
   //   const current = Automation._accounts.get(accountId)
 
   //   if (!current) {
-  //     await Automation.refreshData(currentWindow, accountId)
+  //     await Automation.refreshData(accountId)
 
   //     return
   //   }
 
-  //   await Automation.start(currentWindow, current, true)
+  //   await Automation.start(current, true)
   // }
 
   static getAccountById(
@@ -327,7 +314,6 @@ export class Automation {
   }
 
   private static async refreshData(
-    currentWindow: BrowserWindow,
     accountId: string,
     removeAccount?: boolean
   ) {
@@ -354,7 +340,7 @@ export class Automation {
 
     await DataDirectory.updateAutomationFile(automation)
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.AutomationServiceResponseData,
       automation,
       true

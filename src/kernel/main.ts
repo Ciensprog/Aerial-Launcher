@@ -37,14 +37,16 @@ import { Manifest } from './core/manifest'
 import { Party } from './core/party'
 import { XPBoostsManager } from './core/xpboosts'
 import { WorldInfoManager } from './core/world-info'
+import { MainWindow } from './startup/windows/main'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
 import { AutoPinUrns } from './startup/auto-pin-urns'
 import { Automation } from './startup/automation'
 import { DataDirectory } from './startup/data-directory'
-import { SettingsManager } from './startup/settings'
-import { TagsManager } from './startup/tags'
 import { GroupsManager } from './startup/groups'
+import { SettingsManager } from './startup/settings'
+import { SystemTray } from './startup/system-tray'
+import { TagsManager } from './startup/tags'
 import { DevicesAuthManager } from './core/devices-auth'
 
 dayjs.extend(relativeTime)
@@ -95,6 +97,25 @@ async function createWindow() {
   return mainWindow
 }
 
+function cleanup() {
+  MainWindow.instance.removeAllListeners()
+
+  Automation.getProcesses().forEach((accountProcess) => {
+    accountProcess.clearMissionIntervalId()
+  })
+  Automation.getServices().forEach((accountService) => {
+    accountService.destroy()
+  })
+  schedule.gracefulShutdown().catch(() => {})
+}
+
+function closeApp() {
+  if (process.platform !== 'darwin') {
+    cleanup()
+    app.quit()
+  }
+}
+
 Menu.setApplicationMenu(null)
 
 // This method will be called when Electron has finished
@@ -103,14 +124,14 @@ Menu.setApplicationMenu(null)
 app.on('ready', async () => {
   await DataDirectory.createDataResources()
 
-  const currentWindow = await createWindow()
+  MainWindow.setInstance(await createWindow())
 
   /**
    * Paths
    */
 
   ipcMain.on(ElectronAPIEventKeys.GetMatchmakingTrackPath, async () => {
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.GetMatchmakingTrackPathNotification,
       DataDirectory.matchmakingFilePath
     )
@@ -121,19 +142,19 @@ app.on('ready', async () => {
    */
 
   ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
-    await AccountsManager.load(currentWindow)
+    await AccountsManager.load()
   })
 
   ipcMain.on(ElectronAPIEventKeys.RequestSettings, async () => {
-    await SettingsManager.load(currentWindow)
+    await SettingsManager.load()
   })
 
   ipcMain.on(ElectronAPIEventKeys.RequestTags, async () => {
-    await TagsManager.load(currentWindow)
+    await TagsManager.load()
   })
 
   ipcMain.on(ElectronAPIEventKeys.RequestGroups, async () => {
-    await GroupsManager.load(currentWindow)
+    await GroupsManager.load()
   })
 
   ipcMain.on(
@@ -146,7 +167,7 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.UpdateTags,
     async (_, tags: TagRecord) => {
-      await TagsManager.update(currentWindow, tags)
+      await TagsManager.update(tags)
     }
   )
 
@@ -166,11 +187,19 @@ app.on('ready', async () => {
   })
 
   ipcMain.on(ElectronAPIEventKeys.CloseWindow, () => {
-    currentWindow.close()
+    if (SystemTray.isActive) {
+      closeApp()
+    } else {
+      MainWindow.instance.close()
+    }
   })
 
   ipcMain.on(ElectronAPIEventKeys.MinimizeWindow, () => {
-    currentWindow.minimize()
+    if (SystemTray.isActive) {
+      MainWindow.instance.hide()
+    } else {
+      MainWindow.instance.minimize()
+    }
   })
 
   /**
@@ -180,7 +209,7 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.OnRemoveAccount,
     async (_, accountId: string) => {
-      await AccountsManager.remove(currentWindow, accountId)
+      await AccountsManager.remove(accountId)
     }
   )
 
@@ -193,7 +222,7 @@ app.on('ready', async () => {
   //   async (_, account: AccountData) => {
   //     const response = await AntiCheatProvider.request(account)
 
-  //     currentWindow.webContents.send(
+  //     MainWindow.instance.webContents.send(
   //       ElectronAPIEventKeys.ResponseProviderAndAccessTokenOnStartup,
   //       response
   //     )
@@ -207,40 +236,40 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.CreateAuthWithExchange,
     async (_, code: string) => {
-      await Authentication.exchange(currentWindow, code)
+      await Authentication.exchange(code)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.CreateAuthWithAuthorization,
     async (_, code: string) => {
-      await Authentication.authorization(currentWindow, code)
+      await Authentication.authorization(code)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.CreateAuthWithDevice,
     async (_, data: AuthenticationByDeviceProperties) => {
-      await Authentication.device(currentWindow, data)
+      await Authentication.device(data)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.OpenEpicGamesSettings,
     async (_, account: AccountData) => {
-      await Authentication.openEpicGamesSettings(currentWindow, account)
+      await Authentication.openEpicGamesSettings(account)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.GenerateExchangeCode,
     async (_, account: AccountData) => {
-      await Authentication.generateExchangeCode(currentWindow, account)
+      await Authentication.generateExchangeCode(account)
     }
   )
 
   ipcMain.on(ElectronAPIEventKeys.RequestNewVersionStatus, async () => {
-    await Application.checkVersion(currentWindow)
+    await Application.checkVersion()
   })
 
   /**
@@ -250,7 +279,7 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.LauncherStart,
     async (_, account: AccountData) => {
-      await FortniteLauncher.start(currentWindow, account)
+      await FortniteLauncher.start(account)
     }
   )
 
@@ -261,35 +290,35 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.SetSaveQuests,
     async (_, accounts: Array<AccountData>) => {
-      await MCPClientQuestLogin.save(currentWindow, accounts)
+      await MCPClientQuestLogin.save(accounts)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.SetHombaseName,
     async (_, accounts: Array<AccountData>, homebaseName: string) => {
-      await MCPHomebaseName.update(currentWindow, accounts, homebaseName)
+      await MCPHomebaseName.update(accounts, homebaseName)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.XPBoostsAccountProfileRequest,
     async (_, accounts: Array<AccountData>) => {
-      await XPBoostsManager.requestAccounts(currentWindow, accounts)
+      await XPBoostsManager.requestAccounts(accounts)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.XPBoostsConsumePersonal,
     async (_, data: XPBoostsConsumePersonalData) => {
-      await XPBoostsManager.consumePersonal(currentWindow, data)
+      await XPBoostsManager.consumePersonal(data)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.XPBoostsConsumeTeammate,
     async (_, data: XPBoostsConsumeTeammateData) => {
-      await XPBoostsManager.consumeTeammate(currentWindow, data)
+      await XPBoostsManager.consumeTeammate(data)
     }
   )
 
@@ -298,7 +327,6 @@ app.on('ready', async () => {
     async (_, config: XPBoostsSearchUserConfig) => {
       await XPBoostsManager.searchUser(
         ElectronAPIEventKeys.XPBoostsSearchUserNotification,
-        currentWindow,
         config
       )
     }
@@ -307,7 +335,7 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.XPBoostsGeneralSearchUser,
     async (_, config: XPBoostsSearchUserConfig) => {
-      await XPBoostsManager.generalSearchUser(currentWindow, config)
+      await XPBoostsManager.generalSearchUser(config)
     }
   )
 
@@ -318,7 +346,7 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.PartyClaimAction,
     async (_, selectedAccount: Array<AccountData>) => {
-      await ClaimRewards.start(currentWindow, selectedAccount)
+      await ClaimRewards.start(selectedAccount)
     }
   )
 
@@ -330,15 +358,9 @@ app.on('ready', async () => {
       accounts: AccountDataList,
       claimState: boolean
     ) => {
-      await Party.kickPartyMembers(
-        currentWindow,
-        selectedAccount,
-        accounts,
-        claimState,
-        {
-          force: true,
-        }
-      )
+      await Party.kickPartyMembers(selectedAccount, accounts, claimState, {
+        force: true,
+      })
     }
   )
 
@@ -350,30 +372,25 @@ app.on('ready', async () => {
       accounts: AccountDataList,
       claimState: boolean
     ) => {
-      await Party.leaveParty(
-        currentWindow,
-        selectedAccounts,
-        accounts,
-        claimState
-      )
+      await Party.leaveParty(selectedAccounts, accounts, claimState)
     }
   )
 
   ipcMain.on(ElectronAPIEventKeys.PartyLoadFriends, async () => {
-    await Party.loadFriends(currentWindow)
+    await Party.loadFriends()
   })
 
   ipcMain.on(
     ElectronAPIEventKeys.PartyAddNewFriendAction,
     async (_, account: AccountData, displayName: string) => {
-      await Party.addNewFriend(currentWindow, account, displayName)
+      await Party.addNewFriend(account, displayName)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.PartyInviteAction,
     async (_, account: AccountData, accountIds: Array<string>) => {
-      await Party.invite(currentWindow, account, accountIds)
+      await Party.invite(account, accountIds)
     }
   )
 
@@ -386,7 +403,7 @@ app.on('ready', async () => {
         displayName: string
       }
     ) => {
-      await Party.removeFriend(currentWindow, data)
+      await Party.removeFriend(data)
     }
   )
 
@@ -395,52 +412,52 @@ app.on('ready', async () => {
    */
 
   ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestData, async () => {
-    await WorldInfoManager.requestData(currentWindow)
+    await WorldInfoManager.requestData()
   })
 
   ipcMain.on(
     ElectronAPIEventKeys.WorldInfoSaveFile,
     async (_, data: SaveWorldInfoData) => {
-      await WorldInfoManager.saveFile(currentWindow, data)
+      await WorldInfoManager.saveFile(data)
     }
   )
 
   ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFiles, async () => {
-    await WorldInfoManager.requestFiles(currentWindow)
+    await WorldInfoManager.requestFiles()
   })
 
   ipcMain.on(
     ElectronAPIEventKeys.WorldInfoDeleteFile,
     async (_, data: WorldInfoFileData) => {
-      await WorldInfoManager.deleteFile(currentWindow, data)
+      await WorldInfoManager.deleteFile(data)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.WorldInfoExportFile,
     async (_, data: WorldInfoFileData) => {
-      await WorldInfoManager.exportWorldInfoFile(currentWindow, data)
+      await WorldInfoManager.exportWorldInfoFile(data)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.WorldInfoOpenFile,
     async (_, data: WorldInfoFileData) => {
-      await WorldInfoManager.openWorldInfoFile(currentWindow, data)
+      await WorldInfoManager.openWorldInfoFile(data)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.WorldInfoRenameFile,
     async (_, data: WorldInfoFileData, newFilename: string) => {
-      await WorldInfoManager.renameFile(currentWindow, data, newFilename)
+      await WorldInfoManager.renameFile(data, newFilename)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.MatchmakingTrackSaveFile,
     async (_, account: AccountData, accountId: string) => {
-      await MatchmakingTrack.saveFile(currentWindow, account, accountId)
+      await MatchmakingTrack.saveFile(account, accountId)
     }
   )
 
@@ -451,28 +468,28 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.AutomationServiceRequestData,
     async () => {
-      await Automation.load(currentWindow)
+      await Automation.load()
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.AutomationServiceStart,
     async (_, accountId: string) => {
-      await Automation.addAccount(currentWindow, accountId)
+      await Automation.addAccount(accountId)
     }
   )
 
   // ipcMain.on(
   //   ElectronAPIEventKeys.AutomationServiceReload,
   //   async (_, accountId: string) => {
-  //     await Automation.reload(currentWindow, accountId)
+  //     await Automation.reload(accountId)
   //   }
   // )
 
   ipcMain.on(
     ElectronAPIEventKeys.AutomationServiceRemove,
     async (_, accountId: string) => {
-      await Automation.removeAccount(currentWindow, accountId)
+      await Automation.removeAccount(accountId)
     }
   )
 
@@ -483,7 +500,7 @@ app.on('ready', async () => {
       accountId: string,
       config: AutomationServiceActionConfig
     ) => {
-      await Automation.updateAction(currentWindow, accountId, config)
+      await Automation.updateAction(accountId, config)
     }
   )
 
@@ -492,7 +509,7 @@ app.on('ready', async () => {
    */
 
   ipcMain.on(ElectronAPIEventKeys.UrnsServiceRequestData, async () => {
-    await AutoPinUrns.load(currentWindow)
+    await AutoPinUrns.load()
   })
 
   ipcMain.on(
@@ -524,7 +541,7 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.UpdateAccountBasicInfo,
     async (_, account: AccountBasicInfo) => {
       await AccountsManager.add(account)
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.ResponseUpdateAccountBasicInfo
       )
     }
@@ -533,14 +550,14 @@ app.on('ready', async () => {
   ipcMain.on(
     ElectronAPIEventKeys.DevicesAuthRequestData,
     async (_, account: AccountData) => {
-      await DevicesAuthManager.load(currentWindow, account)
+      await DevicesAuthManager.load(account)
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.DevicesAuthRemove,
     async (_, account: AccountData, deviceId: string) => {
-      await DevicesAuthManager.remove(currentWindow, account, deviceId)
+      await DevicesAuthManager.remove(account, deviceId)
     }
   )
 
@@ -563,18 +580,18 @@ app.on('ready', async () => {
       tz: 'UTC',
     },
     () => {
-      // currentWindow.webContents.send(
+      // MainWindow.instance.webContents.send(
       //   ElectronAPIEventKeys.ScheduleRequestAccounts
       // )
 
-      WorldInfoManager.requestData(currentWindow)
+      WorldInfoManager.requestData()
     }
   )
 
   ipcMain.on(
     ElectronAPIEventKeys.ScheduleResponseAccounts,
     (_, accounts: Array<AccountData>) => {
-      AntiCheatProvider.requestBulk(currentWindow, accounts)
+      AntiCheatProvider.requestBulk(accounts)
     }
   )
 })
@@ -583,16 +600,8 @@ app.on('ready', async () => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    Automation.getProcesses().forEach((accountProcess) => {
-      accountProcess.clearMissionIntervalId()
-    })
-    Automation.getServices().forEach((accountService) => {
-      accountService.destroy()
-    })
-
-    app.quit()
-    schedule.gracefulShutdown().catch(() => {})
+  if (!SystemTray.isActive) {
+    closeApp()
   }
 })
 

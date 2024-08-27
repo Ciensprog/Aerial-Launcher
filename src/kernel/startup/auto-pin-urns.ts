@@ -4,10 +4,10 @@ import type {
 } from '../../types/urns'
 
 import { Collection } from '@discordjs/collection'
-import { BrowserWindow } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from './windows/main'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
 
@@ -15,7 +15,7 @@ export class AutoPinUrns {
   private static _accounts: Collection<string, AutoPinUrnDataValue> =
     new Collection()
 
-  static async load(currentWindow: BrowserWindow) {
+  static async load() {
     const { urns } = await DataDirectory.getUrnsFile()
     const accounts = AccountsManager.getAccounts()
 
@@ -25,7 +25,7 @@ export class AutoPinUrns {
       }
     })
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.UrnsServiceResponseData,
       urns
     )

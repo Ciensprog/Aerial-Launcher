@@ -8,10 +8,11 @@ export type SettingsState = Settings & {
 
 export const useSettingsStore = create<SettingsState>()((set) => ({
   path: '',
+  systemTray: false,
   userAgent: '',
 
   updateSettings: (settings) => {
-    const newData: Partial<Record<keyof Settings, string>> = {}
+    const newData: Partial<Record<keyof Settings, boolean | string>> = {}
 
     if (settings.path) {
       newData.path = settings.path
@@ -19,6 +20,10 @@ export const useSettingsStore = create<SettingsState>()((set) => ({
 
     if (settings.userAgent) {
       newData.userAgent = settings.userAgent
+    }
+
+    if (settings.systemTray) {
+      newData.systemTray = settings.systemTray
     }
 
     const total = Object.keys(newData).length

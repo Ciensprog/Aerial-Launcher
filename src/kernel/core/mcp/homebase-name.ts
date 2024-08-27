@@ -1,21 +1,15 @@
 import type { AccountData } from '../../../types/accounts'
 
-import { BrowserWindow } from 'electron'
-
 import { ElectronAPIEventKeys } from '../../../config/constants/main-process'
 
+import { MainWindow } from '../../../kernel/startup/windows/main'
 import { NotificationHomebaseNameResponse } from '../../../kernel/preload-actions/mcp'
-
 import { Authentication } from '../authentication'
 
 import { setHomebaseName } from '../../../services/endpoints/mcp'
 
 export class MCPHomebaseName {
-  static async update(
-    currentWindow: BrowserWindow,
-    accounts: Array<AccountData>,
-    homebaseName: string
-  ) {
+  static async update(accounts: Array<AccountData>, homebaseName: string) {
     try {
       const response = await Promise.allSettled(
         accounts.map(async (account) => {
@@ -24,10 +18,8 @@ export class MCPHomebaseName {
           }
 
           try {
-            const accessToken = await Authentication.verifyAccessToken(
-              account,
-              currentWindow
-            )
+            const accessToken =
+              await Authentication.verifyAccessToken(account)
 
             if (!accessToken) {
               result.errorMessage = 'Unknown Error'
@@ -69,7 +61,7 @@ export class MCPHomebaseName {
         (item) => item.errorMessage
       )
 
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.HomebaseNameNotification,
         (commonError
           ? {
@@ -83,7 +75,7 @@ export class MCPHomebaseName {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.HomebaseNameNotification,
       {
         errorMessage: 'Unknown Error',

@@ -10,11 +10,10 @@ import type {
   InviteNotification,
 } from '../../types/party'
 
-import { BrowserWindow } from 'electron'
-
 import { PartyRole } from '../../config/constants/fortnite/party'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from '../startup/windows/main'
 import { AccountsManager } from '../startup/accounts'
 import { Automation } from '../startup/automation'
 import { DataDirectory } from '../startup/data-directory'
@@ -34,7 +33,6 @@ import { localeCompareForSorting } from '../../lib/utils'
 
 export class Party {
   static async kickPartyMembers(
-    currentWindow: BrowserWindow,
     selectedAccount: AccountData,
     accounts: AccountDataList,
     claimState: boolean,
@@ -48,13 +46,11 @@ export class Party {
       : ElectronAPIEventKeys.PartyKickActionNotification
 
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        selectedAccount,
-        currentWindow
-      )
+      const accessToken =
+        await Authentication.verifyAccessToken(selectedAccount)
 
       if (!accessToken) {
-        currentWindow.webContents.send(kickNotification, 0)
+        MainWindow.instance.webContents.send(kickNotification, 0)
 
         return
       }
@@ -130,7 +126,6 @@ export class Party {
           const kickStatuses = await Promise.allSettled(
             _members.map(({ account_id }) =>
               Party.kickMember({
-                currentWindow,
                 party,
                 account: accountLeader,
                 accountIdToKick: account_id,
@@ -150,7 +145,6 @@ export class Party {
              */
 
             const kickStatus = await Party.kickMember({
-              currentWindow,
               party,
               account: newAccountLeader,
               accountIdToKick: newAccountLeader.accountId,
@@ -179,7 +173,6 @@ export class Party {
             filteredMyAccountsInPartyToKick.map((account) =>
               Party.kickMember({
                 account,
-                currentWindow,
                 party,
                 accountIdToKick: account.accountId,
               })
@@ -202,22 +195,21 @@ export class Party {
                   !membersWithAutoClaim.includes(account.accountId)
               )
 
-          ClaimRewards.core(
-            currentWindow,
-            filteredMyAccountsInPartyToClaimRewards
-          ).then((response) => {
-            if (response) {
-              currentWindow.webContents.send(
-                config?.useGlobalNotification
-                  ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
-                  : ElectronAPIEventKeys.ClaimRewardsClientNotification,
-                response
-              )
+          ClaimRewards.core(filteredMyAccountsInPartyToClaimRewards).then(
+            (response) => {
+              if (response) {
+                MainWindow.instance.webContents.send(
+                  config?.useGlobalNotification
+                    ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
+                    : ElectronAPIEventKeys.ClaimRewardsClientNotification,
+                  response
+                )
+              }
             }
-          })
+          )
         }
 
-        currentWindow.webContents.send(kickNotification, total)
+        MainWindow.instance.webContents.send(kickNotification, total)
 
         return
       }
@@ -225,11 +217,10 @@ export class Party {
       //
     }
 
-    currentWindow.webContents.send(kickNotification, 0)
+    MainWindow.instance.webContents.send(kickNotification, 0)
   }
 
   static async leaveParty(
-    currentWindow: BrowserWindow,
     selectedAccounts: AccountDataList,
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -252,10 +243,7 @@ export class Party {
 
     for (const account of selectedAccounts) {
       try {
-        const accessToken = await Authentication.verifyAccessToken(
-          account,
-          currentWindow
-        )
+        const accessToken = await Authentication.verifyAccessToken(account)
 
         if (!accessToken) {
           continue
@@ -331,7 +319,6 @@ export class Party {
         return await Party.kickMember(
           {
             account,
-            currentWindow,
             party,
             accountIdToKick: account.accountId,
           },
@@ -347,25 +334,23 @@ export class Party {
     })
 
     if (claimState) {
-      ClaimRewards.core(currentWindow, selectedAccounts).then(
-        (response) => {
-          if (response) {
-            currentWindow.webContents.send(
-              ElectronAPIEventKeys.ClaimRewardsClientNotification,
-              response
-            )
-          }
+      ClaimRewards.core(selectedAccounts).then((response) => {
+        if (response) {
+          MainWindow.instance.webContents.send(
+            ElectronAPIEventKeys.ClaimRewardsClientNotification,
+            response
+          )
         }
-      )
+      })
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.PartyLeaveActionNotification,
       total
     )
   }
 
-  static async loadFriends(currentWindow: BrowserWindow) {
+  static async loadFriends() {
     try {
       const fileJson = await DataDirectory.getFriendsFile()
       const orderedData = Object.entries(fileJson.friends)
@@ -378,7 +363,7 @@ export class Party {
           return accumulator
         }, {} as FriendRecord)
 
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.PartyLoadFriendsNotification,
         orderedData
       )
@@ -387,11 +372,7 @@ export class Party {
     }
   }
 
-  static async addNewFriend(
-    currentWindow: BrowserWindow,
-    account: AccountData,
-    displayName: string
-  ) {
+  static async addNewFriend(account: AccountData, displayName: string) {
     const defaultResponse: AddNewFriendNotification = {
       displayName,
       data: null,
@@ -399,7 +380,7 @@ export class Party {
       success: false,
     }
     const sendResponse = () => {
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.PartyAddNewFriendActionNotification,
         defaultResponse
       )
@@ -408,7 +389,6 @@ export class Party {
     try {
       const response = await LookupManager.searchUserByDisplayName({
         account,
-        currentWindow,
         displayName,
       })
 
@@ -433,9 +413,9 @@ export class Party {
           }, {} as FriendRecord)
 
         await DataDirectory.updateFriendsFile(orderedData)
-        await Party.loadFriends(currentWindow)
+        await Party.loadFriends()
 
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.PartyAddNewFriendActionNotification,
           {
             data: {
@@ -459,21 +439,14 @@ export class Party {
     sendResponse()
   }
 
-  static async invite(
-    currentWindow: BrowserWindow,
-    account: AccountData,
-    accountIds: Array<string>
-  ) {
+  static async invite(account: AccountData, accountIds: Array<string>) {
     const defaultResponse: Array<InviteNotification> = []
 
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.PartyInviteActionNotification,
           defaultResponse
         )
@@ -493,7 +466,6 @@ export class Party {
             try {
               // const accessToken = await Authentication.verifyAccessToken(
               //   account,
-              //   currentWindow
               // )
 
               // if (!accessToken) {
@@ -525,10 +497,7 @@ export class Party {
                   'errors.com.epicgames.social.party.invite_already_exists'
                 ) {
                   const accessToken =
-                    await Authentication.verifyAccessToken(
-                      account,
-                      currentWindow
-                    )
+                    await Authentication.verifyAccessToken(account)
 
                   if (!accessToken) {
                     return null
@@ -567,10 +536,8 @@ export class Party {
                 error?.response?.data.errorCode ===
                 'errors.com.epicgames.friends.friendship_not_found'
               ) {
-                const accessToken = await Authentication.verifyAccessToken(
-                  account,
-                  currentWindow
-                )
+                const accessToken =
+                  await Authentication.verifyAccessToken(account)
 
                 if (!accessToken) {
                   return null
@@ -619,26 +586,23 @@ export class Party {
           })
 
           await DataDirectory.updateFriendsFile(data.friends)
-          await Party.loadFriends(currentWindow)
+          await Party.loadFriends()
         }
       }
     } catch (error) {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.PartyInviteActionNotification,
       defaultResponse
     )
   }
 
-  static async removeFriend(
-    currentWindow: BrowserWindow,
-    data: {
-      accountId: string
-      displayName: string
-    }
-  ) {
+  static async removeFriend(data: {
+    accountId: string
+    displayName: string
+  }) {
     let status = false
 
     try {
@@ -655,14 +619,14 @@ export class Party {
       )
 
       await DataDirectory.updateFriendsFile(newList)
-      await Party.loadFriends(currentWindow)
+      await Party.loadFriends()
 
       status = true
     } catch (error) {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.PartyRemoveFriendActionNotification,
       {
         status,
@@ -675,12 +639,10 @@ export class Party {
     {
       account,
       accountIdToKick,
-      currentWindow,
       party,
     }: {
       account: AccountData
       accountIdToKick: string
-      currentWindow: BrowserWindow
       party: PartyData
     },
     generateNewAccessToken = false
@@ -699,10 +661,8 @@ export class Party {
 
     if (useNewAccessToken) {
       try {
-        newAccessToken = await Authentication.verifyAccessToken(
-          currentAccount,
-          currentWindow
-        )
+        newAccessToken =
+          await Authentication.verifyAccessToken(currentAccount)
       } catch (error) {
         //
       }

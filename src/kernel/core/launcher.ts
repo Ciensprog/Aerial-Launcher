@@ -1,13 +1,12 @@
 import type { AccountData } from '../../types/accounts'
 
 import childProcess from 'node:child_process'
-import { BrowserWindow } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { launcherAppClient2 } from '../../config/fortnite/clients'
 
+import { MainWindow } from '../startup/windows/main'
 import { DataDirectory } from '../startup/data-directory'
-
 import { Authentication } from './authentication'
 // import { Manifest } from './manifest'
 
@@ -17,9 +16,9 @@ import {
 } from '../../services/endpoints/oauth'
 
 export class FortniteLauncher {
-  static async start(currentWindow: BrowserWindow, account: AccountData) {
+  static async start(account: AccountData) {
     const sendError = () => {
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.LauncherNotification,
         {
           account,
@@ -38,10 +37,7 @@ export class FortniteLauncher {
       // }
 
       const { settings } = await DataDirectory.getSettingsFile()
-      const accessToken = await Authentication.verifyAccessToken(
-        account,
-        currentWindow
-      )
+      const accessToken = await Authentication.verifyAccessToken(account)
 
       if (!accessToken) {
         sendError()
@@ -105,7 +101,7 @@ export class FortniteLauncher {
         cwd: settings.path,
       })
 
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.LauncherNotification,
         {
           account,

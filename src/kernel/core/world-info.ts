@@ -17,22 +17,24 @@ import {
   writeFile,
 } from 'node:fs/promises'
 import path from 'node:path'
-import { BrowserWindow, dialog, shell } from 'electron'
+import { dialog, shell } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { defaultFortniteClient } from '../../config/fortnite/clients'
 
+import { MainWindow } from '../startup/windows/main'
+import { DataDirectory } from '../startup/data-directory'
+
 import { getWorldInfoData } from '../../services/endpoints/advanced-mode/world-info'
 import { createAccessTokenUsingClientCredentials } from '../../services/endpoints/oauth'
-import { DataDirectory } from '../startup/data-directory'
 
 import { getDate } from '../../lib/dates'
 import { localeCompareForSorting } from '../../lib/utils'
 
 export class WorldInfoManager {
-  static async requestData(currentWindow: BrowserWindow) {
+  static async requestData() {
     const defaultResponse = () => {
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.WorldInfoResponseData,
         {
           data: null,
@@ -66,7 +68,7 @@ export class WorldInfoManager {
         return
       }
 
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.WorldInfoResponseData,
         {
           data: worldInfoResponse.data,
@@ -82,10 +84,7 @@ export class WorldInfoManager {
     defaultResponse()
   }
 
-  static async saveFile(
-    currentWindow: BrowserWindow,
-    value: SaveWorldInfoData
-  ) {
+  static async saveFile(value: SaveWorldInfoData) {
     let status = false
 
     try {
@@ -106,13 +105,13 @@ export class WorldInfoManager {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.WorldInfoSaveNotification,
       status
     )
   }
 
-  static async requestFiles(currentWindow: BrowserWindow) {
+  static async requestFiles() {
     const files: Array<WorldInfoFileData> = []
 
     try {
@@ -160,16 +159,13 @@ export class WorldInfoManager {
         localeCompareForSorting(itemB.filename, itemA.filename)
     )
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.WorldInfoResponseFiles,
       sortedFiles
     )
   }
 
-  static async deleteFile(
-    currentWindow: BrowserWindow,
-    data: WorldInfoFileData
-  ) {
+  static async deleteFile(data: WorldInfoFileData) {
     const response: WorldInfoDeleteResponse = {
       filename: data.filename,
       status: false,
@@ -188,18 +184,15 @@ export class WorldInfoManager {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.WorldInfoDeleteNotification,
       response
     )
   }
 
-  static async exportWorldInfoFile(
-    currentWindow: BrowserWindow,
-    value: WorldInfoFileData
-  ) {
+  static async exportWorldInfoFile(value: WorldInfoFileData) {
     const defaultResponse = () => {
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.WorldInfoExportFileNotification,
         {
           status: 'canceled',
@@ -208,7 +201,7 @@ export class WorldInfoManager {
     }
 
     try {
-      const response = await dialog.showSaveDialog(currentWindow, {
+      const response = await dialog.showSaveDialog({
         defaultPath: `${value.filename}.json`,
         filters: [
           {
@@ -233,14 +226,14 @@ export class WorldInfoManager {
           }
         )
 
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.WorldInfoExportFileNotification,
           {
             status: 'success',
           } as WorldInfoExportResponse
         )
       } catch (error) {
-        currentWindow.webContents.send(
+        MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.WorldInfoExportFileNotification,
           {
             status: 'error',
@@ -256,10 +249,7 @@ export class WorldInfoManager {
     defaultResponse()
   }
 
-  static async openWorldInfoFile(
-    currentWindow: BrowserWindow,
-    { filename }: WorldInfoFileData
-  ) {
+  static async openWorldInfoFile({ filename }: WorldInfoFileData) {
     const response: WorldInfoOpenResponse = {
       filename,
       status: false,
@@ -278,17 +268,13 @@ export class WorldInfoManager {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.WorldInfoOpenFileNotification,
       response
     )
   }
 
-  static async renameFile(
-    currentWindow: BrowserWindow,
-    data: WorldInfoFileData,
-    newFilename: string
-  ) {
+  static async renameFile(data: WorldInfoFileData, newFilename: string) {
     let status = false
 
     try {
@@ -314,7 +300,7 @@ export class WorldInfoManager {
       //
     }
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.WorldInfoRenameFileNotification,
       status
     )

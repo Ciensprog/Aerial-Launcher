@@ -2,8 +2,6 @@ import type { MatchmakingTrack } from '../../../types/data/advanced-mode/matchma
 import type { AccountData } from '../../../types/accounts'
 import type { MatchMakingData } from '../../../types/events'
 
-import { BrowserWindow } from 'electron'
-
 import { PartyState } from '../../../config/fortnite/events'
 
 import { AccountsManager } from '../../../kernel/startup/accounts'
@@ -17,7 +15,6 @@ import { findPlayer } from '../../../services/endpoints/matchmaking'
 export class AccountProcess {
   private _accountId: string
   private account: AccountData
-  private currentWindow: BrowserWindow
 
   private _matchmaking: MatchMakingData = {
     partyState: null,
@@ -28,14 +25,9 @@ export class AccountProcess {
   private missionIntervalId: NodeJS.Timeout | null = null
   private missionTimeout: NodeJS.Timeout | null = null
 
-  constructor(config: {
-    accessToken: string
-    account: AccountData
-    currentWindow: BrowserWindow
-  }) {
+  constructor(config: { accessToken: string; account: AccountData }) {
     this._accountId = config.account.accountId
     this.account = config.account
-    this.currentWindow = config.currentWindow
   }
 
   get accountId() {
@@ -108,8 +100,7 @@ export class AccountProcess {
       }
 
       const accessToken = await Authentication.verifyAccessToken(
-        this.account,
-        this.currentWindow
+        this.account
       )
 
       if (!accessToken) {
@@ -171,7 +162,6 @@ export class AccountProcess {
         const accounts = AccountsManager.getAccounts()
 
         await Party.kickPartyMembers(
-          this.currentWindow,
           currentAccount,
           [...accounts.values()],
           automationAccount.actions.claim ?? false,
@@ -186,11 +176,7 @@ export class AccountProcess {
       if (automationAccount.actions.claim === true) {
         this.clearMissionIntervalId()
 
-        await ClaimRewards.start(
-          this.currentWindow,
-          [currentAccount],
-          true
-        )
+        await ClaimRewards.start([currentAccount], true)
 
         return
       }
@@ -200,8 +186,7 @@ export class AccountProcess {
   async checkMatchAtStartUp() {
     try {
       const accessToken = await Authentication.verifyAccessToken(
-        this.account,
-        this.currentWindow
+        this.account
       )
 
       if (!accessToken) {

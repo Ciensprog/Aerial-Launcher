@@ -7,23 +7,23 @@ import type {
 } from '../../types/accounts'
 
 import { Collection } from '@discordjs/collection'
-import { BrowserWindow } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from './windows/main'
+import { Automation } from './automation'
 import { DataDirectory } from './data-directory'
 
 import {
   localeCompareForSorting,
   parseCustomDisplayName,
 } from '../../lib/utils'
-import { Automation } from './automation'
 
 export class AccountsManager {
   private static _accounts: Collection<string, AccountData> =
     new Collection()
 
-  static async load(currentWindow: BrowserWindow) {
+  static async load() {
     const result = await DataDirectory.getAccountsFile()
     const accounts: AccountDataList = result.accounts
       .map((account) => {
@@ -51,7 +51,7 @@ export class AccountsManager {
       return accumulator
     }, {} as AccountDataRecord)
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnAccountsLoaded,
       accountList
     )
@@ -92,14 +92,14 @@ export class AccountsManager {
     await DataDirectory.updateAccountsFile(accounts)
   }
 
-  static async remove(currentWindow: BrowserWindow, accountId: string) {
+  static async remove(accountId: string) {
     const result = await DataDirectory.getAccountsFile()
     const accounts = result.accounts.filter(
       (account) => account.accountId !== accountId
     )
 
     AccountsManager._accounts.delete(accountId)
-    Automation.removeAccount(currentWindow, accountId)
+    Automation.removeAccount(accountId)
 
     await DataDirectory.updateAccountsFile(accounts)
   }

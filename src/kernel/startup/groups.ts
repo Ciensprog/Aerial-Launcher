@@ -1,16 +1,15 @@
 import type { GroupRecord } from '../../types/groups'
 
-import { BrowserWindow } from 'electron'
-
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { MainWindow } from './windows/main'
 import { DataDirectory } from './data-directory'
 
 export class GroupsManager {
-  static async load(currentWindow: BrowserWindow) {
+  static async load() {
     const { groups } = await DataDirectory.getGroupsFile()
 
-    currentWindow.webContents.send(
+    MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnLoadGroups,
       groups
     )

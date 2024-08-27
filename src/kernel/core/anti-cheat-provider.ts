@@ -2,9 +2,9 @@ import type { CommonErrorResponse } from '../../types/services/errors'
 import type { AccountData } from '../../types/accounts'
 import type { AntiCheatProviderCallbackResponseParam } from '../../types/preload'
 
-import { BrowserWindow } from 'electron'
-
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+
+import { MainWindow } from '../startup/windows/main'
 
 import { getAntiCheatProvider } from '../../services/endpoints/caldera'
 import {
@@ -13,12 +13,9 @@ import {
 } from '../../services/endpoints/oauth'
 
 export class AntiCheatProvider {
-  static requestBulk(
-    currentWindow: BrowserWindow,
-    accounts: Array<AccountData>
-  ) {
+  static requestBulk(accounts: Array<AccountData>) {
     accounts.forEach((account) => {
-      currentWindow.webContents.send(
+      MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.ScheduleResponseProviders,
         {
           account,
@@ -33,13 +30,13 @@ export class AntiCheatProvider {
 
       AntiCheatProvider.request(account)
         .then((response: AntiCheatProviderCallbackResponseParam) => {
-          currentWindow.webContents.send(
+          MainWindow.instance.webContents.send(
             ElectronAPIEventKeys.ScheduleResponseProviders,
             response
           )
         })
         .catch((response: AntiCheatProviderCallbackResponseParam) => {
-          currentWindow.webContents.send(
+          MainWindow.instance.webContents.send(
             ElectronAPIEventKeys.ScheduleResponseProviders,
             response
           )

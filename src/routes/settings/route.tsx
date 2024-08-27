@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from '../../components/ui/form'
 import { Input } from '../../components/ui/input'
+import { Switch } from '../../components/ui/switch'
 
 import { AccountCustomization } from './-account-customization/-index'
 import { TagsManagement } from './-tags-management/-index'
@@ -91,6 +92,22 @@ function Content() {
                         </FormLabel>
                         <FormControl>
                           <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="systemTray"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-y-0">
+                        <FormLabel>Hide to system tray</FormLabel>
+                        <FormControl className="ml-auto">
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

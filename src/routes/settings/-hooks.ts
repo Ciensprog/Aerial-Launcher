@@ -18,12 +18,19 @@ const formSchema = z.object({
       message: '❌ Invalid User Agent',
     })
     .optional(),
+  systemTray: z
+    .boolean({
+      message: '❌ Invalid value',
+    })
+    .default(false)
+    .optional(),
 })
 
 export function useSetupForm() {
-  const { path, userAgent } = useSettingsStore(
+  const { path, systemTray, userAgent } = useSettingsStore(
     useShallow((state) => ({
       path: state.path,
+      systemTray: state.systemTray,
       userAgent: state.userAgent,
     }))
   )
@@ -31,6 +38,7 @@ export function useSetupForm() {
     resolver: zodResolver(formSchema),
     values: {
       path,
+      systemTray,
       userAgent,
     },
   })

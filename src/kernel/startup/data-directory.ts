@@ -53,6 +53,7 @@ export class DataDirectory {
   )
   private static settingsDefaultData: Settings = {
     path: 'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64',
+    systemTray: false,
     userAgent: 'Fortnite/++Fortnite+Release-31.00-CL-35447195-Windows',
   }
 
