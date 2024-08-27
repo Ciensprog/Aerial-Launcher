@@ -14,6 +14,10 @@ export function toDate(config?: ConfigType) {
   return dayjs(config).toDate()
 }
 
+export function dateWithFormat(config: ConfigType, template: string) {
+  return dayjs(config).format(template)
+}
+
 export function relativeTime(config?: ConfigType) {
   return dayjs(config).fromNow()
 }

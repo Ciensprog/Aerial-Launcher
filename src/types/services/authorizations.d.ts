@@ -74,3 +74,21 @@ export type AuthorizationError = {
 export type AuthenticationResponseSchema<Data> = {
   data: Data | null
 }
+
+export type DeviceAuthListResponse = Array<DeviceAuthInfo>
+
+export type DeviceAuthInfo = {
+  deviceId: string
+  accountId: string
+  userAgent: string
+  created: {
+    location: string
+    ipAddress: string
+    dateTime: string
+  }
+  lastAccess?: {
+    location: string
+    ipAddress: string
+    dateTime: string
+  }
+}

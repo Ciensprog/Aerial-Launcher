@@ -187,6 +187,25 @@ export function SidebarMenu({
             <ul className="list-disc ml-5">
               <li className="item">
                 <Link
+                  to="/account-management/device-auth"
+                  className={cn({
+                    [currentClassNameHover]: areThereAccounts,
+                    'cursor-not-allowed opacity-60': !areThereAccounts,
+                  })}
+                  activeProps={{
+                    className: cn({
+                      [activeClassName]: areThereAccounts,
+                    }),
+                  }}
+                  onClick={goToPage}
+                  onAuxClick={whatIsThis()}
+                  disabled={!areThereAccounts}
+                >
+                  Devices Auth
+                </Link>
+              </li>
+              <li className="item">
+                <Link
                   to="/account-management/epic-games-settings"
                   className={cn({
                     [currentClassNameHover]: areThereAccounts,

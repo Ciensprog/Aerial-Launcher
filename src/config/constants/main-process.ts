@@ -184,6 +184,15 @@ export enum ElectronAPIEventKeys {
   UrnsServiceRemoveNotification = 'urns:service:remove:notification',
 
   /**
+   * Devices Auth Management
+   */
+
+  DevicesAuthRequestData = 'devices-auth:request:data',
+  DevicesAuthResponseData = 'devices-auth:response:data',
+  DevicesAuthRemove = 'devices-auth:remove',
+  DevicesAuthRemoveNotification = 'devices-auth:remove:notification',
+
+  /**
    * Schedules
    */
 
