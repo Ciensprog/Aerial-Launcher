@@ -412,7 +412,7 @@ export function useSendBoostsSheet({
   const [searchedUser, setSearchedUser] =
     useState<XPBoostsSearchUserResponse | null>(null)
 
-  const { accountList } = useGetAccounts()
+  const { accountsArray, accountList } = useGetAccounts()
   const { selected } = useGetSelectedAccount()
   const { selectedAccounts, selectedTags } = useGetXPBoostsFormData()
   const { getAccounts } = useAccountSelectorData({
@@ -561,7 +561,7 @@ export function useSendBoostsSheet({
     window.electronAPI.findAPlayerWhoWillReceiveXPBoosts({
       account: selected,
       displayName: inputSearchDisplayName.trim(),
-      originalAccounts: getAccounts(),
+      originalAccounts: accountsArray,
     })
   }
 
