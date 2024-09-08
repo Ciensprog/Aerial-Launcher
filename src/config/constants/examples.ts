@@ -1,1 +1,1 @@
-export const exampleCode = 'a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5'
+export const exampleCode = '79ebb4c00887455e810f83dda1cc8dfe'
