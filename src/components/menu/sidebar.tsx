@@ -187,6 +187,19 @@ export function SidebarMenu({
             <ul className="list-disc ml-5">
               <li className="item">
                 <Link
+                  to="/account-management/redeem-codes"
+                  className={currentClassNameHover}
+                  activeProps={{
+                    className: cn(activeClassName),
+                  }}
+                  onClick={goToPage}
+                  onAuxClick={whatIsThis()}
+                >
+                  Redeem Codes
+                </Link>
+              </li>
+              <li className="item">
+                <Link
                   to="/account-management/device-auth"
                   className={cn({
                     [currentClassNameHover]: areThereAccounts,
