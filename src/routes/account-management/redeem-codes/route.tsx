@@ -21,7 +21,7 @@ import {
   CardHeader,
 } from '../../../components/ui/card'
 
-// import {  } from './-hooks'
+import { useRedeemCodesData } from './-hooks'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -49,6 +49,19 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const {
+    accounts,
+    isDisabledForm,
+    isLoading,
+    parsedSelectedAccounts,
+    parsedSelectedTags,
+    tags,
+
+    handleSave,
+    redeemCodesUpdateAccounts,
+    redeemCodesUpdateTags,
+  } = useRedeemCodesData()
+
   return (
     <div className="flex flex-grow">
       <div className="flex items-center justify-center w-full">
@@ -62,24 +75,24 @@ function Content() {
             <CardContent className="grid gap-4 pt-6">
               <AccountSelectors
                 accounts={{
-                  options: [],
-                  value: [],
+                  options: accounts,
+                  value: parsedSelectedAccounts,
                 }}
                 tags={{
-                  options: [],
-                  value: [],
+                  options: tags,
+                  value: parsedSelectedTags,
                 }}
-                // onUpdateAccounts={}
-                // onUpdateTags={}
+                onUpdateAccounts={redeemCodesUpdateAccounts}
+                onUpdateTags={redeemCodesUpdateTags}
               />
             </CardContent>
             <CardFooter className="space-x-6">
               <Button
                 className="w-full"
-                // onClick={}
-                // disabled={}
+                onClick={handleSave}
+                disabled={isDisabledForm}
               >
-                {false ? (
+                {isLoading ? (
                   <UpdateIcon className="animate-spin" />
                 ) : (
                   'Redeem Codes'
