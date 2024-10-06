@@ -1,3 +1,5 @@
+import type { ChangeEventHandler } from 'react'
+
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
 
 import {
@@ -8,10 +10,11 @@ import {
 import { toast } from '../../../lib/notifications'
 
 export function useRedeemCodesData() {
-  const { isLoading, selectedAccounts, selectedTags } =
+  const { codes, isLoading, selectedAccounts, selectedTags } =
     useGetRedeemCodesData()
   const {
     redeemCodesUpdateAccounts,
+    redeemCodesUpdateCodes,
     redeemCodesUpdateLoading,
     redeemCodesUpdateTags,
   } = useGetRedeemCodesActions()
@@ -28,7 +31,11 @@ export function useRedeemCodesData() {
     selectedAccounts,
     selectedTags,
   })
-  const isDisabledForm = isSelectedEmpty || isLoading || !areThereAccounts
+  const isDisabledForm =
+    isSelectedEmpty ||
+    isLoading ||
+    !areThereAccounts ||
+    codes.trim().length === 0
 
   const handleSave = () => {
     if (isDisabledForm) {
@@ -45,10 +52,16 @@ export function useRedeemCodesData() {
 
     redeemCodesUpdateLoading(true)
   }
+  const handleUpdateCodes: ChangeEventHandler<HTMLTextAreaElement> = (
+    event
+  ) => {
+    redeemCodesUpdateCodes(event.target.value ?? '')
+  }
 
   return {
     accounts,
     areThereAccounts,
+    codes,
     isDisabledForm,
     isLoading,
     isSelectedEmpty,
@@ -59,6 +72,7 @@ export function useRedeemCodesData() {
     tags,
 
     handleSave,
+    handleUpdateCodes,
     redeemCodesUpdateAccounts,
     redeemCodesUpdateTags,
   }

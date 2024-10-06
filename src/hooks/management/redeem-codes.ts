@@ -5,15 +5,17 @@ import { useShallow } from 'zustand/react/shallow'
 import { useRedeemCodesStore } from '../../state/management/redeem-code'
 
 export function useGetRedeemCodesData() {
-  const { accounts, isLoading, tags } = useRedeemCodesStore(
+  const { accounts, codes, isLoading, tags } = useRedeemCodesStore(
     useShallow((state) => ({
       accounts: state.accounts,
+      codes: state.codes,
       isLoading: state.isLoading,
       tags: state.tags,
     }))
   )
 
   return {
+    codes,
     isLoading,
     selectedAccounts: accounts,
     selectedTags: tags,
@@ -21,10 +23,11 @@ export function useGetRedeemCodesData() {
 }
 
 export function useGetRedeemCodesActions() {
-  const { updateAccounts, updateLoading, updateTags } =
+  const { updateAccounts, updateCodes, updateLoading, updateTags } =
     useRedeemCodesStore(
       useShallow((state) => ({
         updateAccounts: state.updateAccounts,
+        updateCodes: state.updateCodes,
         updateLoading: state.updateLoading,
         updateTags: state.updateTags,
       }))
@@ -44,6 +47,9 @@ export function useGetRedeemCodesActions() {
     updateTags(value.map((item) => item.value))
   }
 
+  const redeemCodesUpdateCodes = (value: string) => {
+    updateCodes(value)
+  }
   const redeemCodesUpdateLoading = (value: boolean) => {
     updateLoading(value)
   }
@@ -52,6 +58,7 @@ export function useGetRedeemCodesActions() {
     rawRedeemCodesUpdateAccounts,
     rawRedeemCodesUpdateTags,
     redeemCodesUpdateAccounts,
+    redeemCodesUpdateCodes,
     redeemCodesUpdateLoading,
     redeemCodesUpdateTags,
   }

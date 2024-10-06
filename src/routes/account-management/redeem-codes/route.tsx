@@ -20,6 +20,7 @@ import {
   CardFooter,
   CardHeader,
 } from '../../../components/ui/card'
+import { Textarea } from '../../../components/ui/textarea'
 
 import { useRedeemCodesData } from './-hooks'
 
@@ -51,12 +52,14 @@ export const Route = createRoute({
 function Content() {
   const {
     accounts,
+    codes,
     isDisabledForm,
     isLoading,
     parsedSelectedAccounts,
     parsedSelectedTags,
     tags,
 
+    handleUpdateCodes,
     handleSave,
     redeemCodesUpdateAccounts,
     redeemCodesUpdateTags,
@@ -84,6 +87,13 @@ function Content() {
                 }}
                 onUpdateAccounts={redeemCodesUpdateAccounts}
                 onUpdateTags={redeemCodesUpdateTags}
+              />
+              <Textarea
+                className="[field-sizing:content] resize-none"
+                placeholder="Set codes to redeem (use newline)."
+                value={codes}
+                onChange={handleUpdateCodes}
+                disabled={isLoading}
               />
             </CardContent>
             <CardFooter className="space-x-6">
