@@ -184,6 +184,13 @@ export enum ElectronAPIEventKeys {
   UrnsServiceRemoveNotification = 'urns:service:remove:notification',
 
   /**
+   * Redeem Codes
+   */
+
+  RedeemCodesRedeem = 'redeem-codes:redeem',
+  RedeemCodesRedeenNotification = 'redeem-codes:redeem:notification',
+
+  /**
    * Devices Auth Management
    */
 

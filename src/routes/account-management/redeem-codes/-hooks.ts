@@ -1,18 +1,34 @@
 import type { ChangeEventHandler } from 'react'
 
+import { useEffect } from 'react'
+
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
+
+import {
+  RedeemCodesCodeData,
+  RedeemCodesStatus,
+} from '../../../state/management/redeem-code'
 
 import {
   useGetRedeemCodesActions,
   useGetRedeemCodesData,
 } from '../../../hooks/management/redeem-codes'
 
+import { parseRedeemCodes } from '../../../lib/parsers/texts'
 import { toast } from '../../../lib/notifications'
 
 export function useRedeemCodesData() {
-  const { codes, isLoading, selectedAccounts, selectedTags } =
-    useGetRedeemCodesData()
   const {
+    codes,
+    isLoading,
+    notifications,
+    selectedAccounts,
+    selectedTags,
+  } = useGetRedeemCodesData()
+  const {
+    redeemCodesClearResponse,
+    redeemCodesSetInitialResponse,
+    redeemCodesSetNotification,
     redeemCodesUpdateAccounts,
     redeemCodesUpdateCodes,
     redeemCodesUpdateLoading,
@@ -31,13 +47,28 @@ export function useRedeemCodesData() {
     selectedAccounts,
     selectedTags,
   })
+
+  const newNotifications = Object.values(notifications)
   const isDisabledForm =
     isSelectedEmpty ||
     isLoading ||
     !areThereAccounts ||
     codes.trim().length === 0
 
-  const handleSave = () => {
+  useEffect(() => {
+    const listener = window.electronAPI.redeemCodesNotification(
+      async (notification) => {
+        redeemCodesUpdateLoading(false)
+        redeemCodesSetNotification(notification)
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  const handleRedeem = () => {
     if (isDisabledForm) {
       return
     }
@@ -50,7 +81,29 @@ export function useRedeemCodesData() {
       return
     }
 
+    const currentCodes = parseRedeemCodes(codes)
+    const codeRecord = currentCodes.reduce(
+      (accumulator, currentCode) => {
+        accumulator[currentCode] = {
+          status: RedeemCodesStatus.LOADING,
+          value: currentCode,
+        }
+
+        return accumulator
+      },
+      {} as Record<string, RedeemCodesCodeData>
+    )
+
     redeemCodesUpdateLoading(true)
+    redeemCodesSetInitialResponse(selectedAccounts, codeRecord)
+
+    window.electronAPI.redeemCodes(selectedAccounts, currentCodes)
+  }
+  const handleClearForm = () => {
+    redeemCodesUpdateAccounts([])
+    redeemCodesUpdateTags([])
+    redeemCodesUpdateCodes('')
+    redeemCodesClearResponse()
   }
   const handleUpdateCodes: ChangeEventHandler<HTMLTextAreaElement> = (
     event
@@ -70,8 +123,10 @@ export function useRedeemCodesData() {
     selectedAccounts,
     selectedTags,
     tags,
+    notifications: newNotifications,
 
-    handleSave,
+    handleClearForm,
+    handleRedeem,
     handleUpdateCodes,
     redeemCodesUpdateAccounts,
     redeemCodesUpdateTags,

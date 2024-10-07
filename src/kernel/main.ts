@@ -48,6 +48,7 @@ import { SettingsManager } from './startup/settings'
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
 import { DevicesAuthManager } from './core/devices-auth'
+import { RedeemCodes } from './core/redeem-codes'
 
 dayjs.extend(relativeTime)
 
@@ -530,6 +531,17 @@ app.on('ready', async () => {
     ElectronAPIEventKeys.UrnsServiceRemove,
     async (_, accountId: string) => {
       await AutoPinUrns.removeAccount(accountId)
+    }
+  )
+
+  /**
+   * Redeem Codes
+   */
+
+  ipcMain.on(
+    ElectronAPIEventKeys.RedeemCodesRedeem,
+    async (_, accounts: Array<AccountData>, codes: Array<string>) => {
+      await RedeemCodes.redeem(accounts, codes)
     }
   )
 
