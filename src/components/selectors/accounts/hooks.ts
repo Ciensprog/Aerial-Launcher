@@ -43,28 +43,36 @@ export function useAccountSelectorData({
     value: name,
   }))
 
-  const parsedSelectedAccounts: Array<SelectOption> = selectedAccounts.map(
-    (accountId) => {
-      const selected = accounts.find((item) => item.value === accountId)!
+  const parsedSelectedAccounts: Array<SelectOption> = selectedAccounts
+    .map((accountId) => {
+      const selected = accounts.find((item) => item.value === accountId)
+
+      if (!selected) {
+        return null
+      }
 
       return {
         color: defaultColor,
         label: selected.label,
         value: selected.value,
       }
-    }
-  )
-  const parsedSelectedTags: Array<SelectOption> = selectedTags.map(
-    (tagName) => {
-      const selected = tags.find((item) => item.value === tagName)!
+    })
+    .filter((item) => item !== null)
+  const parsedSelectedTags: Array<SelectOption> = selectedTags
+    .map((tagName) => {
+      const selected = tags.find((item) => item.value === tagName)
+
+      if (!selected) {
+        return null
+      }
 
       return {
         color: selected.color,
         label: selected.label,
         value: selected.value,
       }
-    }
-  )
+    })
+    .filter((item) => item !== null)
 
   const isSelectedEmpty =
     parsedSelectedAccounts.length === 0 && parsedSelectedTags.length === 0
