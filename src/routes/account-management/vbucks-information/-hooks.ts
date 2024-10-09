@@ -34,15 +34,14 @@ export function useVBucksInformationData() {
   const isDisabledForm = isSelectedEmpty || isLoading || !areThereAccounts
 
   useEffect(() => {
-    // const listener = window.electronAPI.redeemCodesNotification(
-    //   async (notification) => {
-    //     vbucksInformationUpdateLoading(false)
-    //     redeemCodesSetNotification(notification)
-    //   }
-    // )
+    const listener = window.electronAPI.getVBucksInformationNotification(
+      async (data) => {
+        vbucksInformationUpdateLoading(false)
+      }
+    )
 
     return () => {
-      // listener.removeListener()
+      listener.removeListener()
     }
   }, [])
 
@@ -61,7 +60,7 @@ export function useVBucksInformationData() {
 
     vbucksInformationUpdateLoading(true)
 
-    // window.electronAPI.redeemCodes(selectedAccounts, currentCodes)
+    window.electronAPI.getVBucksInformation(selectedAccounts)
   }
 
   return {
