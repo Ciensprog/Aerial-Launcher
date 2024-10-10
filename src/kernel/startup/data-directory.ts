@@ -93,6 +93,12 @@ export class DataDirectory {
   )
   private static urnsDefaultData: AutoPinUrnDataList = {}
 
+  static miniBossesFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'mini-bosses.json'
+  )
+  private static miniBossesDefaultData: AutoPinUrnDataList = {}
+
   /**
    * Get default values
    */
@@ -127,6 +133,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateMatchmakingJsonFile()
     await DataDirectory.getOrCreateAutomationJsonFile()
     await DataDirectory.getOrCreateUrnsJsonFile()
+    await DataDirectory.getOrCreateMiniBossesJsonFile()
   }
 
   /**
@@ -290,6 +297,28 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from mini-bosses.json
+   */
+  static async getMiniBossesFile(): Promise<{
+    miniBosses: AutoPinUrnDataList
+  }> {
+    const result = await DataDirectory.getOrCreateMiniBossesJsonFile()
+
+    try {
+      const list = autoPinUrnsDataSchema.safeParse(JSON.parse(result))
+      const miniBosses = list.success
+        ? list.data
+        : DataDirectory.miniBossesDefaultData
+
+      return { miniBosses }
+    } catch (error) {
+      //
+    }
+
+    return { miniBosses: DataDirectory.miniBossesDefaultData }
+  }
+
+  /**
    * Update accounts.json
    */
   static async updateAccountsFile(data: AccountList) {
@@ -317,7 +346,7 @@ export class DataDirectory {
   }
 
   /**
-   * Update tags.json
+   * Update groups.json
    */
   static async updateGroupsFile(data: GroupRecord) {
     await DataDirectory.updateJsonFile(DataDirectory.groupsFilePath, data)
@@ -355,6 +384,16 @@ export class DataDirectory {
    */
   static async updateUrnsFile(data: AutoPinUrnDataList) {
     await DataDirectory.updateJsonFile(DataDirectory.urnsFilePath, data)
+  }
+
+  /**
+   * Update mini-bosses.json
+   */
+  static async updateMiniBossesFile(data: AutoPinUrnDataList) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.miniBossesFilePath,
+      data
+    )
   }
 
   /**
@@ -515,6 +554,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.urnsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating mini-bosses.json
+   */
+  private static async getOrCreateMiniBossesJsonFile() {
+    const initialData = DataDirectory.miniBossesDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.miniBossesFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),

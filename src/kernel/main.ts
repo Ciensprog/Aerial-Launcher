@@ -522,8 +522,13 @@ app.on('ready', async () => {
 
   ipcMain.on(
     ElectronAPIEventKeys.UrnsServiceUpdate,
-    async (_, accountId: string, value: boolean) => {
-      await AutoPinUrns.updateAccount(accountId, value)
+    async (
+      _,
+      accountId: string,
+      type: 'mini-bosses' | 'urns',
+      value: boolean
+    ) => {
+      await AutoPinUrns.updateAccount(accountId, type, value)
     }
   )
 

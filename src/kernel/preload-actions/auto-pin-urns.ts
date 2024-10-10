@@ -13,10 +13,15 @@ export function autoPinUrnsAdd(accountId: string) {
   ipcRenderer.send(ElectronAPIEventKeys.UrnsServiceAdd, accountId)
 }
 
-export function autoPinUrnsUpdate(accountId: string, value: boolean) {
+export function autoPinUrnsUpdate(
+  accountId: string,
+  type: 'mini-bosses' | 'urns',
+  value: boolean
+) {
   ipcRenderer.send(
     ElectronAPIEventKeys.UrnsServiceUpdate,
     accountId,
+    type,
     value
   )
 }
@@ -26,11 +31,17 @@ export function autoPinUrnsRemove(accountId: string) {
 }
 
 export function notificationAutoPinUrnsData(
-  callback: (value: AutoPinUrnDataList) => Promise<void>
+  callback: (value: {
+    urns: AutoPinUrnDataList
+    miniBosses: AutoPinUrnDataList
+  }) => Promise<void>
 ) {
   const customCallback = (
     _: IpcRendererEvent,
-    value: AutoPinUrnDataList
+    value: {
+      urns: AutoPinUrnDataList
+      miniBosses: AutoPinUrnDataList
+    }
   ) => {
     callback(value).catch(() => {})
   }

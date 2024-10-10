@@ -18,6 +18,7 @@ import {
   CardDescription,
   CardHeader,
 } from '../../../components/ui/card'
+import { Label } from '../../../components/ui/label'
 import { Switch } from '../../../components/ui/switch'
 
 import { Route as RootRoute } from '../../__root'
@@ -55,6 +56,7 @@ export function Content() {
     accountSelectorIsDisabled,
     options,
     selectedAccounts,
+    selectedAccountsMiniBosses,
 
     customFilter,
     handleRemoveAccount,
@@ -108,20 +110,34 @@ export function Content() {
           <ul className="gap-2 grid">
             {accounts.map((account) => {
               const value = selectedAccounts[account.accountId]
+              const valueMiniBosses =
+                selectedAccountsMiniBosses[account.accountId]
 
               return (
                 <li
                   className="border flex gap-3 items-center px-3 py-2 rounded"
                   key={account.accountId}
                 >
-                  <div className="w-60 truncate">
+                  <div className="max-w-36 truncate">
                     {parseCustomDisplayName(account)}
                   </div>
                   <div className="flex gap-3 items-center ml-auto">
+                    <Label htmlFor="switch-urns">Urns</Label>
                     <Switch
+                      id="switch-urns"
                       checked={value}
                       onCheckedChange={handleUpdateAccount(
-                        account.accountId
+                        account.accountId,
+                        'urns'
+                      )}
+                    />
+                    <Label htmlFor="switch-mini-bosses">Mini-Bosses</Label>
+                    <Switch
+                      id="switch-mini-bosses"
+                      checked={valueMiniBosses}
+                      onCheckedChange={handleUpdateAccount(
+                        account.accountId,
+                        'mini-bosses'
                       )}
                     />
                     <div>

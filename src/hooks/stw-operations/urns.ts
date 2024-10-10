@@ -3,10 +3,16 @@ import { useShallow } from 'zustand/react/shallow'
 import { useAutoPinUrnDataStore } from '../../state/stw-operations/urns'
 
 export function useGetAutoPinUrnData() {
-  const data = useAutoPinUrnDataStore((state) => state.data)
+  const { data, miniBosses } = useAutoPinUrnDataStore(
+    useShallow((state) => ({
+      data: state.data,
+      miniBosses: state.miniBosses,
+    }))
+  )
 
   return {
     selectedAccounts: data,
+    selectedAccountsMiniBosses: miniBosses,
   }
 }
 

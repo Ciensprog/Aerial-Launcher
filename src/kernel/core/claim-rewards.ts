@@ -115,18 +115,33 @@ export class ClaimRewards {
           claimsResponse.forEach((claimResponse) => {
             if (claimResponse.status === 'fulfilled') {
               claimResponse.value.forEach((item) => {
+                const hasAutoPinMiniBosses = AutoPinUrns.findById(
+                  account.accountId,
+                  'mini-bosses'
+                )
                 const hasAutoPinUrns = AutoPinUrns.findById(
-                  account.accountId
+                  account.accountId,
+                  'urns'
                 )
 
-                if (hasAutoPinUrns === true) {
+                if (
+                  hasAutoPinMiniBosses === true ||
+                  hasAutoPinUrns === true
+                ) {
+                  const pinMiniBosses = item.notifications?.find(
+                    (notification) =>
+                      notification.questId ===
+                      QuestEventRepeatable.ExorcismByElimination
+                  )
                   const pinUrns = item.notifications?.find(
                     (notification) =>
                       notification.questId ===
                       QuestEventRepeatable.UrnYourKeep
                   )
 
-                  if (pinUrns) {
+                  console.log({ pinMiniBosses, pinUrns })
+
+                  if (pinMiniBosses || pinUrns) {
                     Authentication.verifyAccessToken(account)
                       .then((accessToken) => {
                         if (accessToken) {
@@ -139,30 +154,35 @@ export class ClaimRewards {
                                 newQueryProfile.data.profileChanges[0] ??
                                 null
 
-                              Object.entries(
+                              const currentPinned =
+                                newProfileChanges.profile.stats.attributes
+                                  .client_settings?.pinnedQuestInstances ??
+                                []
+                              const newItems = Object.entries(
                                 newProfileChanges.profile.items ?? []
-                              ).forEach(([itemId, itemValue]) => {
-                                if (
-                                  itemValue.templateId ===
-                                  QuestEventRepeatable.UrnYourKeep
-                                ) {
-                                  const currentPinned =
-                                    newProfileChanges.profile.stats
-                                      .attributes.client_settings
-                                      ?.pinnedQuestInstances ?? []
+                              )
+                                .filter(([, itemValue]) => {
+                                  return (
+                                    (hasAutoPinMiniBosses === true &&
+                                      itemValue.templateId ===
+                                        QuestEventRepeatable.ExorcismByElimination) ||
+                                    (hasAutoPinUrns === true &&
+                                      itemValue.templateId ===
+                                        QuestEventRepeatable.UrnYourKeep)
+                                  )
+                                })
+                                .map(([itemId]) => itemId)
 
-                                  const data = {
-                                    accessToken,
-                                    accountId: account.accountId,
-                                    pinnedQuestIds: [
-                                      ...currentPinned,
-                                      itemId,
-                                    ],
-                                  }
+                              const data = {
+                                accessToken,
+                                accountId: account.accountId,
+                                pinnedQuestIds: [
+                                  ...currentPinned,
+                                  ...newItems,
+                                ],
+                              }
 
-                                  setSetPinnedQuests(data).catch(() => {})
-                                }
-                              })
+                              setSetPinnedQuests(data).catch(() => {})
                             })
                             .catch(() => {})
                         }

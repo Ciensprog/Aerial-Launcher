@@ -20,7 +20,8 @@ import { useEffect } from 'react'
 export function useData() {
   const { accountsArray, accountList } = useGetAccounts()
   const { getGroupTagsByAccountId } = useGetGroups()
-  const { selectedAccounts } = useGetAutoPinUrnData()
+  const { selectedAccounts, selectedAccountsMiniBosses } =
+    useGetAutoPinUrnData()
   const { addAccount, removeAccount, updateAccount } =
     useGetAutoPinUrnActions()
 
@@ -59,9 +60,18 @@ export function useData() {
 
   useEffect(() => {
     const listener = window.electronAPI.notificationAutoPinUrnsData(
-      async (value) => {
-        Object.entries(value).forEach(([accountId, value]) => {
-          addAccount(accountId, value)
+      async (data) => {
+        Object.entries(data.urns).forEach(([accountId, value]) => {
+          addAccount(accountId, {
+            type: 'urns',
+            value,
+          })
+        })
+        Object.entries(data.miniBosses).forEach(([accountId, value]) => {
+          addAccount(accountId, {
+            type: 'mini-bosses',
+            value,
+          })
         })
       }
     )
@@ -98,16 +108,22 @@ export function useData() {
     window.electronAPI.autoPinUrnsRemove(accountId)
   }
 
-  const handleUpdateAccount = (accountId: string) => (value: boolean) => {
-    updateAccount(accountId, value)
-    window.electronAPI.autoPinUrnsUpdate(accountId, value)
-  }
+  const handleUpdateAccount =
+    (accountId: string, type: 'mini-bosses' | 'urns') =>
+    (value: boolean) => {
+      updateAccount(accountId, {
+        type,
+        value,
+      })
+      window.electronAPI.autoPinUrnsUpdate(accountId, type, value)
+    }
 
   return {
     accounts,
     accountSelectorIsDisabled,
     options,
     selectedAccounts,
+    selectedAccountsMiniBosses,
 
     customFilter,
     handleRemoveAccount,
