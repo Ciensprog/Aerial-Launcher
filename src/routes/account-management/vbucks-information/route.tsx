@@ -24,10 +24,12 @@ import {
   CardHeader,
 } from '../../../components/ui/card'
 
-import { useVBucksInformationData } from './-hooks'
+import { VBucksInformationData } from '../../../state/management/vbucks-information'
+
+import { useParseAccountInfo, useVBucksInformationData } from './-hooks'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
-// import { cn, parseCustomDisplayName } from '../../../lib/utils'
+import { parseCustomDisplayName } from '../../../lib/utils'
 
 const vbucksImageUrl = `${repositoryAssetsURL}/images/resources/currency_mtxswap.png`
 
@@ -59,12 +61,14 @@ export const Route = createRoute({
 function Content() {
   const {
     accounts,
+    data,
     handleGetInfo,
     isDisabledForm,
     isLoading,
     parsedSelectedAccounts,
     parsedSelectedTags,
     tags,
+    vbucksSummary,
     vbucksInformationUpdateAccounts,
     vbucksInformationUpdateTags,
   } = useVBucksInformationData()
@@ -108,74 +112,81 @@ function Content() {
             </CardFooter>
           </Card>
 
-          <div className="max-w-lg pt-1 w-full">
-            <div className="leading-none mb-5 text-center uppercase">
-              V-Bucks Summary On 1 Account:
-              <div className="flex font-bold gap-1 items-center justify-center text-4xl">
-                <figure className="relative top-0.5">
-                  <img
-                    src={vbucksImageUrl}
-                    className="size-8"
-                    alt="vbucks"
-                  />
-                </figure>
-                {numberWithCommaSeparator(20002)}
-              </div>
-            </div>
-
-            <Masonry
-              columnsCount={2}
-              gutter="0.75rem"
-            >
-              <div className="border rounded">
-                <header className="bg-muted-foreground/5 px-2 py-2">
-                  <div className="max-w-36 mx-auto text-center text-sm truncate">
-                    Account #1
-                  </div>
-                  <div className="flex font-bold gap-1 items-center justify-center text-2xl">
-                    <figure className="relative top-0.5">
-                      <img
-                        src={vbucksImageUrl}
-                        className="size-5"
-                        alt="vbucks"
-                      />
-                    </figure>
-                    {numberWithCommaSeparator(20002)}
-                  </div>
-                </header>
-                <div className="px-1.5 py-1.5 text-muted-foreground text-sm">
-                  <ul className="list-disc pl-6">
-                    <li className="leading-5">
-                      <div className="">
-                        Shared Complimentary:{' '}
-                        <span className="font-bold">
-                          {numberWithCommaSeparator(999999999)}
-                        </span>
-                      </div>
-                    </li>
-                    <li className="leading-5">
-                      <div className="">
-                        EpicPC PurchaseBonus:{' '}
-                        <span className="font-bold">
-                          {numberWithCommaSeparator(20002)}
-                        </span>
-                      </div>
-                    </li>
-                    <li className="leading-5">
-                      <div className="">
-                        EpicPC Purchased:{' '}
-                        <span className="font-bold">
-                          {numberWithCommaSeparator(20002)}
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
+          {data.length > 0 && (
+            <div className="max-w-lg pt-1 w-full">
+              <div className="leading-none mb-5 text-center uppercase">
+                V-Bucks Summary On {data.length} Account
+                {data.length > 1 ? 's' : ''}:
+                <div className="flex font-bold gap-1 items-center justify-center text-4xl">
+                  <figure className="relative top-0.5">
+                    <img
+                      src={vbucksImageUrl}
+                      className="size-8"
+                      alt="vbucks"
+                    />
+                  </figure>
+                  {numberWithCommaSeparator(vbucksSummary)}
                 </div>
               </div>
-            </Masonry>
-          </div>
+
+              <Masonry
+                columnsCount={2}
+                gutter="0.75rem"
+              >
+                {data.map((item) => (
+                  <AccountInfo
+                    data={item}
+                    key={item.accountId}
+                  />
+                ))}
+              </Masonry>
+            </div>
+          )}
         </div>
       </div>
+    </div>
+  )
+}
+
+function AccountInfo({ data }: { data: VBucksInformationData }) {
+  const { account, details, total } = useParseAccountInfo({ data })
+
+  return (
+    <div className="border rounded">
+      <header className="bg-muted-foreground/5 px-2 py-2">
+        <div className="max-w-36 mx-auto text-center text-sm truncate">
+          {parseCustomDisplayName(account)}
+        </div>
+        <div className="flex font-bold gap-1 items-center justify-center text-2xl">
+          <figure className="relative top-0.5">
+            <img
+              src={vbucksImageUrl}
+              className="size-5"
+              alt="vbucks"
+            />
+          </figure>
+          {numberWithCommaSeparator(total)}
+        </div>
+      </header>
+      {details.length > 0 && (
+        <div className="px-1.5 py-1.5 text-muted-foreground text-sm">
+          <ul className="list-disc pl-6">
+            {details.map(([templateId, currency]) => (
+              <li
+                className="leading-5"
+                key={templateId}
+              >
+                <div className="">
+                  {currency.platform} {currency.template}:{' '}
+                  <span className="font-bold">
+                    {numberWithCommaSeparator(currency.quantity)}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

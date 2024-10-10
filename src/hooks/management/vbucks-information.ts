@@ -2,7 +2,10 @@ import { useShallow } from 'zustand/react/shallow'
 
 import type { SelectOption } from '../../components/ui/third-party/extended/input-tags'
 
-import { useVBucksInformationStore } from '../../state/management/vbucks-information'
+import {
+  useVBucksInformationStore,
+  VBucksInformationState,
+} from '../../state/management/vbucks-information'
 
 export function useGetVBucksInformationData() {
   const { accounts, data, isLoading, tags } = useVBucksInformationStore(
@@ -23,10 +26,11 @@ export function useGetVBucksInformationData() {
 }
 
 export function useGetVBucksInformationActions() {
-  const { updateAccounts, updateLoading, updateTags } =
+  const { updateAccounts, updateData, updateLoading, updateTags } =
     useVBucksInformationStore(
       useShallow((state) => ({
         updateAccounts: state.updateAccounts,
+        updateData: state.updateData,
         updateLoading: state.updateLoading,
         updateTags: state.updateTags,
       }))
@@ -46,6 +50,13 @@ export function useGetVBucksInformationActions() {
     updateTags(value.map((item) => item.value))
   }
 
+  const vbucksInformationUpdateData = (
+    value: VBucksInformationState['data'],
+    reset?: boolean
+  ) => {
+    updateData(value, reset)
+  }
+
   const vbucksInformationUpdateLoading = (value: boolean) => {
     updateLoading(value)
   }
@@ -54,6 +65,7 @@ export function useGetVBucksInformationActions() {
     rawVBucksInformationUpdateAccounts,
     rawVBucksInformationUpdateTags,
     vbucksInformationUpdateAccounts,
+    vbucksInformationUpdateData,
     vbucksInformationUpdateLoading,
     vbucksInformationUpdateTags,
   }

@@ -1,10 +1,10 @@
 import type { StringUnion } from '../../utils'
 
-type ProfileId = StringUnion<'campaign'>
+type ProfileId = StringUnion<'campaign' | 'common_core'>
 
 export type MCPQueryProfile = {
   profileRevision: number
-  profileId: ProfileId
+  profileId: 'campaign'
   profileChangesBaseRevision: number
   profileCommandRevision: number
   serverTime: string
