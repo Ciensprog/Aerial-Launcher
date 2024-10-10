@@ -23,6 +23,7 @@ import { Route as InformationCreditsRouteImport } from './routes/information/cre
 import { Route as AdvancedModeWorldInfoRouteImport } from './routes/advanced-mode/world-info/route'
 import { Route as AdvancedModeMatchmakingTrackRouteImport } from './routes/advanced-mode/matchmaking-track/route'
 import { Route as AccountsRemoveRouteImport } from './routes/accounts/remove/route'
+import { Route as AccountManagementVbucksInformationRouteImport } from './routes/account-management/vbucks-information/route'
 import { Route as AccountManagementRedeemCodesRouteImport } from './routes/account-management/redeem-codes/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
 import { Route as AccountManagementDeviceAuthRouteImport } from './routes/account-management/device-auth/route'
@@ -98,6 +99,12 @@ const AccountsRemoveRouteRoute = AccountsRemoveRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AccountManagementVbucksInformationRouteRoute =
+  AccountManagementVbucksInformationRouteImport.update({
+    path: '/account-management/vbucks-information',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 const AccountManagementRedeemCodesRouteRoute =
   AccountManagementRedeemCodesRouteImport.update({
     path: '/account-management/redeem-codes',
@@ -158,6 +165,13 @@ declare module '@tanstack/react-router' {
       path: '/account-management/redeem-codes'
       fullPath: '/account-management/redeem-codes'
       preLoaderRoute: typeof AccountManagementRedeemCodesRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/account-management/vbucks-information': {
+      id: '/account-management/vbucks-information'
+      path: '/account-management/vbucks-information'
+      fullPath: '/account-management/vbucks-information'
+      preLoaderRoute: typeof AccountManagementVbucksInformationRouteImport
       parentRoute: typeof rootRoute
     }
     '/accounts/remove': {
@@ -248,6 +262,7 @@ export interface FileRoutesByFullPath {
   '/account-management/device-auth': typeof AccountManagementDeviceAuthRouteRoute
   '/account-management/epic-games-settings': typeof AccountManagementEpicGamesSettingsRouteRoute
   '/account-management/redeem-codes': typeof AccountManagementRedeemCodesRouteRoute
+  '/account-management/vbucks-information': typeof AccountManagementVbucksInformationRouteRoute
   '/accounts/remove': typeof AccountsRemoveRouteRoute
   '/advanced-mode/matchmaking-track': typeof AdvancedModeMatchmakingTrackRouteRoute
   '/advanced-mode/world-info': typeof AdvancedModeWorldInfoRouteRoute
@@ -267,6 +282,7 @@ export interface FileRoutesByTo {
   '/account-management/device-auth': typeof AccountManagementDeviceAuthRouteRoute
   '/account-management/epic-games-settings': typeof AccountManagementEpicGamesSettingsRouteRoute
   '/account-management/redeem-codes': typeof AccountManagementRedeemCodesRouteRoute
+  '/account-management/vbucks-information': typeof AccountManagementVbucksInformationRouteRoute
   '/accounts/remove': typeof AccountsRemoveRouteRoute
   '/advanced-mode/matchmaking-track': typeof AdvancedModeMatchmakingTrackRouteRoute
   '/advanced-mode/world-info': typeof AdvancedModeWorldInfoRouteRoute
@@ -287,6 +303,7 @@ export interface FileRoutesById {
   '/account-management/device-auth': typeof AccountManagementDeviceAuthRouteRoute
   '/account-management/epic-games-settings': typeof AccountManagementEpicGamesSettingsRouteRoute
   '/account-management/redeem-codes': typeof AccountManagementRedeemCodesRouteRoute
+  '/account-management/vbucks-information': typeof AccountManagementVbucksInformationRouteRoute
   '/accounts/remove': typeof AccountsRemoveRouteRoute
   '/advanced-mode/matchmaking-track': typeof AdvancedModeMatchmakingTrackRouteRoute
   '/advanced-mode/world-info': typeof AdvancedModeWorldInfoRouteRoute
@@ -308,6 +325,7 @@ export interface FileRouteTypes {
     | '/account-management/device-auth'
     | '/account-management/epic-games-settings'
     | '/account-management/redeem-codes'
+    | '/account-management/vbucks-information'
     | '/accounts/remove'
     | '/advanced-mode/matchmaking-track'
     | '/advanced-mode/world-info'
@@ -326,6 +344,7 @@ export interface FileRouteTypes {
     | '/account-management/device-auth'
     | '/account-management/epic-games-settings'
     | '/account-management/redeem-codes'
+    | '/account-management/vbucks-information'
     | '/accounts/remove'
     | '/advanced-mode/matchmaking-track'
     | '/advanced-mode/world-info'
@@ -344,6 +363,7 @@ export interface FileRouteTypes {
     | '/account-management/device-auth'
     | '/account-management/epic-games-settings'
     | '/account-management/redeem-codes'
+    | '/account-management/vbucks-information'
     | '/accounts/remove'
     | '/advanced-mode/matchmaking-track'
     | '/advanced-mode/world-info'
@@ -364,6 +384,7 @@ export interface RootRouteChildren {
   AccountManagementDeviceAuthRouteRoute: typeof AccountManagementDeviceAuthRouteRoute
   AccountManagementEpicGamesSettingsRouteRoute: typeof AccountManagementEpicGamesSettingsRouteRoute
   AccountManagementRedeemCodesRouteRoute: typeof AccountManagementRedeemCodesRouteRoute
+  AccountManagementVbucksInformationRouteRoute: typeof AccountManagementVbucksInformationRouteRoute
   AccountsRemoveRouteRoute: typeof AccountsRemoveRouteRoute
   AdvancedModeMatchmakingTrackRouteRoute: typeof AdvancedModeMatchmakingTrackRouteRoute
   AdvancedModeWorldInfoRouteRoute: typeof AdvancedModeWorldInfoRouteRoute
@@ -385,6 +406,8 @@ const rootRouteChildren: RootRouteChildren = {
     AccountManagementEpicGamesSettingsRouteRoute,
   AccountManagementRedeemCodesRouteRoute:
     AccountManagementRedeemCodesRouteRoute,
+  AccountManagementVbucksInformationRouteRoute:
+    AccountManagementVbucksInformationRouteRoute,
   AccountsRemoveRouteRoute: AccountsRemoveRouteRoute,
   AdvancedModeMatchmakingTrackRouteRoute:
     AdvancedModeMatchmakingTrackRouteRoute,
@@ -416,6 +439,7 @@ export const routeTree = rootRoute
         "/account-management/device-auth",
         "/account-management/epic-games-settings",
         "/account-management/redeem-codes",
+        "/account-management/vbucks-information",
         "/accounts/remove",
         "/advanced-mode/matchmaking-track",
         "/advanced-mode/world-info",
@@ -443,6 +467,9 @@ export const routeTree = rootRoute
     },
     "/account-management/redeem-codes": {
       "filePath": "account-management/redeem-codes/route.tsx"
+    },
+    "/account-management/vbucks-information": {
+      "filePath": "account-management/vbucks-information/route.tsx"
     },
     "/accounts/remove": {
       "filePath": "accounts/remove/route.tsx"
