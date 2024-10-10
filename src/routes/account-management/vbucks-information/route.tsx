@@ -1,5 +1,8 @@
 import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
+import Masonry from 'react-responsive-masonry'
+
+import { repositoryAssetsURL } from '../../../config/about/links'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -23,7 +26,10 @@ import {
 
 import { useVBucksInformationData } from './-hooks'
 
+import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 // import { cn, parseCustomDisplayName } from '../../../lib/utils'
+
+const vbucksImageUrl = `${repositoryAssetsURL}/images/resources/currency_mtxswap.png`
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -101,6 +107,73 @@ function Content() {
               </Button>
             </CardFooter>
           </Card>
+
+          <div className="max-w-lg pt-1 w-full">
+            <div className="leading-none mb-5 text-center uppercase">
+              V-Bucks Summary On 1 Account:
+              <div className="flex font-bold gap-1 items-center justify-center text-4xl">
+                <figure className="relative top-0.5">
+                  <img
+                    src={vbucksImageUrl}
+                    className="size-8"
+                    alt="vbucks"
+                  />
+                </figure>
+                {numberWithCommaSeparator(20002)}
+              </div>
+            </div>
+
+            <Masonry
+              columnsCount={2}
+              gutter="0.75rem"
+            >
+              <div className="border rounded">
+                <header className="bg-muted-foreground/5 px-2 py-2">
+                  <div className="max-w-36 mx-auto text-center text-sm truncate">
+                    Account #1
+                  </div>
+                  <div className="flex font-bold gap-1 items-center justify-center text-2xl">
+                    <figure className="relative top-0.5">
+                      <img
+                        src={vbucksImageUrl}
+                        className="size-5"
+                        alt="vbucks"
+                      />
+                    </figure>
+                    {numberWithCommaSeparator(20002)}
+                  </div>
+                </header>
+                <div className="px-1.5 py-1.5 text-muted-foreground text-sm">
+                  <ul className="list-disc pl-6">
+                    <li className="leading-5">
+                      <div className="">
+                        Shared Complimentary:{' '}
+                        <span className="font-bold">
+                          {numberWithCommaSeparator(999999999)}
+                        </span>
+                      </div>
+                    </li>
+                    <li className="leading-5">
+                      <div className="">
+                        EpicPC PurchaseBonus:{' '}
+                        <span className="font-bold">
+                          {numberWithCommaSeparator(20002)}
+                        </span>
+                      </div>
+                    </li>
+                    <li className="leading-5">
+                      <div className="">
+                        EpicPC Purchased:{' '}
+                        <span className="font-bold">
+                          {numberWithCommaSeparator(20002)}
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </Masonry>
+          </div>
         </div>
       </div>
     </div>
