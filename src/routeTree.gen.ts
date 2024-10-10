@@ -41,12 +41,11 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const StwOperationsXpboostsRouteRoute = StwOperationsXpboostsRouteImport.update(
-  {
+const StwOperationsXpboostsRouteRoute =
+  StwOperationsXpboostsRouteImport.update({
     path: '/stw-operations/xpboosts',
     getParentRoute: () => rootRoute,
-  } as any,
-)
+  } as any)
 
 const StwOperationsUrnsRouteRoute = StwOperationsUrnsRouteImport.update({
   path: '/stw-operations/urns',
@@ -81,12 +80,11 @@ const InformationCreditsRouteRoute = InformationCreditsRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdvancedModeWorldInfoRouteRoute = AdvancedModeWorldInfoRouteImport.update(
-  {
+const AdvancedModeWorldInfoRouteRoute =
+  AdvancedModeWorldInfoRouteImport.update({
     path: '/advanced-mode/world-info',
     getParentRoute: () => rootRoute,
-  } as any,
-)
+  } as any)
 
 const AdvancedModeMatchmakingTrackRouteRoute =
   AdvancedModeMatchmakingTrackRouteImport.update({
@@ -401,7 +399,8 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SettingsRouteRoute: SettingsRouteRoute,
-  AccountManagementDeviceAuthRouteRoute: AccountManagementDeviceAuthRouteRoute,
+  AccountManagementDeviceAuthRouteRoute:
+    AccountManagementDeviceAuthRouteRoute,
   AccountManagementEpicGamesSettingsRouteRoute:
     AccountManagementEpicGamesSettingsRouteRoute,
   AccountManagementRedeemCodesRouteRoute:

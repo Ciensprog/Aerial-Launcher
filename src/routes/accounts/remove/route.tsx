@@ -68,7 +68,7 @@ function Content() {
           <CardFooter className="space-x-6">
             <Button
               className="w-full"
-              onClick={handleRemove}
+              onClick={() => handleRemove()}
             >
               Yes, remove account selected
             </Button>
