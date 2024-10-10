@@ -14,6 +14,7 @@ import type {
   MCPActivateConsumableResponse,
   MCPClientQuestLoginResponse,
   MCPQueryProfile,
+  MCPQueryProfileMainProfile,
 } from '../../types/services/mcp'
 
 import { baseGameService } from '../config/base-game'
@@ -34,6 +35,28 @@ export function getQueryProfile({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function getQueryProfileMainProfile({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return baseGameService.post<MCPQueryProfileMainProfile>(
+    `/profile/${accountId}/client/QueryProfile`,
+    {},
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'common_core',
         rvn: -1,
       },
     }

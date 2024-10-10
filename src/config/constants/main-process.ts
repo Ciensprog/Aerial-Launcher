@@ -184,6 +184,13 @@ export enum ElectronAPIEventKeys {
   UrnsServiceRemoveNotification = 'urns:service:remove:notification',
 
   /**
+   * V-Bucks Information
+   */
+
+  VBucksInformationRequest = 'vbucks-information:request:data',
+  VBucksInformationResponseData = 'vbucks-information:response:data',
+
+  /**
    * Redeem Codes
    */
 

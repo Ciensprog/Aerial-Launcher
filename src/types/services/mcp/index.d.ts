@@ -8,4 +8,5 @@ export type MCPClientQuestLoginResponse = {
 
 export * from './activate-consumable.d'
 export * from './claim-rewards.d'
+export * from './query-profile-main.d'
 export * from './query-profile.d'
