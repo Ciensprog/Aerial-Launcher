@@ -6,7 +6,7 @@ import {
   getBuildDefine,
   external,
   pluginHotRestart,
-} from './vite.base.config'
+} from './vite.base.config.ts'
 
 // https://vitejs.dev/config
 export default defineConfig((env) => {
@@ -15,6 +15,7 @@ export default defineConfig((env) => {
   const define = getBuildDefine(forgeEnv)
   const config: UserConfig = {
     build: {
+      chunkSizeWarningLimit: 2000,
       lib: {
         entry: forgeConfigSelf.entry!,
         fileName: () => '[name].js',
@@ -22,6 +23,14 @@ export default defineConfig((env) => {
       },
       rollupOptions: {
         external,
+        onwarn(warning, warn) {
+          // Suppress "Module level directives cause errors when bundled" warnings
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return
+          }
+
+          warn(warning)
+        },
       },
     },
     plugins: [pluginHotRestart('restart')],

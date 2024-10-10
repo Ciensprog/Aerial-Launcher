@@ -6,7 +6,7 @@ import {
   getBuildConfig,
   external,
   pluginHotRestart,
-} from './vite.base.config'
+} from './vite.base.config.ts'
 
 // https://vitejs.dev/config
 export default defineConfig((env) => {
@@ -14,6 +14,7 @@ export default defineConfig((env) => {
   const { forgeConfigSelf } = forgeEnv
   const config: UserConfig = {
     build: {
+      chunkSizeWarningLimit: 2000,
       rollupOptions: {
         external,
         // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
@@ -25,6 +26,14 @@ export default defineConfig((env) => {
           entryFileNames: '[name].js',
           chunkFileNames: '[name].js',
           assetFileNames: '[name].[ext]',
+        },
+        onwarn(warning, warn) {
+          // Suppress "Module level directives cause errors when bundled" warnings
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return
+          }
+
+          warn(warning)
         },
       },
     },

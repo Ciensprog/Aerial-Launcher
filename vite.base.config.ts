@@ -3,7 +3,7 @@ import type { ConfigEnv, Plugin, UserConfig } from 'vite'
 
 import { builtinModules } from 'node:module'
 import path from 'node:path'
-import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react-swc'
 
 import packageJson from './package.json'
@@ -29,15 +29,26 @@ export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
     root,
     mode,
     build: {
+      chunkSizeWarningLimit: 2000,
       // Prevent multiple builds from interfering with each other.
       emptyOutDir: false,
       // 🚧 Multiple builds may conflict.
       outDir: '.vite/build',
       watch: command === 'serve' ? {} : null,
       minify: command === 'build',
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // Suppress "Module level directives cause errors when bundled" warnings
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return
+          }
+
+          warn(warning)
+        },
+      },
     },
     clearScreen: false,
-    plugins: [react(), TanStackRouterVite()],
+    plugins: [TanStackRouterVite(), react()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
