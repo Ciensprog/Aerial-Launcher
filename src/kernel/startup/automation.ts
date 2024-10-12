@@ -319,7 +319,6 @@ export class Automation {
   ) {
     const automation = Automation._accounts
       .filter((account) => account.accountId !== accountId)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .map((account) => account)
       .reduce(
         (accumulator, account) => {

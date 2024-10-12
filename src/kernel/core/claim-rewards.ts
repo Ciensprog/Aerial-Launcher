@@ -139,8 +139,6 @@ export class ClaimRewards {
                       QuestEventRepeatable.UrnYourKeep
                   )
 
-                  console.log({ pinMiniBosses, pinUrns })
-
                   if (pinMiniBosses || pinUrns) {
                     Authentication.verifyAccessToken(account)
                       .then((accessToken) => {
@@ -275,6 +273,8 @@ export class ClaimRewards {
       ) as Array<RewardsNotification>
 
       return newNotifications.length > 0 ? newNotifications : null
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

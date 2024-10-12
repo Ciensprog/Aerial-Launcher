@@ -207,6 +207,8 @@ export class AccountService {
 
       try {
         body = JSON.parse(message.body)
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         //
       }
@@ -272,6 +274,8 @@ export class AccountService {
             )
             break
         }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         //
       }

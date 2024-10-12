@@ -110,6 +110,8 @@ export class FortniteLauncher {
       )
 
       return
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

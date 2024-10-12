@@ -6,6 +6,8 @@ export const colorSchema = z.custom<`#${string}`>((value: string) => {
     Color(value).hex()
 
     return true
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     //
   }

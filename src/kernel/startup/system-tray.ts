@@ -33,6 +33,8 @@ export class SystemTray {
       SystemTray.current.addListener('click', () => {
         onOpen()
       })
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

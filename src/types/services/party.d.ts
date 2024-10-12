@@ -35,10 +35,6 @@ export type FetchPartyResponse = {
   pings: Array<unknown>
 }
 
-export type PartyKickResponse = {
-  //
-}
+export type PartyKickResponse = Record<string, unknown>
 
-export type PartyInviteResponse = {
-  //
-}
+export type PartyInviteResponse = Record<string, unknown>

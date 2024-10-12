@@ -168,6 +168,8 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
       if (newData.color !== null) {
         newData.color = Color(newData.color as string).hex()
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       newData.color = null
     }

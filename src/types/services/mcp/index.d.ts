@@ -1,6 +1,4 @@
-export type MCPResponse = {
-  //
-}
+export type MCPResponse = Record<string, unknown>
 
 export type MCPClientQuestLoginResponse = {
   notifications?: Array<unknown>

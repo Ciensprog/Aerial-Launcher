@@ -27,6 +27,8 @@ export class MatchmakingTrack {
 
         status = hasContent
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

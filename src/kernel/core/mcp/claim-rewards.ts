@@ -64,6 +64,8 @@ export class MCPClaimRewards {
       })
 
       return [response.data]
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -124,6 +126,8 @@ export class MCPClaimRewards {
         .filter((item) => item !== null)
 
       return sample as Array<MCPClaimQuestRewardResponse>
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -145,6 +149,8 @@ export class MCPClaimRewards {
       })
 
       return [response.data]
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -166,6 +172,8 @@ export class MCPClaimRewards {
       })
 
       return [response.data]
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -187,6 +195,8 @@ export class MCPClaimRewards {
       })
 
       return response.data
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

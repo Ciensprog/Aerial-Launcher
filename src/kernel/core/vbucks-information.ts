@@ -19,7 +19,7 @@ export class VBucksInformation {
       VBucksInformation.getInfo(account)
         .then((data) => {
           if (data) {
-            const items = Object.values(
+            const items = Object.entries(
               data.profileChanges[0]?.profile.items ?? {}
             )
             const accountCurrency: VBucksInformationState['data'] = {
@@ -29,11 +29,9 @@ export class VBucksInformation {
               },
             }
 
-            items.forEach((item) => {
+            items.forEach(([itemId, item]) => {
               if (item.templateId.startsWith('Currency:')) {
-                accountCurrency[account.accountId].currency[
-                  item.templateId
-                ] = {
+                accountCurrency[account.accountId].currency[itemId] = {
                   platform: item.attributes.platform ?? 'Unknown',
                   quantity: item.quantity ?? 0,
                   template: item.templateId.replace('Currency:Mtx', ''),
@@ -87,6 +85,8 @@ export class VBucksInformation {
       })
 
       result = response.data
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

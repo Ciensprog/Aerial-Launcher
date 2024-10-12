@@ -1,5 +1,5 @@
 import type { IpcRendererEvent } from 'electron'
-import type { GroupRecord } from '@/types/groups'
+import type { GroupRecord } from '../../types/groups'
 import type { TagRecord } from '../../types/tags'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'

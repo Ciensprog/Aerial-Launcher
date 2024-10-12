@@ -4,7 +4,8 @@ import type { AccountData } from '../../types/accounts'
 import { ipcRenderer } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
-import { VBucksInformationState } from '@/state/management/vbucks-information'
+
+import { VBucksInformationState } from '../../state/management/vbucks-information'
 
 export function getVBucksInformation(accounts: Array<AccountData>) {
   ipcRenderer.send(ElectronAPIEventKeys.VBucksInformationRequest, accounts)

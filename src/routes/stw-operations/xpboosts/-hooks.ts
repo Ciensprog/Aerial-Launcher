@@ -32,7 +32,6 @@ import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/proper
 import { toast } from '../../../lib/notifications'
 
 export function useSearchUser(config?: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   callback?: (param: XPBoostsSearchUserResponse) => void
 }) {
   const [inputSearchDisplayName, setInputSearchDisplayName] = useState('')

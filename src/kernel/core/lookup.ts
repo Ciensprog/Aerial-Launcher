@@ -58,6 +58,8 @@ export class LookupManager {
               success: true,
             } as const
           }
+
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           //
         }
@@ -118,6 +120,8 @@ export class LookupManager {
               }
             }
           }
+
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           //
         }

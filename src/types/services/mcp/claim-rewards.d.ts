@@ -1,4 +1,4 @@
-import type { StringUnion } from '../../utils'
+import { StringUnion } from '../../utils.d'
 
 type ProfileId = StringUnion<'campaign'>
 

@@ -144,6 +144,8 @@ export class Authentication {
 
         return
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -191,6 +193,8 @@ export class Authentication {
 
         return
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -264,6 +268,8 @@ export class Authentication {
           const response = await generateAccessToken()
 
           return response
+
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           //
         }

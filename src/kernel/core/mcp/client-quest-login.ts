@@ -26,11 +26,15 @@ export class MCPClientQuestLogin {
               accessToken,
               accountId,
             })
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (error) {
             //
           }
         })
       )
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

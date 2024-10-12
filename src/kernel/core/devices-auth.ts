@@ -65,10 +65,10 @@ export class DevicesAuthManager {
             toDate(itemB.created.dateTime).getTime() ?? 0
 
           const lastAccessDateA = itemA.lastAccess
-            ? toDate(itemA.lastAccess?.dateTime)?.getTime() ?? 0
+            ? (toDate(itemA.lastAccess?.dateTime)?.getTime() ?? 0)
             : -1
           const lastAccessDateB = itemB.lastAccess
-            ? toDate(itemB.lastAccess?.dateTime)?.getTime() ?? 0
+            ? (toDate(itemB.lastAccess?.dateTime)?.getTime() ?? 0)
             : -1
 
           // Additional filters: Bots
@@ -93,6 +93,8 @@ export class DevicesAuthManager {
         })
 
       return parsedData
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -120,6 +122,8 @@ export class DevicesAuthManager {
 
         return
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

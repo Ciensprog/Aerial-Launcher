@@ -1,4 +1,4 @@
-import type { StringUnion } from '../types/utils'
+import { StringUnion } from '../../utils.d'
 
 export type WorldInfoData = {
   missionAlerts: Array<{

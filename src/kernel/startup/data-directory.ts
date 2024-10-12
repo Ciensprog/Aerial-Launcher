@@ -147,6 +147,8 @@ export class DataDirectory {
       const accounts = list.success ? list.data : []
 
       return { accounts }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -167,6 +169,8 @@ export class DataDirectory {
         : DataDirectory.settingsDefaultData
 
       return { settings }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -185,6 +189,8 @@ export class DataDirectory {
       const tags = list.success ? list.data : DataDirectory.tagsDefaultData
 
       return { tags }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -205,6 +211,8 @@ export class DataDirectory {
         : DataDirectory.groupsDefaultData
 
       return { groups }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -225,6 +233,8 @@ export class DataDirectory {
         : DataDirectory.friendsDefaultData
 
       return { friends }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -247,6 +257,8 @@ export class DataDirectory {
         : DataDirectory.matchmakingDefaultData
 
       return { matchmaking }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -269,6 +281,8 @@ export class DataDirectory {
         : DataDirectory.automationDefaultData
 
       return { automation }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -289,6 +303,8 @@ export class DataDirectory {
       const urns = list.success ? list.data : DataDirectory.urnsDefaultData
 
       return { urns }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -311,6 +327,8 @@ export class DataDirectory {
         : DataDirectory.miniBossesDefaultData
 
       return { miniBosses }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -405,6 +423,8 @@ export class DataDirectory {
 
     try {
       await checkDirectory()
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       await mkdir(DataDirectory.worldInfoDirectoryPath)
     }
@@ -420,6 +440,8 @@ export class DataDirectory {
 
     try {
       await checkDirectory()
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       await mkdir(DataDirectory.dataDirectoryPath)
     }
@@ -600,6 +622,8 @@ export class DataDirectory {
 
     try {
       result = await checkFile()
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       await writeFile(
         currentPath,
@@ -629,6 +653,8 @@ export class DataDirectory {
       await writeFile(currentPath, JSON.stringify(data ?? [], null, 2), {
         encoding: 'utf8',
       })
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

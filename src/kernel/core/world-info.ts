@@ -77,6 +77,8 @@ export class WorldInfoManager {
       )
 
       return
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -101,6 +103,8 @@ export class WorldInfoManager {
       )
 
       status = true
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -144,10 +148,14 @@ export class WorldInfoManager {
           }
 
           files.push(data)
+
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           //
         }
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -180,6 +188,8 @@ export class WorldInfoManager {
       )
 
       response.status = true
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -232,6 +242,8 @@ export class WorldInfoManager {
             status: 'success',
           } as WorldInfoExportResponse
         )
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.WorldInfoExportFileNotification,
@@ -242,6 +254,8 @@ export class WorldInfoManager {
       }
 
       return
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -264,6 +278,8 @@ export class WorldInfoManager {
       )
 
       response.status = true
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -291,11 +307,15 @@ export class WorldInfoManager {
         await readFile(newFilePath, {
           encoding: 'utf8',
         })
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         await rename(baseFilePath, newFilePath)
 
         status = true
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

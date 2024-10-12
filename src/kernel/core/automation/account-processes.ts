@@ -213,6 +213,8 @@ export class AccountProcess {
         started: matchmacking.started!,
       })
       this.initMissionInterval()
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

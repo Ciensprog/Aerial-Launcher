@@ -111,6 +111,8 @@ export class XPBoostsManager {
             }
 
             return defaultValue
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (error) {
             //
           }
@@ -128,6 +130,8 @@ export class XPBoostsManager {
       )
 
       return
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -197,6 +201,8 @@ export class XPBoostsManager {
       )
 
       await XPBoostsManager.requestAccounts(data.originalAccounts)
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -297,6 +303,8 @@ export class XPBoostsManager {
       )
 
       await XPBoostsManager.requestAccounts(data.originalAccounts)
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }

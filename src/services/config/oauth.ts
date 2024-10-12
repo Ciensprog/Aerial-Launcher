@@ -1,7 +1,7 @@
 import type { AxiosRetry } from 'axios-retry'
 
 import axios from 'axios'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const axiosRetry = require('axios-retry').default as AxiosRetry
 
 import {

@@ -153,6 +153,8 @@ export class Party {
             if (kickStatus) {
               total += 1
             }
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (error) {
             //
           }
@@ -213,6 +215,8 @@ export class Party {
 
         return
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -222,10 +226,7 @@ export class Party {
 
   static async leaveParty(
     selectedAccounts: AccountDataList,
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _accounts: AccountDataList,
-
     claimState: boolean
   ) {
     let total = 0
@@ -284,6 +285,8 @@ export class Party {
 
           await fetchAndSaveNewPartyInCache()
         }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         //
       }
@@ -367,6 +370,8 @@ export class Party {
         ElectronAPIEventKeys.PartyLoadFriendsNotification,
         orderedData
       )
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -432,6 +437,8 @@ export class Party {
       } else {
         defaultResponse.errorMessage = response.errorMessage
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -509,6 +516,8 @@ export class Party {
                       friendAccountId: accountId,
                       partyId: party.id,
                     })
+
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   } catch (error) {
                     //
                   }
@@ -524,6 +533,8 @@ export class Party {
                       accountId,
                       type: 'invite',
                     } as const
+
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   } catch (error) {
                     //
                   }
@@ -554,6 +565,8 @@ export class Party {
                     accountId,
                     type: 'friend-request',
                   } as const
+
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 } catch (error) {
                   //
                 }
@@ -589,6 +602,8 @@ export class Party {
           await Party.loadFriends()
         }
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -622,6 +637,8 @@ export class Party {
       await Party.loadFriends()
 
       status = true
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
@@ -663,6 +680,8 @@ export class Party {
       try {
         newAccessToken =
           await Authentication.verifyAccessToken(currentAccount)
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         //
       }
@@ -675,7 +694,7 @@ export class Party {
     await kick({
       partyId: party.id,
       accessToken: (useNewAccessToken
-        ? newAccessToken ?? currentAccount.accessToken
+        ? (newAccessToken ?? currentAccount.accessToken)
         : currentAccount.accessToken) as string,
       accountId: accountIdToKick,
     })

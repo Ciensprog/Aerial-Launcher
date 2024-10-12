@@ -41,11 +41,12 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const StwOperationsXpboostsRouteRoute =
-  StwOperationsXpboostsRouteImport.update({
+const StwOperationsXpboostsRouteRoute = StwOperationsXpboostsRouteImport.update(
+  {
     path: '/stw-operations/xpboosts',
     getParentRoute: () => rootRoute,
-  } as any)
+  } as any,
+)
 
 const StwOperationsUrnsRouteRoute = StwOperationsUrnsRouteImport.update({
   path: '/stw-operations/urns',
@@ -80,11 +81,12 @@ const InformationCreditsRouteRoute = InformationCreditsRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdvancedModeWorldInfoRouteRoute =
-  AdvancedModeWorldInfoRouteImport.update({
+const AdvancedModeWorldInfoRouteRoute = AdvancedModeWorldInfoRouteImport.update(
+  {
     path: '/advanced-mode/world-info',
     getParentRoute: () => rootRoute,
-  } as any)
+  } as any,
+)
 
 const AdvancedModeMatchmakingTrackRouteRoute =
   AdvancedModeMatchmakingTrackRouteImport.update({
@@ -131,121 +133,70 @@ const AccountsAddTypeRoute = AccountsAddTypeImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/device-auth': {
-      id: '/account-management/device-auth'
-      path: '/account-management/device-auth'
-      fullPath: '/account-management/device-auth'
       preLoaderRoute: typeof AccountManagementDeviceAuthRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/epic-games-settings': {
-      id: '/account-management/epic-games-settings'
-      path: '/account-management/epic-games-settings'
-      fullPath: '/account-management/epic-games-settings'
       preLoaderRoute: typeof AccountManagementEpicGamesSettingsRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/redeem-codes': {
-      id: '/account-management/redeem-codes'
-      path: '/account-management/redeem-codes'
-      fullPath: '/account-management/redeem-codes'
       preLoaderRoute: typeof AccountManagementRedeemCodesRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/vbucks-information': {
-      id: '/account-management/vbucks-information'
-      path: '/account-management/vbucks-information'
-      fullPath: '/account-management/vbucks-information'
       preLoaderRoute: typeof AccountManagementVbucksInformationRouteImport
       parentRoute: typeof rootRoute
     }
     '/accounts/remove': {
-      id: '/accounts/remove'
-      path: '/accounts/remove'
-      fullPath: '/accounts/remove'
       preLoaderRoute: typeof AccountsRemoveRouteImport
       parentRoute: typeof rootRoute
     }
     '/advanced-mode/matchmaking-track': {
-      id: '/advanced-mode/matchmaking-track'
-      path: '/advanced-mode/matchmaking-track'
-      fullPath: '/advanced-mode/matchmaking-track'
       preLoaderRoute: typeof AdvancedModeMatchmakingTrackRouteImport
       parentRoute: typeof rootRoute
     }
     '/advanced-mode/world-info': {
-      id: '/advanced-mode/world-info'
-      path: '/advanced-mode/world-info'
-      fullPath: '/advanced-mode/world-info'
       preLoaderRoute: typeof AdvancedModeWorldInfoRouteImport
       parentRoute: typeof rootRoute
     }
     '/information/credits': {
-      id: '/information/credits'
-      path: '/information/credits'
-      fullPath: '/information/credits'
       preLoaderRoute: typeof InformationCreditsRouteImport
       parentRoute: typeof rootRoute
     }
     '/stw-operations/automation': {
-      id: '/stw-operations/automation'
-      path: '/stw-operations/automation'
-      fullPath: '/stw-operations/automation'
       preLoaderRoute: typeof StwOperationsAutomationRouteImport
       parentRoute: typeof rootRoute
     }
     '/stw-operations/homebase-name': {
-      id: '/stw-operations/homebase-name'
-      path: '/stw-operations/homebase-name'
-      fullPath: '/stw-operations/homebase-name'
       preLoaderRoute: typeof StwOperationsHomebaseNameRouteImport
       parentRoute: typeof rootRoute
     }
     '/stw-operations/party': {
-      id: '/stw-operations/party'
-      path: '/stw-operations/party'
-      fullPath: '/stw-operations/party'
       preLoaderRoute: typeof StwOperationsPartyRouteImport
       parentRoute: typeof rootRoute
     }
     '/stw-operations/save-quests': {
-      id: '/stw-operations/save-quests'
-      path: '/stw-operations/save-quests'
-      fullPath: '/stw-operations/save-quests'
       preLoaderRoute: typeof StwOperationsSaveQuestsRouteImport
       parentRoute: typeof rootRoute
     }
     '/stw-operations/urns': {
-      id: '/stw-operations/urns'
-      path: '/stw-operations/urns'
-      fullPath: '/stw-operations/urns'
       preLoaderRoute: typeof StwOperationsUrnsRouteImport
       parentRoute: typeof rootRoute
     }
     '/stw-operations/xpboosts': {
-      id: '/stw-operations/xpboosts'
-      path: '/stw-operations/xpboosts'
-      fullPath: '/stw-operations/xpboosts'
       preLoaderRoute: typeof StwOperationsXpboostsRouteImport
       parentRoute: typeof rootRoute
     }
     '/accounts/add/$type': {
-      id: '/accounts/add/$type'
-      path: '/accounts/add/$type'
-      fullPath: '/accounts/add/$type'
       preLoaderRoute: typeof AccountsAddTypeImport
       parentRoute: typeof rootRoute
     }
@@ -254,255 +205,24 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/settings': typeof SettingsRouteRoute
-  '/account-management/device-auth': typeof AccountManagementDeviceAuthRouteRoute
-  '/account-management/epic-games-settings': typeof AccountManagementEpicGamesSettingsRouteRoute
-  '/account-management/redeem-codes': typeof AccountManagementRedeemCodesRouteRoute
-  '/account-management/vbucks-information': typeof AccountManagementVbucksInformationRouteRoute
-  '/accounts/remove': typeof AccountsRemoveRouteRoute
-  '/advanced-mode/matchmaking-track': typeof AdvancedModeMatchmakingTrackRouteRoute
-  '/advanced-mode/world-info': typeof AdvancedModeWorldInfoRouteRoute
-  '/information/credits': typeof InformationCreditsRouteRoute
-  '/stw-operations/automation': typeof StwOperationsAutomationRouteRoute
-  '/stw-operations/homebase-name': typeof StwOperationsHomebaseNameRouteRoute
-  '/stw-operations/party': typeof StwOperationsPartyRouteRoute
-  '/stw-operations/save-quests': typeof StwOperationsSaveQuestsRouteRoute
-  '/stw-operations/urns': typeof StwOperationsUrnsRouteRoute
-  '/stw-operations/xpboosts': typeof StwOperationsXpboostsRouteRoute
-  '/accounts/add/$type': typeof AccountsAddTypeRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/settings': typeof SettingsRouteRoute
-  '/account-management/device-auth': typeof AccountManagementDeviceAuthRouteRoute
-  '/account-management/epic-games-settings': typeof AccountManagementEpicGamesSettingsRouteRoute
-  '/account-management/redeem-codes': typeof AccountManagementRedeemCodesRouteRoute
-  '/account-management/vbucks-information': typeof AccountManagementVbucksInformationRouteRoute
-  '/accounts/remove': typeof AccountsRemoveRouteRoute
-  '/advanced-mode/matchmaking-track': typeof AdvancedModeMatchmakingTrackRouteRoute
-  '/advanced-mode/world-info': typeof AdvancedModeWorldInfoRouteRoute
-  '/information/credits': typeof InformationCreditsRouteRoute
-  '/stw-operations/automation': typeof StwOperationsAutomationRouteRoute
-  '/stw-operations/homebase-name': typeof StwOperationsHomebaseNameRouteRoute
-  '/stw-operations/party': typeof StwOperationsPartyRouteRoute
-  '/stw-operations/save-quests': typeof StwOperationsSaveQuestsRouteRoute
-  '/stw-operations/urns': typeof StwOperationsUrnsRouteRoute
-  '/stw-operations/xpboosts': typeof StwOperationsXpboostsRouteRoute
-  '/accounts/add/$type': typeof AccountsAddTypeRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/settings': typeof SettingsRouteRoute
-  '/account-management/device-auth': typeof AccountManagementDeviceAuthRouteRoute
-  '/account-management/epic-games-settings': typeof AccountManagementEpicGamesSettingsRouteRoute
-  '/account-management/redeem-codes': typeof AccountManagementRedeemCodesRouteRoute
-  '/account-management/vbucks-information': typeof AccountManagementVbucksInformationRouteRoute
-  '/accounts/remove': typeof AccountsRemoveRouteRoute
-  '/advanced-mode/matchmaking-track': typeof AdvancedModeMatchmakingTrackRouteRoute
-  '/advanced-mode/world-info': typeof AdvancedModeWorldInfoRouteRoute
-  '/information/credits': typeof InformationCreditsRouteRoute
-  '/stw-operations/automation': typeof StwOperationsAutomationRouteRoute
-  '/stw-operations/homebase-name': typeof StwOperationsHomebaseNameRouteRoute
-  '/stw-operations/party': typeof StwOperationsPartyRouteRoute
-  '/stw-operations/save-quests': typeof StwOperationsSaveQuestsRouteRoute
-  '/stw-operations/urns': typeof StwOperationsUrnsRouteRoute
-  '/stw-operations/xpboosts': typeof StwOperationsXpboostsRouteRoute
-  '/accounts/add/$type': typeof AccountsAddTypeRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/settings'
-    | '/account-management/device-auth'
-    | '/account-management/epic-games-settings'
-    | '/account-management/redeem-codes'
-    | '/account-management/vbucks-information'
-    | '/accounts/remove'
-    | '/advanced-mode/matchmaking-track'
-    | '/advanced-mode/world-info'
-    | '/information/credits'
-    | '/stw-operations/automation'
-    | '/stw-operations/homebase-name'
-    | '/stw-operations/party'
-    | '/stw-operations/save-quests'
-    | '/stw-operations/urns'
-    | '/stw-operations/xpboosts'
-    | '/accounts/add/$type'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/settings'
-    | '/account-management/device-auth'
-    | '/account-management/epic-games-settings'
-    | '/account-management/redeem-codes'
-    | '/account-management/vbucks-information'
-    | '/accounts/remove'
-    | '/advanced-mode/matchmaking-track'
-    | '/advanced-mode/world-info'
-    | '/information/credits'
-    | '/stw-operations/automation'
-    | '/stw-operations/homebase-name'
-    | '/stw-operations/party'
-    | '/stw-operations/save-quests'
-    | '/stw-operations/urns'
-    | '/stw-operations/xpboosts'
-    | '/accounts/add/$type'
-  id:
-    | '__root__'
-    | '/'
-    | '/settings'
-    | '/account-management/device-auth'
-    | '/account-management/epic-games-settings'
-    | '/account-management/redeem-codes'
-    | '/account-management/vbucks-information'
-    | '/accounts/remove'
-    | '/advanced-mode/matchmaking-track'
-    | '/advanced-mode/world-info'
-    | '/information/credits'
-    | '/stw-operations/automation'
-    | '/stw-operations/homebase-name'
-    | '/stw-operations/party'
-    | '/stw-operations/save-quests'
-    | '/stw-operations/urns'
-    | '/stw-operations/xpboosts'
-    | '/accounts/add/$type'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  SettingsRouteRoute: typeof SettingsRouteRoute
-  AccountManagementDeviceAuthRouteRoute: typeof AccountManagementDeviceAuthRouteRoute
-  AccountManagementEpicGamesSettingsRouteRoute: typeof AccountManagementEpicGamesSettingsRouteRoute
-  AccountManagementRedeemCodesRouteRoute: typeof AccountManagementRedeemCodesRouteRoute
-  AccountManagementVbucksInformationRouteRoute: typeof AccountManagementVbucksInformationRouteRoute
-  AccountsRemoveRouteRoute: typeof AccountsRemoveRouteRoute
-  AdvancedModeMatchmakingTrackRouteRoute: typeof AdvancedModeMatchmakingTrackRouteRoute
-  AdvancedModeWorldInfoRouteRoute: typeof AdvancedModeWorldInfoRouteRoute
-  InformationCreditsRouteRoute: typeof InformationCreditsRouteRoute
-  StwOperationsAutomationRouteRoute: typeof StwOperationsAutomationRouteRoute
-  StwOperationsHomebaseNameRouteRoute: typeof StwOperationsHomebaseNameRouteRoute
-  StwOperationsPartyRouteRoute: typeof StwOperationsPartyRouteRoute
-  StwOperationsSaveQuestsRouteRoute: typeof StwOperationsSaveQuestsRouteRoute
-  StwOperationsUrnsRouteRoute: typeof StwOperationsUrnsRouteRoute
-  StwOperationsXpboostsRouteRoute: typeof StwOperationsXpboostsRouteRoute
-  AccountsAddTypeRoute: typeof AccountsAddTypeRoute
-}
-
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  SettingsRouteRoute: SettingsRouteRoute,
-  AccountManagementDeviceAuthRouteRoute:
-    AccountManagementDeviceAuthRouteRoute,
-  AccountManagementEpicGamesSettingsRouteRoute:
-    AccountManagementEpicGamesSettingsRouteRoute,
-  AccountManagementRedeemCodesRouteRoute:
-    AccountManagementRedeemCodesRouteRoute,
-  AccountManagementVbucksInformationRouteRoute:
-    AccountManagementVbucksInformationRouteRoute,
-  AccountsRemoveRouteRoute: AccountsRemoveRouteRoute,
-  AdvancedModeMatchmakingTrackRouteRoute:
-    AdvancedModeMatchmakingTrackRouteRoute,
-  AdvancedModeWorldInfoRouteRoute: AdvancedModeWorldInfoRouteRoute,
-  InformationCreditsRouteRoute: InformationCreditsRouteRoute,
-  StwOperationsAutomationRouteRoute: StwOperationsAutomationRouteRoute,
-  StwOperationsHomebaseNameRouteRoute: StwOperationsHomebaseNameRouteRoute,
-  StwOperationsPartyRouteRoute: StwOperationsPartyRouteRoute,
-  StwOperationsSaveQuestsRouteRoute: StwOperationsSaveQuestsRouteRoute,
-  StwOperationsUrnsRouteRoute: StwOperationsUrnsRouteRoute,
-  StwOperationsXpboostsRouteRoute: StwOperationsXpboostsRouteRoute,
-  AccountsAddTypeRoute: AccountsAddTypeRoute,
-}
-
-export const routeTree = rootRoute
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+export const routeTree = rootRoute.addChildren([
+  IndexRoute,
+  SettingsRouteRoute,
+  AccountManagementDeviceAuthRouteRoute,
+  AccountManagementEpicGamesSettingsRouteRoute,
+  AccountManagementRedeemCodesRouteRoute,
+  AccountManagementVbucksInformationRouteRoute,
+  AccountsRemoveRouteRoute,
+  AdvancedModeMatchmakingTrackRouteRoute,
+  AdvancedModeWorldInfoRouteRoute,
+  InformationCreditsRouteRoute,
+  StwOperationsAutomationRouteRoute,
+  StwOperationsHomebaseNameRouteRoute,
+  StwOperationsPartyRouteRoute,
+  StwOperationsSaveQuestsRouteRoute,
+  StwOperationsUrnsRouteRoute,
+  StwOperationsXpboostsRouteRoute,
+  AccountsAddTypeRoute,
+])
 
 /* prettier-ignore-end */
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/settings",
-        "/account-management/device-auth",
-        "/account-management/epic-games-settings",
-        "/account-management/redeem-codes",
-        "/account-management/vbucks-information",
-        "/accounts/remove",
-        "/advanced-mode/matchmaking-track",
-        "/advanced-mode/world-info",
-        "/information/credits",
-        "/stw-operations/automation",
-        "/stw-operations/homebase-name",
-        "/stw-operations/party",
-        "/stw-operations/save-quests",
-        "/stw-operations/urns",
-        "/stw-operations/xpboosts",
-        "/accounts/add/$type"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/settings": {
-      "filePath": "settings/route.tsx"
-    },
-    "/account-management/device-auth": {
-      "filePath": "account-management/device-auth/route.tsx"
-    },
-    "/account-management/epic-games-settings": {
-      "filePath": "account-management/epic-games-settings/route.tsx"
-    },
-    "/account-management/redeem-codes": {
-      "filePath": "account-management/redeem-codes/route.tsx"
-    },
-    "/account-management/vbucks-information": {
-      "filePath": "account-management/vbucks-information/route.tsx"
-    },
-    "/accounts/remove": {
-      "filePath": "accounts/remove/route.tsx"
-    },
-    "/advanced-mode/matchmaking-track": {
-      "filePath": "advanced-mode/matchmaking-track/route.tsx"
-    },
-    "/advanced-mode/world-info": {
-      "filePath": "advanced-mode/world-info/route.tsx"
-    },
-    "/information/credits": {
-      "filePath": "information/credits/route.tsx"
-    },
-    "/stw-operations/automation": {
-      "filePath": "stw-operations/automation/route.tsx"
-    },
-    "/stw-operations/homebase-name": {
-      "filePath": "stw-operations/homebase-name/route.tsx"
-    },
-    "/stw-operations/party": {
-      "filePath": "stw-operations/party/route.tsx"
-    },
-    "/stw-operations/save-quests": {
-      "filePath": "stw-operations/save-quests/route.tsx"
-    },
-    "/stw-operations/urns": {
-      "filePath": "stw-operations/urns/route.tsx"
-    },
-    "/stw-operations/xpboosts": {
-      "filePath": "stw-operations/xpboosts/route.tsx"
-    },
-    "/accounts/add/$type": {
-      "filePath": "accounts/add/$type.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

@@ -1,7 +1,7 @@
 import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters'
 import type { StylesConfig } from 'react-select'
 
-import chroma from 'chroma-js'
+import chroma, { contrast } from 'chroma-js'
 import Select from 'react-select'
 
 import { defaultColor } from '../../../../config/constants/colors'
@@ -93,7 +93,7 @@ const colourStyles: StylesConfig<SelectOption, true> = {
       color: isDisabled
         ? '#666666'
         : isSelected
-          ? chroma.contrast(color, 'white') > 2
+          ? contrast(color, 'white') > 2
             ? 'white'
             : 'black'
           : currentColor,
