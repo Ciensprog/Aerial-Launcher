@@ -2,7 +2,7 @@ import type { ConfigEnv, UserConfig } from 'vite'
 
 import { defineConfig } from 'vite'
 
-import { pluginExposeRenderer } from './vite.base.config.ts'
+import { pluginExposeRenderer } from './vite.base.config'
 
 // https://vitejs.dev/config
 export default defineConfig((env) => {

@@ -3,7 +3,7 @@ import type { ConfigEnv, Plugin, UserConfig } from 'vite'
 
 import { builtinModules } from 'node:module'
 import path from 'node:path'
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 
 import packageJson from './package.json'
@@ -48,7 +48,7 @@ export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
       },
     },
     clearScreen: false,
-    plugins: [TanStackRouterVite(), react()],
+    plugins: [react(), TanStackRouterVite()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
