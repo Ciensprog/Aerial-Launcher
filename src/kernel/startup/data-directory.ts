@@ -9,6 +9,9 @@ import type { AutoPinUrnDataList } from '../../types/urns'
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
+import { defaultMissionInterval } from '../../config/constants/automation'
+import { defaultClaimingRewardsDelay } from '../../config/constants/mcp'
+
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
 import { autoPinUrnsDataSchema } from '../../lib/validations/schemas/auto-pin-urns-data'
 import { automationFileSchema } from '../../lib/validations/schemas/automation'
@@ -52,6 +55,8 @@ export class DataDirectory {
     'settings.json'
   )
   private static settingsDefaultData: Settings = {
+    claimingRewards: `${defaultClaimingRewardsDelay}`,
+    missionInterval: `${defaultMissionInterval}`,
     path: 'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64',
     systemTray: false,
     userAgent: 'Fortnite/++Fortnite+Release-31.00-CL-35447195-Windows',

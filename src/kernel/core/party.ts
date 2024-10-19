@@ -17,6 +17,7 @@ import { MainWindow } from '../startup/windows/main'
 import { AccountsManager } from '../startup/accounts'
 import { Automation } from '../startup/automation'
 import { DataDirectory } from '../startup/data-directory'
+import { MCPStorageTransfer } from './mcp/storage-transfer'
 import { Authentication } from './authentication'
 import { ClaimRewards } from './claim-rewards'
 import { LookupManager } from './lookup'
@@ -694,10 +695,25 @@ export class Party {
     await kick({
       partyId: party.id,
       accessToken: (useNewAccessToken
-        ? (newAccessToken ?? currentAccount.accessToken)
+        ? newAccessToken ?? currentAccount.accessToken
         : currentAccount.accessToken) as string,
       accountId: accountIdToKick,
     })
+
+    const automationAccount = Automation.getAccountById(accountIdToKick)
+    const accountToTransfer = AccountsManager.getAccountById(
+      automationAccount?.accountId ?? ''
+    )
+
+    if (
+      automationAccount &&
+      accountToTransfer &&
+      automationAccount.actions.transferMats === true
+    ) {
+      MCPStorageTransfer.buildingMaterials(accountToTransfer).catch(
+        () => {}
+      )
+    }
 
     return true
   }

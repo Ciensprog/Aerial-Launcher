@@ -13,6 +13,7 @@ export type AutomationAccountData = {
   actions: {
     claim: boolean
     kick: boolean
+    transferMats: boolean
   }
   submittings: {
     connecting: boolean

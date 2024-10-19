@@ -6,11 +6,13 @@ import { PartyState } from '../../../config/fortnite/events'
 
 import { AccountsManager } from '../../../kernel/startup/accounts'
 import { Automation } from '../../../kernel/startup/automation'
+import { SettingsManager } from '../../../kernel/startup/settings'
 import { Authentication } from '../authentication'
 import { ClaimRewards } from '../claim-rewards'
 import { Party } from '../party'
 
 import { findPlayer } from '../../../services/endpoints/matchmaking'
+import { MCPStorageTransfer } from '../mcp/storage-transfer'
 
 export class AccountProcess {
   private _accountId: string
@@ -84,10 +86,13 @@ export class AccountProcess {
     }, config?.timeout ?? 10_000) // 10 seconds
   }
 
-  initMissionInterval() {
+  async initMissionInterval() {
     if (this.missionIntervalId) {
       return
     }
+
+    const settings = await SettingsManager.getData()
+    const missionInterval = Number(settings.missionInterval)
 
     this.missionIntervalId = setInterval(async () => {
       const currentAccount = AccountsManager.getAccountById(this.accountId)
@@ -180,7 +185,15 @@ export class AccountProcess {
 
         return
       }
-    }, 3_000) // 3 seconds
+
+      if (automationAccount.actions.transferMats === true) {
+        this.clearMissionIntervalId()
+
+        MCPStorageTransfer.buildingMaterials(currentAccount).catch(
+          () => {}
+        )
+      }
+    }, missionInterval * 1_000)
   }
 
   async checkMatchAtStartUp() {

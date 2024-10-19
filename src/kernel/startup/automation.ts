@@ -60,6 +60,7 @@ export class Automation {
       actions: {
         claim: false,
         kick: false,
+        transferMats: false,
       },
     }
 
@@ -361,11 +362,16 @@ export class Automation {
         data.actions?.claim ?? automationAccount.actions.claim
       const actionsNewValueKick =
         data.actions?.kick ?? automationAccount.actions.kick
+      const actionsNewValueTransferMats =
+        data.actions?.transferMats ??
+        automationAccount.actions.transferMats
 
       if (accountProcess && data.actions) {
         if (
           (!automationAccount.actions.claim && actionsNewValueClaim) ||
-          (!automationAccount.actions.kick && actionsNewValueKick)
+          (!automationAccount.actions.kick && actionsNewValueKick) ||
+          (!automationAccount.actions.transferMats &&
+            actionsNewValueTransferMats)
         ) {
           if (!accountProcess.startedTracking) {
             accountProcess.setStartedTracking(true)
@@ -382,6 +388,7 @@ export class Automation {
         actions: {
           claim: actionsNewValueClaim,
           kick: actionsNewValueKick,
+          transferMats: actionsNewValueTransferMats,
         },
         status: data.status ?? automationAccount.status,
       })

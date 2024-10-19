@@ -251,6 +251,21 @@ export function Content() {
                       disabled={disabledActions}
                     />
                   </div>
+                  <div className="flex flex-grow items-center justify-between">
+                    <span>Auto-transfer mats</span>
+                    <Switch
+                      checked={current.actions.transferMats}
+                      onCheckedChange={
+                        !isLoading
+                          ? handleUpdateClaimAction(
+                              'transferMats',
+                              account.accountId
+                            )
+                          : undefined
+                      }
+                      disabled={disabledActions}
+                    />
+                  </div>
                 </div>
               </article>
             )

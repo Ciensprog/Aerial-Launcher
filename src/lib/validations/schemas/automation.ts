@@ -7,6 +7,7 @@ export const automationServerDataSchema = z.object({
   actions: z.object({
     claim: z.boolean().default(false),
     kick: z.boolean().default(false),
+    transferMats: z.boolean().default(false),
   }),
   status: z.nativeEnum(AutomationStatusType).nullable(),
 })
@@ -20,6 +21,7 @@ export const automationFileDataSchema = z.object({
   actions: z.object({
     claim: z.boolean().default(false),
     kick: z.boolean().default(false),
+    transferMats: z.boolean().default(false),
   }),
 })
 export const automationFileSchema = z.record(

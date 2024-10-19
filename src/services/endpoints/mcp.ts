@@ -15,6 +15,9 @@ import type {
   MCPClientQuestLoginResponse,
   MCPQueryProfile,
   MCPQueryProfileMainProfile,
+  MCPQueryProfileStorageProfile,
+  MCPStorageTransferItem,
+  MCPStorageTransferResponse,
 } from '../../types/services/mcp'
 
 import { baseGameService } from '../config/base-game'
@@ -57,6 +60,28 @@ export function getQueryProfileMainProfile({
       },
       params: {
         profileId: 'common_core',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function getQueryProfileStorageProfile({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return baseGameService.post<MCPQueryProfileStorageProfile>(
+    `/profile/${accountId}/client/QueryProfile`,
+    {},
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'outpost0',
         rvn: -1,
       },
     }
@@ -324,6 +349,31 @@ export function setSetPinnedQuests({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+export function setStorageTransfer({
+  accessToken,
+  accountId,
+  items,
+}: {
+  accessToken: string
+  accountId: string
+  items: Array<MCPStorageTransferItem>
+}) {
+  return baseGameService.post<MCPStorageTransferResponse>(
+    `/profile/${accountId}/client/StorageTransfer`,
+    {
+      transferOperations: items,
+    },
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'theater0',
         rvn: -1,
       },
     }

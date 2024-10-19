@@ -22,13 +22,17 @@ export class SettingsManager {
     const defaultSettingsData = DataDirectory.getSettingsDefaultData()
     const result = await DataDirectory.getSettingsFile()
     const settings: Required<Settings> = {
+      claimingRewards:
+        result.settings.claimingRewards ??
+        defaultSettingsData.claimingRewards,
+      missionInterval:
+        result.settings.missionInterval ??
+        defaultSettingsData.missionInterval,
       path: result.settings.path ?? defaultSettingsData.path,
       systemTray:
-        result.settings.systemTray ??
-        (defaultSettingsData.systemTray as boolean),
+        result.settings.systemTray ?? defaultSettingsData.systemTray,
       userAgent:
-        result.settings.userAgent ??
-        (defaultSettingsData.userAgent as string),
+        result.settings.userAgent ?? defaultSettingsData.userAgent,
     }
 
     return settings
@@ -53,5 +57,10 @@ export class SettingsManager {
     }
 
     await DataDirectory.updateSettingsFile(settings)
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.OnLoadSettings,
+      settings
+    )
   }
 }

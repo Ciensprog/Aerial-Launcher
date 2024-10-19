@@ -7,23 +7,35 @@ export type SettingsState = Settings & {
 }
 
 export const useSettingsStore = create<SettingsState>()((set) => ({
+  claimingRewards: '',
+  missionInterval: '',
   path: '',
   systemTray: false,
   userAgent: '',
 
   updateSettings: (settings) => {
-    const newData: Partial<Record<keyof Settings, boolean | string>> = {}
+    const newData: Partial<
+      Record<keyof Settings, boolean | number | string>
+    > = {}
 
-    if (settings.path) {
+    if (settings.claimingRewards !== undefined) {
+      newData.claimingRewards = settings.claimingRewards
+    }
+
+    if (settings.missionInterval !== undefined) {
+      newData.missionInterval = settings.missionInterval
+    }
+
+    if (settings.path !== undefined) {
       newData.path = settings.path
     }
 
-    if (settings.userAgent) {
-      newData.userAgent = settings.userAgent
+    if (settings.systemTray !== undefined) {
+      newData.systemTray = settings.systemTray
     }
 
-    if (settings.systemTray) {
-      newData.systemTray = settings.systemTray
+    if (settings.userAgent !== undefined) {
+      newData.userAgent = settings.userAgent
     }
 
     const total = Object.keys(newData).length

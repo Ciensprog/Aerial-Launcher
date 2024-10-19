@@ -67,6 +67,10 @@ export const useAutomationStore = create<AutomationState>()(
               defaultConfig?.actions?.kick ??
               current?.actions?.kick ??
               false,
+            transferMats:
+              defaultConfig?.actions?.transferMats ??
+              current?.actions?.transferMats ??
+              false,
           },
           status: defaultConfig?.status ?? current?.status ?? null,
           submittings: {

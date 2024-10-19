@@ -11,8 +11,12 @@ import { QuestEventRepeatable } from '../../config/constants/fortnite/quests'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { MainWindow } from '../startup/windows/main'
+import { AccountsManager } from '../startup/accounts'
 import { AutoPinUrns } from '../startup/auto-pin-urns'
+import { Automation } from '../startup/automation'
+import { SettingsManager } from '../startup/settings'
 import { MCPClaimRewards } from './mcp/claim-rewards'
+import { MCPStorageTransfer } from './mcp/storage-transfer'
 import { Authentication } from './authentication'
 
 import {
@@ -49,12 +53,34 @@ export class ClaimRewards {
     }
 
     try {
-      await new Promise((resolve) => {
-        setTimeout(() => resolve(true), 1_400) // 1.4 seconds
-      })
+      const settings = await SettingsManager.getData()
+      const claimingRewardsDelay = Number(settings.claimingRewards)
+
+      if (claimingRewardsDelay > 0) {
+        await new Promise((resolve) => {
+          setTimeout(() => resolve(true), claimingRewardsDelay * 1_000)
+        })
+      }
 
       const response = await Promise.allSettled(
         accounts.map(async (account) => {
+          const automationAccount = Automation.getAccountById(
+            account.accountId
+          )
+          const accountToTransfer = AccountsManager.getAccountById(
+            account.accountId
+          )
+
+          if (
+            automationAccount &&
+            accountToTransfer &&
+            automationAccount.actions.transferMats === true
+          ) {
+            MCPStorageTransfer.buildingMaterials(accountToTransfer).catch(
+              () => {}
+            )
+          }
+
           const accessToken =
             await Authentication.verifyAccessToken(account)
 
