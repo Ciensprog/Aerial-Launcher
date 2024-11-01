@@ -52,7 +52,7 @@ You can download the latest release (Aerial.Launcher-x.x.x.Setup.exe) from [rele
 
 ### Good To Know
 
-Since this application is not code signed, when you try to install you will see a blue dialog modal to confirm if you want to proceed, it only happens the first time you install.
+Since this application is not code signed, when you try to install you will see a blue (or another color/style) dialog modal to confirm if you want to proceed, it only happens the first time you install.
 
 This folder is being using to save any settings `C:\Users\YOUR_USER\AppData\Roaming\aerial-launcher-data` inside this folder you can find an `accounts.json` file with all your accounts previously added.
 
