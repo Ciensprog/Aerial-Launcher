@@ -71,7 +71,7 @@ export function SidebarMenu({
   }
 
   return (
-    <ScrollArea className="h-full max-h-[calc(100vh-3.5rem)]">
+    <ScrollArea className="h-full max-h-[calc(100vh-var(--header-height))]">
       <div className="flex-1 pb-6">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
           <Title className="pb-0">STW Operations</Title>
@@ -427,6 +427,7 @@ export function SidebarMenu({
               )}
               size="sm"
               variant="ghost"
+              onClick={goToPage}
               onAuxClick={whatIsThis()}
               asChild
             >

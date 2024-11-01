@@ -72,10 +72,10 @@ img {
 
 .app-draggable-region {
   -webkit-app-region: drag;
+}
 
-  * {
-    -webkit-app-region: no-drag;
-  }
+.not-draggable-region {
+  -webkit-app-region: no-drag;
 }
 
 .mantine-ColorInput-input {

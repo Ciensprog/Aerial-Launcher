@@ -35,12 +35,11 @@ export function AccountList() {
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            'flex justify-between pl-3 pr-2 select-none text-left w-52',
+            'not-draggable-region flex justify-between pl-3 pr-2 select-none text-left w-52',
             {
               'justify-center px-0': accounts.length < 1,
             }
           )}
-          // size="lg"
           variant="outline"
           role="combobox"
           aria-expanded={open}

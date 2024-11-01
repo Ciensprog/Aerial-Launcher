@@ -7,7 +7,8 @@ import { Header } from './header'
 import { SidebarMenu } from '../components/menu/sidebar'
 import { ScrollArea } from '../components/ui/scroll-area'
 
-import logoLaucher from '../_assets/aerial-launcher.png'
+// @ts-expect-error assets/image
+import logoLaucher from '../_assets/aerial-launcher-transparent.png'
 
 import { whatIsThis } from '../lib/callbacks'
 
@@ -20,6 +21,7 @@ export function MainLayout({ children }: PropsWithChildren) {
             <div className="flex gap-2 items-center font-semibold">
               <Link
                 to="/"
+                className="not-draggable-region"
                 onAuxClick={whatIsThis()}
               >
                 <img
