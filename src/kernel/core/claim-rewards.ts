@@ -24,6 +24,8 @@ import {
   setSetPinnedQuests,
 } from '../../services/endpoints/mcp'
 
+import { getRawDate } from '../../lib/dates'
+
 export class ClaimRewards {
   static async start(
     accounts: AccountDataList,
@@ -250,9 +252,9 @@ export class ClaimRewards {
           const accolades = accoladesResponse?.notifications.reduce(
             (accumulator, current) => {
               accumulator.totalMissionXPRedeemed +=
-                current.totalMissionXPRedeemed
+                current.totalMissionXPRedeemed ?? 0
               accumulator.totalQuestXPRedeemed +=
-                current.totalQuestXPRedeemed
+                current.totalQuestXPRedeemed ?? 0
 
               return accumulator
             },
@@ -283,11 +285,15 @@ export class ClaimRewards {
             }
           })
 
-          return {
+          const result: RewardsNotification = {
             accolades,
             rewards,
+            createdAt: getRawDate(),
+            id: crypto.randomUUID(),
             accountId: account.accountId,
           }
+
+          return result
         })
       )
 

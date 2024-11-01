@@ -8,7 +8,9 @@ import { useClaimedRewards } from '../../hooks/stw-operations/claimed-rewards'
 
 import { useGetAccounts } from '../../hooks/accounts'
 
+import { numberWithCommaSeparator } from '../../lib/parsers/numbers'
 import { parseResource } from '../../lib/parsers/resources'
+import { dateWithFormat } from '../../lib/dates'
 import { parseCustomDisplayName } from '../../lib/utils'
 
 export function HistoryMenu() {
@@ -22,11 +24,11 @@ export function HistoryMenu() {
           <div className="border-l-4 italic mb-4 mt-2 pl-2 py-1 text-muted-foreground">
             Note: this is a temporal history
           </div>
-          <div className="flex-1 pb-6 [&_img]:pointer-events-none [&_img]:select-none">
-            {dataOrderByDesc.map((item, index) => (
+          <div className="flex-1 pb-6 space-y-2 [&_img]:pointer-events-none [&_img]:select-none">
+            {dataOrderByDesc.map((item) => (
               <div
-                className="border-b py-3 space-y-5 text-foreground/90 last:border-b-0"
-                key={index}
+                className="border-b pb-2 text-foreground/90 last:border-b-0"
+                key={item.id}
               >
                 <RewardSection data={item} />
               </div>
@@ -42,23 +44,23 @@ export function HistoryMenu() {
   )
 }
 
-function RewardSection({ data }: { data: Array<RewardsNotification> }) {
+function RewardSection({ data }: { data: RewardsNotification }) {
   const { accountList } = useGetAccounts()
 
-  return data.map((item, index) => (
-    <div key={index}>
+  return (
+    <div>
       <div className="font-bold mb-2 break-all">
-        {parseCustomDisplayName(accountList[item.accountId])}:
+        {parseCustomDisplayName(accountList[data.accountId])}:
       </div>
-      <ul
-        className="space-y-1"
-        key={index}
-      >
-        <RewardItems rewards={item.rewards} />
-        <AccoladesItem accolades={item.accolades} />
+      <ul className="space-y-1">
+        <RewardItems rewards={data.rewards} />
+        <AccoladesItem accolades={data.accolades} />
       </ul>
+      <div className="mt-1 text-muted-foreground text-xs">
+        {dateWithFormat(data.createdAt, 'MM/DD/YYYY hh:mm:ss a')}
+      </div>
     </div>
-  ))
+  )
 }
 
 function RewardItems({ rewards }: Pick<RewardsNotification, 'rewards'>) {
@@ -67,8 +69,8 @@ function RewardItems({ rewards }: Pick<RewardsNotification, 'rewards'>) {
     parseResource({ key, quantity })
   )
 
-  return items.map((item, index) => (
-    <li key={index}>
+  return items.map((item) => (
+    <li key={item.key}>
       <figure className="flex gap-1 items-center">
         <img
           src={item.imgUrl}
@@ -76,8 +78,7 @@ function RewardItems({ rewards }: Pick<RewardsNotification, 'rewards'>) {
           alt={item.name}
         />
         <figcaption className="break-all">
-          {Intl.NumberFormat('en-US').format(item.quantity)} &times;{' '}
-          {item.name}
+          {numberWithCommaSeparator(item.quantity)} &times; {item.name}
         </figcaption>
       </figure>
     </li>
@@ -96,7 +97,7 @@ function AccoladesItem({
           alt="Accolades"
         />
         <figcaption className="break-all">
-          {Intl.NumberFormat('en-US').format(
+          {numberWithCommaSeparator(
             accolades.totalMissionXPRedeemed +
               accolades.totalQuestXPRedeemed
           )}{' '}

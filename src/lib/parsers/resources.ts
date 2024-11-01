@@ -20,23 +20,41 @@ export function parseResource({
   } = {
     key,
     quantity,
-    imgUrl: `${repositoryAssetsURL}/images/rarities/c.png`,
+    imgUrl: `${repositoryAssetsURL}/images/rarities/${RarityType.Common}.png`,
     name: 'Uncategorized',
   }
   const current = resourcesJson[key]
+  const baseUrl = `${repositoryAssetsURL}/images/`
 
   if (current) {
-    const isEventCurrency =
-      key !== 'AccountResource:eventcurrency_scaling' &&
-      key.startsWith('AccountResource:eventcurrency_')
     const resourceId = key.split(':')[1]
 
-    data.imgUrl = `${repositoryAssetsURL}/images/${resourceId ? `${isEventCurrency ? 'currency' : 'resources'}/${resourceId}` : `rarities/${RarityType.Common}`}.png`
+    if (resourceId) {
+      const isEventCurrency =
+        (key !== 'AccountResource:eventcurrency_scaling' &&
+          key !== 'AccountResource:eventcurrency_founders' &&
+          key.startsWith('AccountResource:eventcurrency_')) ||
+        key === 'AccountResource:campaign_event_currency'
+      const type = isEventCurrency ? 'currency' : 'resources'
+      const isUnknownTickets = [
+        'campaign_event_currency',
+        'eventcurrency_spring',
+        'eventcurrency_summer',
+      ]
+      const extension = isUnknownTickets.includes(resourceId)
+        ? 'gif'
+        : 'png'
+
+      data.imgUrl = `${baseUrl}/${type}/${resourceId}.${extension}`
+    } else {
+      data.imgUrl = `${baseUrl}/rarities/${RarityType.Common}}.png`
+    }
+
     data.name = current.name
   } else {
     const rarity = parseRarity(key)
 
-    data.imgUrl = `${repositoryAssetsURL}/images/rarities/${rarity.rarity}.png`
+    data.imgUrl = `${baseUrl}/rarities/${rarity.rarity}.png`
     data.name = rarity.prefix
   }
 
@@ -90,19 +108,19 @@ export function parseRarity(value: string) {
     }
   } else if (conditionalIncludes) {
     switch (true) {
-      case id.includes(`_${RarityType.Common}`):
+      case id.includes(`_${RarityType.Common}_`):
         setRarity(RarityType.Common)
         break
-      case id.includes(`_${RarityType.Uncommon}`):
+      case id.includes(`_${RarityType.Uncommon}_`):
         setRarity(RarityType.Uncommon)
         break
-      case id.includes(`_${RarityType.Rare}`):
+      case id.includes(`_${RarityType.Rare}_`):
         setRarity(RarityType.Rare)
         break
-      case id.includes(`_${RarityType.Epic}`):
+      case id.includes(`_${RarityType.Epic}_`):
         setRarity(RarityType.Epic)
         break
-      case id.includes(`_${RarityType.Legendary}`):
+      case id.includes(`_${RarityType.Legendary}_`):
         setRarity(RarityType.Legendary)
         break
     }

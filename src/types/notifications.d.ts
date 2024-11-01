@@ -4,5 +4,7 @@ export type RewardsNotification = {
     totalQuestXPRedeemed: number
   }
   accountId: string
+  createdAt: string
+  id: string
   rewards: Record<string, number>
 }

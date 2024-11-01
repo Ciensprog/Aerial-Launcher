@@ -233,11 +233,11 @@ function ItemInformation({
       </div>
       <p>
         <span className="text-muted-foreground">Location:</span>{' '}
-        {isPressed ? (data?.location ?? 'Unknown') : dots}
+        {isPressed ? data?.location ?? 'Unknown' : dots}
       </p>
       <p>
         <span className="text-muted-foreground">IP Address:</span>{' '}
-        {isPressed ? (data?.ipAddress ?? 'Unknown') : dots}
+        {isPressed ? data?.ipAddress ?? 'Unknown' : dots}
       </p>
       <p>
         <span className="text-muted-foreground">Date:</span>{' '}
@@ -246,7 +246,7 @@ function ItemInformation({
             {parsedDate}{' '}
             {data?.dateTime !== undefined && (
               <span className="text-muted-foreground text-xs">
-                ({dateWithFormat(data.dateTime, 'MM/dd/yyyy hh:mm:ss a')})
+                ({dateWithFormat(data.dateTime, 'MM/DD/YYYY hh:mm:ss a')})
               </span>
             )}
           </>

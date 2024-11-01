@@ -28,6 +28,7 @@ import { useGetAutomationDataStatus } from '../../hooks/stw-operations/automatio
 
 import { useAccountListStore } from '../../state/accounts/list'
 
+import { numberWithCommaSeparator } from '../../lib/parsers/numbers'
 import { cn } from '../../lib/utils'
 import { whatIsThis } from '../../lib/callbacks'
 
@@ -45,7 +46,7 @@ export function SidebarMenu({
 
   const total = Object.keys(accounts).length
   const areThereAccounts = total > 0
-  const totalInText = new Intl.NumberFormat().format(total)
+  const totalInText = numberWithCommaSeparator(total)
 
   const goToPage = () => {
     onOpenChange?.(false)
