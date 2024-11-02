@@ -24,6 +24,40 @@ export const settingsSchema = z.object({
   userAgent: z.string().trim().min(1),
 })
 
+export const devSettingsSchema = z
+  .object({
+    transfer: z.boolean().default(false),
+  })
+  .partial()
+
+export const customizableMenuSettingsSchema = z
+  .object({
+    stwOperations: z.boolean().default(true),
+    autoKick: z.boolean().default(true),
+    party: z.boolean().default(true),
+    saveQuests: z.boolean().default(true),
+    homebaseName: z.boolean().default(true),
+    xpBoosts: z.boolean().default(true),
+    autoPinUrns: z.boolean().default(true),
+
+    accountManagement: z.boolean().default(true),
+    vbucksInformation: z.boolean().default(true),
+    redeemCodes: z.boolean().default(true),
+    devicesAuth: z.boolean().default(true),
+    epicGamesSettings: z.boolean().default(true),
+
+    advancedMode: z.boolean().default(true),
+    matchmakingTrack: z.boolean().default(true),
+    worldInfo: z.boolean().default(true),
+
+    myAccounts: z.boolean().default(true),
+    authorizationCode: z.boolean().default(true),
+    exchangeCode: z.boolean().default(true),
+    deviceAuth: z.boolean().default(true),
+    removeAccount: z.boolean().default(true),
+  })
+  .partial()
+
 function createRangeValidation(config: {
   defaultValue: number
   decimals?: number

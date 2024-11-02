@@ -1,16 +1,16 @@
 import type { IpcRendererEvent } from 'electron'
-import type { Settings } from '../../types/settings'
+import type { DevSettings, Settings } from '../../types/settings'
 
 import { ipcRenderer } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
-/**
- * General Methods
- */
-
 export function requestAccounts() {
   ipcRenderer.send(ElectronAPIEventKeys.RequestAccounts)
+}
+
+export function requestDevSettings() {
+  ipcRenderer.send(ElectronAPIEventKeys.DevSettingsRequest)
 }
 
 export function requestSettings() {
@@ -19,6 +19,26 @@ export function requestSettings() {
 
 export function updateSettings(settings: Settings) {
   ipcRenderer.send(ElectronAPIEventKeys.UpdateSettings, settings)
+}
+
+export function notificationDevSettings(
+  callback: (value: DevSettings) => Promise<void>
+) {
+  const customCallback = (_: IpcRendererEvent, value: DevSettings) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.DevSettingsResponse,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.DevSettingsResponse,
+        customCallback
+      ),
+  }
 }
 
 export function responseSettings(
@@ -40,10 +60,6 @@ export function responseSettings(
       ),
   }
 }
-
-/**
- * General Methods
- */
 
 export function openExternalURL(url: string) {
   ipcRenderer.send(ElectronAPIEventKeys.OpenExternalURL, url)

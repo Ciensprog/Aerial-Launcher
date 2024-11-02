@@ -25,6 +25,7 @@ import { Separator } from '../ui/separator'
 // } from '../ui/tooltip'
 
 import { useGetAutomationDataStatus } from '../../hooks/stw-operations/automation'
+import { useCustomizableMenuSettingsVisibility } from '../../hooks/settings'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
@@ -43,6 +44,8 @@ export function SidebarMenu({
 }) {
   const accounts = useAccountListStore((state) => state.accounts)
   const { status } = useGetAutomationDataStatus()
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   const total = Object.keys(accounts).length
   const areThereAccounts = total > 0
@@ -74,303 +77,362 @@ export function SidebarMenu({
     <ScrollArea className="h-full max-h-[calc(100vh-var(--header-height))]">
       <div className="flex-1 pb-6">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
-          <Title className="pb-0">STW Operations</Title>
-          <div
-            className={cn(
-              'pl-3 py-2 text-muted-foreground',
-              '[&_.item>a]:flex'
-            )}
-          >
-            <ul className="list-disc ml-5">
-              <li className="item">
-                <Link
-                  to="/stw-operations/automation"
-                  className={cn(currentClassNameHover)}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  <span className="flex relative">
-                    Auto-kick
-                    {status !== null && (
-                      <span
-                        className={cn(
-                          'absolute left-[calc(100%+0.5rem)] border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
-                          status === AutomationStatusType.ISSUE
-                            ? 'border-yellow-600 text-yellow-600'
-                            : 'border-green-600 text-green-600'
-                        )}
+          {getMenuOptionVisibility('stwOperations', true) && (
+            <>
+              <Title className="pb-0">STW Operations</Title>
+              <div
+                className={cn(
+                  'pl-3 py-2 text-muted-foreground',
+                  '[&_.item>a]:flex'
+                )}
+              >
+                <ul className="list-disc ml-5">
+                  {getMenuOptionVisibility('autoKick') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/automation"
+                        className={cn(currentClassNameHover)}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
                       >
-                        {status === AutomationStatusType.ISSUE
-                          ? 'Issue'
-                          : 'Active'}
-                      </span>
-                    )}
-                  </span>
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/stw-operations/party"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Party
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/stw-operations/save-quests"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Save Quests
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/stw-operations/homebase-name"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Homebase Name
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/stw-operations/xpboosts"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  XP Boosts
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/stw-operations/urns"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Auto-pin Urns
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <Title className="pb-0">Account Management</Title>
-          <div
-            className={cn(
-              'pl-3 py-2 text-muted-foreground',
-              '[&_.item>a]:flex'
-            )}
-          >
-            <ul className="list-disc ml-5">
-              <li className="item">
-                <Link
-                  to="/account-management/vbucks-information"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  V-Bucks Information
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/account-management/redeem-codes"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Redeem Codes
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/account-management/device-auth"
-                  className={cn({
-                    [currentClassNameHover]: areThereAccounts,
-                    'cursor-not-allowed opacity-60': !areThereAccounts,
-                  })}
-                  activeProps={{
-                    className: cn({
-                      [activeClassName]: areThereAccounts,
-                    }),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                  disabled={!areThereAccounts}
-                >
-                  Devices Auth
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/account-management/epic-games-settings"
-                  className={cn({
-                    [currentClassNameHover]: areThereAccounts,
-                    'cursor-not-allowed opacity-60': !areThereAccounts,
-                  })}
-                  activeProps={{
-                    className: cn({
-                      [activeClassName]: areThereAccounts,
-                    }),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                  disabled={!areThereAccounts}
-                >
-                  Epic Games Settings
-                </Link>
-              </li>
-            </ul>
-          </div>
+                        <span className="flex relative">
+                          Auto-kick
+                          {status !== null && (
+                            <span
+                              className={cn(
+                                'absolute left-[calc(100%+0.5rem)] border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
+                                status === AutomationStatusType.ISSUE
+                                  ? 'border-yellow-600 text-yellow-600'
+                                  : 'border-green-600 text-green-600'
+                              )}
+                            >
+                              {status === AutomationStatusType.ISSUE
+                                ? 'Issue'
+                                : 'Active'}
+                            </span>
+                          )}
+                        </span>
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('party') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/party"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Party
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('saveQuests') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/save-quests"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Save Quests
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('homebaseName') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/homebase-name"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Homebase Name
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('xpBoosts') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/xpboosts"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        XP Boosts
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('autoPinUrns') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/urns"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Auto-pin Urns
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </>
+          )}
 
-          <Title className="pb-0">Advanced Mode</Title>
-          <div
-            className={cn(
-              'pl-3 py-2 text-muted-foreground',
-              '[&_.item>a]:flex'
-            )}
-          >
-            <ul className="list-disc ml-5">
-              <li className="item">
-                <Link
-                  to="/advanced-mode/matchmaking-track"
-                  className={cn({
-                    [currentClassNameHover]: areThereAccounts,
-                    'cursor-not-allowed opacity-60': !areThereAccounts,
-                  })}
-                  activeProps={{
-                    className: cn({
-                      [activeClassName]: areThereAccounts,
-                    }),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                  disabled={!areThereAccounts}
-                >
-                  Matchmaking Track
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/advanced-mode/world-info"
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  World Info
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {getMenuOptionVisibility('accountManagement', true) && (
+            <>
+              <Title className="pb-0">Account Management</Title>
+              <div
+                className={cn(
+                  'pl-3 py-2 text-muted-foreground',
+                  '[&_.item>a]:flex'
+                )}
+              >
+                <ul className="list-disc ml-5">
+                  {getMenuOptionVisibility('vbucksInformation') && (
+                    <li className="item">
+                      <Link
+                        to="/account-management/vbucks-information"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        V-Bucks Information
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('redeemCodes') && (
+                    <li className="item">
+                      <Link
+                        to="/account-management/redeem-codes"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Redeem Codes
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('devicesAuth') && (
+                    <li className="item">
+                      <Link
+                        to="/account-management/device-auth"
+                        className={cn({
+                          [currentClassNameHover]: areThereAccounts,
+                          'cursor-not-allowed opacity-60':
+                            !areThereAccounts,
+                        })}
+                        activeProps={{
+                          className: cn({
+                            [activeClassName]: areThereAccounts,
+                          }),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                        disabled={!areThereAccounts}
+                      >
+                        Devices Auth
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('epicGamesSettings') && (
+                    <li className="item">
+                      <Link
+                        to="/account-management/epic-games-settings"
+                        className={cn({
+                          [currentClassNameHover]: areThereAccounts,
+                          'cursor-not-allowed opacity-60':
+                            !areThereAccounts,
+                        })}
+                        activeProps={{
+                          className: cn({
+                            [activeClassName]: areThereAccounts,
+                          }),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                        disabled={!areThereAccounts}
+                      >
+                        Epic Games Settings
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </>
+          )}
 
-          <Separator className="my-2" />
+          {getMenuOptionVisibility('advancedMode', true) && (
+            <>
+              <Title className="pb-0">Advanced Mode</Title>
+              <div
+                className={cn(
+                  'pl-3 py-2 text-muted-foreground',
+                  '[&_.item>a]:flex'
+                )}
+              >
+                <ul className="list-disc ml-5">
+                  {getMenuOptionVisibility('matchmakingTrack') && (
+                    <li className="item">
+                      <Link
+                        to="/advanced-mode/matchmaking-track"
+                        className={cn({
+                          [currentClassNameHover]: areThereAccounts,
+                          'cursor-not-allowed opacity-60':
+                            !areThereAccounts,
+                        })}
+                        activeProps={{
+                          className: cn({
+                            [activeClassName]: areThereAccounts,
+                          }),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                        disabled={!areThereAccounts}
+                      >
+                        Matchmaking Track
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('worldInfo') && (
+                    <li className="item">
+                      <Link
+                        to="/advanced-mode/world-info"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        World Info
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </>
+          )}
 
-          <Title className="pb-0">My Accounts ({totalInText}):</Title>
-          <div
-            className={cn(
-              'pl-3 py-2 text-muted-foreground',
-              '[&_.item>a]:flex'
-            )}
-          >
-            <ul className="list-disc ml-5">
-              <li className="item">
-                <Link
-                  to="/accounts/add/$type"
-                  params={{ type: 'authorization-code' }}
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Authorization Code
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/accounts/add/$type"
-                  params={{ type: 'exchange-code' }}
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Exchange Code
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/accounts/add/$type"
-                  params={{ type: 'device-auth' }}
-                  className={currentClassNameHover}
-                  activeProps={{
-                    className: cn(activeClassName),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                >
-                  Device Auth
-                </Link>
-              </li>
-              <li className="item">
-                <Link
-                  to="/accounts/remove"
-                  className={cn({
-                    [currentClassNameHover]: areThereAccounts,
-                    'cursor-not-allowed opacity-60': !areThereAccounts,
-                  })}
-                  activeProps={{
-                    className: cn({
-                      [activeClassName]: areThereAccounts,
-                    }),
-                  }}
-                  onClick={goToPage}
-                  onAuxClick={whatIsThis()}
-                  disabled={!areThereAccounts}
-                >
-                  Remove Account
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {(getMenuOptionVisibility('stwOperations', true) ||
+            getMenuOptionVisibility('accountManagement', true) ||
+            getMenuOptionVisibility('advancedMode', true)) && (
+            <Separator className="my-2" />
+          )}
 
-          <Separator className="my-2" />
+          {getMenuOptionVisibility('myAccounts', true) && (
+            <>
+              <Title className="pb-0">My Accounts ({totalInText}):</Title>
+              <div
+                className={cn(
+                  'pl-3 py-2 text-muted-foreground',
+                  '[&_.item>a]:flex'
+                )}
+              >
+                <ul className="list-disc ml-5">
+                  {getMenuOptionVisibility('authorizationCode') && (
+                    <li className="item">
+                      <Link
+                        to="/accounts/add/$type"
+                        params={{ type: 'authorization-code' }}
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Authorization Code
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('exchangeCode') && (
+                    <li className="item">
+                      <Link
+                        to="/accounts/add/$type"
+                        params={{ type: 'exchange-code' }}
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Exchange Code
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('deviceAuth') && (
+                    <li className="item">
+                      <Link
+                        to="/accounts/add/$type"
+                        params={{ type: 'device-auth' }}
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        Device Auth
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('removeAccount') && (
+                    <li className="item">
+                      <Link
+                        to="/accounts/remove"
+                        className={cn({
+                          [currentClassNameHover]: areThereAccounts,
+                          'cursor-not-allowed opacity-60':
+                            !areThereAccounts,
+                        })}
+                        activeProps={{
+                          className: cn({
+                            [activeClassName]: areThereAccounts,
+                          }),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                        disabled={!areThereAccounts}
+                      >
+                        Remove Account
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </>
+          )}
+
+          {getMenuOptionVisibility('myAccounts', true) && (
+            <Separator className="my-2" />
+          )}
 
           <div>
             <Button

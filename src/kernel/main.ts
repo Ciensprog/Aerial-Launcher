@@ -11,7 +11,7 @@ import type {
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { AutomationServiceActionConfig } from '../types/automation'
 import type { GroupRecord } from '../types/groups'
-import type { Settings } from '../types/settings'
+import type { CustomizableMenuSettings, Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
 import type {
   XPBoostsConsumePersonalData,
@@ -44,7 +44,11 @@ import { AutoPinUrns } from './startup/auto-pin-urns'
 import { Automation } from './startup/automation'
 import { DataDirectory } from './startup/data-directory'
 import { GroupsManager } from './startup/groups'
-import { SettingsManager } from './startup/settings'
+import {
+  CustomizableMenuSettingsManager,
+  DevSettingsManager,
+  SettingsManager,
+} from './startup/settings'
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
 import { DevicesAuthManager } from './core/devices-auth'
@@ -176,6 +180,17 @@ const gotTheLock = app.requestSingleInstanceLock()
       await SettingsManager.load()
     })
 
+    ipcMain.on(ElectronAPIEventKeys.DevSettingsRequest, async () => {
+      await DevSettingsManager.load()
+    })
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CustomizableMenuSettingsRequest,
+      async () => {
+        await CustomizableMenuSettingsManager.load()
+      }
+    )
+
     ipcMain.on(ElectronAPIEventKeys.RequestTags, async () => {
       await TagsManager.load()
     })
@@ -188,6 +203,17 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.UpdateSettings,
       async (_, settings: Settings) => {
         await SettingsManager.update(settings)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CustomizableMenuSettingsUpdate,
+      async (
+        _,
+        key: keyof CustomizableMenuSettings,
+        visibility: boolean
+      ) => {
+        await CustomizableMenuSettingsManager.update(key, visibility)
       }
     )
 

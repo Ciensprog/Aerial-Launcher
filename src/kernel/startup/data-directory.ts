@@ -2,7 +2,11 @@ import type { AccountList } from '../../types/accounts'
 import type { AutomationAccountFileDataList } from '../../types/automation'
 import type { FriendRecord } from '../../types/friends'
 import type { GroupRecord } from '../../types/groups'
-import type { Settings } from '../../types/settings'
+import type {
+  CustomizableMenuSettings,
+  DevSettings,
+  Settings,
+} from '../../types/settings'
 import type { TagRecord } from '../../types/tags'
 import type { AutoPinUrnDataList } from '../../types/urns'
 
@@ -18,7 +22,11 @@ import { automationFileSchema } from '../../lib/validations/schemas/automation'
 import { friendsSchema } from '../../lib/validations/schemas/friends'
 import { groupsSchema } from '../../lib/validations/schemas/groups'
 import { matchmakingsSchema } from '../../lib/validations/schemas/matchmaking'
-import { settingsSchema } from '../../lib/validations/schemas/settings'
+import {
+  customizableMenuSettingsSchema,
+  devSettingsSchema,
+  settingsSchema,
+} from '../../lib/validations/schemas/settings'
 import { tagsSchema } from '../../lib/validations/schemas/tags'
 
 export class DataDirectory {
@@ -61,6 +69,19 @@ export class DataDirectory {
     systemTray: false,
     userAgent: 'Fortnite/++Fortnite+Release-31.00-CL-35447195-Windows',
   }
+
+  private static devSettingsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'dev-settings.json'
+  )
+  private static devSettingsDefaultData: DevSettings = {}
+
+  private static customizableMenuSettingsFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'customizable-menu.json'
+  )
+  private static customizableMenuSettingsDefaultData: CustomizableMenuSettings =
+    {}
 
   private static tagsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
@@ -112,6 +133,14 @@ export class DataDirectory {
     return DataDirectory.settingsDefaultData
   }
 
+  static getDevSettingsDefaultData() {
+    return DataDirectory.devSettingsDefaultData
+  }
+
+  static getCustomizableMenuSettingsDefaultData() {
+    return DataDirectory.customizableMenuSettingsDefaultData
+  }
+
   /**
    * Get Path
    */
@@ -132,6 +161,7 @@ export class DataDirectory {
     await DataDirectory.checkOrCreateWorldInfoDirectory()
     await DataDirectory.getOrCreateAccountsJsonFile()
     await DataDirectory.getOrCreateSettingsJsonFile()
+    await DataDirectory.getOrCreateCustomizableMenuSettingsJsonFile()
     await DataDirectory.getOrCreateTagsJsonFile()
     await DataDirectory.getOrCreateGroupsJsonFile()
     await DataDirectory.getOrCreateFriendsJsonFile()
@@ -181,6 +211,60 @@ export class DataDirectory {
     }
 
     return { settings: DataDirectory.settingsDefaultData }
+  }
+
+  /**
+   * Get data from dev-settings.json
+   */
+  static async getDevSettingsFile(): Promise<{
+    devSettings: DevSettings
+  }> {
+    try {
+      const result = await readFile(DataDirectory.devSettingsFilePath, {
+        encoding: 'utf8',
+      })
+      const list = devSettingsSchema.safeParse(JSON.parse(result))
+      const devSettings = list.success
+        ? list.data
+        : DataDirectory.devSettingsDefaultData
+
+      return { devSettings }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    return { devSettings: DataDirectory.devSettingsDefaultData }
+  }
+
+  /**
+   * Get data from customizable-menu.json
+   */
+  static async getCustomizableMenuSettingsFile(): Promise<{
+    customizableMenu: CustomizableMenuSettings
+  }> {
+    const result =
+      await DataDirectory.getOrCreateCustomizableMenuSettingsJsonFile()
+
+    try {
+      const list = customizableMenuSettingsSchema.safeParse(
+        JSON.parse(result)
+      )
+      const customizableMenu = list.success
+        ? list.data
+        : DataDirectory.customizableMenuSettingsDefaultData
+
+      return { customizableMenu }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    return {
+      customizableMenu: DataDirectory.customizableMenuSettingsDefaultData,
+    }
   }
 
   /**
@@ -362,6 +446,18 @@ export class DataDirectory {
   }
 
   /**
+   * Update settings.json
+   */
+  static async updateCustomizableMenuSettingsFile(
+    data: CustomizableMenuSettings
+  ) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.customizableMenuSettingsFilePath,
+      data
+    )
+  }
+
+  /**
    * Update tags.json
    */
   static async updateTagsFile(data: TagRecord) {
@@ -479,6 +575,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.settingsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating customizable-menu.json
+   */
+  private static async getOrCreateCustomizableMenuSettingsJsonFile() {
+    const initialData = DataDirectory.customizableMenuSettingsDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.customizableMenuSettingsFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),

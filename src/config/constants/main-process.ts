@@ -14,6 +14,13 @@ export enum ElectronAPIEventKeys {
   OnLoadSettings = 'on:load:settings',
   UpdateSettings = 'settings:update',
 
+  DevSettingsRequest = 'dev-settings:request',
+  DevSettingsResponse = 'dev-settings:response',
+
+  CustomizableMenuSettingsRequest = 'customizable-menu-settings:request',
+  CustomizableMenuSettingsResponse = 'customizable-menu-settings:response',
+  CustomizableMenuSettingsUpdate = 'customizable-menu-settings:update',
+
   RequestTags = 'request:tags',
   OnLoadTags = 'on:load:tags',
   UpdateTags = 'tags:update',

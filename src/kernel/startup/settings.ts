@@ -1,4 +1,7 @@
-import type { Settings } from '../../types/settings'
+import type {
+  CustomizableMenuSettings,
+  Settings,
+} from '../../types/settings'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
@@ -61,6 +64,55 @@ export class SettingsManager {
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnLoadSettings,
       settings
+    )
+  }
+}
+
+export class DevSettingsManager {
+  static async load() {
+    const data = await DataDirectory.getDevSettingsFile()
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.DevSettingsResponse,
+      data.devSettings
+    )
+  }
+}
+
+export class CustomizableMenuSettingsManager {
+  static async load() {
+    const customizableMenuSettings =
+      await CustomizableMenuSettingsManager.getData()
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.CustomizableMenuSettingsResponse,
+      customizableMenuSettings
+    )
+  }
+
+  static async getData() {
+    const { customizableMenu } =
+      await DataDirectory.getCustomizableMenuSettingsFile()
+
+    return customizableMenu
+  }
+
+  static async update(
+    key: keyof CustomizableMenuSettings,
+    visibility: boolean
+  ) {
+    const customizableMenuSettings =
+      await CustomizableMenuSettingsManager.getData()
+    const newData: CustomizableMenuSettings = {
+      ...customizableMenuSettings,
+      [key]: visibility,
+    }
+
+    await DataDirectory.updateCustomizableMenuSettingsFile(newData)
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.CustomizableMenuSettingsResponse,
+      newData
     )
   }
 }

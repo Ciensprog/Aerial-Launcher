@@ -1,9 +1,15 @@
-import type { Settings } from '../../types/settings'
+import type { DevSettings, Settings } from '../../types/settings'
 
 import { create } from 'zustand'
 
 export type SettingsState = Settings & {
   updateSettings: (settings: Partial<Settings>) => void
+}
+
+export type DevSettingsState = {
+  settings: DevSettings
+
+  updateDevSettings: (value: DevSettings) => void
 }
 
 export const useSettingsStore = create<SettingsState>()((set) => ({
@@ -44,4 +50,10 @@ export const useSettingsStore = create<SettingsState>()((set) => ({
       set(settings)
     }
   },
+}))
+
+export const useDevSettingsStore = create<DevSettingsState>()((set) => ({
+  settings: {},
+
+  updateDevSettings: (settings) => set({ settings }),
 }))
