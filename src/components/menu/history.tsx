@@ -164,10 +164,16 @@ function DateRange({
   return (
     <div className="mb-2 text-muted-foreground text-xs">
       <div className="">
-        Starts at: {dateWithFormat(startsAt, 'MM/DD/YYYY hh:mm:ss a')}
+        First claim{' '}
+        {startsAt === ''
+          ? 'N/A'
+          : dateWithFormat(startsAt, 'MM/DD/YYYY hh:mm:ss a')}
       </div>
       <div className="">
-        Ends at: {dateWithFormat(endsAt, 'MM/DD/YYYY hh:mm:ss a')}
+        Last played at{' '}
+        {endsAt === ''
+          ? 'N/A'
+          : dateWithFormat(endsAt, 'MM/DD/YYYY hh:mm:ss a')}
       </div>
     </div>
   )
