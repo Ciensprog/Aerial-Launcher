@@ -7,6 +7,11 @@ import {
 import { Label } from '../../../components/ui/label'
 import { Switch } from '../../../components/ui/switch'
 
+import {
+  useCustomizableMenuSettingsActions,
+  useCustomizableMenuSettingsVisibility,
+} from '../../../hooks/settings'
+
 import { cn } from '../../../lib/utils'
 
 export function AppsettingsCustomMenu() {
@@ -36,6 +41,10 @@ export function AppsettingsCustomMenu() {
 }
 
 function STWOperationsSection() {
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
+  const { updateMenuOption } = useCustomizableMenuSettingsActions()
+
   return (
     <div className="category">
       <div className="item main">
@@ -45,7 +54,11 @@ function STWOperationsSection() {
         >
           STW Operations
         </Label>
-        <Switch id="stw-operations" />
+        <Switch
+          id="stw-operations"
+          checked={getMenuOptionVisibility('stwOperations')}
+          onCheckedChange={updateMenuOption('stwOperations')}
+        />
       </div>
       <div className="list">
         <div className="item">
@@ -55,7 +68,11 @@ function STWOperationsSection() {
           >
             Auto-kick
           </Label>
-          <Switch id="auto-kick" />
+          <Switch
+            id="auto-kick"
+            checked={getMenuOptionVisibility('autoKick')}
+            onCheckedChange={updateMenuOption('autoKick')}
+          />
         </div>
         <div className="item">
           <Label
@@ -64,7 +81,11 @@ function STWOperationsSection() {
           >
             Party
           </Label>
-          <Switch id="party" />
+          <Switch
+            id="party"
+            checked={getMenuOptionVisibility('party')}
+            onCheckedChange={updateMenuOption('party')}
+          />
         </div>
         <div className="item">
           <Label
@@ -73,7 +94,11 @@ function STWOperationsSection() {
           >
             Save Quests
           </Label>
-          <Switch id="save-quests" />
+          <Switch
+            id="save-quests"
+            checked={getMenuOptionVisibility('saveQuests')}
+            onCheckedChange={updateMenuOption('saveQuests')}
+          />
         </div>
         <div className="item">
           <Label
@@ -82,7 +107,11 @@ function STWOperationsSection() {
           >
             Homebase name
           </Label>
-          <Switch id="homebase-name" />
+          <Switch
+            id="homebase-name"
+            checked={getMenuOptionVisibility('homebaseName')}
+            onCheckedChange={updateMenuOption('homebaseName')}
+          />
         </div>
         <div className="item">
           <Label
@@ -91,7 +120,11 @@ function STWOperationsSection() {
           >
             XP Boosts
           </Label>
-          <Switch id="xp-boosts" />
+          <Switch
+            id="xp-boosts"
+            checked={getMenuOptionVisibility('xpBoosts')}
+            onCheckedChange={updateMenuOption('xpBoosts')}
+          />
         </div>
         <div className="item">
           <Label
@@ -100,7 +133,11 @@ function STWOperationsSection() {
           >
             Auto-pin Urns
           </Label>
-          <Switch id="auto-pin-urns" />
+          <Switch
+            id="auto-pin-urns"
+            checked={getMenuOptionVisibility('autoPinUrns')}
+            onCheckedChange={updateMenuOption('autoPinUrns')}
+          />
         </div>
       </div>
     </div>
@@ -108,6 +145,10 @@ function STWOperationsSection() {
 }
 
 function AccountManagementSection() {
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
+  const { updateMenuOption } = useCustomizableMenuSettingsActions()
+
   return (
     <div className="category">
       <div className="item main">
@@ -117,7 +158,11 @@ function AccountManagementSection() {
         >
           Account Management
         </Label>
-        <Switch id="account-management" />
+        <Switch
+          id="account-management"
+          checked={getMenuOptionVisibility('accountManagement')}
+          onCheckedChange={updateMenuOption('accountManagement')}
+        />
       </div>
       <div className="list">
         <div className="item">
@@ -127,7 +172,11 @@ function AccountManagementSection() {
           >
             V-Bucks Information
           </Label>
-          <Switch id="vbucks-information" />
+          <Switch
+            id="vbucks-information"
+            checked={getMenuOptionVisibility('vbucksInformation')}
+            onCheckedChange={updateMenuOption('vbucksInformation')}
+          />
         </div>
         <div className="item">
           <Label
@@ -136,7 +185,11 @@ function AccountManagementSection() {
           >
             Redeem Codes
           </Label>
-          <Switch id="redeem-codes" />
+          <Switch
+            id="redeem-codes"
+            checked={getMenuOptionVisibility('redeemCodes')}
+            onCheckedChange={updateMenuOption('redeemCodes')}
+          />
         </div>
         <div className="item">
           <Label
@@ -145,7 +198,11 @@ function AccountManagementSection() {
           >
             Devices Auth
           </Label>
-          <Switch id="devices-auth" />
+          <Switch
+            id="devices-auth"
+            checked={getMenuOptionVisibility('devicesAuth')}
+            onCheckedChange={updateMenuOption('devicesAuth')}
+          />
         </div>
         <div className="item">
           <Label
@@ -154,7 +211,11 @@ function AccountManagementSection() {
           >
             Epic Games Settings
           </Label>
-          <Switch id="epic-games-settings" />
+          <Switch
+            id="epic-games-settings"
+            checked={getMenuOptionVisibility('epicGamesSettings')}
+            onCheckedChange={updateMenuOption('epicGamesSettings')}
+          />
         </div>
       </div>
     </div>
@@ -162,6 +223,10 @@ function AccountManagementSection() {
 }
 
 function AdvancedModeSection() {
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
+  const { updateMenuOption } = useCustomizableMenuSettingsActions()
+
   return (
     <div className="category">
       <div className="item main">
@@ -171,7 +236,11 @@ function AdvancedModeSection() {
         >
           Advanced Mode
         </Label>
-        <Switch id="advanced-mode" />
+        <Switch
+          id="advanced-mode"
+          checked={getMenuOptionVisibility('advancedMode')}
+          onCheckedChange={updateMenuOption('advancedMode')}
+        />
       </div>
       <div className="list">
         <div className="item">
@@ -181,7 +250,11 @@ function AdvancedModeSection() {
           >
             Matchmaking Track
           </Label>
-          <Switch id="matchmaking-track" />
+          <Switch
+            id="matchmaking-track"
+            checked={getMenuOptionVisibility('matchmakingTrack')}
+            onCheckedChange={updateMenuOption('matchmakingTrack')}
+          />
         </div>
         <div className="item">
           <Label
@@ -190,7 +263,11 @@ function AdvancedModeSection() {
           >
             World Info
           </Label>
-          <Switch id="world-info" />
+          <Switch
+            id="world-info"
+            checked={getMenuOptionVisibility('worldInfo')}
+            onCheckedChange={updateMenuOption('worldInfo')}
+          />
         </div>
       </div>
     </div>
@@ -198,6 +275,10 @@ function AdvancedModeSection() {
 }
 
 function MyAccountsSection() {
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
+  const { updateMenuOption } = useCustomizableMenuSettingsActions()
+
   return (
     <div className="category">
       <div className="item main">
@@ -207,7 +288,11 @@ function MyAccountsSection() {
         >
           My Accounts
         </Label>
-        <Switch id="my-accounts" />
+        <Switch
+          id="my-accounts"
+          checked={getMenuOptionVisibility('myAccounts')}
+          onCheckedChange={updateMenuOption('myAccounts')}
+        />
       </div>
       <div className="list">
         <div className="item">
@@ -217,7 +302,11 @@ function MyAccountsSection() {
           >
             Authorization Code
           </Label>
-          <Switch id="authorization-code" />
+          <Switch
+            id="authorization-code"
+            checked={getMenuOptionVisibility('authorizationCode')}
+            onCheckedChange={updateMenuOption('authorizationCode')}
+          />
         </div>
         <div className="item">
           <Label
@@ -226,7 +315,11 @@ function MyAccountsSection() {
           >
             Exchange Code
           </Label>
-          <Switch id="exchange-code" />
+          <Switch
+            id="exchange-code"
+            checked={getMenuOptionVisibility('exchangeCode')}
+            onCheckedChange={updateMenuOption('exchangeCode')}
+          />
         </div>
         <div className="item">
           <Label
@@ -235,7 +328,11 @@ function MyAccountsSection() {
           >
             Device Auth
           </Label>
-          <Switch id="device-auth" />
+          <Switch
+            id="device-auth"
+            checked={getMenuOptionVisibility('deviceAuth')}
+            onCheckedChange={updateMenuOption('deviceAuth')}
+          />
         </div>
         <div className="item">
           <Label
@@ -244,7 +341,11 @@ function MyAccountsSection() {
           >
             Remove Account
           </Label>
-          <Switch id="remove-account" />
+          <Switch
+            id="remove-account"
+            checked={getMenuOptionVisibility('removeAccount')}
+            onCheckedChange={updateMenuOption('removeAccount')}
+          />
         </div>
       </div>
     </div>

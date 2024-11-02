@@ -7,6 +7,7 @@ import * as accountsActions from './preload-actions/accounts'
 import * as authenticationActions from './preload-actions/authentication'
 import * as autoPinUrnsActions from './preload-actions/auto-pin-urns'
 import * as automationsActions from './preload-actions/automation'
+import * as customizableMenuActions from './preload-actions/customizable-menu'
 import * as devicesAuthActions from './preload-actions/devices-auth'
 import * as eventActions from './preload-actions/events'
 import * as generalActions from './preload-actions/general'
@@ -26,6 +27,7 @@ export const availableElectronAPIs = {
   ...accountsActions,
   ...authenticationActions,
   ...automationsActions,
+  ...customizableMenuActions,
   ...autoPinUrnsActions,
   ...devicesAuthActions,
   ...eventActions,
