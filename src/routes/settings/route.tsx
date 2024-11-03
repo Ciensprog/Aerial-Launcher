@@ -59,7 +59,7 @@ function Content() {
 
   return (
     <div className="flex flex-grow">
-      <div className="flex items-center- justify-center w-full">
+      <div className="flex justify-center w-full">
         <div className="flex flex-col max-w-lg w-full">
           <Accordion
             className={cn(
