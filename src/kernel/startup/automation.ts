@@ -155,7 +155,16 @@ export class Automation {
             clearTimeout(initTimeout)
 
             if (accountProcess.matchmaking.partyState === null) {
-              accountProcess.checkMatchAtStartUp()
+              const automationAccount = Automation.getAccountById(
+                account.accountId
+              )
+              const actions = automationAccount
+                ? Object.values(automationAccount.actions)
+                : []
+
+              if (actions.includes(true)) {
+                accountProcess.checkMatchAtStartUp()
+              }
             }
           })
 
