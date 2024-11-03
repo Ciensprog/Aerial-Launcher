@@ -5,8 +5,6 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useAccountListStore } from '../../state/accounts/list'
 
-import { sortAccounts } from '../../lib/utils'
-
 export function LoadAccounts() {
   const { accounts, addOrUpdate, changeSelected, register } =
     useAccountListStore(
@@ -21,58 +19,24 @@ export function LoadAccounts() {
   useEffect(() => {
     const accountsLoaderListener = window.electronAPI.onAccountsLoaded(
       async (accounts) => {
-        const accountsToArray = Object.values(sortAccounts(accounts))
+        const accountsToArray = Object.values(accounts)
 
         register(accounts)
 
         if (accountsToArray[0]) {
           changeSelected(accountsToArray[0].accountId)
         }
-
-        // Object.values(accounts).forEach((account) => {
-        //   window.electronAPI.requestProviderAndAccessToken(account)
-        // })
       }
     )
-    // const acProviderListener =
-    //   window.electronAPI.responseProviderAndAccessToken(
-    //     async ({ account, data }) => {
-    //       addOrUpdate(account.accountId, {
-    //         ...account,
-    //         accessToken: data?.accessToken ?? null,
-    //         displayName: data?.displayName ?? account.displayName,
-    //         provider: data?.provider ?? null,
-    //       })
-    //     }
-    //   )
 
     window.electronAPI.requestAccounts()
 
     return () => {
       accountsLoaderListener.removeListener()
-      // acProviderListener.removeListener()
     }
   }, [])
 
   useEffect(() => {
-    // const scheduleRequestAccountsListener =
-    //   window.electronAPI.scheduleRequestAccounts(async () => {
-    //     const accountsToArray: Array<AccountData> = Object.values(
-    //       sortAccounts(accounts)
-    //     )
-
-    //     window.electronAPI.scheduleResponseAccounts(accountsToArray)
-    //   })
-    // const scheduleResponseProvidersListener =
-    //   window.electronAPI.scheduleResponseProviders(
-    //     async ({ account, data }) => {
-    //       addOrUpdate(account.accountId, {
-    //         ...account,
-    //         accessToken: data?.accessToken ?? null,
-    //         provider: data?.provider ?? null,
-    //       })
-    //     }
-    //   )
     const syncAccessTokenListener = window.electronAPI.syncAccountData(
       async ({ accountId, data }) => {
         addOrUpdate(accountId, data as AccountData)
@@ -80,8 +44,6 @@ export function LoadAccounts() {
     )
 
     return () => {
-      // scheduleRequestAccountsListener.removeListener()
-      // scheduleResponseProvidersListener.removeListener()
       syncAccessTokenListener.removeListener()
     }
   }, [accounts])

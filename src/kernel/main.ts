@@ -6,6 +6,7 @@ import type {
   AccountBasicInfo,
   AccountData,
   AccountDataList,
+  AccountDataRecord,
   AccountList,
 } from '../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
@@ -27,7 +28,7 @@ import schedule from 'node-schedule'
 
 import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
-import { AntiCheatProvider } from './core/anti-cheat-provider'
+// import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
 import { FortniteLauncher } from './core/launcher'
@@ -203,6 +204,13 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.UpdateSettings,
       async (_, settings: Settings) => {
         await SettingsManager.update(settings)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AccountsOrderingSync,
+      async (_, accounts: AccountDataRecord) => {
+        await AccountsManager.reorder(accounts)
       }
     )
 
@@ -665,18 +673,7 @@ const gotTheLock = app.requestSingleInstanceLock()
         tz: 'UTC',
       },
       () => {
-        // MainWindow.instance.webContents.send(
-        //   ElectronAPIEventKeys.ScheduleRequestAccounts
-        // )
-
         WorldInfoManager.requestData()
-      }
-    )
-
-    ipcMain.on(
-      ElectronAPIEventKeys.ScheduleResponseAccounts,
-      (_, accounts: Array<AccountData>) => {
-        AntiCheatProvider.requestBulk(accounts)
       }
     )
   })

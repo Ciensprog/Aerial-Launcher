@@ -3,6 +3,8 @@ import type {
   ComboboxProps,
 } from '../../../components/ui/extended/combobox/hooks'
 
+import { useEffect } from 'react'
+
 import {
   useGetAutoPinUrnActions,
   useGetAutoPinUrnData,
@@ -11,11 +13,7 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
-import {
-  localeCompareForSorting,
-  parseCustomDisplayName,
-} from '../../../lib/utils'
-import { useEffect } from 'react'
+import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useData() {
   const { accountsArray, accountList } = useGetAccounts()
@@ -50,12 +48,6 @@ export function useData() {
   const accounts = Object.keys(selectedAccounts)
     .filter((accountId) => accountList[accountId])
     .map((accountId) => accountList[accountId])
-    .toSorted((itemA, itemB) =>
-      localeCompareForSorting(
-        parseCustomDisplayName(itemA),
-        parseCustomDisplayName(itemB)
-      )
-    )
   const accountSelectorIsDisabled = options.length <= 0
 
   useEffect(() => {

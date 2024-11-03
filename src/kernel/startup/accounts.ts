@@ -14,36 +14,24 @@ import { MainWindow } from './windows/main'
 import { Automation } from './automation'
 import { DataDirectory } from './data-directory'
 
-import {
-  localeCompareForSorting,
-  parseCustomDisplayName,
-} from '../../lib/utils'
-
 export class AccountsManager {
   private static _accounts: Collection<string, AccountData> =
     new Collection()
 
   static async load() {
     const result = await DataDirectory.getAccountsFile()
-    const accounts: AccountDataList = result.accounts
-      .map((account) => {
-        const data: AccountData = {
-          ...account,
-          accessToken: undefined,
-          customDisplayName: account.customDisplayName ?? '',
-          provider: undefined,
-        }
+    const accounts: AccountDataList = result.accounts.map((account) => {
+      const data: AccountData = {
+        ...account,
+        accessToken: undefined,
+        customDisplayName: account.customDisplayName ?? '',
+        provider: undefined,
+      }
 
-        return data
-      })
-      .toSorted((itemA, itemB) =>
-        localeCompareForSorting(
-          parseCustomDisplayName(itemA),
-          parseCustomDisplayName(itemB)
-        )
-      )
+      return data
+    })
 
-    const accountList = accounts.reduce((accumulator, current) => {
+    const accountsRecord = accounts.reduce((accumulator, current) => {
       accumulator[current.accountId] = current
 
       AccountsManager._accounts.set(current.accountId, current)
@@ -53,7 +41,7 @@ export class AccountsManager {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnAccountsLoaded,
-      accountList
+      accountsRecord
     )
   }
 
@@ -81,13 +69,6 @@ export class AccountsManager {
       customDisplayName: data.customDisplayName ?? '',
       provider: undefined,
     })
-
-    accounts = accounts.toSorted((itemA, itemB) =>
-      localeCompareForSorting(
-        parseCustomDisplayName(itemA),
-        parseCustomDisplayName(itemB)
-      )
-    )
 
     await DataDirectory.updateAccountsFile(accounts)
   }
@@ -123,5 +104,25 @@ export class AccountsManager {
       ...current,
       ...data,
     })
+  }
+
+  static async reorder(accounts: AccountDataRecord) {
+    const removeExtraProperties = Object.values(accounts).map(
+      ({
+        accountId,
+        deviceId,
+        displayName,
+        secret,
+        customDisplayName,
+      }) => ({
+        accountId,
+        deviceId,
+        displayName,
+        secret,
+        customDisplayName,
+      })
+    )
+
+    await DataDirectory.updateAccountsFile(removeExtraProperties)
   }
 }
