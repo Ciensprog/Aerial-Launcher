@@ -29,7 +29,7 @@ export function AccountItem({
   })
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col flex-grow gap-1">
       <form
         className="flex items-center relative rounded-md"
         onSubmit={onSubmitCustomDisplayName({

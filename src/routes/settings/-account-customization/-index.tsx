@@ -1,3 +1,13 @@
+import type { PropsWithChildren } from 'react'
+
+import { DndContext } from '@dnd-kit/core'
+import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers'
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { GripVertical } from 'lucide-react'
+
 import {
   Card,
   CardContent,
@@ -7,10 +17,11 @@ import {
 import { Input } from '../../../components/ui/input'
 import { AccountItem } from './-item'
 
+import { useRegisterAccounts } from '../../../hooks/accounts'
 import { useGetTags } from '../../../hooks/tags'
-import { useAccounts, useActions } from './-hooks'
+import { useAccounts, useActions, useOrdering } from './-hooks'
 
-import { tagsArrayToSelectOptions } from '../../../lib/utils'
+import { cn, tagsArrayToSelectOptions } from '../../../lib/utils'
 
 export function AccountCustomization() {
   const { tagsArray } = useGetTags()
@@ -18,8 +29,9 @@ export function AccountCustomization() {
     useAccounts()
   const { isPendingSubmitCustomDisplayName, onSubmitCustomDisplayName } =
     useActions()
-
   const tags = tagsArrayToSelectOptions(tagsArray)
+
+  const { idsList, reorderAccounts } = useRegisterAccounts()
 
   return (
     <Card className="w-full">
@@ -45,17 +57,33 @@ export function AccountCustomization() {
           </div>
         )}
         {accounts.length > 0 ? (
-          accounts.map((account) => (
-            <AccountItem
-              tags={tags}
-              account={account}
-              isPendingSubmitCustomDisplayName={
-                isPendingSubmitCustomDisplayName
-              }
-              onSubmitCustomDisplayName={onSubmitCustomDisplayName}
-              key={account.accountId}
-            />
-          ))
+          <DndContext
+            modifiers={[restrictToFirstScrollableAncestor]}
+            onDragEnd={reorderAccounts}
+          >
+            <SortableContext
+              items={idsList}
+              strategy={verticalListSortingStrategy}
+            >
+              {accounts.map((account) => {
+                return (
+                  <SortableItem
+                    id={account.accountId}
+                    key={account.accountId}
+                  >
+                    <AccountItem
+                      tags={tags}
+                      account={account}
+                      isPendingSubmitCustomDisplayName={
+                        isPendingSubmitCustomDisplayName
+                      }
+                      onSubmitCustomDisplayName={onSubmitCustomDisplayName}
+                    />
+                  </SortableItem>
+                )
+              })}
+            </SortableContext>
+          </DndContext>
         ) : (
           <div className="text-center text-muted-foreground">
             No account found
@@ -63,5 +91,41 @@ export function AccountCustomization() {
         )}
       </CardContent>
     </Card>
+  )
+}
+
+function SortableItem({
+  children,
+  className,
+  id,
+}: PropsWithChildren<{ className?: string; id: string }>) {
+  const { attributes, data, listeners, setNodeRef, style } = useOrdering({
+    id,
+  })
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={cn(
+        'bg-background flex gap-1 items-center outline-muted-foreground/20 rounded',
+        data?.className,
+        className
+      )}
+      style={style}
+      {...attributes}
+    >
+      <div
+        className={cn(
+          'bg-muted-foreground/5 cursor-grab flex flex-shrink-0 h-full items-center px-2 rounded',
+          data?.handleClassName
+        )}
+        {...listeners}
+      >
+        <div className="">
+          <GripVertical />
+        </div>
+      </div>
+      {children}
+    </div>
   )
 }

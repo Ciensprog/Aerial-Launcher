@@ -188,7 +188,7 @@ export class DataDirectory {
       //
     }
 
-    return { accounts: [] }
+    return { accounts: DataDirectory.accountsDefaultData }
   }
 
   /**

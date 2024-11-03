@@ -11,11 +11,6 @@ import { useXPBoostsDataStore } from '../../state/stw-operations/xpboosts/accoun
 
 import { useGetAccounts } from '../accounts'
 
-import {
-  localeCompareForSorting,
-  parseCustomDisplayName,
-} from '../../lib/utils'
-
 export function useGetXPBoostsFormData() {
   const { amountToSend, updateAmountToSend } = useXPBoostsDataStore(
     useShallow((state) => ({
@@ -75,7 +70,7 @@ export function useGetXPBoostsActions() {
 }
 
 export function useGetXPBoostsData() {
-  const { accountList } = useGetAccounts()
+  const { accountList, idsList } = useGetAccounts()
   const { amountToSend, data, updateData } = useXPBoostsDataStore(
     useShallow((state) => ({
       amountToSend: state.amountToSend,
@@ -86,25 +81,26 @@ export function useGetXPBoostsData() {
   const amountToSendIsInvalid =
     Number.isNaN(Number(amountToSend)) || Number(amountToSend) === 0
 
-  const newData = data
-    .map((item) => {
-      const currentAccount = accountList[item.accountId]
+  const newData = idsList
+    .map((accountId) => {
+      const result = data.find(
+        (current) => current.accountId === accountId
+      )
 
-      if (currentAccount) {
-        return {
-          ...item,
-          account: currentAccount,
+      if (result) {
+        const currentAccount = accountList[result.accountId]
+
+        if (currentAccount) {
+          return {
+            ...result,
+            account: currentAccount,
+          }
         }
       }
 
-      return item
+      return null
     })
-    .toSorted((itemA, itemB) =>
-      localeCompareForSorting(
-        parseCustomDisplayName(itemA.account),
-        parseCustomDisplayName(itemB.account)
-      )
-    )
+    .filter((item) => item !== null)
 
   return {
     amountToSend,

@@ -14,10 +14,7 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
-import {
-  localeCompareForSorting,
-  parseCustomDisplayName,
-} from '../../../lib/utils'
+import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useAutomationData() {
   const { accountsArray, accountList } = useGetAccounts()
@@ -56,12 +53,6 @@ export function useAutomationData() {
   const accounts = Object.keys(selectedAccounts)
     .filter((accountId) => accountList[accountId])
     .map((accountId) => accountList[accountId])
-    .toSorted((itemA, itemB) =>
-      localeCompareForSorting(
-        parseCustomDisplayName(itemA),
-        parseCustomDisplayName(itemB)
-      )
-    )
   const accountSelectorIsDisabled = options.length <= 0
 
   useEffect(() => {

@@ -1,14 +1,26 @@
+import type { AutomationAccountDataList } from '../../types/automation'
+
 import { useShallow } from 'zustand/react/shallow'
 
 import { AutomationStatusType } from '../../config/constants/automation'
 
 import { useAutomationStore } from '../../state/stw-operations/automation'
 
+import { useGetAccounts } from '../accounts'
+
 export function useGetAutomationData() {
+  const { idsList } = useGetAccounts()
   const accounts = useAutomationStore((state) => state.accounts)
+  const selectedAccounts = idsList.reduce((accumulator, accountId) => {
+    if (accounts[accountId]) {
+      accumulator[accountId] = accounts[accountId]
+    }
+
+    return accumulator
+  }, {} as AutomationAccountDataList)
 
   return {
-    selectedAccounts: accounts,
+    selectedAccounts,
   }
 }
 

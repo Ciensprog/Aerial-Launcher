@@ -49,7 +49,7 @@ export function InputTags({
         dropdownIndicator: () => 'pl-1.5 text-muted-foreground',
         indicatorSeparator: () => 'bg-[hsl(var(--border))]',
         input: () => 'text-sm',
-        menu: () => 'bg-background border mt-2 rounded-md z-20',
+        menu: () => 'bg-background border my-2 rounded-md z-20',
         multiValue: () => 'max-w-56 rounded',
         multiValueLabel: () => 'px-1.5',
         multiValueRemove: () => 'px-1.5 rounded-r',
@@ -66,6 +66,8 @@ export function InputTags({
       }}
       filterOption={customFilter}
       isDisabled={isDisabled}
+      menuPortalTarget={document.body}
+      menuPosition="fixed"
       isMulti
       unstyled
     />

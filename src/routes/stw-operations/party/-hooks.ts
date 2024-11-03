@@ -211,11 +211,7 @@ export function useInviteActions({
   const { setValue, value } = useInviteFriendsForm()
 
   const friendOptions: Array<ComboboxOption> = Object.values(friends)
-    .toSorted(
-      (itemA, itemB) =>
-        // localeCompareForSorting(itemA.displayName, itemB.displayName) ||
-        itemB.invitations - itemA.invitations
-    )
+    .toSorted((itemA, itemB) => itemB.invitations - itemA.invitations)
     .map((item) => ({
       keywords: [item.displayName],
       label: item.displayName,

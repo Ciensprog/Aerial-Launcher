@@ -11,10 +11,7 @@ import { useGetGroups } from '../../../hooks/groups'
 import { useGetTags } from '../../../hooks/tags'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
-import {
-  localeCompareForSorting,
-  parseCustomDisplayName,
-} from '../../../lib/utils'
+import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useAccountSelectorData({
   selectedAccounts,
@@ -23,7 +20,7 @@ export function useAccountSelectorData({
   selectedAccounts: Array<string>
   selectedTags: Array<string>
 }) {
-  const { accountList, accountsArray } = useGetAccounts()
+  const { accountList, accountsArray, idsList } = useGetAccounts()
   const { groupsArray } = useGetGroups()
   const { tagsArray } = useGetTags()
 
@@ -88,26 +85,25 @@ export function useAccountSelectorData({
       return accountsArray
     }
 
-    const accountIds = [
-      ...new Set([
-        ...parsedSelectedAccounts.map(({ value }) => value),
-        ...groupsArray
-          .filter(([, itemTags]) =>
-            currentTags.some((currentTag) => itemTags.includes(currentTag))
-          )
-          .map(([key]) => key),
-      ]),
-    ]
+    const accountIds = idsList.filter(
+      (accountId) =>
+        [
+          ...new Set([
+            ...parsedSelectedAccounts.map(({ value }) => value),
+            ...groupsArray
+              .filter(([, itemTags]) =>
+                currentTags.some((currentTag) =>
+                  itemTags.includes(currentTag)
+                )
+              )
+              .map(([key]) => key),
+          ]),
+        ].includes(accountId) && accountId
+    )
 
     return accountIds
       .map((accountId) => accountList[accountId])
       .filter((account) => account !== undefined)
-      .toSorted((itemA, itemB) =>
-        localeCompareForSorting(
-          parseCustomDisplayName(itemA),
-          parseCustomDisplayName(itemB)
-        )
-      )
   }
 
   return {

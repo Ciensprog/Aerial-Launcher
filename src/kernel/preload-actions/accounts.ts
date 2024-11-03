@@ -1,6 +1,7 @@
 import type { IpcRendererEvent } from 'electron'
 import type {
   AccountBasicInfo,
+  AccountDataRecord,
   SyncAccountDataResponse,
 } from '../../types/accounts'
 
@@ -14,6 +15,10 @@ import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 export function updateCustomDisplayName(account: AccountBasicInfo) {
   ipcRenderer.send(ElectronAPIEventKeys.UpdateAccountBasicInfo, account)
+}
+
+export function syncAccountsOrdering(accounts: AccountDataRecord) {
+  ipcRenderer.send(ElectronAPIEventKeys.AccountsOrderingSync, accounts)
 }
 
 export function responseCustomDisplayName(callback: () => Promise<void>) {

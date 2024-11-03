@@ -65,6 +65,8 @@ export enum ElectronAPIEventKeys {
   UpdateAccountBasicInfo = 'account:custom-display-name:update',
   ResponseUpdateAccountBasicInfo = 'account:custom-display-name:response',
 
+  AccountsOrderingSync = 'accounts-ordering:sync',
+
   /**
    * Authentication
    */
