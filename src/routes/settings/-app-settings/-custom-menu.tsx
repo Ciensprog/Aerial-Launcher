@@ -295,6 +295,21 @@ function MyAccountsSection() {
         />
       </div>
       <div className="list">
+        <div className="item mb-1">
+          <Label
+            className="title"
+            htmlFor="show-total-accounts"
+          >
+            Show Total Accounts
+          </Label>
+          <Switch
+            id="show-total-accounts"
+            checked={getMenuOptionVisibility('showTotalAccounts')}
+            onCheckedChange={updateMenuOption('showTotalAccounts')}
+          />
+        </div>
+      </div>
+      <div className="list">
         <div className="item">
           <Label
             className="title"

@@ -347,7 +347,13 @@ export function SidebarMenu({
 
           {getMenuOptionVisibility('myAccounts', true) && (
             <>
-              <Title className="pb-0">My Accounts ({totalInText})</Title>
+              <Title className="pb-0">
+                My Accounts
+                {getMenuOptionVisibility('showTotalAccounts') &&
+                totalInText !== '0'
+                  ? ` (${totalInText})`
+                  : ''}
+              </Title>
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',

@@ -51,6 +51,7 @@ export const customizableMenuSettingsSchema = z
     worldInfo: z.boolean().default(true),
 
     myAccounts: z.boolean().default(true),
+    showTotalAccounts: z.boolean().default(true),
     authorizationCode: z.boolean().default(true),
     exchangeCode: z.boolean().default(true),
     deviceAuth: z.boolean().default(true),
