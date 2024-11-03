@@ -2,7 +2,7 @@
 
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Ciensprog/Aerial-Launcher/total?label=All%20Release%20Downloads) ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/Ciensprog/Aerial-Launcher/latest/total?label=Latest%20Release%20Downloads)
 
-![GitHub License](https://img.shields.io/github/license/Ciensprog/Aerial-Launcher) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ciensprog/Aerial-Launcher/release.yml) ![GitHub Repo Size](https://img.shields.io/github/repo-size/Ciensprog/Aerial-Launcher) ![GitHub package.json Version](https://img.shields.io/github/package-json/v/Ciensprog/Aerial-Launcher) ![GitHub last commit](https://img.shields.io/github/last-commit/Ciensprog/Aerial-Launcher)
+![GitHub License](https://img.shields.io/github/license/Ciensprog/Aerial-Launcher?label=License) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ciensprog/Aerial-Launcher/release.yml?label=Build) ![GitHub Repo Size](https://img.shields.io/github/repo-size/Ciensprog/Aerial-Launcher?label=Repo%20Size) ![GitHub package.json Version](https://img.shields.io/github/package-json/v/Ciensprog/Aerial-Launcher?label=Current%20Version) ![GitHub last commit](https://img.shields.io/github/last-commit/Ciensprog/Aerial-Launcher?label=Last%20Commit)
 
 # Aerial Launcher
 
