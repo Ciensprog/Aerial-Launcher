@@ -15,3 +15,14 @@ export enum World {
   PerfMem = '67EDCFE942260C290B369BA7AA70A0D5',
   Tutorial = '8633333E41A86F67F78EAEAF25BF4735',
 }
+
+export enum WorldColor {
+  // Base
+  Stonewood = '#34d375',
+  Plankerton = '#39a5f1',
+  CannyValley = '#dfa12a',
+  TwinePeaks = '#ff7c53',
+
+  // Base
+  Ventures = '#bfbaba',
+}

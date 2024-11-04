@@ -3,8 +3,8 @@ import { createRoute } from '@tanstack/react-router'
 import { CheckNewVersion } from '../bootstrap/components/check-new-version'
 
 import { Alerts } from './-home/-alerts/-index'
-import { CommunityInfo } from './-home/-community-info'
-import { HeaderNavigation } from './-home/-header-navigation'
+// import { CommunityInfo } from './-home/-community-info'
+// import { HeaderNavigation } from './-home/-header-navigation'
 import { Route as RootRoute } from './__root'
 
 export const Route = createRoute({
@@ -16,12 +16,12 @@ export const Route = createRoute({
 export function IndexComponent() {
   return (
     <>
-      <HeaderNavigation />
+      {/* <HeaderNavigation /> */}
       <CheckNewVersion />
 
       <div className="flex flex-grow">
-        <div className="flex flex-col items-center justify-center w-full">
-          <CommunityInfo />
+        <div className="w-full">
+          {/* <CommunityInfo /> */}
           <Alerts />
         </div>
       </div>

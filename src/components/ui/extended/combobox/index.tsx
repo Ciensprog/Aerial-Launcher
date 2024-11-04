@@ -23,6 +23,7 @@ import { cn } from '../../../../lib/utils'
 export function Combobox({
   className,
   classNamePopoverContent,
+  containerClassName,
   customItem,
   defaultOpen,
   disabled,
@@ -32,6 +33,7 @@ export function Combobox({
   emptyContentClassname,
   emptyOptions,
   emptyPlaceholder,
+  hideInputSearch,
   hideInputSearchWhenOnlyOneOptionIsAvailable,
   hideSelectorOnSelectItem,
   inputSearchIsDisabled,
@@ -39,6 +41,7 @@ export function Combobox({
   isMulti = false,
   options,
   placeholder,
+  placeholderClassName,
   placeholderSearch,
   showNames,
   value,
@@ -66,9 +69,11 @@ export function Combobox({
     value,
   })
   const innerInputSearchValue = inputSearchValue ?? __searchValue
-  const showInputSearch = hideInputSearchWhenOnlyOneOptionIsAvailable
-    ? options.length > 1
-    : true
+  const showInputSearch = hideInputSearch
+    ? false
+    : hideInputSearchWhenOnlyOneOptionIsAvailable
+      ? options.length > 1
+      : true
 
   const customOnChange = (value: string) => {
     onSelectItem?.(value)
@@ -84,7 +89,12 @@ export function Combobox({
       open={open}
       onOpenChange={setOpen}
     >
-      <div className="flex items-center relative w-full">
+      <div
+        className={cn(
+          'flex items-center relative w-full',
+          containerClassName
+        )}
+      >
         <PopoverTrigger
           disabled={disabled}
           asChild
@@ -107,9 +117,13 @@ export function Combobox({
             }
           >
             <div
-              className={cn('max-w-72 truncate', {
-                'text-muted-foreground': currentValues.length <= 0,
-              })}
+              className={cn(
+                'max-w-72 truncate',
+                {
+                  'text-muted-foreground': currentValues.length <= 0,
+                },
+                placeholderClassName
+              )}
             >
               {options.length > 0
                 ? currentValues.length > 0

@@ -1,3 +1,5 @@
+import { AlertFilters } from './-filters'
+
 export function Alerts() {
-  return null
+  return <AlertFilters />
 }

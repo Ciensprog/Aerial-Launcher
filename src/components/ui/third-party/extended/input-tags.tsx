@@ -2,12 +2,13 @@ import type { FilterOptionOption } from 'react-select/dist/declarations/src/filt
 import type { StylesConfig } from 'react-select'
 
 import chroma, { contrast } from 'chroma-js'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 
 import { defaultColor } from '../../../../config/constants/colors'
 
 export type SelectOption = {
   color?: string
+  icon?: string
   label: string
   value: string
 }
@@ -18,6 +19,8 @@ export type SelectCustomFilter =
       input: string
     ) => boolean)
   | null
+
+const { MultiValue, Option } = components
 
 export function InputTags({
   customFilter,
@@ -58,19 +61,59 @@ export function InputTags({
         placeholder: () => 'text-muted-foreground text-sm',
         valueContainer: () => 'gap-1',
       }}
-      closeMenuOnSelect={false}
+      components={{
+        Option: (props) => {
+          return (
+            <Option {...props}>
+              <LabelWithIcon
+                icon={props.data.icon}
+                label={props.data.label}
+              />
+            </Option>
+          )
+        },
+        MultiValue: (props) => {
+          return (
+            <MultiValue {...props}>
+              <LabelWithIcon
+                icon={props.data.icon}
+                label={props.data.label}
+              />
+            </MultiValue>
+          )
+        },
+      }}
       onChange={(values) => {
         onChange(values as Array<SelectOption>)
 
         return
       }}
       filterOption={customFilter}
+      closeMenuOnSelect={false}
       isDisabled={isDisabled}
       menuPortalTarget={document.body}
       menuPosition="fixed"
       isMulti
       unstyled
     />
+  )
+}
+
+function LabelWithIcon({
+  label,
+  icon,
+}: Pick<SelectOption, 'icon' | 'label'>) {
+  return (
+    <div className="flex gap-1.5 items-center">
+      {icon !== undefined && (
+        <img
+          className="flex-shrink-0 w-4"
+          src={icon}
+          alt={label}
+        />
+      )}
+      {label}
+    </div>
   )
 }
 

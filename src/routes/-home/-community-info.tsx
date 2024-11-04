@@ -14,7 +14,7 @@ export function CommunityInfo() {
   }
 
   return (
-    <div className="max-w-[330px] w-full">
+    <div className="max-w-[330px] mx-auto w-full">
       <h1 className="text-center">
         Join our{' '}
         <a
