@@ -14,7 +14,7 @@ import {
   InputTags,
 } from '../../../components/ui/third-party/extended/input-tags'
 
-import { imgResources } from '../../../lib/repository'
+import { imgRarities, imgResources } from '../../../lib/repository'
 
 export function AlertFilters() {
   const [zones, setZones] = useState<Array<SelectOption>>([])
@@ -60,32 +60,32 @@ export function AlertFilters() {
           placeholder="Select Rarity"
           options={[
             {
-              // color: RarityColor.Common,
+              icon: imgRarities(`${RarityType.Common}.png`),
               label: 'Common',
               value: RarityType.Common,
             },
             {
-              // color: RarityColor.Uncommon,
+              icon: imgRarities(`${RarityType.Uncommon}.png`),
               label: 'Uncommon',
               value: RarityType.Uncommon,
             },
             {
-              // color: RarityColor.Rare,
+              icon: imgRarities(`${RarityType.Rare}.png`),
               label: 'Rare',
               value: RarityType.Rare,
             },
             {
-              // color: RarityColor.Epic,
+              icon: imgRarities(`${RarityType.Epic}.png`),
               label: 'Epic',
               value: RarityType.Epic,
             },
             {
-              // color: RarityColor.Legendary,
+              icon: imgRarities(`${RarityType.Legendary}.png`),
               label: 'Legendary',
               value: RarityType.Legendary,
             },
             {
-              // color: RarityColor.Mythic,
+              icon: imgRarities(`${RarityType.Mythic}.png`),
               label: 'Mythic',
               value: RarityType.Mythic,
             },
