@@ -19,7 +19,7 @@ export function CheckNewVersion() {
   }
 
   return (
-    <Alert>
+    <Alert className="mb-4">
       <BellRing className="h-4 w-4" />
       <AlertTitle>New version {data.version}</AlertTitle>
       <AlertDescription>

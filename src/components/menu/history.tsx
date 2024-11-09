@@ -48,17 +48,17 @@ export function HistoryMenu() {
           </TabsList>
           <SheetClose className="not-draggable-region ml-auto mr-3">
             <X />
-            <span className="sr-only">Close history sidebar</span>
+            <span className="sr-only">close history sidebar</span>
           </SheetClose>
         </div>
         <TabsContent
           value={HistoryTabs.History}
           className="mt-0 mx-1.5"
         >
-          <div className="border-l-4 italic mb-1.5 mt-2- pl-2 py-1 text-muted-foreground text-xs">
+          <div className="border-l-4 italic mb-1.5 pl-2 py-1 text-muted-foreground text-xs">
             Note: This is a temporal history.
           </div>
-          <ScrollArea className="h-[calc(100vh-var(--header-height)-1.875rem-0.375rem)]">
+          <ScrollArea className="h-[calc(100vh-var(--header-height))]">
             {dataOrderByDesc.length > 0 ? (
               <>
                 <div className="flex-1 pb-6 space-y-2">

@@ -26,3 +26,17 @@ export enum WorldColor {
   // Base
   Ventures = '#bfbaba',
 }
+
+export enum WorldLetter {
+  Stonewood = 'S',
+  Plankerton = 'P',
+  CannyValley = 'C',
+  TwinePeaks = 'T',
+}
+
+export const worldName: Record<WorldLetter, string> = {
+  [WorldLetter.Stonewood]: 'Stonewood',
+  [WorldLetter.Plankerton]: 'Plankerton',
+  [WorldLetter.CannyValley]: 'Canny Valley',
+  [WorldLetter.TwinePeaks]: 'Twine Peaks',
+}

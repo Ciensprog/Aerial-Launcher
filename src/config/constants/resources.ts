@@ -20,7 +20,7 @@ export enum RarityColor {
   Mythic = '#cdab47',
 }
 
-export const rarities = {
+export const rarities: Record<RarityType, string> = {
   [RarityType.Common]: 'Common',
   [RarityType.Uncommon]: 'Uncommon',
   [RarityType.Rare]: 'Rare',

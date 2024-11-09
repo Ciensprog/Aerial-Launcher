@@ -46,6 +46,10 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        stonewood: '#34d375',
+        plankerton: '#39a5f1',
+        'canny-valley': '#dfa12a',
+        'twine-peaks': '#9c72f7',
       },
       borderRadius: {
         lg: 'var(--radius)',

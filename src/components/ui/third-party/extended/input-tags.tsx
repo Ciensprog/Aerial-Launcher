@@ -2,6 +2,7 @@ import type { FilterOptionOption } from 'react-select/dist/declarations/src/filt
 import type { StylesConfig } from 'react-select'
 
 import chroma, { contrast } from 'chroma-js'
+import { useEffect, useRef } from 'react'
 import Select, { components } from 'react-select'
 
 import { defaultColor } from '../../../../config/constants/colors'
@@ -25,6 +26,7 @@ const { MultiValue, Option } = components
 export function InputTags({
   customFilter,
   isDisabled,
+  menuPortalTarget,
   options,
   placeholder,
   value,
@@ -33,12 +35,25 @@ export function InputTags({
 }: {
   customFilter?: SelectCustomFilter
   isDisabled?: boolean
+  menuPortalTarget?: string
   options: Array<SelectOption>
   placeholder: string
   value: Array<SelectOption>
 
   onChange: (value: Array<SelectOption>) => void
 }) {
+  const $menuPortalTarget = useRef<HTMLElement>()
+
+  useEffect(() => {
+    if (menuPortalTarget) {
+      const $element = document.getElementById(menuPortalTarget)
+
+      if ($element) {
+        $menuPortalTarget.current = $element
+      }
+    }
+  }, [value])
+
   return (
     <Select
       placeholder={placeholder}
@@ -52,7 +67,8 @@ export function InputTags({
         dropdownIndicator: () => 'pl-1.5 text-muted-foreground',
         indicatorSeparator: () => 'bg-[hsl(var(--border))]',
         input: () => 'text-sm',
-        menu: () => 'bg-background border my-2 rounded-md z-20',
+        menu: () =>
+          'bg-background border my-2 overflow-hidden rounded-md z-20',
         multiValue: () => 'max-w-56 rounded',
         multiValueLabel: () => 'px-1.5',
         multiValueRemove: () => 'px-1.5 rounded-r',
@@ -60,6 +76,7 @@ export function InputTags({
         option: () => 'overflow-hidden px-2 py-1 text-ellipsis',
         placeholder: () => 'text-muted-foreground text-sm',
         valueContainer: () => 'gap-1',
+        menuPortal: () => '!z-40',
       }}
       components={{
         Option: (props) => {
@@ -91,7 +108,7 @@ export function InputTags({
       filterOption={customFilter}
       closeMenuOnSelect={false}
       isDisabled={isDisabled}
-      menuPortalTarget={document.body}
+      menuPortalTarget={$menuPortalTarget.current ?? document.body}
       menuPosition="fixed"
       isMulti
       unstyled
@@ -107,7 +124,7 @@ function LabelWithIcon({
     <div className="flex gap-1.5 items-center">
       {icon !== undefined && (
         <img
-          className="flex-shrink-0 w-4"
+          className="flex-shrink-0 size-4"
           src={icon}
           alt={label}
         />

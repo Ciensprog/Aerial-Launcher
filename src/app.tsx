@@ -49,6 +49,7 @@ root.render(
          */
         defaultNotFoundComponent={IndexComponent}
       />
+
       <Toaster position="bottom-center" />
     </ThemeProvider>
   </MantineProvider>
