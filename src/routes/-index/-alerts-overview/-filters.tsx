@@ -11,13 +11,22 @@ import {
   ToggleGroupItem,
 } from '../../../components/ui/toggle-group'
 
+import {
+  useAlertsOverviewFiltersActions,
+  useAlertsOverviewFiltersData,
+} from '../../../hooks/alerts/filters'
+
 import { cn } from '../../../lib/utils'
 
 export function AlertFilters() {
+  const { missionTypes, rarities, rewards, zones } =
+    useAlertsOverviewFiltersData()
+  const { toggleFilterKeys } = useAlertsOverviewFiltersActions()
+
   return (
     <div
       className={cn(
-        'pb-0 px-3 mt-3',
+        'pb-0 px-6 mt-3',
         '[&_.label]:inline-flex [&_.label]:mb-2.5',
         '[&_.toggle-group]:flex-wrap [&_.toggle-group]:gap-2 [&_.toggle-group]:justify-start',
         '[&_.toggle-item]:px-0 [&_.toggle-item]:py-0 [&_.toggle-item]:size-14 [&_.toggle-item[data-state="on"]]:outline [&_.toggle-item[data-state="on"]]:outline-2 [&_.toggle-item[data-state="on"]]:outline-muted-foreground/40',
@@ -30,6 +39,8 @@ export function AlertFilters() {
           <ToggleGroup
             className="toggle-group"
             type="multiple"
+            value={zones}
+            onValueChange={toggleFilterKeys('zones')}
           >
             {zoneOptions.map((option) => (
               <ToggleGroupItem
@@ -63,6 +74,8 @@ export function AlertFilters() {
           <ToggleGroup
             className="toggle-group"
             type="multiple"
+            value={missionTypes}
+            onValueChange={toggleFilterKeys('missionTypes')}
           >
             {missionTypeOptions.map((option) => (
               <ToggleGroupItem
@@ -85,6 +98,8 @@ export function AlertFilters() {
           <ToggleGroup
             className="toggle-group"
             type="multiple"
+            value={rarities}
+            onValueChange={toggleFilterKeys('rarities')}
           >
             {rarityOptions.map((option) => (
               <ToggleGroupItem
@@ -107,6 +122,8 @@ export function AlertFilters() {
           <ToggleGroup
             className="toggle-group"
             type="multiple"
+            value={rewards}
+            onValueChange={toggleFilterKeys('rewards')}
           >
             {rewardOptions.map((option) => (
               <ToggleGroupItem

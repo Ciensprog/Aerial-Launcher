@@ -154,7 +154,7 @@ const gotTheLock = app.requestSingleInstanceLock()
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', async () => {
-    await DataDirectory.createDataResources()
+    DataDirectory.createDataResources().catch(() => {})
 
     MainWindow.setInstance(await createWindow())
 
@@ -477,8 +477,12 @@ const gotTheLock = app.requestSingleInstanceLock()
      * Advanced Mode
      */
 
+    ipcMain.on(ElectronAPIEventKeys.HomeWorldInfoRequest, async () => {
+      await WorldInfoManager.requestForHome()
+    })
+
     ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestData, async () => {
-      await WorldInfoManager.requestData()
+      await WorldInfoManager.requestForAdvanceSection()
     })
 
     ipcMain.on(
@@ -661,19 +665,20 @@ const gotTheLock = app.requestSingleInstanceLock()
     schedule.scheduleJob(
       {
         /**
-         * Executes in every reset at time: 00:00:05 AM
+         * Executes in every reset at time: 00:00:02 AM
          * Hour: 00
          * Minute: 00
-         * Second: 05
+         * Second: 02
          */
-        rule: '5 0 0 * * *',
+        rule: '2 0 0 * * *',
         /**
          * Time zone
          */
         tz: 'UTC',
       },
       () => {
-        WorldInfoManager.requestData()
+        WorldInfoManager.requestForHome().catch(() => {})
+        WorldInfoManager.requestForAdvanceSection().catch(() => {})
       }
     )
   })
@@ -687,11 +692,11 @@ const gotTheLock = app.requestSingleInstanceLock()
     }
   })
 
-  app.on('activate', () => {
+  app.on('activate', async () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+      MainWindow.setInstance(await createWindow())
     }
   })
 

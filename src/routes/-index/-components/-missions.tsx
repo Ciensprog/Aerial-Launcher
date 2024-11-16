@@ -1,6 +1,5 @@
-import type { PropsWithChildren } from 'react'
-
-import { World } from '../../../config/constants/fortnite/world-info'
+import type { CSSProperties, PropsWithChildren } from 'react'
+import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import {
   Accordion,
@@ -10,39 +9,8 @@ import {
 } from '../../../components/ui/accordion'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
-import {
-  imgModifiers,
-  imgResources,
-  imgWorld,
-} from '../../../lib/repository'
+import { imgWorld } from '../../../lib/repository'
 import { cn } from '../../../lib/utils'
-
-export type MissionInformation = {
-  id: string
-  mission: {
-    imageTypeUrl: string
-    powerRating: number
-  }
-  modifiers: Array<{
-    id: string
-  }>
-  rewards: {
-    alert: Array<{
-      id: string
-      quantity: number
-    }>
-    base: Array<{
-      id: string
-      isBad?: boolean
-      quantity: number
-    }>
-  }
-  world: {
-    id: World
-    letter: string
-    title?: string
-  }
-}
 
 export function MissionsContainer({
   children,
@@ -55,8 +23,9 @@ export function MissionsContainer({
       className={cn(
         'gap-0.5 grid grid-cols-1',
         '[&_.item]:border-b-0',
-        '[&_.img-type]:flex-shrink-0 [&_.img-type]:size-5',
-        '[&_.img-modifier]:flex-shrink-0 [&_.img-modifier]:size-5',
+        '[&_.img-type]:flex-shrink-0 [&_.img-type]:size-6',
+        '[&_.img-modifier]:flex-shrink-0 [&_.img-modifier]:size-6',
+        '[&_.img-alert]:flex-shrink-0 [&_.img-alert]:size-4',
         '[&_.power]:border [&_.power]:pl-0.5 [&_.power]:pr-2 [&_.power]:py-0.5 [&_.power]:rounded [&_.power]:text-xs',
         className
       )}
@@ -73,69 +42,98 @@ export function MissionItem({
   className,
 }: PropsWithChildren<{
   className?: string
-  data: MissionInformation
+  data: WorldInfoMission
 }>) {
-  const { id, mission, modifiers, rewards, world } = data
+  const {
+    raw: {
+      mission: { missionGuid },
+    },
+    ui: { alert, mission, powerLevel },
+  } = data
 
   return (
     <AccordionItem
       className={cn('item', className)}
-      value={id}
+      value={missionGuid}
     >
       <AccordionTrigger className="trigger bg-muted-foreground/5 px-2 py-1 rounded hover:bg-muted-foreground/15 hover:no-underline">
         <span className="flex gap-1 items-center">
-          <span
-            className={cn(
-              'border border-opacity-40 flex font-bold items-center justify-center relative rounded size-5 text-xs uppercase',
-              {
-                'border-stonewood text-stonewood':
-                  world.id === World.Stonewood,
-                'border-plankerton text-plankerton':
-                  world.id === World.Plankerton,
-                'border-canny-valley text-canny-valley':
-                  world.id === World.CannyValley,
-                'border-twine-peaks text-twine-peaks':
-                  world.id === World.TwinePeaks,
+          {!mission.zone.iconUrl ? (
+            <span
+              className={cn(
+                'border border-opacity-40 flex font-bold items-center justify-center relative rounded size-5 text-xs uppercase',
+                'border-[color:var(--zone-color)] text-[color:var(--zone-color)]'
+              )}
+              style={
+                {
+                  '--zone-color': mission.zone.color,
+                } as CSSProperties
               }
-            )}
-          >
-            {world.letter}
-          </span>
+            >
+              {mission.zone.letter}
+            </span>
+          ) : (
+            <img
+              src={mission.zone.iconUrl}
+              className="img-type"
+            />
+          )}
           <img
-            src={imgWorld(`${mission.imageTypeUrl}.png`)}
+            src={mission.zone.type.imageUrl}
             className="img-type"
-            alt="Mission"
           />
-          <span className="power">⚡{mission.powerRating}</span>
+          <span className="power">⚡{powerLevel}</span>
           {children}
         </span>
       </AccordionTrigger>
 
       <AccordionContent className="px-4 py-2">
+        <div className="border-l-8 border-l-muted-foreground/10 pl-2 text-sm">
+          <div className="inline-flex gap-1">
+            <span className="flex-shrink-0 text-muted-foreground">
+              Tile Index:
+            </span>
+            {data.raw.mission.tileIndex}
+          </div>
+          <div className="flex flex-col">
+            <div className="inline-flex gap-1">
+              <span className="flex-shrink-0 text-muted-foreground">
+                Mission Alert Guid:
+              </span>
+              {alert.rewards.length > 0
+                ? data.raw.alert?.missionAlertGuid ?? 'N/A'
+                : 'N/A'}
+            </div>
+            <div className="inline-flex gap-1">
+              <span className="flex-shrink-0 text-muted-foreground">
+                Mission Guid:
+              </span>
+              {data.raw.mission.missionGuid ?? 'N/A'}
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-3 items-start my-2">
-          {rewards.alert.length > 0 && (
+          {alert.rewards.length > 0 && (
             <section className="">
               <h2 className="">Alert Rewards:</h2>
               <div className="flex flex-col mt-1">
-                {rewards.alert.map((alert) => (
+                {alert.rewards.map((reward) => (
                   <div
                     className="flex gap-1 items-center"
-                    key={alert.id}
+                    key={reward.itemId}
                   >
                     <img
                       src={imgWorld('alert.png')}
-                      className="img-type"
-                      alt="Alert"
+                      className="img-alert"
                     />
                     <div className="flex gap-1 items-center">
                       <img
-                        src={imgResources(`${alert.id}.png`)}
-                        className="size-5"
-                        alt="Resource"
+                        src={reward.imageUrl}
+                        className="img-type"
                       />
-                      {alert.quantity <= 1
+                      {reward.quantity <= 1
                         ? ''
-                        : numberWithCommaSeparator(alert.quantity)}
+                        : numberWithCommaSeparator(reward.quantity)}
                     </div>
                   </div>
                 ))}
@@ -143,43 +141,69 @@ export function MissionItem({
             </section>
           )}
 
-          <section className="">
-            <h2 className="">Base Rewards:</h2>
-            <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
-              {rewards.base.map((reward) => (
-                <div
-                  className="flex gap-1 items-center"
-                  key={reward.id}
-                >
-                  <img
-                    src={imgResources(`${reward.id}.png`)}
-                    className="size-5"
-                    alt="Resource"
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
+          {mission.rewards.length > 0 && (
+            <section className="">
+              <h2 className="">Base Rewards:</h2>
+              <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
+                {mission.rewards.map((reward) => (
+                  <div
+                    className="flex gap-1 items-center"
+                    key={reward.itemId}
+                  >
+                    <img
+                      src={reward.imageUrl}
+                      className="img-type"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
-          <section className="">
-            <h2 className="">Modifiers:</h2>
-            <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
-              {modifiers.map((modifier) => (
-                <div
-                  className="flex gap-1 items-center"
-                  key={modifier.id}
-                >
-                  <img
-                    src={imgModifiers(`${modifier.id}.png`)}
-                    className="size-5"
-                    alt="Modifier"
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
+          {mission.modifiers.length > 0 && (
+            <section className="">
+              <h2 className="">Modifiers:</h2>
+              <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
+                {mission.modifiers.map((modifier) => (
+                  <div
+                    className="flex gap-1 items-center"
+                    key={modifier.id}
+                  >
+                    <img
+                      src={modifier.imageUrl}
+                      className="img-modifier"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </AccordionContent>
     </AccordionItem>
+  )
+}
+
+export function Modifiers({
+  data,
+}: {
+  data: WorldInfoMission['ui']['mission']['modifiers']
+}) {
+  return (
+    data.length > 0 && (
+      <>
+        {' '}
+        •
+        <span className="flex gap-0.5">
+          {data.slice(0, 5).map((modifier) => (
+            <img
+              src={modifier.imageUrl}
+              className="img-modifier"
+              key={modifier.id}
+            />
+          ))}
+        </span>
+      </>
+    )
   )
 }

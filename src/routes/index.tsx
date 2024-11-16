@@ -2,7 +2,6 @@ import { createRoute } from '@tanstack/react-router'
 
 import { CheckNewVersion } from '../bootstrap/components/check-new-version'
 
-import { Button } from '../components/ui/button'
 import {
   Tabs,
   TabsContent,
@@ -11,13 +10,15 @@ import {
 } from '../components/ui/tabs'
 
 import { AlertsOverview } from './-index/-alerts-overview/-index'
+import { FetchAlertsButton } from './-index/-components/-fetch-alerts-button'
+import { GoToTop } from './-index/-components/-go-to-top'
 import { HomeAlerts } from './-index/-home/-index'
 import { CommunityInfo } from './-index/-community-info'
+import { AlertsDone } from './-index/alerts-done'
 // import { HeaderNavigation } from './-index/-header-navigation'
 import { Route as RootRoute } from './__root'
 
 import { cn } from '../lib/utils'
-import { AlertsDone } from './-index/alerts-done'
 
 enum IndexTabs {
   Home = 'home',
@@ -45,12 +46,15 @@ export function IndexComponent() {
 
           <Tabs
             className={cn(
-              'h-full mt-4 max-w-lg mx-auto',
+              'mb-5 mt-4 max-w-lg mx-auto',
               '[&_.tab-content]:mt-4'
             )}
             defaultValue={defaultTab}
           >
-            <div className="flex items-center">
+            <div
+              className="flex items-center"
+              id="alert-navigation-container"
+            >
               <TabsList className="">
                 <TabsTrigger value={IndexTabs.Home}>Home</TabsTrigger>
                 <TabsTrigger value={IndexTabs.AlertsOverview}>
@@ -60,12 +64,7 @@ export function IndexComponent() {
                   Alerts Done
                 </TabsTrigger>
               </TabsList>
-              <Button
-                className="ml-auto"
-                variant="secondary"
-              >
-                Fetch Alerts
-              </Button>
+              <FetchAlertsButton />
             </div>
             <TabsContent
               className="tab-content"
@@ -86,6 +85,8 @@ export function IndexComponent() {
               <AlertsDone />
             </TabsContent>
           </Tabs>
+
+          <GoToTop />
         </div>
       </div>
     </>

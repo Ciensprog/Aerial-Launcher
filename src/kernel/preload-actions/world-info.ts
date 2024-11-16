@@ -7,10 +7,15 @@ import type {
   WorldInfoOpenResponse,
   WorldInfoResponse,
 } from '../../types/data/advanced-mode/world-info'
+import type { WorldInfoData } from '../../types/services/advanced-mode/world-info'
 
 import { ipcRenderer } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+
+export function requestHomeWorldInfo() {
+  ipcRenderer.send(ElectronAPIEventKeys.HomeWorldInfoRequest)
+}
 
 export function requestWorldInfoData() {
   ipcRenderer.send(ElectronAPIEventKeys.WorldInfoRequestData)
@@ -45,6 +50,26 @@ export function renameWorldInfoFile(
     data,
     newFilename
   )
+}
+
+export function responseHomeWorldInfo(
+  callback: (value: WorldInfoData) => Promise<void>
+) {
+  const customCallback = (_: IpcRendererEvent, value: WorldInfoData) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.HomeWorldInfoResponse,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.HomeWorldInfoResponse,
+        customCallback
+      ),
+  }
 }
 
 export function responseWorldInfoData(

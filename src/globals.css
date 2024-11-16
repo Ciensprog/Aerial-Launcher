@@ -63,6 +63,12 @@
 
   --sidebar-width-md: 13.75rem;
   --sidebar-width-lg: 17.5rem;
+
+  --zone-color-stonewood: #34d375;
+  --zone-color-plankerton: #4da2dd;
+  --zone-color-canny-valley: #dfa12a;
+  --zone-color-twine-peaks: #9c72f7;
+  --zone-color-ventures: #3cd8e3; /* #20b2bd; */ /* #51e3ef; */
 }
 
 img {

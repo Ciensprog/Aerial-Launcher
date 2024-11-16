@@ -9,7 +9,10 @@ import { routeTree } from './routeTree.gen'
 
 import { LoadMatchmakingPath } from './bootstrap/components/advanced-mode/load-matchmaking-path'
 import { LoadWorldInfoFiles } from './bootstrap/components/advanced-mode/load-world-info-files'
-import { LoadWorldInfoData } from './bootstrap/components/advanced-mode/load-world-info'
+import {
+  LoadHomeWorldInfo,
+  LoadWorldInfoData,
+} from './bootstrap/components/advanced-mode/load-world-info'
 import { LoadAccounts } from './bootstrap/components/load-accounts'
 import { LoadAutomation } from './bootstrap/components/load-automation'
 import { LoadFriends } from './bootstrap/components/load-friends'
@@ -37,6 +40,7 @@ root.render(
       <LoadGroups />
       <LoadAccounts />
       <LoadFriends />
+      <LoadHomeWorldInfo />
       <LoadWorldInfoData />
       <LoadWorldInfoFiles />
       <LoadMatchmakingPath />

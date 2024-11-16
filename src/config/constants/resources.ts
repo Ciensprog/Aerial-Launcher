@@ -1,6 +1,12 @@
-import type { ResourceData } from '../../types/data/resources'
+import type {
+  IngredientData,
+  ResourceData,
+  SurvivorData,
+} from '../../types/data/resources'
 
-import data from '../../data/resources.json'
+import resources from '../../data/resources.json'
+import survivorsMythicLeads from '../../data/survivors-mythic-leads.json'
+import ingredients from '../../data/ingredients.json'
 
 export enum RarityType {
   Common = 'c',
@@ -29,4 +35,12 @@ export const rarities: Record<RarityType, string> = {
   [RarityType.Mythic]: 'Mythic',
 }
 
-export const resourcesJson = data as Record<string, ResourceData>
+export const resourcesJson = resources as Record<string, ResourceData>
+export const survivorsMythicLeadsJson = survivorsMythicLeads as Record<
+  string,
+  SurvivorData
+>
+export const ingredientsJson = ingredients as Record<
+  string,
+  IngredientData
+>

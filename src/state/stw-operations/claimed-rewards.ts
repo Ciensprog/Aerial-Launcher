@@ -10,7 +10,7 @@ export type ClaimedRewardsState = {
 
 export const useClaimedRewardsStore = create<ClaimedRewardsState>()(
   (set) => ({
-    data: [],
+    data: [] as Array<RewardsNotification>,
 
     updateData: (data) =>
       set((state) => ({ data: [...state.data, ...data] })),

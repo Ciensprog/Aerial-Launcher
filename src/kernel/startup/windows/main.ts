@@ -8,6 +8,8 @@ export class MainWindow {
   }
 
   static setInstance(value: BrowserWindow) {
-    MainWindow.value = value
+    if (!MainWindow.value) {
+      MainWindow.value = value
+    }
   }
 }

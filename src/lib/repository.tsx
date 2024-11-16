@@ -1,8 +1,7 @@
-// import { repositoryAssetsURL } from '../config/about/links'
+import { repositoryAssetsURL } from '../config/about/links'
 
 export function assets(path: string) {
-  // return `${repositoryAssetsURL}/${path}`
-  return `../../assets/${path}`
+  return `${repositoryAssetsURL}/${path}`
 }
 
 export function imgCurrency(filePath: string) {
@@ -11,6 +10,10 @@ export function imgCurrency(filePath: string) {
 
 export function imgDifficulties(filePath: string) {
   return assets(`images/difficulties/${filePath}`)
+}
+
+export function imgIngredients(filePath: string) {
+  return assets(`images/ingredients/${filePath}`)
 }
 
 export function imgLogos(filePath: string) {
@@ -31,6 +34,10 @@ export function imgRarities(filePath: string) {
 
 export function imgResources(filePath: string) {
   return assets(`images/resources/${filePath}`)
+}
+
+export function imgSurvivorsMythicLeads(filePath: string) {
+  return assets(`images/survivors/unique-leads/${filePath}`)
 }
 
 export function imgWorld(filePath: string) {

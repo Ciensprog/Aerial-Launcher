@@ -205,7 +205,7 @@ function RewardItems({ rewards }: Pick<RewardsNotification, 'rewards'>) {
   )
 
   return items.map((item) => (
-    <li key={item.key}>
+    <li key={item.itemType}>
       <figure className="flex gap-1 items-center">
         <img
           src={item.imgUrl}
