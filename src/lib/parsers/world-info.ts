@@ -21,7 +21,7 @@ import { isEvoMat } from '../validations/resources'
 import { assets, imgWorld } from '../repository'
 import { parseModifier, parseResource } from './resources'
 
-const enableTmpModifiers = !true
+const enableTmpModifiers = true
 
 export function worlInfoParser(data: WorldInfoData | null) {
   const rawWorldInfo: Record<

@@ -3,6 +3,11 @@ import type { WorldInfoMission } from '../../types/data/advanced-mode/world-info
 import { Collection } from '@discordjs/collection'
 import { useEffect, useRef, useState } from 'react'
 
+import {
+  useAlertsDoneDataActions,
+  useAlertsDoneLoader,
+} from '../../hooks/alerts/alerts-done'
+
 export function useAlertItemCounter({
   validationFn,
   data,
@@ -94,4 +99,22 @@ export function useScrollToTop() {
     scrollToTopButtonIsVisible,
     scrollButtonOnClick,
   }
+}
+
+export function useFetchPlayerDataSync() {
+  const { updateSearchIsSubmitting } = useAlertsDoneLoader()
+  const { updateData } = useAlertsDoneDataActions()
+
+  useEffect(() => {
+    const listener = window.electronAPI.fetchPlayerDataNotification(
+      async (response) => {
+        updateData(response)
+        updateSearchIsSubmitting(false)
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
 }

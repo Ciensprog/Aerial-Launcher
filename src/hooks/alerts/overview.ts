@@ -1,4 +1,5 @@
 import { useShallow } from 'zustand/react/shallow'
+
 import { useAlertsOverviewPaginationStore } from '../../state/alerts/overview'
 
 export function useAlertsOverviewPaginationInit() {

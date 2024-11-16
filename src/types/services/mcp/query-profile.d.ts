@@ -34,22 +34,22 @@ export type MCPQueryProfileChanges = {
             'Token:collectionresource_nodegatetoken01': number
           }
         }
-        mission_alert_redemption_record?: {
+        mission_alert_redemption_record?: Partial<{
           claimData: Array<{
             missionAlertId: string
             evictClaimDataAfterUtc: string
             redemptionDateUtc: string
           }>
-          lastClaimTimesMap?: unknown
-          lastClaimedGuidPerTheater?: unknown
-          pendingMissionAlertRewards?: {
+          lastClaimTimesMap: unknown
+          lastClaimedGuidPerTheater: unknown
+          pendingMissionAlertRewards: {
             tierGroupName: StringUnion<'MissionAlert_Storm:4'>
             items: Array<{
               itemType: string
               quantity: number
             }>
           }
-        }
+        }>
         rewards_claimed_post_max_level?: number
         client_settings?: {
           pinnedQuestInstances: Array<string>

@@ -1,11 +1,13 @@
-// import { EmptyResults } from '../-components/-empty'
+import { BasicInformation } from './-basic-information'
+import { RewardsSummary } from './-rewards-summary'
+import { SearchForm } from './-search-form'
 
 export function AlertsDone() {
   return (
     <>
-      <div className="mt-5 space-y-4">Alerts Done</div>
-
-      {/* <EmptyResults title="No alerts done" /> */}
+      <SearchForm />
+      <BasicInformation />
+      <RewardsSummary />
     </>
   )
 }

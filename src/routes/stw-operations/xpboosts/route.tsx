@@ -62,6 +62,7 @@ import {
   extractBoostedXP,
   extractXPBoosts,
   extractFounderStatus,
+  extractCommanderLevel,
 } from '../../../lib/parsers/query-profile'
 import { whatIsThis } from '../../../lib/callbacks'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
@@ -260,11 +261,9 @@ function Content() {
                                 ?.maxBookXpLevelAchieved ?? 0
                             }
                             commanderLevel={
-                              searchedUser.data.profileChanges.profile
-                                .stats.attributes.level +
-                              (searchedUser.data.profileChanges.profile
-                                .stats.attributes
-                                .rewards_claimed_post_max_level ?? 0)
+                              extractCommanderLevel(
+                                searchedUser.data.profileChanges
+                              ).total
                             }
                             daysLoggedIn={
                               searchedUser.data.profileChanges.profile
@@ -640,11 +639,9 @@ function SendBoostsSheet({
                                   ?.maxBookXpLevelAchieved ?? 0
                               }
                               commanderLevel={
-                                searchedUser.data.profileChanges.profile
-                                  .stats.attributes.level +
-                                (searchedUser.data.profileChanges.profile
-                                  .stats.attributes
-                                  .rewards_claimed_post_max_level ?? 0)
+                                extractCommanderLevel(
+                                  searchedUser.data.profileChanges
+                                ).total
                               }
                               daysLoggedIn={
                                 searchedUser.data.profileChanges.profile

@@ -9,6 +9,7 @@ import type {
   AccountDataRecord,
   AccountList,
 } from '../types/accounts'
+import type { AlertsDoneSearchPlayerConfig } from '../types/alerts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { AutomationServiceActionConfig } from '../types/automation'
 import type { GroupRecord } from '../types/groups'
@@ -28,16 +29,20 @@ import schedule from 'node-schedule'
 
 import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
+import { AlertsDone } from './core/alerts'
 // import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
+import { DevicesAuthManager } from './core/devices-auth'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { MatchmakingTrack } from './core/matchmaking-track'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
-import { XPBoostsManager } from './core/xpboosts'
+import { RedeemCodes } from './core/redeem-codes'
+import { VBucksInformation } from './core/vbucks-information'
 import { WorldInfoManager } from './core/world-info'
+import { XPBoostsManager } from './core/xpboosts'
 import { MainWindow } from './startup/windows/main'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
@@ -52,9 +57,6 @@ import {
 } from './startup/settings'
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
-import { DevicesAuthManager } from './core/devices-auth'
-import { RedeemCodes } from './core/redeem-codes'
-import { VBucksInformation } from './core/vbucks-information'
 
 dayjs.extend(relativeTime)
 
@@ -476,6 +478,13 @@ const gotTheLock = app.requestSingleInstanceLock()
     /**
      * Advanced Mode
      */
+
+    ipcMain.on(
+      ElectronAPIEventKeys.HomeFetchPlayerRequest,
+      async (_, config: AlertsDoneSearchPlayerConfig) => {
+        await AlertsDone.fetchPlayerData(config)
+      }
+    )
 
     ipcMain.on(ElectronAPIEventKeys.HomeWorldInfoRequest, async () => {
       await WorldInfoManager.requestForHome()

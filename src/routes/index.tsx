@@ -18,6 +18,8 @@ import { AlertsDone } from './-index/alerts-done'
 // import { HeaderNavigation } from './-index/-header-navigation'
 import { Route as RootRoute } from './__root'
 
+import { useFetchPlayerDataSync } from './-index/-hooks'
+
 import { cn } from '../lib/utils'
 
 enum IndexTabs {
@@ -26,7 +28,7 @@ enum IndexTabs {
   AlertsDone = 'alerts-done',
 }
 
-const defaultTab = IndexTabs.Home
+const defaultTab = IndexTabs.AlertsDone
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -35,6 +37,8 @@ export const Route = createRoute({
 })
 
 export function IndexComponent() {
+  useFetchPlayerDataSync()
+
   return (
     <>
       {/* <HeaderNavigation /> */}
