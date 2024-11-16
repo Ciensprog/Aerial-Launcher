@@ -14,6 +14,8 @@ import { useWorldInfo } from '../../../hooks/advanced-mode/world-info'
 import { useAlertsOverviewFiltersData } from '../../../hooks/alerts/filters'
 import { useAlertsOverviewPaginationData } from '../../../hooks/alerts/overview'
 
+import { imgResources, imgWorld } from '../../../lib/repository'
+
 function isVentureZone(theaterId: string) {
   const keys = Object.keys(worldNameByTheaterId)
 
@@ -129,6 +131,60 @@ export function useAlertsOverviewData() {
       return accumulator
     }, new Collection() as WorldInfo)
     .filter((missions) => missions.size > 0)
+  const alertRewards = filteredData.reduce(
+    (accumulator, missions) => {
+      missions.forEach((mission) => {
+        if (mission.raw.alert) {
+          mission.ui.alert.rewards.forEach((reward) => {
+            const { itemId } = reward
+
+            if (
+              itemId.startsWith('AccountResource:') ||
+              itemId.startsWith('Ingredient:')
+            ) {
+              if (!accumulator[reward.itemId]) {
+                accumulator[reward.itemId] = {
+                  imageUrl: reward.imageUrl,
+                  quantity: 0,
+                }
+              }
+
+              accumulator[reward.itemId].quantity += reward.quantity
+            } else {
+              const itemPrefix = itemId.split(':')[0]
+
+              if (!accumulator[itemPrefix]) {
+                const images: Record<string, string> = {
+                  Defender: imgResources('voucher_generic_defender.png'),
+                  Hero: imgResources('voucher_generic_hero.png'),
+                  Schematic: imgResources(
+                    'voucher_generic_schematic_r.png'
+                  ),
+                  Worker: imgResources('voucher_generic_worker.png'),
+                }
+
+                accumulator[itemPrefix] = {
+                  imageUrl: images[itemPrefix] ?? imgWorld('question.png'),
+                  quantity: 0,
+                }
+              }
+
+              accumulator[itemPrefix].quantity += reward.quantity
+            }
+          })
+        }
+      })
+
+      return accumulator
+    },
+    {} as Record<
+      string,
+      {
+        imageUrl: string
+        quantity: number
+      }
+    >
+  )
 
   const onChangeInputSearch: ChangeEventHandler<HTMLInputElement> = (
     event
@@ -149,6 +205,7 @@ export function useAlertsOverviewData() {
       isFetching,
       isReloading,
     },
+    alertRewards,
     clearInputSearch,
     onChangeInputSearch,
   }

@@ -28,7 +28,7 @@ enum IndexTabs {
   AlertsDone = 'alerts-done',
 }
 
-const defaultTab = IndexTabs.AlertsDone
+const defaultTab = IndexTabs.AlertsOverview
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,

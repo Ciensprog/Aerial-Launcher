@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from '../../../components/ui/sheet'
 
-import { EmptyResults } from '../-components/-empty'
+import { EmptyResults, EmptySection } from '../-components/-empty'
 import { LoadingMissions } from '../-components/-loading'
 import { AlertFilters } from './-filters'
 
@@ -19,7 +19,9 @@ import { useAlertsOverviewData } from './-hooks'
 import { ResetFiltersButton } from './-reset-filters-button'
 import { ZoneSection } from './-zone-section'
 
+import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 import { cn } from '../../../lib/utils'
+import { TitleSection } from '../-components/-title'
 
 export function AlertsOverview() {
   const {
@@ -27,6 +29,7 @@ export function AlertsOverview() {
     data,
     inputSearch,
     loading,
+    alertRewards,
     clearInputSearch,
     onChangeInputSearch,
   } = useAlertsOverviewData()
@@ -106,22 +109,59 @@ export function AlertsOverview() {
             />
           </div>
         ) : (
-          <EmptyResults
-            className="mt-6"
-            total={data.size}
-          >
-            {data
-              .entries()
-              .toArray()
-              .map(([theaterId, missions]) => (
-                <ZoneSection
-                  missions={missions}
-                  theaterId={theaterId}
-                  deps={data}
-                  key={theaterId}
-                />
-              ))}
-          </EmptyResults>
+          <>
+            <section
+              className="space-y-2-"
+              aria-labelledby="section-summary"
+            >
+              <TitleSection
+                deps={data}
+                id="section-summary"
+              >
+                Summary
+              </TitleSection>
+              <EmptySection
+                total={Object.entries(alertRewards).length}
+                title="No available rewards"
+              >
+                <ul className="gap-2 grid grid-cols-4">
+                  {Object.entries(alertRewards).map(([itemId, item]) => (
+                    <li
+                      className="border flex items-center rounded"
+                      key={itemId}
+                    >
+                      <div className="bg-muted-foreground/10 flex flex-shrink-0 h-8 items-center justify-center w-9">
+                        <img
+                          src={item.imageUrl}
+                          className="size-6"
+                        />
+                      </div>
+                      <div className="flex-grow px-2 text-center text-sm truncate">
+                        {numberWithCommaSeparator(item.quantity)}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </EmptySection>
+            </section>
+
+            <EmptyResults
+              className="mt-6"
+              total={data.size}
+            >
+              {data
+                .entries()
+                .toArray()
+                .map(([theaterId, missions]) => (
+                  <ZoneSection
+                    missions={missions}
+                    theaterId={theaterId}
+                    deps={data}
+                    key={theaterId}
+                  />
+                ))}
+            </EmptyResults>
+          </>
         )}
       </div>
     </>
