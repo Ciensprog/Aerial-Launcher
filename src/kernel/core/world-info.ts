@@ -33,14 +33,10 @@ import { createAccessTokenUsingClientCredentials } from '../../services/endpoint
 import { getDate } from '../../lib/dates'
 import { localeCompareForSorting } from '../../lib/utils'
 
-// import type { WorldInfoData } from '../../types/services/advanced-mode/world-info'
-// import customWorldInfo from './ignore-world-info.json'
-
 export class WorldInfoManager {
   static async requestForHome() {
     try {
       const response = await WorldInfoManager.request()
-      // const response = customWorldInfo as WorldInfoData // await WorldInfoManager.request()
 
       MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.HomeWorldInfoResponse,
