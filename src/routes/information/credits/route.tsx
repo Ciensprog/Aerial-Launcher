@@ -36,7 +36,8 @@ export const Route = createRoute({
 })
 
 export function ComponentRoute() {
-  const { handleEricDejaDeJoder, handleSick } = useActions()
+  const { handleEricDejaDeJoder, handleFreshAttrs, handleSick } =
+    useActions()
 
   const openURL = (url: string) => (event: MouseEvent) => {
     event.preventDefault()
@@ -117,6 +118,20 @@ export function ComponentRoute() {
             </ul>
             <h2 className="mb-5 mt-5 text-3xl">Greetings</h2>
             <ul className="list">
+              <li className="item">
+                <span
+                  className="text-muted-foreground"
+                  {...handleFreshAttrs}
+                >
+                  Fresh
+                </span>
+                <div>
+                  I'd like to also thank Fresh for backing me with his
+                  point of view through Aerial's development. He's been a
+                  day1 supporter and helped me test features anytime I
+                  needed. #Fresh4President
+                </div>
+              </li>
               <li className="item">
                 <span
                   className="text-muted-foreground"
