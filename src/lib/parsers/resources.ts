@@ -1,4 +1,8 @@
-import type { WorldInfoMission } from '../../types/data/advanced-mode/world-info'
+import type {
+  ParseModifierData,
+  ParseResourceData,
+  RewardsSummary,
+} from '../../types/data/resources'
 
 import {
   modifiersAvailable,
@@ -10,6 +14,7 @@ import {
   rarities,
   resourcesJson,
   survivorsMythicLeadsJson,
+  trapsJson,
 } from '../../config/constants/resources'
 
 import {
@@ -19,25 +24,9 @@ import {
   imgRarities,
   imgResources,
   imgSurvivorsMythicLeads,
+  imgTraps,
   imgWorld,
 } from '../repository'
-
-type ParseModifierData =
-  WorldInfoMission['ui']['mission']['modifiers'][number]
-type ParseResourceData = {
-  imgUrl: string
-  itemType: string
-  key: string
-  name: string
-  quantity: number
-}
-type RewardsSummary = Record<
-  string,
-  {
-    imageUrl: string
-    quantity: number
-  }
->
 
 function getKey<Data = unknown>(
   key: string,
@@ -78,6 +67,8 @@ export function parseResource({
     imgUrl: imgRarities(`${rarity.rarity}.png`),
     itemType: key,
     name: rarity.type,
+    rarity: rarity.rarity,
+    type: null,
   }
 
   const resource = getKey(newKey, resourcesJson)
@@ -99,6 +90,7 @@ export function parseResource({
 
     data.imgUrl = typeFn(`${resourceId}.${extension}`)
     data.name = resource[1].name
+    data.type = 'resource'
 
     return data
   }
@@ -110,6 +102,7 @@ export function parseResource({
 
     data.imgUrl = imgIngredients(`${ingredientId}.png`)
     data.name = ingredientData.name
+    data.type = 'ingredient'
 
     return data
   }
@@ -130,6 +123,8 @@ export function parseResource({
       data.name = `${rarities[rarity.rarity]} Survivor`
     }
 
+    data.type = 'worker'
+
     return data
   }
 
@@ -138,6 +133,7 @@ export function parseResource({
   if (isHero) {
     data.imgUrl = imgResources(`voucher_generic_hero_${rarity.rarity}.png`)
     data.name = `${rarities[rarity.rarity]} Hero`
+    data.type = 'hero'
 
     return data
   }
@@ -149,17 +145,27 @@ export function parseResource({
       `voucher_generic_defender_${rarity.rarity}.png`
     )
     data.name = `${rarities[rarity.rarity]} Defender`
+    data.type = 'defender'
 
     return data
   }
 
+  const trap = getKey(newKey, trapsJson)
   const isSchematic = newKey.startsWith('Schematic:')
 
-  if (isSchematic) {
-    data.imgUrl = imgResources(
-      `voucher_generic_schematic_${rarity.rarity}.png`
-    )
-    data.name = `${rarities[rarity.rarity]} Schematic`
+  if (trap || isSchematic) {
+    if (trap) {
+      const [trapId, trapData] = trap
+
+      data.imgUrl = imgTraps(`${trapId}.png`)
+      data.name = `${rarities.er} ${trapData.name}`
+      data.type = 'trap'
+    } else {
+      data.imgUrl = imgResources(
+        `voucher_generic_schematic_${rarity.rarity}.png`
+      )
+      data.name = `${rarities[rarity.rarity]} Schematic`
+    }
 
     return data
   }

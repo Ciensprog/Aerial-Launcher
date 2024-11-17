@@ -92,11 +92,11 @@ export function BasicInformation() {
                 />
                 <div className="pt-2">
                   <AccountBasicInformationSection
-                    title="Claim started at:"
+                    title="First claim:"
                     value={firstDate}
                   />
                   <AccountBasicInformationSection
-                    title="Last alert claimed at:"
+                    title="Last played at:"
                     value={lastDate}
                   />
                 </div>

@@ -49,7 +49,7 @@ export function IndexComponent() {
         <div className="w-full">
           <CommunityInfo />
 
-          <section className="border-l-8 mt-4 max-w-lg mx-auto px-2 py-1">
+          <section className="border-l-8 mt-4 max-w-lg mx-auto px-2 py-1 text-sm">
             <h2 className="font-medium text-muted-foreground">
               Good To Know:
             </h2>
@@ -109,7 +109,7 @@ function NavigationTab() {
       className="flex items-center"
       id="alert-navigation-container"
     >
-      <TabsList className="">
+      <TabsList>
         <TabsTrigger value={IndexTabs.Home}>Home</TabsTrigger>
         <TabsTrigger value={IndexTabs.AlertsOverview}>
           Alerts Overview

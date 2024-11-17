@@ -1,6 +1,8 @@
 import type { CSSProperties, PropsWithChildren } from 'react'
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
+import { rarities } from '../../../config/constants/resources'
+
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +11,7 @@ import {
 } from '../../../components/ui/accordion'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
-import { imgWorld } from '../../../lib/repository'
+import { imgRarities, imgWorld } from '../../../lib/repository'
 import { cn } from '../../../lib/utils'
 
 export function MissionsContainer({
@@ -23,10 +25,11 @@ export function MissionsContainer({
       className={cn(
         'gap-0.5 grid grid-cols-1',
         '[&_.item]:border-b-0',
+        '[&_.img-rarity]:flex-shrink-0 [&_.img-rarity:not(.img-small)]:size-4 [&_.img-rarity]:size-3',
         '[&_.img-type]:flex-shrink-0 [&_.img-type]:size-6',
         '[&_.img-modifier]:flex-shrink-0 [&_.img-modifier]:size-6',
         '[&_.img-alert]:flex-shrink-0 [&_.img-alert]:size-4',
-        '[&_.power]:border [&_.power]:pl-0.5 [&_.power]:pr-2 [&_.power]:py-0.5 [&_.power]:rounded [&_.power]:text-xs',
+        '[&_.power]:border [&_.power]:flex-shrink-0 [&_.power]:pl-0.5 [&_.power]:pr-2 [&_.power]:py-1 [&_.power]:rounded [&_.power]:text-xs',
         className
       )}
       type="multiple"
@@ -57,11 +60,11 @@ export function MissionItem({
       value={missionGuid}
     >
       <AccordionTrigger className="trigger bg-muted-foreground/5 px-2 py-1 rounded hover:bg-muted-foreground/15 hover:no-underline">
-        <span className="flex gap-1 items-center">
+        <span className="flex gap-1 items-center overflow-hidden max-w-[29.375rem]">
           {!mission.zone.iconUrl ? (
             <span
               className={cn(
-                'border border-opacity-40 flex font-bold items-center justify-center relative rounded size-5 text-xs uppercase',
+                'border border-opacity-40 flex flex-shrink-0 font-bold items-center justify-center relative rounded size-5 text-xs uppercase',
                 'border-[color:var(--zone-color)] text-[color:var(--zone-color)]'
               )}
               style={
@@ -112,10 +115,10 @@ export function MissionItem({
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 items-start my-2">
+        <div className="grid grid-cols-2 items-start my-2">
           {alert.rewards.length > 0 && (
-            <section className="">
-              <h2 className="">Alert Rewards:</h2>
+            <section>
+              <h2>Alert Rewards:</h2>
               <div className="flex flex-col mt-1">
                 {alert.rewards.map((reward) => (
                   <div
@@ -134,6 +137,7 @@ export function MissionItem({
                       {reward.quantity <= 1
                         ? ''
                         : numberWithCommaSeparator(reward.quantity)}
+                      <SchematicRarity reward={reward} />
                     </div>
                   </div>
                 ))}
@@ -141,46 +145,72 @@ export function MissionItem({
             </section>
           )}
 
-          {mission.rewards.length > 0 && (
-            <section className="">
-              <h2 className="">Base Rewards:</h2>
-              <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
-                {mission.rewards.map((reward) => (
-                  <div
-                    className="flex gap-1 items-center"
-                    key={reward.itemId}
-                  >
-                    <img
-                      src={reward.imageUrl}
-                      className="img-type"
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+          <div className="gap-2 grid grid-cols-1">
+            {mission.rewards.length > 0 && (
+              <section>
+                <h2>Base Rewards:</h2>
+                <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
+                  {mission.rewards.map((reward) => (
+                    <div
+                      className="flex gap-1 items-center"
+                      key={reward.itemId}
+                    >
+                      <img
+                        src={reward.imageUrl}
+                        className="img-type"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
-          {mission.modifiers.length > 0 && (
-            <section className="">
-              <h2 className="">Modifiers:</h2>
-              <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
-                {mission.modifiers.map((modifier) => (
-                  <div
-                    className="flex gap-1 items-center"
-                    key={modifier.id}
-                  >
-                    <img
-                      src={modifier.imageUrl}
-                      className="img-modifier"
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+            {mission.modifiers.length > 0 && (
+              <section>
+                <h2>Modifiers:</h2>
+                <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
+                  {mission.modifiers.map((modifier) => (
+                    <div
+                      className="flex gap-1 items-center"
+                      key={modifier.id}
+                    >
+                      <img
+                        src={modifier.imageUrl}
+                        className="img-modifier"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         </div>
       </AccordionContent>
     </AccordionItem>
+  )
+}
+
+export function SchematicRarity({
+  preview,
+  reward,
+}: {
+  preview?: boolean
+  reward: WorldInfoMission['ui']['alert']['rewards'][number]
+}) {
+  return (
+    reward.type === 'trap' &&
+    rarities[reward.rarity] && (
+      <span className="flex flex-shrink-0 items-center text-center text-muted-foreground">
+        {!preview && '('}
+        <img
+          src={imgRarities(`${reward.rarity}.png`)}
+          className={cn('img-rarity', {
+            'img-small': preview,
+          })}
+        />
+        {!preview && ')'}
+      </span>
+    )
   )
 }
 
@@ -194,7 +224,7 @@ export function Modifiers({
       <>
         {' '}
         •
-        <span className="flex gap-0.5">
+        <span className="flex flex-shrink-0 gap-0.5">
           {data.slice(0, 5).map((modifier) => (
             <img
               src={modifier.imageUrl}

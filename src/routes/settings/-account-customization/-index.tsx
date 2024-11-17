@@ -121,7 +121,7 @@ function SortableItem({
         )}
         {...listeners}
       >
-        <div className="">
+        <div>
           <GripVertical />
         </div>
       </div>

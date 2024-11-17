@@ -24,8 +24,8 @@ export function ZonePagination({
         Show less
       </Button>
       <div className="text-muted-foreground text-sm">
-        <div className="">Results</div>
-        <div className="">
+        <div>Results</div>
+        <div>
           {pagination.active === totalPages
             ? totalMissions
             : pagination.active * perPage}

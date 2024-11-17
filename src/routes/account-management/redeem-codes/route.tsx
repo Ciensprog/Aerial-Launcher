@@ -187,7 +187,7 @@ function ResponseItem({ data }: { data: RedeemCodesData }) {
             {parseCustomDisplayName(accountList[data.account.accountId])}
           </span>
           <span>一</span>
-          <span className="">
+          <span>
             {successCounter}/{codes.length}
           </span>
         </AccordionTrigger>

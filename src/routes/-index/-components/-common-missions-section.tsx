@@ -6,6 +6,7 @@ import {
   MissionItem,
   MissionsContainer,
   Modifiers,
+  SchematicRarity,
 } from '../-components/-missions'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
@@ -46,12 +47,21 @@ export function CommonMissionsSection({
 
                     return (
                       <span
-                        className="flex items-center rounded"
+                        className={cn(
+                          'flex flex-shrink-0 items-center rounded',
+                          {
+                            'border px-1': reward.type === 'trap',
+                          }
+                        )}
                         key={reward.itemId}
                       >
                         <img
                           src={reward.imageUrl}
                           className="img-type"
+                        />
+                        <SchematicRarity
+                          reward={reward}
+                          preview
                         />
                       </span>
                     )
@@ -73,10 +83,13 @@ export function CommonMissionsSection({
 
                 return (
                   <span
-                    className={cn('flex items-center rounded', {
-                      'gap mx-0.5 px-1 py-0.5 outline outline-[#ff6868]/50 outline-2':
-                        reward.isBad,
-                    })}
+                    className={cn(
+                      'flex flex-shrink-0 items-center rounded',
+                      {
+                        'gap mx-0.5 px-1 py-0.5 outline outline-[#ff6868]/50 outline-2':
+                          reward.isBad,
+                      }
+                    )}
                     key={reward.itemId}
                   >
                     <img

@@ -20,7 +20,7 @@ export function LoadingMissions({
   }
 
   return (
-    <div className="">
+    <div>
       {showTitle && <Skeleton className="h-7 mb-2 w-32" />}
       <div className="flex flex-col gap-0.5">
         <MissionSkeleton total={total} />

@@ -1,4 +1,7 @@
-import type { WorldInfo } from '../../types/data/advanced-mode/world-info'
+import type {
+  WorldInfo,
+  WorldInfoMission,
+} from '../../types/data/advanced-mode/world-info'
 import type { WorldInfoData } from '../../types/services/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
@@ -257,6 +260,13 @@ export function worlInfoParser(data: WorldInfoData | null) {
                 [] as typeof alert.missionAlertRewards.items
               )
               .map((item) => {
+                const parsedResource = parseResource({
+                  key: item.itemType,
+                  quantity: item.quantity,
+                })
+
+                parsedResource
+
                 filters.push(item.itemType)
 
                 if (item.attributes?.Alteration?.LootTierGroup) {
@@ -264,13 +274,12 @@ export function worlInfoParser(data: WorldInfoData | null) {
                 }
 
                 return {
-                  imageUrl: parseResource({
-                    key: item.itemType,
-                    quantity: item.quantity,
-                  }).imgUrl,
+                  imageUrl: parsedResource.imgUrl,
                   itemId: item.itemType,
                   quantity: item.quantity ?? 1,
-                }
+                  rarity: parsedResource.rarity,
+                  type: parsedResource.type,
+                } as WorldInfoMission['ui']['alert']['rewards'][number]
               })
 
             const missionRewards = mission.missionRewards.items

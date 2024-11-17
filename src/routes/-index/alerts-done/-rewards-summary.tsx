@@ -35,12 +35,17 @@ export function RewardsSummary() {
       </section>
 
       <section className="mt-3 space-y-2">
-        <h1 className="font-medium text-xl">Summary</h1>
+        <h1 className="font-medium text-xl">Rewards Summary</h1>
         <RewardsSummaryList rewards={rewards} />
       </section>
 
       <section className="mt-3 space-y-2">
-        <h1 className="font-medium text-xl">Alerts</h1>
+        <h1 className="flex font-medium gap-2 items-center text-xl">
+          Missions
+          <span className="text-muted-foreground text-xs">
+            (Sorted by newest)
+          </span>
+        </h1>
         <EmptySection
           total={missions.size}
           title={

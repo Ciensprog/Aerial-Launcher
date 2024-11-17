@@ -117,7 +117,7 @@ export function AlertsOverview() {
                 deps={data}
                 id="section-summary"
               >
-                Summary
+                Rewards Summary
               </TitleSection>
               <RewardsSummaryList rewards={alertRewards} />
             </section>

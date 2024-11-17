@@ -40,6 +40,10 @@ export function imgSurvivorsMythicLeads(filePath: string) {
   return assets(`images/survivors/unique-leads/${filePath}`)
 }
 
+export function imgTraps(filePath: string) {
+  return assets(`images/traps/${filePath}`)
+}
+
 export function imgWorld(filePath: string) {
   return assets(`images/world/${filePath}`)
 }

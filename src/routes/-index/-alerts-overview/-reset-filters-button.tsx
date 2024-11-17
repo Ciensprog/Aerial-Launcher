@@ -19,7 +19,6 @@ export function ResetFiltersButton() {
 
   return (
     <Button
-      className=""
       variant="secondary"
       onClick={resetFilters}
       disabled={isDisabled}

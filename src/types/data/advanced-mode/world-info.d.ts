@@ -1,4 +1,5 @@
 import type { WorldInfoData } from '../../services/advanced-mode/world-info'
+import type { ParseResourceData } from '../resources'
 
 import { Collection } from '@discordjs/collection'
 import { z } from 'zod'
@@ -7,6 +8,7 @@ import {
   World,
   zonesCategories,
 } from '../../../config/constants/fortnite/world-info'
+import { RarityType } from '../../../config/constants/resources'
 
 import { worldInfoSchema } from '../../../lib/validations/schemas/world-info'
 
@@ -67,11 +69,14 @@ export type WorldInfoMission = {
 
   ui: {
     alert: {
-      rewards: Array<{
-        itemId: string
-        imageUrl: string
-        quantity: number
-      }>
+      rewards: Array<
+        {
+          itemId: string
+          imageUrl: string
+          quantity: number
+          rarity: RarityType
+        } & Pick<ParseResourceData, 'type'>
+      >
     }
     mission: {
       modifiers: Array<{

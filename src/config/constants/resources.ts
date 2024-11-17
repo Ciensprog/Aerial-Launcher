@@ -2,11 +2,13 @@ import type {
   IngredientData,
   ResourceData,
   SurvivorData,
+  TrapData,
 } from '../../types/data/resources'
 
 import resources from '../../data/resources.json'
 import survivorsMythicLeads from '../../data/survivors-mythic-leads.json'
 import ingredients from '../../data/ingredients.json'
+import traps from '../../data/traps.json'
 
 export enum RarityType {
   Common = 'c',
@@ -35,6 +37,15 @@ export const rarities: Record<RarityType, string> = {
   [RarityType.Mythic]: 'Mythic',
 }
 
+export const raritiesColor: Record<RarityType, string> = {
+  [RarityType.Common]: RarityColor.Common,
+  [RarityType.Uncommon]: RarityColor.Uncommon,
+  [RarityType.Rare]: RarityColor.Rare,
+  [RarityType.Epic]: RarityColor.Epic,
+  [RarityType.Legendary]: RarityColor.Legendary,
+  [RarityType.Mythic]: RarityColor.Mythic,
+}
+
 export const resourcesJson = resources as Record<string, ResourceData>
 export const survivorsMythicLeadsJson = survivorsMythicLeads as Record<
   string,
@@ -44,3 +55,4 @@ export const ingredientsJson = ingredients as Record<
   string,
   IngredientData
 >
+export const trapsJson = traps as Record<string, TrapData>

@@ -34,7 +34,7 @@ export function AlertFilters() {
       )}
     >
       <div className="flex flex-col gap-5">
-        <div className="">
+        <div>
           <Label className="label">Select Zones</Label>
           <ToggleGroup
             className="toggle-group"
@@ -69,7 +69,7 @@ export function AlertFilters() {
           </ToggleGroup>
         </div>
 
-        <div className="">
+        <div>
           <Label className="label">Select Mission Types</Label>
           <ToggleGroup
             className="toggle-group"
@@ -93,7 +93,7 @@ export function AlertFilters() {
           </ToggleGroup>
         </div>
 
-        <div className="">
+        <div>
           <Label className="label">Select Rarities</Label>
           <ToggleGroup
             className="toggle-group"
@@ -117,7 +117,7 @@ export function AlertFilters() {
           </ToggleGroup>
         </div>
 
-        <div className="">
+        <div>
           <Label className="label">Select Rewards</Label>
           <ToggleGroup
             className="toggle-group"
