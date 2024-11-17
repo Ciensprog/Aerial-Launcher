@@ -24,7 +24,10 @@ import { Switch } from '../../../components/ui/switch'
 
 import { Route as RootRoute } from '../../__root'
 
-import { useDevSettingsData } from '../../../hooks/settings'
+import {
+  useCustomizableMenuSettingsVisibility,
+  useDevSettingsData,
+} from '../../../hooks/settings'
 import { useAutomationData } from './-hooks'
 
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
@@ -93,6 +96,8 @@ export function Content() {
     onSelectItem,
   } = useAutomationData()
   const devSettings = useDevSettingsData()
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   return (
     <div className="flex flex-grow">
@@ -137,7 +142,11 @@ export function Content() {
                   emptyPlaceholder="No accounts"
                   emptyContent="No account found"
                   placeholder="Select an account"
-                  placeholderSearch={`Search on ${options.length} accounts`}
+                  placeholderSearch={
+                    getMenuOptionVisibility('showTotalAccounts')
+                      ? `Search on ${options.length} accounts`
+                      : 'Search on your accounts'
+                  }
                   options={options}
                   value={[]}
                   customFilter={customFilter}

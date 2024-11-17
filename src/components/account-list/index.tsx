@@ -11,6 +11,7 @@ import {
 } from '../ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
+import { useCustomizableMenuSettingsVisibility } from '../../hooks/settings'
 import { useAccountList } from './hooks'
 
 // import { getStatusProvider } from '../../lib/statuses'
@@ -26,6 +27,8 @@ export function AccountList() {
     selected,
     setOpen,
   } = useAccountList()
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   return (
     <Popover
@@ -73,7 +76,11 @@ export function AccountList() {
         >
           {accounts.length > 1 && (
             <CommandInput
-              placeholder={`Search on ${accounts.length} accounts...`}
+              placeholder={
+                getMenuOptionVisibility('showTotalAccounts')
+                  ? `Search on ${accounts.length} accounts...`
+                  : 'Search on your accounts'
+              }
               className="select-none"
               disabled={accounts.length <= 1}
             />

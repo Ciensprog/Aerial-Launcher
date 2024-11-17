@@ -6,6 +6,7 @@ import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Label } from '../../../components/ui/label'
 
+import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useFormData } from './-hooks'
 
 export function SearchForm() {
@@ -23,6 +24,8 @@ export function SearchForm() {
     handleSearchPlayer,
     onSelectItem,
   } = useFormData()
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   return (
     <div
@@ -38,7 +41,11 @@ export function SearchForm() {
           emptyPlaceholder="No accounts"
           emptyContent="No account found"
           placeholder="Select an account"
-          placeholderSearch={`Search on ${options.length} accounts`}
+          placeholderSearch={
+            getMenuOptionVisibility('showTotalAccounts')
+              ? `Search on ${options.length} accounts`
+              : 'Search on your accounts'
+          }
           options={options}
           value={[]}
           customFilter={customFilter}

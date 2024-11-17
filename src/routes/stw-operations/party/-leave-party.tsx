@@ -5,6 +5,7 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 import { Switch } from '../../../components/ui/switch'
 
+import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useLeavePartyForm } from '../../../hooks/stw-operations/party'
 import { useComboboxAccounts, useKickActions } from './-hooks'
 
@@ -21,6 +22,8 @@ export function LeavePartyCard() {
     value,
     callbackName: 'notificationLeave',
   })
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   return (
     <Card className="flex flex-col flex-shrink-0 h-36 justify-center max-w-72 w-full">
@@ -37,7 +40,11 @@ export function LeavePartyCard() {
           <Combobox
             className="max-w-40"
             placeholder="Select account"
-            placeholderSearch={`Search on ${options.length} accounts`}
+            placeholderSearch={
+              getMenuOptionVisibility('showTotalAccounts')
+                ? `Search on ${options.length} accounts`
+                : 'Search on your accounts'
+            }
             emptyContent="No account found"
             options={options}
             value={value}

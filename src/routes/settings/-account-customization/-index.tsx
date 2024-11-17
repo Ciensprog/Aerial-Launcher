@@ -18,6 +18,7 @@ import { Input } from '../../../components/ui/input'
 import { AccountItem } from './-item'
 
 import { useRegisterAccounts } from '../../../hooks/accounts'
+import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useGetTags } from '../../../hooks/tags'
 import { useAccounts, useActions, useOrdering } from './-hooks'
 
@@ -32,6 +33,8 @@ export function AccountCustomization() {
   const tags = tagsArrayToSelectOptions(tagsArray)
 
   const { idsList, reorderAccounts } = useRegisterAccounts()
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   return (
     <Card className="w-full">
@@ -50,7 +53,11 @@ export function AccountCustomization() {
           <div className="mb-5">
             <Input
               className="pr-20"
-              placeholder={`Search on ${accountsArray.length} accounts...`}
+              placeholder={
+                getMenuOptionVisibility('showTotalAccounts')
+                  ? `Search on ${accountsArray.length} accounts`
+                  : 'Search on your accounts'
+              }
               value={searchValue}
               onChange={onChangeSearchValue}
             />

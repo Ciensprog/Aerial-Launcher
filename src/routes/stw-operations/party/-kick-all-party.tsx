@@ -5,6 +5,7 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 import { Switch } from '../../../components/ui/switch'
 
+import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useKickAllPartyForm } from '../../../hooks/stw-operations/party'
 import { useComboboxAccounts, useKickActions } from './-hooks'
 
@@ -21,6 +22,8 @@ export function KickAllPartyCard() {
     value,
     callbackName: 'notificationKick',
   })
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   return (
     <Card className="max-w-lg w-full">
@@ -36,7 +39,11 @@ export function KickAllPartyCard() {
         <div className="flex gap-4">
           <Combobox
             placeholder="Select account"
-            placeholderSearch={`Search on ${options.length} accounts`}
+            placeholderSearch={
+              getMenuOptionVisibility('showTotalAccounts')
+                ? `Search on ${options.length} accounts`
+                : 'Search on your accounts'
+            }
             emptyContent="No account found"
             options={options}
             value={value}

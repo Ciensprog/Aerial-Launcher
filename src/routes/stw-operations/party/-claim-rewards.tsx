@@ -4,6 +4,7 @@ import { Combobox } from '../../../components/ui/extended/combobox'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 
+import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useClaimRewardsForm } from '../../../hooks/stw-operations/party'
 import { useClaimActions, useComboboxAccounts } from './-hooks'
 
@@ -17,6 +18,8 @@ export function ClaimRewardsCard() {
   const { isPending, onClaim } = useClaimActions({
     value,
   })
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
 
   return (
     <Card className="flex flex-col flex-shrink-0 h-36 justify-center max-w-52 w-full">
@@ -24,7 +27,11 @@ export function ClaimRewardsCard() {
         <div className="flex flex-col gap-4">
           <Combobox
             placeholder="Select account"
-            placeholderSearch={`Search on ${options.length} accounts`}
+            placeholderSearch={
+              getMenuOptionVisibility('showTotalAccounts')
+                ? `Search on ${options.length} accounts`
+                : 'Search on your accounts'
+            }
             emptyContent="No account found"
             options={options}
             value={value}
