@@ -1,6 +1,7 @@
-import { nativeImage, Tray } from 'electron'
+import { Menu, nativeImage, Tray } from 'electron'
 
 import packageJson from '../../../package.json'
+import { MainWindow } from './windows/main'
 
 export class SystemTray {
   private static current: Tray | null = null
@@ -29,6 +30,27 @@ export class SystemTray {
       const icon = nativeImage.createFromBuffer(buffer)
 
       SystemTray.current = new Tray(icon)
+
+      const contextMenu = Menu.buildFromTemplate([
+        {
+          label: 'Open Aerial Launcher',
+          type: 'normal',
+          click: () => {
+            onOpen()
+          },
+        },
+        {
+          label: 'Exit',
+          type: 'normal',
+          click: () => {
+            MainWindow.closeApp()
+          },
+        },
+      ])
+
+      SystemTray.current.setContextMenu(contextMenu)
+      SystemTray.current.setToolTip('This is my application')
+      SystemTray.current.setTitle('This is my title')
 
       SystemTray.current.addListener('click', () => {
         onOpen()

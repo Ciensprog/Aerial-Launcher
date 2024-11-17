@@ -114,25 +114,6 @@ const gotTheLock = app.requestSingleInstanceLock()
     return mainWindow
   }
 
-  const cleanup = () => {
-    MainWindow.instance.removeAllListeners()
-
-    Automation.getProcesses().forEach((accountProcess) => {
-      accountProcess.clearMissionIntervalId()
-    })
-    Automation.getServices().forEach((accountService) => {
-      accountService.destroy()
-    })
-    schedule.gracefulShutdown().catch(() => {})
-  }
-
-  const closeApp = () => {
-    if (process.platform !== 'darwin') {
-      cleanup()
-      app.quit()
-    }
-  }
-
   Menu.setApplicationMenu(null)
 
   app.on('second-instance', () => {
@@ -251,7 +232,7 @@ const gotTheLock = app.requestSingleInstanceLock()
 
     ipcMain.on(ElectronAPIEventKeys.CloseWindow, () => {
       if (SystemTray.isActive) {
-        closeApp()
+        MainWindow.closeApp()
       } else {
         MainWindow.instance.close()
       }
@@ -697,7 +678,7 @@ const gotTheLock = app.requestSingleInstanceLock()
   // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
     if (!SystemTray.isActive) {
-      closeApp()
+      MainWindow.closeApp()
     }
   })
 
