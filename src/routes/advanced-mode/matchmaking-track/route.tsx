@@ -42,7 +42,10 @@ import {
 } from '../../../hooks/advanced-mode/matchmaking'
 import { useCurrentActions } from './-hooks'
 
-import { extractXPBoosts } from '../../../lib/parsers/query-profile'
+import {
+  extractCommanderLevel,
+  extractXPBoosts,
+} from '../../../lib/parsers/query-profile'
 import { whatIsThis } from '../../../lib/callbacks'
 
 export const Route = createRoute({
@@ -271,11 +274,9 @@ function Content() {
                                 ?.maxBookXpLevelAchieved ?? 0
                             }
                             commanderLevel={
-                              searchedUser.data.profileChanges.profile
-                                .stats.attributes.level +
-                              (searchedUser.data.profileChanges.profile
-                                .stats.attributes
-                                .rewards_claimed_post_max_level ?? 0)
+                              extractCommanderLevel(
+                                searchedUser.data.profileChanges
+                              ).total
                             }
                             daysLoggedIn={
                               searchedUser.data.profileChanges.profile

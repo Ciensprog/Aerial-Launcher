@@ -46,6 +46,11 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        stonewood: 'var(--zone-color-stonewood)',
+        plankerton: 'var(--zone-color-plankerton)',
+        'canny-valley': 'var(--zone-color-canny-valley)',
+        'twine-peaks': 'var(--zone-color-twine-peaks)',
+        ventures: 'var(--zone-color-ventures)',
       },
       borderRadius: {
         lg: 'var(--radius)',

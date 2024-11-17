@@ -13,7 +13,21 @@ export type RepositoryReleaseResponse = {
   prerelease: boolean
   created_at: string
   published_at: string
-  assets: Array<Record<string, unknown>>
+  assets: Array<{
+    url: string
+    id: number
+    node_id: string
+    name: string
+    label: string
+    uploader: Record<string, unknown>
+    content_type: string
+    state: string
+    size: number
+    download_count: number
+    created_at: string
+    updated_at: string
+    browser_download_url: string
+  }>
   tarball_url: string
   zipball_url: string
   body: string

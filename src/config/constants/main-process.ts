@@ -146,6 +146,11 @@ export enum ElectronAPIEventKeys {
    * Advanced Mode
    */
 
+  HomeWorldInfoRequest = 'home:world-info:request',
+  HomeWorldInfoResponse = 'home:world-info:response',
+  HomeFetchPlayerRequest = 'home:fetch-player:request',
+  HomeFetchPlayerResponse = 'home:fetch-player:response',
+
   WorldInfoRequestData = 'advanced-mode:world-info:request:data',
   WorldInfoResponseData = 'advanced-mode:world-info:response:data',
   WorldInfoSaveFile = 'advanced-mode:world-info:save:file',

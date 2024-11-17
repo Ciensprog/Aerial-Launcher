@@ -62,6 +62,7 @@ import {
   extractBoostedXP,
   extractXPBoosts,
   extractFounderStatus,
+  extractCommanderLevel,
 } from '../../../lib/parsers/query-profile'
 import { whatIsThis } from '../../../lib/callbacks'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
@@ -260,11 +261,9 @@ function Content() {
                                 ?.maxBookXpLevelAchieved ?? 0
                             }
                             commanderLevel={
-                              searchedUser.data.profileChanges.profile
-                                .stats.attributes.level +
-                              (searchedUser.data.profileChanges.profile
-                                .stats.attributes
-                                .rewards_claimed_post_max_level ?? 0)
+                              extractCommanderLevel(
+                                searchedUser.data.profileChanges
+                              ).total
                             }
                             daysLoggedIn={
                               searchedUser.data.profileChanges.profile
@@ -465,7 +464,6 @@ function SendBoostsSheet({
               >
                 <img
                   src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
-                  alt="Teammate"
                 />
               </figure>
               <Switch
@@ -480,7 +478,6 @@ function SendBoostsSheet({
               >
                 <img
                   src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
-                  alt="Personal"
                 />
               </figure>
             </div>
@@ -642,11 +639,9 @@ function SendBoostsSheet({
                                   ?.maxBookXpLevelAchieved ?? 0
                               }
                               commanderLevel={
-                                searchedUser.data.profileChanges.profile
-                                  .stats.attributes.level +
-                                (searchedUser.data.profileChanges.profile
-                                  .stats.attributes
-                                  .rewards_claimed_post_max_level ?? 0)
+                                extractCommanderLevel(
+                                  searchedUser.data.profileChanges
+                                ).total
                               }
                               daysLoggedIn={
                                 searchedUser.data.profileChanges.profile
@@ -728,7 +723,6 @@ function BoostSummaryItem({
         <img
           src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}.png`}
           className="size-14"
-          alt={`${isPersonal ? 'Personal' : 'Friends'} XP Boosts`}
         />
       </figure>
       <div className="break-all font-bold px-2 py-1 rounded-b text-center text-lg w-full">
@@ -837,7 +831,6 @@ function AccountInformation({
               <img
                 src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
                 className="size-5"
-                alt="Teammate XP Boosts"
               />
             </figure>
             <div className="flex-grow space-y-1">
@@ -869,7 +862,6 @@ function AccountSummaryItem({
         <img
           src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}.png`}
           className="size-5"
-          alt={`${isPersonal ? 'Personal' : 'Teammate'} XP Boosts`}
         />
       </figure>
       <div className="flex-grow space-y-1">
@@ -895,7 +887,6 @@ export function ExternalAuthTypeImage({
           externalAuthType ?? 'epicgames'
         }.png`}
         className="size-5"
-        alt={externalAuthType ?? 'epicgames'}
       />
     </figure>
   )
@@ -987,7 +978,6 @@ export function SearchedUserData({
                   <img
                     src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
                     className="size-[18px]"
-                    alt="FNDB Profile"
                   />
                 </figure>
                 Personal XP Boosts:
@@ -1002,7 +992,6 @@ export function SearchedUserData({
                   <img
                     src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
                     className="size-[18px]"
-                    alt="FNDB Profile"
                   />
                 </figure>
                 Teammate XP Boosts:
@@ -1019,7 +1008,6 @@ export function SearchedUserData({
               <img
                 src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
                 className="size-[18px]"
-                alt="FNDB Profile"
               />
             </figure>
             Founder Status:

@@ -1,0 +1,114 @@
+{
+  "bacon": {
+    "name": "Bacon"
+  },
+  "batteries": {
+    "name": "Batteries"
+  },
+  "blast_powder": {
+    "name": "Blast Powder"
+  },
+  "crystal_quartz": {
+    "name": "Quartz Crystal"
+  },
+  "duct_tape": {
+    "name": "Duct Tape"
+  },
+  "flowers": {
+    "name": "Flowers"
+  },
+  "herbs": {
+    "name": "Fibrous Herbs"
+  },
+  "nuts_bolts": {
+    "name": "Nuts 'n' Bolts"
+  },
+  "ore_alloy": {
+    "name": "Rough Ore"
+  },
+  "ore_coal": {
+    "name": "Coal"
+  },
+  "rare_mechanism": {
+    "name": "Rotating Gizmo"
+  },
+  "rare_powercell": {
+    "name": "Active Powercell"
+  },
+  "resin": {
+    "name": "Adhesive Resin"
+  },
+
+  "mechanical_parts_t01": {
+    "name": "Rusty Mechanical Parts"
+  },
+  "mechanical_parts_t02": {
+    "name": "Simple Mechanical Parts"
+  },
+  "mechanical_parts_t03": {
+    "name": "Sturdy Mechanical Parts"
+  },
+  "mechanical_parts_t04": {
+    "name": "Sleek Mechanical Parts"
+  },
+  "mechanical_parts_t05": {
+    "name": "Efficient Mechanical Parts"
+  },
+  "mechanical_parts_t06": {
+    "name": "Vindertech Mechanical Parts"
+  },
+
+  "ore_copper": {
+    "name": "Copper Ore"
+  },
+  "ore_silver": {
+    "name": "Silver Ore"
+  },
+  "malachite": {
+    "name": "Malachite Ore"
+  },
+  "obsidian": {
+    "name": "Obsidian Ore"
+  },
+  "crystal_shadowshard": {
+    "name": "Shadowshard Ore"
+  },
+  "ore_brightcore": {
+    "name": "Brightcore Ore"
+  },
+  "crystal_sunbeam": {
+    "name": "Sunbeam Crystal"
+  },
+
+  "powder_t01": {
+    "name": "Rough Mineral Powder"
+  },
+  "powder_t02": {
+    "name": "Simple Mineral Powder"
+  },
+  "powder_t03": {
+    "name": "Fine-grain Mineral Powder"
+  },
+  "powder_t04": {
+    "name": "Chat-black Mineral Powder"
+  },
+  "powder_t05": {
+    "name": "Oxidized Mineral Powder"
+  },
+  "powder_t06": {
+    "name": "Spectral Mineral Powder"
+  },
+
+  "ore_spectrolite": {
+    "name": "Spectrolite Ore"
+  },
+  "crystal_moonglow": {
+    "name": "Moonglow Crystal"
+  },
+  "crystal_rainbow": {
+    "name": "Rainbow Crystal"
+  },
+  "honey": {
+    "name": "Honey"
+  }
+}

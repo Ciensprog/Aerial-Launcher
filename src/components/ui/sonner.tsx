@@ -10,7 +10,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
-      className="flex h-auto justify-center text-sm"
+      className="flex h-auto justify-center text-sm z-50"
       toastOptions={{
         classNames: {
           toast:

@@ -176,7 +176,7 @@ function AccountInfo({ data }: { data: VBucksInformationData }) {
                 className="leading-5"
                 key={templateId}
               >
-                <div className="">
+                <div>
                   {currency.platform} {currency.template}:{' '}
                   <span className="font-bold">
                     {numberWithCommaSeparator(currency.quantity)}

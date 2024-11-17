@@ -13,6 +13,12 @@ export type WorldInfoData = {
       missionAlertRewards: {
         tierGroupName: string
         items: Array<{
+          attributes?: {
+            Alteration?: Partial<{
+              LootTierGroup: string
+              Tier: number
+            }>
+          }
           itemType: string
           quantity: number
         }>

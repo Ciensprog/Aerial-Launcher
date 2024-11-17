@@ -1,0 +1,129 @@
+{
+  "managerdoctor_sr_kingsly": {
+    "managerSynergy": "Homebase.Manager.IsDoctor",
+    "personality": "Homebase.Worker.Personality.IsCompetitive",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Doctor-kingsly"
+  },
+  "managerdoctor_sr_noctor": {
+    "managerSynergy": "Homebase.Manager.IsDoctor",
+    "personality": "Homebase.Worker.Personality.IsAnalytical",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Doctor-Noctor"
+  },
+  "managerdoctor_sr_treky": {
+    "managerSynergy": "Homebase.Manager.IsDoctor",
+    "personality": "Homebase.Worker.Personality.IsPragmatic",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Doctor-treky"
+  },
+
+  "managerengineer_sr_countess": {
+    "managerSynergy": "Homebase.Manager.IsEngineer",
+    "personality": "Homebase.Worker.Personality.IsPragmatic",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Engineer-countess"
+  },
+  "managerengineer_sr_maths": {
+    "managerSynergy": "Homebase.Manager.IsEngineer",
+    "personality": "Homebase.Worker.Personality.IsAnalytical",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Engineer-maths"
+  },
+  "managerengineer_sr_sobs": {
+    "managerSynergy": "Homebase.Manager.IsEngineer",
+    "personality": "Homebase.Worker.Personality.IsDreamer",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Engineer-sobs"
+  },
+
+  "managerexplorer_sr_birdie": {
+    "managerSynergy": "Homebase.Manager.IsExplorer",
+    "personality": "Homebase.Worker.Personality.IsCurious",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Explorer-birdie"
+  },
+  "managerexplorer_sr_eagle": {
+    "managerSynergy": "Homebase.Manager.IsExplorer",
+    "personality": "Homebase.Worker.Personality.IsAdventurous",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Explorer-eagle"
+  },
+  "managerexplorer_sr_spacebound": {
+    "managerSynergy": "Homebase.Manager.IsExplorer",
+    "personality": "Homebase.Worker.Personality.IsDreamer",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Explorer-spacebound"
+  },
+
+  "managergadgeteer_sr_fixer": {
+    "managerSynergy": "Homebase.Manager.IsGadgeteer",
+    "personality": "Homebase.Worker.Personality.IsAnalytical",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Gadgeteer-fixer"
+  },
+  "managergadgeteer_sr_flak": {
+    "managerSynergy": "Homebase.Manager.IsGadgeteer",
+    "personality": "Homebase.Worker.Personality.IsDependable",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Gadgeteer-flak"
+  },
+  "managergadgeteer_sr_zapps": {
+    "managerSynergy": "Homebase.Manager.IsGadgeteer",
+    "personality": "Homebase.Worker.Personality.IsCurious",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Gadgeteer-zapps"
+  },
+
+  "managerinventor_sr_frequency": {
+    "managerSynergy": "Homebase.Manager.IsInventor",
+    "personality": "Homebase.Worker.Personality.IsDreamer",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Inventor-frequency"
+  },
+  "managerinventor_sr_rad": {
+    "managerSynergy": "Homebase.Manager.IsInventor",
+    "personality": "Homebase.Worker.Personality.IsCooperative",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Inventor-rad"
+  },
+  "managerinventor_sr_square": {
+    "managerSynergy": "Homebase.Manager.IsInventor",
+    "personality": "Homebase.Worker.Personality.IsPragmatic",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Inventor-square"
+  },
+
+  "managermartialartist_sr_dragon": {
+    "managerSynergy": "Homebase.Manager.IsMartialArtist",
+    "personality": "Homebase.Worker.Personality.IsCooperative",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Soldier-malcolm"
+  },
+  "managermartialartist_sr_samurai": {
+    "managerSynergy": "Homebase.Manager.IsMartialArtist",
+    "personality": "Homebase.Worker.Personality.IsCompetitive",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-MartialArtist-samurai"
+  },
+  "managermartialartist_sr_tiger": {
+    "managerSynergy": "Homebase.Manager.IsMartialArtist",
+    "personality": "Homebase.Worker.Personality.IsDependable",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-MartialArtist-tiger"
+  },
+
+  "managersoldier_sr_malcolm": {
+    "managerSynergy": "Homebase.Manager.IsSoldier",
+    "personality": "Homebase.Worker.Personality.IsCooperative",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-MartialArtist-dragon"
+  },
+  "managersoldier_sr_princess": {
+    "managerSynergy": "Homebase.Manager.IsSoldier",
+    "personality": "Homebase.Worker.Personality.IsDependable",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Soldier-princess"
+  },
+  "managersoldier_sr_ramsie": {
+    "managerSynergy": "Homebase.Manager.IsSoldier",
+    "personality": "Homebase.Worker.Personality.IsAdventurous",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-Soldier-ramsie"
+  },
+
+  "managertrainer_sr_jumpy": {
+    "managerSynergy": "Homebase.Manager.IsTrainer",
+    "personality": "Homebase.Worker.Personality.IsCooperative",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-PersonalTrainer-jumpy"
+  },
+  "managertrainer_sr_raider": {
+    "managerSynergy": "Homebase.Manager.IsTrainer",
+    "personality": "Homebase.Worker.Personality.IsCurious",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-PersonalTrainer-raider"
+  },
+  "managertrainer_sr_yoglattes": {
+    "managerSynergy": "Homebase.Manager.IsTrainer",
+    "personality": "Homebase.Worker.Personality.IsCompetitive",
+    "portrait": "WorkerPortrait:IconDef-ManagerPortrait-SR-PersonalTrainer-yoglattes"
+  }
+}

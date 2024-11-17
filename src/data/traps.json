@@ -1,0 +1,79 @@
+{
+  "ceiling_electric_aoe": {
+    "name": "Ceiling Electric Field"
+  },
+  "ceiling_electric_single": {
+    "name": "Ceiling Zapper"
+  },
+  "ceiling_falling": {
+    "name": "Ceiling Drop Trap"
+  },
+  "ceiling_gas": {
+    "name": "Ceiling Gas Trap"
+  },
+
+  "floor_campfire": {
+    "name": "Cozy Campfire"
+  },
+  "floor_defender": {
+    "name": "Defender Post"
+  },
+  "floor_flamegrill": {
+    "name": "Flame Grill Floor Trap"
+  },
+  "floor_freeze": {
+    "name": "Floor Freeze Trap"
+  },
+  "floor_health": {
+    "name": "Healing Pad"
+  },
+  "floor_hoverboard_speed": {
+    "name": "Boost Pad (Straight)"
+  },
+  "floor_launcher": {
+    "name": "Floor Launcher"
+  },
+  "floor_player_jump_pad": {
+    "name": "Player Jump Pad (Up)"
+  },
+  "floor_player_jump_pad_free_direction": {
+    "name": "Player Jump Pad (Directional)"
+  },
+  "floor_spikes": {
+    "name": "Retractable Floor Spikes"
+  },
+  "floor_spikes_wood": {
+    "name": "Wooden Floor Spikes"
+  },
+  "floor_tar": {
+    "name": "Tar Pit"
+  },
+  "floor_ward": {
+    "name": "Anti-Air Trap"
+  },
+
+  "wall_cannons": {
+    "name": "Broadside"
+  },
+  "wall_darts": {
+    "name": "Wall Darts"
+  },
+  "wall_electric": {
+    "name": "Wall Dynamo"
+  },
+  "wall_launcher": {
+    "name": "Wall Launcher"
+  },
+  "wall_light": {
+    "name": "Wall Lights"
+  },
+  "wall_mechstructor": {
+    "name": "Wall Zap-o-max"
+  },
+  "wall_speaker": {
+    "name": "Sound Wall"
+  },
+  "wall_wood_spikes": {
+    "name": "Wall Spikes"
+  }
+}

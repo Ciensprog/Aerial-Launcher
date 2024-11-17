@@ -77,3 +77,23 @@ export function extractFounderStatus(value?: MCPQueryProfileChanges) {
 
   return isFounder ? 'Founder' : 'Non-Founder'
 }
+
+export function extractCommanderLevel(value?: MCPQueryProfileChanges) {
+  const result = {
+    baseLevel: 0,
+    postLevel: 0,
+    total: 0,
+  }
+
+  if (value) {
+    const baseLevel = value.profile.stats.attributes.level ?? 0
+    const postLevel =
+      value.profile.stats.attributes.rewards_claimed_post_max_level ?? 0
+
+    result.baseLevel = baseLevel
+    result.postLevel = postLevel
+    result.total = baseLevel + postLevel
+  }
+
+  return result
+}

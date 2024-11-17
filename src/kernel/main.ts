@@ -9,6 +9,7 @@ import type {
   AccountDataRecord,
   AccountList,
 } from '../types/accounts'
+import type { AlertsDoneSearchPlayerConfig } from '../types/alerts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { AutomationServiceActionConfig } from '../types/automation'
 import type { GroupRecord } from '../types/groups'
@@ -28,16 +29,20 @@ import schedule from 'node-schedule'
 
 import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
+import { AlertsDone } from './core/alerts'
 // import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
+import { DevicesAuthManager } from './core/devices-auth'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { MatchmakingTrack } from './core/matchmaking-track'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
-import { XPBoostsManager } from './core/xpboosts'
+import { RedeemCodes } from './core/redeem-codes'
+import { VBucksInformation } from './core/vbucks-information'
 import { WorldInfoManager } from './core/world-info'
+import { XPBoostsManager } from './core/xpboosts'
 import { MainWindow } from './startup/windows/main'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
@@ -52,9 +57,6 @@ import {
 } from './startup/settings'
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
-import { DevicesAuthManager } from './core/devices-auth'
-import { RedeemCodes } from './core/redeem-codes'
-import { VBucksInformation } from './core/vbucks-information'
 
 dayjs.extend(relativeTime)
 
@@ -154,7 +156,7 @@ const gotTheLock = app.requestSingleInstanceLock()
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', async () => {
-    await DataDirectory.createDataResources()
+    DataDirectory.createDataResources().catch(() => {})
 
     MainWindow.setInstance(await createWindow())
 
@@ -477,8 +479,19 @@ const gotTheLock = app.requestSingleInstanceLock()
      * Advanced Mode
      */
 
+    ipcMain.on(
+      ElectronAPIEventKeys.HomeFetchPlayerRequest,
+      async (_, config: AlertsDoneSearchPlayerConfig) => {
+        await AlertsDone.fetchPlayerData(config)
+      }
+    )
+
+    ipcMain.on(ElectronAPIEventKeys.HomeWorldInfoRequest, async () => {
+      await WorldInfoManager.requestForHome()
+    })
+
     ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestData, async () => {
-      await WorldInfoManager.requestData()
+      await WorldInfoManager.requestForAdvanceSection()
     })
 
     ipcMain.on(
@@ -661,19 +674,20 @@ const gotTheLock = app.requestSingleInstanceLock()
     schedule.scheduleJob(
       {
         /**
-         * Executes in every reset at time: 00:00:05 AM
+         * Executes in every reset at time: 00:00:02 AM
          * Hour: 00
          * Minute: 00
-         * Second: 05
+         * Second: 02
          */
-        rule: '5 0 0 * * *',
+        rule: '2 0 0 * * *',
         /**
          * Time zone
          */
         tz: 'UTC',
       },
       () => {
-        WorldInfoManager.requestData()
+        WorldInfoManager.requestForHome().catch(() => {})
+        WorldInfoManager.requestForAdvanceSection().catch(() => {})
       }
     )
   })
@@ -687,11 +701,11 @@ const gotTheLock = app.requestSingleInstanceLock()
     }
   })
 
-  app.on('activate', () => {
+  app.on('activate', async () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+      MainWindow.setInstance(await createWindow())
     }
   })
 

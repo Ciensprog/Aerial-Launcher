@@ -1,0 +1,12 @@
+{
+  "worker_joel_ur": {
+    "gender": 1,
+    "name": "Joel",
+    "portrait": null
+  },
+  "worker_karolina_ur": {
+    "gender": 2,
+    "name": "Karolina",
+    "portrait": null
+  }
+}

@@ -1,3 +1,6 @@
+# Custom files
+ignore-*
+
 # Logs
 logs
 *.log

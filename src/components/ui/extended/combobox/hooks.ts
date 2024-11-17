@@ -18,6 +18,7 @@ export type ComboboxCustomItemRenderFunction = (
 export type ComboboxProps = {
   className?: string
   classNamePopoverContent?: string
+  containerClassName?: string
   customItem?: (props: {
     renderItem: ComboboxCustomItemRenderFunction
     item: ComboboxOption
@@ -30,6 +31,7 @@ export type ComboboxProps = {
   emptyContentClassname?: string
   emptyOptions?: string
   emptyPlaceholder?: string
+  hideInputSearch?: boolean
   hideInputSearchWhenOnlyOneOptionIsAvailable?: boolean
   hideSelectorOnSelectItem?: boolean
   inputSearchIsDisabled?: boolean
@@ -37,6 +39,7 @@ export type ComboboxProps = {
   isMulti?: boolean
   options: Array<ComboboxOption>
   placeholder?: string
+  placeholderClassName?: string
   placeholderSearch?: string
   showNames?: boolean
   value?: Array<ComboboxOption>
