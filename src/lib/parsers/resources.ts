@@ -31,6 +31,13 @@ type ParseResourceData = {
   name: string
   quantity: number
 }
+type RewardsSummary = Record<
+  string,
+  {
+    imageUrl: string
+    quantity: number
+  }
+>
 
 function getKey<Data = unknown>(
   key: string,
@@ -226,4 +233,158 @@ export function parseRarity(value: string) {
   }
 
   return data
+}
+
+export function sortRewardsSummary(rewards: RewardsSummary) {
+  return Object.entries(rewards)
+    .toSorted((itemA, itemB) => {
+      const isMtxA = itemA[0].includes('currency_mtxswap') ? 1 : 0
+      const isMtxB = itemB[0].includes('currency_mtxswap') ? 1 : 0
+
+      const isUpgradeLlamaTokenA = itemA[0].includes(
+        'voucher_cardpack_bronze'
+      )
+        ? 1
+        : 0
+      const isUpgradeLlamaTokenB = itemB[0].includes(
+        'voucher_cardpack_bronze'
+      )
+        ? 1
+        : 0
+
+      const isEvoPDORA = itemA[0].includes('reagent_c_t01') ? 1 : 0
+      const isEvoPDORB = itemB[0].includes('reagent_c_t01') ? 1 : 0
+      const isEvoLIABA = itemA[0].includes('reagent_c_t02') ? 1 : 0
+      const isEvoLIABB = itemB[0].includes('reagent_c_t02') ? 1 : 0
+      const isEvoEOTSA = itemA[0].includes('reagent_c_t03') ? 1 : 0
+      const isEvoEOTSB = itemB[0].includes('reagent_c_t03') ? 1 : 0
+      const isEvoSSA = itemA[0].includes('reagent_c_t04') ? 1 : 0
+      const isEvoSSB = itemB[0].includes('reagent_c_t04') ? 1 : 0
+
+      const isLegendaryPerkUpA = itemA[0].includes(
+        'reagent_alteration_upgrade_sr'
+      )
+        ? 1
+        : 0
+      const isLegendaryPerkUpB = itemB[0].includes(
+        'reagent_alteration_upgrade_sr'
+      )
+        ? 1
+        : 0
+      const isEpicPerkUpA = itemA[0].includes(
+        'reagent_alteration_upgrade_vr'
+      )
+        ? 1
+        : 0
+      const isEpicPerkUpB = itemB[0].includes(
+        'reagent_alteration_upgrade_vr'
+      )
+        ? 1
+        : 0
+      const isRarePerkUpA = itemA[0].includes(
+        'reagent_alteration_upgrade_r'
+      )
+        ? 1
+        : 0
+      const isRarePerkUpB = itemB[0].includes(
+        'reagent_alteration_upgrade_r'
+      )
+        ? 1
+        : 0
+      const isUncommonPerkUpA = itemA[0].includes(
+        'reagent_alteration_upgrade_uc'
+      )
+        ? 1
+        : 0
+      const isUncommonPerkUpB = itemB[0].includes(
+        'reagent_alteration_upgrade_uc'
+      )
+        ? 1
+        : 0
+
+      const isElementFirePerkUpA = itemA[0].includes(
+        'reagent_alteration_ele_fire'
+      )
+        ? 1
+        : 0
+      const isElementFirePerkUpB = itemB[0].includes(
+        'reagent_alteration_ele_fire'
+      )
+        ? 1
+        : 0
+      const isElementNaturePerkUpA = itemA[0].includes(
+        'reagent_alteration_ele_nature'
+      )
+        ? 1
+        : 0
+      const isElementNaturePerkUpB = itemB[0].includes(
+        'reagent_alteration_ele_nature'
+      )
+        ? 1
+        : 0
+      const isElementWaterPerkUpA = itemA[0].includes(
+        'reagent_alteration_ele_water'
+      )
+        ? 1
+        : 0
+      const isElementWaterPerkUpB = itemB[0].includes(
+        'reagent_alteration_ele_water'
+      )
+        ? 1
+        : 0
+      const isGenericPerkUpA = itemA[0].includes(
+        'reagent_alteration_generic'
+      )
+        ? 1
+        : 0
+      const isGenericPerkUpB = itemB[0].includes(
+        'reagent_alteration_generic'
+      )
+        ? 1
+        : 0
+
+      const isHeroXPA = itemA[0].includes('heroxp') ? 1 : 0
+      const isHeroXPB = itemB[0].includes('heroxp') ? 1 : 0
+      const isSchematicXPA = itemA[0].includes('schematicxp') ? 1 : 0
+      const isSchematicXPB = itemB[0].includes('schematicxp') ? 1 : 0
+      const isSurvivorXPA = itemA[0].includes('personnelxp') ? 1 : 0
+      const isSurvivorXPB = itemB[0].includes('personnelxp') ? 1 : 0
+      const isVentureXPA = itemA[0].includes('phoenixxp') ? 1 : 0
+      const isVentureXPB = itemB[0].includes('phoenixxp') ? 1 : 0
+
+      return (
+        isMtxB - isMtxA ||
+        isUpgradeLlamaTokenB - isUpgradeLlamaTokenA ||
+        isEvoPDORB - isEvoPDORA ||
+        isEvoLIABB - isEvoLIABA ||
+        isEvoEOTSB - isEvoEOTSA ||
+        isEvoSSB - isEvoSSA ||
+        isLegendaryPerkUpB - isLegendaryPerkUpA ||
+        isEpicPerkUpB - isEpicPerkUpA ||
+        isRarePerkUpB - isRarePerkUpA ||
+        isUncommonPerkUpB - isUncommonPerkUpA ||
+        isElementFirePerkUpB - isElementFirePerkUpA ||
+        isElementNaturePerkUpB - isElementNaturePerkUpA ||
+        isElementWaterPerkUpB - isElementWaterPerkUpA ||
+        isGenericPerkUpB - isGenericPerkUpA ||
+        isHeroXPB - isHeroXPA ||
+        isSchematicXPB - isSchematicXPA ||
+        isSurvivorXPB - isSurvivorXPA ||
+        isVentureXPB - isVentureXPA
+      )
+    })
+    .reduce(
+      (accumulator, [key, reward]) => {
+        accumulator[key] = reward
+
+        return accumulator
+      },
+      {} as Record<
+        string,
+        {
+          imageUrl: string
+          quantity: number
+        }
+      >
+    )
 }

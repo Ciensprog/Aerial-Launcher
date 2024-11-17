@@ -12,6 +12,7 @@ export function SearchForm() {
   const {
     $submitButton,
     accountSelectorIsDisabled,
+    formDisabled,
     inputSearch,
     inputSearchButtonIsDisabled,
     options,
@@ -24,7 +25,10 @@ export function SearchForm() {
   } = useFormData()
 
   return (
-    <div className="grid gap-4">
+    <div
+      className="grid gap-4"
+      id="form-alerts-done"
+    >
       <div className="space-y-2">
         <Label className="text-muted-foreground text-sm">
           Fetch data from one of your accounts
@@ -71,14 +75,14 @@ export function SearchForm() {
             className="pr-32 pl-3 py-1"
             value={inputSearch}
             onChange={handleChangeSearchDisplayName}
-            disabled={searchIsSubmitting}
+            disabled={formDisabled || searchIsSubmitting}
             id="alerts-done-input-search-player"
           />
           <Button
             type="submit"
             className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
             variant="secondary"
-            disabled={inputSearchButtonIsDisabled}
+            disabled={formDisabled || inputSearchButtonIsDisabled}
             ref={$submitButton}
           >
             {searchIsSubmitting ? (

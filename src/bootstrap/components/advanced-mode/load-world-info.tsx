@@ -43,22 +43,15 @@ export function LoadHomeWorldInfo() {
   useEffect(() => {
     const listener = window.electronAPI.responseHomeWorldInfo(
       async (response) => {
-        console.log('original ->', response)
-
         try {
           const result = worldInfoSchema.parse(response) as WorldInfoData
           const { worldInfo } = worlInfoParser(result)
-
-          // console.log('parsed ->', parsed)
-          console.log('worldInfo ->', worldInfo)
 
           initPagination(worldInfo.keys().toArray())
           setWorldInfoData(worldInfo)
 
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-          console.error('Fail parsing ->', error)
-
           const { worldInfo } = worlInfoParser(
             defaultWorldInfo as WorldInfoData
           )

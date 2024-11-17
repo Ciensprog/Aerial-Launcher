@@ -19,6 +19,7 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
+import { sortRewardsSummary } from '../../../lib/parsers/resources'
 import { toDate } from '../../../lib/dates'
 import { imgResources, imgWorld } from '../../../lib/repository'
 import { parseCustomDisplayName } from '../../../lib/utils'
@@ -33,6 +34,8 @@ export function useFormData() {
     changeInputSearch,
     updateSearchIsSubmitting,
   } = useAlertsDoneForm()
+
+  const formDisabled = accountsArray.length <= 0
 
   const inputSearchButtonIsDisabled =
     searchIsSubmitting || inputSearch.trim() === ''
@@ -102,6 +105,7 @@ export function useFormData() {
   return {
     $submitButton,
     accountSelectorIsDisabled,
+    formDisabled,
     inputSearchButtonIsDisabled,
     inputSearch,
     options,
@@ -137,7 +141,7 @@ export function usePlayerData() {
       playerData?.data?.profileChanges.profile.stats.attributes
         .mission_alert_redemption_record?.claimData ?? []
 
-    const rewards: Record<
+    const tmpRewards: Record<
       string,
       {
         imageUrl: string
@@ -171,18 +175,18 @@ export function usePlayerData() {
                     itemId.startsWith('AccountResource:') ||
                     itemId.startsWith('Ingredient:')
                   ) {
-                    if (!rewards[reward.itemId]) {
-                      rewards[reward.itemId] = {
+                    if (!tmpRewards[reward.itemId]) {
+                      tmpRewards[reward.itemId] = {
                         imageUrl: reward.imageUrl,
                         quantity: 0,
                       }
                     }
 
-                    rewards[reward.itemId].quantity += reward.quantity
+                    tmpRewards[reward.itemId].quantity += reward.quantity
                   } else {
                     const itemPrefix = itemId.split(':')[0]
 
-                    if (!rewards[itemPrefix]) {
+                    if (!tmpRewards[itemPrefix]) {
                       const images: Record<string, string> = {
                         Defender: imgResources(
                           'voucher_generic_defender.png'
@@ -194,14 +198,14 @@ export function usePlayerData() {
                         Worker: imgResources('voucher_generic_worker.png'),
                       }
 
-                      rewards[itemPrefix] = {
+                      tmpRewards[itemPrefix] = {
                         imageUrl:
                           images[itemPrefix] ?? imgWorld('question.png'),
                         quantity: 0,
                       }
                     }
 
-                    rewards[itemPrefix].quantity += reward.quantity
+                    tmpRewards[itemPrefix].quantity += reward.quantity
                   }
                 })
               }
@@ -222,6 +226,7 @@ export function usePlayerData() {
           itemB.redemptionDateUtc.valueOf() -
           itemA.redemptionDateUtc.valueOf()
       )
+    const rewards = sortRewardsSummary(tmpRewards)
 
     return {
       missions,

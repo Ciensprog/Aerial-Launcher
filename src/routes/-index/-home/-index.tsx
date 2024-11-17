@@ -41,7 +41,7 @@ export function HomeAlerts() {
 
   return (
     <>
-      <div className="flex gap-2">
+      <ul className="gap-2 grid grid-cols-4">
         <PreviewItem
           imageUrl={imgResources('currency_mtxswap.png')}
           quantity={vbucksTotal}
@@ -62,7 +62,7 @@ export function HomeAlerts() {
           quantity={uncommonPerksTotal}
           title="Uncommon PERK-UP!"
         />
-      </div>
+      </ul>
 
       <div className="space-y-1">
         {loading.isFetching ? (
@@ -95,7 +95,6 @@ export function HomeAlerts() {
 
 function PreviewItem({
   imageUrl,
-  title,
   quantity,
 }: {
   imageUrl: string
@@ -103,17 +102,16 @@ function PreviewItem({
   quantity: number
 }) {
   return (
-    <div className="border rounded max-w-32 w-full">
-      <figure className="bg-muted-foreground/5 flex flex-col items-center py-2">
+    <li className="border flex items-center rounded">
+      <div className="bg-muted-foreground/10 flex flex-shrink-0 h-10 items-center justify-center w-11">
         <img
           src={imageUrl}
-          className="size-10"
-          alt={title}
+          className="size-7"
         />
-      </figure>
-      <div className="break-all font-bold px-2 py-1 text-center text-lg w-full">
+      </div>
+      <div className="flex-grow font-medium px-2 text-center truncate">
         {numberWithCommaSeparator(quantity)}
       </div>
-    </div>
+    </li>
   )
 }

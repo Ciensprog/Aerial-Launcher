@@ -14,6 +14,7 @@ import { useWorldInfo } from '../../../hooks/advanced-mode/world-info'
 import { useAlertsOverviewFiltersData } from '../../../hooks/alerts/filters'
 import { useAlertsOverviewPaginationData } from '../../../hooks/alerts/overview'
 
+import { sortRewardsSummary } from '../../../lib/parsers/resources'
 import { imgResources, imgWorld } from '../../../lib/repository'
 
 function isVentureZone(theaterId: string) {
@@ -131,7 +132,8 @@ export function useAlertsOverviewData() {
       return accumulator
     }, new Collection() as WorldInfo)
     .filter((missions) => missions.size > 0)
-  const alertRewards = filteredData.reduce(
+
+  const tmpAlertRewards = filteredData.reduce(
     (accumulator, missions) => {
       missions.forEach((mission) => {
         if (mission.raw.alert) {
@@ -185,6 +187,7 @@ export function useAlertsOverviewData() {
       }
     >
   )
+  const alertRewards = sortRewardsSummary(tmpAlertRewards)
 
   const onChangeInputSearch: ChangeEventHandler<HTMLInputElement> = (
     event

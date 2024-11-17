@@ -8,15 +8,32 @@ import {
 } from '../../../routes/stw-operations/xpboosts/route'
 
 import { useAlertsDoneData } from '../../../hooks/alerts/alerts-done'
-import { usePlayerDataActions } from './-hooks'
+import { usePlayerData, usePlayerDataActions } from './-hooks'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 import { extractCommanderLevel } from '../../../lib/parsers/query-profile'
 import { whatIsThis } from '../../../lib/callbacks'
+import { dateWithFormat } from '../../../lib/dates'
 
 export function BasicInformation() {
   const { playerData } = useAlertsDoneData()
   const { handleOpenExternalFNDBProfileUrl } = usePlayerDataActions()
+  const { missions } = usePlayerData()
+
+  const firstMission = missions.last()
+  const lastMission = missions.first()
+  const firstDate = firstMission
+    ? dateWithFormat(
+        firstMission.redemptionDateUtc,
+        'MM/DD/YYYY hh:mm:ss a'
+      )
+    : 'N/A'
+  const lastDate = lastMission
+    ? dateWithFormat(
+        lastMission.redemptionDateUtc,
+        'MM/DD/YYYY hh:mm:ss a'
+      )
+    : 'N/A'
 
   if (!playerData?.data) {
     return null
@@ -73,6 +90,16 @@ export function BasicInformation() {
                       .total
                   )}
                 />
+                <div className="pt-2">
+                  <AccountBasicInformationSection
+                    title="Claim started at:"
+                    value={firstDate}
+                  />
+                  <AccountBasicInformationSection
+                    title="Last alert claimed at:"
+                    value={lastDate}
+                  />
+                </div>
               </>
             )
           )}

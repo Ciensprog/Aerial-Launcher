@@ -199,11 +199,6 @@ export const rewardOptions: Array<FilterOption> = [
     value: 'reagent_c_t04',
   },
   {
-    icon: imgResources('personnelxp.png'),
-    label: 'Survivor XP',
-    value: 'personnelxp',
-  },
-  {
     icon: imgResources('heroxp.png'),
     label: 'Hero XP',
     value: 'heroxp',
@@ -214,19 +209,14 @@ export const rewardOptions: Array<FilterOption> = [
     value: 'schematicxp',
   },
   {
-    icon: imgResources('reagent_alteration_generic.png'),
-    label: 'RE-PERK!',
-    value: 'reagent_alteration_generic',
+    icon: imgResources('personnelxp.png'),
+    label: 'Survivor XP',
+    value: 'personnelxp',
   },
   {
-    icon: imgResources('reagent_alteration_upgrade_uc.png'),
-    label: 'Uncommon Perk Up',
-    value: 'reagent_alteration_upgrade_uc',
-  },
-  {
-    icon: imgResources('reagent_alteration_upgrade_r.png'),
-    label: 'Rare Perk Up',
-    value: 'reagent_alteration_upgrade_r',
+    icon: imgResources('reagent_alteration_upgrade_sr.png'),
+    label: 'Legendary Perk Up',
+    value: 'reagent_alteration_upgrade_sr',
   },
   {
     icon: imgResources('reagent_alteration_upgrade_vr.png'),
@@ -234,9 +224,19 @@ export const rewardOptions: Array<FilterOption> = [
     value: 'reagent_alteration_upgrade_vr',
   },
   {
-    icon: imgResources('reagent_alteration_upgrade_sr.png'),
-    label: 'Legendary Perk Up',
-    value: 'reagent_alteration_upgrade_sr',
+    icon: imgResources('reagent_alteration_upgrade_r.png'),
+    label: 'Rare Perk Up',
+    value: 'reagent_alteration_upgrade_r',
+  },
+  {
+    icon: imgResources('reagent_alteration_upgrade_uc.png'),
+    label: 'Uncommon Perk Up',
+    value: 'reagent_alteration_upgrade_uc',
+  },
+  {
+    icon: imgResources('reagent_alteration_ele_fire.png'),
+    label: 'FIRE-UP!',
+    value: 'reagent_alteration_ele_fire',
   },
   {
     icon: imgResources('reagent_alteration_ele_nature.png'),
@@ -249,8 +249,8 @@ export const rewardOptions: Array<FilterOption> = [
     value: 'reagent_alteration_ele_water',
   },
   {
-    icon: imgResources('reagent_alteration_ele_fire.png'),
-    label: 'FIRE-UP!',
-    value: 'reagent_alteration_ele_fire',
+    icon: imgResources('reagent_alteration_generic.png'),
+    label: 'RE-PERK!',
+    value: 'reagent_alteration_generic',
   },
 ]
