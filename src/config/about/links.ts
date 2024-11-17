@@ -6,5 +6,4 @@ export const repositoryReleasesURL = `https://github.com/${packageJson.author.na
 
 export const supportDiscordServerURL = 'https://discord.gg/QUVFA8GePH'
 
-// export const repositoryAssetsURL = `https://raw.githubusercontent.com/${packageJson.author.name}/Aerial-Launcher/main/assets`
-export const repositoryAssetsURL = `https://raw.githubusercontent.com/${packageJson.author.name}/Aerial-Launcher/refs/heads/feature/current-alerts/assets`
+export const repositoryAssetsURL = `https://raw.githubusercontent.com/${packageJson.author.name}/Aerial-Launcher/main/assets`
