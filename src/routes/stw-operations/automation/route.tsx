@@ -24,10 +24,7 @@ import { Switch } from '../../../components/ui/switch'
 
 import { Route as RootRoute } from '../../__root'
 
-import {
-  useCustomizableMenuSettingsVisibility,
-  useDevSettingsData,
-} from '../../../hooks/settings'
+import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useAutomationData } from './-hooks'
 
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
@@ -95,7 +92,6 @@ export function Content() {
     handleUpdateClaimAction,
     onSelectItem,
   } = useAutomationData()
-  const devSettings = useDevSettingsData()
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
 
@@ -262,23 +258,21 @@ export function Content() {
                       disabled={disabledActions}
                     />
                   </div>
-                  {devSettings.transfer === true && (
-                    <div className="flex flex-grow items-center justify-between">
-                      <span>Auto-transfer mats</span>
-                      <Switch
-                        checked={current.actions.transferMats}
-                        onCheckedChange={
-                          !isLoading
-                            ? handleUpdateClaimAction(
-                                'transferMats',
-                                account.accountId
-                              )
-                            : undefined
-                        }
-                        disabled={disabledActions}
-                      />
-                    </div>
-                  )}
+                  <div className="flex flex-grow items-center justify-between">
+                    <span>Auto-transfer mats</span>
+                    <Switch
+                      checked={current.actions.transferMats}
+                      onCheckedChange={
+                        !isLoading
+                          ? handleUpdateClaimAction(
+                              'transferMats',
+                              account.accountId
+                            )
+                          : undefined
+                      }
+                      disabled={disabledActions}
+                    />
+                  </div>
                 </div>
               </article>
             )
