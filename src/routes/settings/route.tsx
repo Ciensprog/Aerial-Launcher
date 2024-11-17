@@ -21,6 +21,7 @@ import {
 
 import { AccountCustomization } from './-account-customization/-index'
 import { AppSettings } from './-app-settings/-index'
+import { CustomizableMenu } from './-customizable-menu/-index'
 import { TagsManagement } from './-tags-management/-index'
 
 import { useGetAccounts } from '../../hooks/accounts'
@@ -29,6 +30,7 @@ import { cn } from '../../lib/utils'
 
 enum SettingsSections {
   AppSettings = 'app-settings',
+  CustomizableMenu = 'customizable-menu',
   TagsManagement = 'tags-management',
   AccountCustomization = 'account-customization',
 }
@@ -86,6 +88,24 @@ function Content() {
               </AccordionTrigger>
               <AccordionContent className="section-content">
                 <AppSettings />
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem
+              className="border-none"
+              value={SettingsSections.CustomizableMenu}
+            >
+              <AccordionTrigger
+                className="section-trigger"
+                hideIcon
+              >
+                <SeparatorWithTitle className="section-title">
+                  Customizable Menu{' '}
+                  <ChevronDown className="section-icon" />
+                </SeparatorWithTitle>
+              </AccordionTrigger>
+              <AccordionContent className="section-content">
+                <CustomizableMenu />
               </AccordionContent>
             </AccordionItem>
 

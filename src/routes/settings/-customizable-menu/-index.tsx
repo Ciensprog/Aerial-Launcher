@@ -14,7 +14,7 @@ import {
 
 import { cn } from '../../../lib/utils'
 
-export function AppsettingsCustomMenu() {
+export function CustomizableMenu() {
   return (
     <Card className="w-full">
       <CardHeader className="border-b">
