@@ -59,8 +59,8 @@ export function MissionItem({
       className={cn('item', className)}
       value={missionGuid}
     >
-      <AccordionTrigger className="trigger bg-muted-foreground/5 px-2 py-1 rounded hover:bg-muted-foreground/15 hover:no-underline">
-        <span className="flex gap-1 items-center overflow-hidden max-w-[29.375rem]">
+      <AccordionTrigger className="trigger bg-muted-foreground/5 px-2 py-0 rounded hover:bg-muted-foreground/15 hover:no-underline">
+        <span className="flex gap-1 items-center max-w-[29.375rem] overflow-hidden py-0.5">
           {!mission.zone.iconUrl ? (
             <span
               className={cn(

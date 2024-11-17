@@ -1,4 +1,5 @@
 import { createRoute } from '@tanstack/react-router'
+import { memo } from 'react'
 
 import { CheckNewVersion } from '../bootstrap/components/check-new-version'
 
@@ -19,7 +20,7 @@ import { AlertsDone } from './-index/alerts-done'
 import { Route as RootRoute } from './__root'
 
 import { useGetAccounts } from '../hooks/accounts'
-import { useFetchPlayerDataSync } from './-index/-hooks'
+import { useDropzoneConfig, useFetchPlayerDataSync } from './-index/-hooks'
 
 import { cn } from '../lib/utils'
 
@@ -38,6 +39,9 @@ export const Route = createRoute({
 })
 
 export function IndexComponent() {
+  const { isFileAccepted, isFileRejected, getRootProps } =
+    useDropzoneConfig()
+
   useFetchPlayerDataSync()
 
   return (
@@ -46,58 +50,78 @@ export function IndexComponent() {
       <CheckNewVersion />
 
       <div className="flex flex-grow">
-        <div className="w-full">
-          <CommunityInfo />
+        <div
+          {...getRootProps({
+            className: cn('relative w-full', {
+              '[&_.dzm]:hidden': isFileAccepted,
+              '[&_.dzm-not-allowed]:hidden': isFileRejected,
+            }),
+          })}
+        >
+          <MainContent />
 
-          <section className="border-l-8 mt-4 max-w-lg mx-auto px-2 py-1 text-sm">
-            <h2 className="font-medium text-muted-foreground">
-              Good To Know:
-            </h2>
-            <ul className="list-disc ml-5 text-muted-foreground">
-              <li>
-                Click on the Aerial logo (top left corner) to return here.
-              </li>
-              <li>
-                Drag and drop a World Info file onto the page to load other
-                missions/alerts.
-              </li>
-            </ul>
-          </section>
-
-          <Tabs
-            className={cn(
-              'mb-5 mt-4 max-w-lg mx-auto',
-              '[&_.tab-content]:mt-6'
-            )}
-            defaultValue={defaultTab}
-          >
-            <NavigationTab />
-            <TabsContent
-              className="tab-content"
-              value={IndexTabs.Home}
-            >
-              <HomeAlerts />
-            </TabsContent>
-            <TabsContent
-              className="tab-content"
-              value={IndexTabs.AlertsOverview}
-            >
-              <AlertsOverview />
-            </TabsContent>
-            <TabsContent
-              className="tab-content"
-              value={IndexTabs.AlertsDone}
-            >
-              <AlertsDone />
-            </TabsContent>
-          </Tabs>
-
-          <GoToTop />
+          <div className="dzm bg-background/90 bottom-0 fixed h-[calc(100vh-var(--header-height))] p-8 right-0 w-[calc(100vw-var(--sidebar-width-md))] z-10">
+            <div className="border-8 border-dashed border-green-600- flex font-medium h-full items-center justify-center rounded text-2xl w-full">
+              Drop .json File
+            </div>
+          </div>
+          <div className="dzm-not-allowed bottom-0 fixed h-[calc(100vh-var(--header-height))] p-8 right-0 w-[calc(100vw-var(--sidebar-width-md))] z-10" />
         </div>
       </div>
     </>
   )
 }
+
+const MainContent = memo(() => {
+  return (
+    <>
+      <CommunityInfo />
+
+      <section className="border-l-8 mt-4 max-w-lg mx-auto px-2 py-1 text-sm">
+        <h2 className="font-bold text-muted-foreground">Good To Know:</h2>
+        <ul className="list-disc ml-5 text-muted-foreground">
+          <li>
+            Click on the Aerial logo (top left corner) to return here.
+          </li>
+          <li>
+            Drag and drop a World Info file onto the page to load other
+            missions/alerts.
+          </li>
+        </ul>
+      </section>
+
+      <Tabs
+        className={cn(
+          'mb-5 mt-4 max-w-lg mx-auto',
+          '[&_.tab-content]:mt-6'
+        )}
+        defaultValue={defaultTab}
+      >
+        <NavigationTab />
+        <TabsContent
+          className="tab-content"
+          value={IndexTabs.Home}
+        >
+          <HomeAlerts />
+        </TabsContent>
+        <TabsContent
+          className="tab-content"
+          value={IndexTabs.AlertsOverview}
+        >
+          <AlertsOverview />
+        </TabsContent>
+        <TabsContent
+          className="tab-content"
+          value={IndexTabs.AlertsDone}
+        >
+          <AlertsDone />
+        </TabsContent>
+      </Tabs>
+
+      <GoToTop />
+    </>
+  )
+})
 
 function NavigationTab() {
   const { accountsArray } = useGetAccounts()
