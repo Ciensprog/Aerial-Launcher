@@ -15,6 +15,12 @@ export type ResourceData = {
 }
 
 export type SurvivorData = {
+  gender: number
+  name: string | null
+  portrait: string | null
+}
+
+export type SurvivorUniqueLeadData = {
   managerSynergy: string
   personality: string
   portrait: string

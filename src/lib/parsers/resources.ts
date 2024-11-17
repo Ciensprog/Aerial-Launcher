@@ -13,6 +13,7 @@ import {
   ingredientsJson,
   rarities,
   resourcesJson,
+  survivorsJson,
   survivorsMythicLeadsJson,
   trapsJson,
 } from '../../config/constants/resources'
@@ -23,6 +24,7 @@ import {
   imgModifiers,
   imgRarities,
   imgResources,
+  imgSurvivors,
   imgSurvivorsMythicLeads,
   imgTraps,
   imgWorld,
@@ -107,15 +109,23 @@ export function parseResource({
     return data
   }
 
-  const survivor = getKey(newKey, survivorsMythicLeadsJson)
+  const survivor = getKey(newKey, survivorsJson)
+  const mythicSurvivor = getKey(newKey, survivorsMythicLeadsJson)
   const isWorker = newKey.startsWith('Worker:')
 
-  if (survivor || isWorker) {
-    if (survivor) {
-      const [survivorId] = survivor
+  if (survivor || mythicSurvivor || isWorker) {
+    if (mythicSurvivor) {
+      const [survivorId] = mythicSurvivor
 
       data.imgUrl = imgSurvivorsMythicLeads(`${survivorId}.png`)
-      data.name = `${rarities.er} Lead`
+      data.name = `${rarities[RarityType.Mythic]} Lead`
+    } else if (survivor) {
+      const [survivorId, survivorData] = survivor
+
+      data.imgUrl = imgSurvivors(`${survivorId}.png`)
+      data.name = survivorData.name
+        ? survivorData.name
+        : `${rarities[rarity.rarity]} Survivor`
     } else {
       data.imgUrl = imgResources(
         `voucher_generic_${newKey.includes('manager') ? 'manager' : 'worker'}_${rarity.rarity}.png`
@@ -158,7 +168,7 @@ export function parseResource({
       const [trapId, trapData] = trap
 
       data.imgUrl = imgTraps(`${trapId}.png`)
-      data.name = `${rarities.er} ${trapData.name}`
+      data.name = `${rarities[rarity.rarity]} ${trapData.name}`
       data.type = 'trap'
     } else {
       data.imgUrl = imgResources(
@@ -192,13 +202,15 @@ export function parseRarity(value: string) {
     id.endsWith(`_${RarityType.Uncommon}`) ||
     id.endsWith(`_${RarityType.Rare}`) ||
     id.endsWith(`_${RarityType.Epic}`) ||
-    id.endsWith(`_${RarityType.Legendary}`)
+    id.endsWith(`_${RarityType.Legendary}`) ||
+    id.endsWith(`_${RarityType.Mythic}`)
   const conditionalIncludes =
     id.includes(`_${RarityType.Common}_`) ||
     id.includes(`_${RarityType.Uncommon}_`) ||
     id.includes(`_${RarityType.Rare}_`) ||
     id.includes(`_${RarityType.Epic}_`) ||
-    id.includes(`_${RarityType.Legendary}_`)
+    id.includes(`_${RarityType.Legendary}_`) ||
+    id.includes(`_${RarityType.Mythic}_`)
 
   if (conditionalEndsWith) {
     switch (true) {
@@ -217,6 +229,9 @@ export function parseRarity(value: string) {
       case id.endsWith(`_${RarityType.Legendary}`):
         setRarity(RarityType.Legendary)
         break
+      case id.endsWith(`_${RarityType.Mythic}`):
+        setRarity(RarityType.Mythic)
+        break
     }
   } else if (conditionalIncludes) {
     switch (true) {
@@ -234,6 +249,9 @@ export function parseRarity(value: string) {
         break
       case id.includes(`_${RarityType.Legendary}_`):
         setRarity(RarityType.Legendary)
+        break
+      case id.includes(`_${RarityType.Mythic}_`):
+        setRarity(RarityType.Mythic)
         break
     }
   }

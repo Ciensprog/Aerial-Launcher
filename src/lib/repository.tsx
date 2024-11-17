@@ -36,8 +36,12 @@ export function imgResources(filePath: string) {
   return assets(`images/resources/${filePath}`)
 }
 
+export function imgSurvivors(filePath: string) {
+  return assets(`images/survivors/${filePath}`)
+}
+
 export function imgSurvivorsMythicLeads(filePath: string) {
-  return assets(`images/survivors/unique-leads/${filePath}`)
+  return imgSurvivors(`unique-leads/${filePath}`)
 }
 
 export function imgTraps(filePath: string) {
