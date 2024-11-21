@@ -33,17 +33,17 @@
   "floor_launcher": {
     "name": "Floor Launcher"
   },
-  "floor_player_jump_pad": {
-    "name": "Player Jump Pad (Up)"
-  },
   "floor_player_jump_pad_free_direction": {
     "name": "Player Jump Pad (Directional)"
   },
-  "floor_spikes": {
-    "name": "Retractable Floor Spikes"
+  "floor_player_jump_pad": {
+    "name": "Player Jump Pad (Up)"
   },
   "floor_spikes_wood": {
     "name": "Wooden Floor Spikes"
+  },
+  "floor_spikes": {
+    "name": "Retractable Floor Spikes"
   },
   "floor_tar": {
     "name": "Tar Pit"
