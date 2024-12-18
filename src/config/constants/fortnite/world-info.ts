@@ -5,11 +5,18 @@ export enum World {
   CannyValley = 'E6ECBD064B153234656CB4BDE6743870',
   TwinePeaks = 'D9A801C5444D1C74D1B7DAB5C7C12C5B',
 
+  StormKingsDomain = '0C92E7904E00C6C93406BB9C26ACD2B0',
+
   // Events
   Dungeons = '394D85EF40B2BF401E6F32B587D7672B',
+  VisitTheCrater = '21726CDB473D7BD46C9643AA71DB4C6A',
 
   // Ventures
+  BlastedBadlands = '25D86CC64F0F3EE1831CFD9B2DF6D68C',
+  FlannelFalls = 'FF97186D4741CB5F2A980BB0164081D4',
+  FrozenFjords = 'D61659064BED28BEA91FD2A343C126B7',
   Hexsylvania = 'DBB6E92A4EDE30B76C94C7BA3852C473',
+  ScurvyShoals = '243870C643F8611F25D24287814E1DA4',
 
   // Extras
   PerfMem = '67EDCFE942260C290B369BA7AA70A0D5',
@@ -220,6 +227,31 @@ export enum VentureModifier {
    * @description Enemies close to a player or defender suffer more damage; those far away suffer less. All enemies have a chance to drop a healing pickup when eliminated.
    */
   ShortRange = 'GM_Phoenix_CloseQuarters',
+
+  /**
+   * @venture Frozen Fjords
+   * @title Super Soldier
+   * @description Headshot damage gets a x2 bonus. Ranged weapon eliminations reduce active cooldowns by 4 seconds. If Frag Grenade is equipped, every 6 ranged eliminations grant a grenade. Reduced melee weapon and trap damage.
+   */
+  SuperSoldier = 'GM_Phoenix_SuperHeroic',
+  /**
+   * @venture Frozen Fjords
+   * @title Super Constructor
+   * @description Building costs are reduced by 66%. Melee Impact damage dealt is increased, and triggering Kinetic Overload reduces active cooldowns by 4 seconds. Reduced weapon damage.
+   */
+  SuperConstructor = 'GM_Phoenix_SuperConstructor',
+  /**
+   * @venture Frozen Fjords
+   * @title Super Ninja
+   * @description Ability eliminations increase melee damage and attack speed by 50% for 10 seconds. Melee weapon eliminations reduce active cooldowns by 2 seconds. Shadowstance's benefits are doubled. Reduced ranged weapon and trap damage.
+   */
+  SuperNinja = 'GM_Phoenix_SuperNinja',
+  /**
+   * @venture Frozen Fjords
+   * @title Super Outlander
+   * @description Anti-Material Charge costs 0 Energy. They gain a fragment every 50 seconds. Passive 30% damage buff to active abilities. Reduced weapon and trap damage.
+   */
+  SuperOutlander = 'GM_Phoenix_SuperOutlander',
 }
 
 export enum WorldModifier {
