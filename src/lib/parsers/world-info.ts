@@ -182,9 +182,9 @@ export function worlInfoParser(data: WorldInfoData | null) {
               missionGenerator: mission.missionGenerator,
             })
 
-            if (zoneInfo.type === 'quest') {
-              return
-            }
+            // if (zoneInfo.type === 'quest') {
+            //   return
+            // }
 
             const currentAlert = rawWorldInfo[theaterId].alerts[zone].find(
               (alert) => mission.tileIndex === alert.tileIndex
@@ -264,8 +264,6 @@ export function worlInfoParser(data: WorldInfoData | null) {
                   key: item.itemType,
                   quantity: item.quantity,
                 })
-
-                parsedResource
 
                 filters.push(item.itemType)
 
