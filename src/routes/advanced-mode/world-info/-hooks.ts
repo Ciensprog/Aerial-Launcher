@@ -9,14 +9,14 @@ import {
   useWorldInfoFiles,
 } from '../../../hooks/advanced-mode/world-info'
 
-import { getDate } from '../../../lib/dates'
+import { getDateWithFormat, getDate } from '../../../lib/dates'
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
   const { data, isFetching, isSaving } = useCurrentWorldInfoData()
   const { files } = useWorldInfoFiles()
   const currentData = {
-    date: getDate(),
+    date: getDateWithFormat(undefined, 'YYYY-MM-DD HH[h] m[m] s[s]'),
     value: data,
   }
 
@@ -30,16 +30,20 @@ export function useData() {
 
 export function useSearch({ files }: { files: Array<WorldInfoFileData> }) {
   const [searchValue, setSearchValue] = useState('')
-  const [includeFileData, setIncludeFileData] = useState(false)
+  // const [includeFileData, setIncludeFileData] = useState(false)
 
   const filteredFiles =
     searchValue.length > 0
       ? files.filter((item) => {
-          const data = [item.date, item.filename]
+          const data = [
+            getDateWithFormat(item.date, 'dddd, MMMM D, YYYY h:m:s A'),
+            getDate(item.date),
+            item.filename,
+          ]
 
-          if (includeFileData) {
-            data.push(JSON.stringify(item.data))
-          }
+          // if (includeFileData) {
+          //   data.push(JSON.stringify(item.data))
+          // }
 
           return data.some((value) =>
             value
@@ -58,11 +62,11 @@ export function useSearch({ files }: { files: Array<WorldInfoFileData> }) {
 
   return {
     filteredFiles,
-    includeFileData,
+    // includeFileData,
     searchValue,
 
     onChangeSearchValue,
-    setIncludeFileData,
+    // setIncludeFileData,
   }
 }
 
@@ -179,7 +183,7 @@ export function useCurrentActions() {
     window.electronAPI.requestWorldInfoData()
   }
 
-  const handleSave = (date: string) => () => {
+  const handleSave = (filename: string) => () => {
     if (!data || isSaving) {
       return
     }
@@ -187,7 +191,7 @@ export function useCurrentActions() {
     setIsSaving(true)
     window.electronAPI.saveWorldInfoData({
       data,
-      date,
+      filename,
     })
   }
 

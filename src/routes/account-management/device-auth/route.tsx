@@ -34,7 +34,7 @@ import { Toggle } from '../../../components/ui/toggle'
 import { useActions, useData, useParseIdentities } from './-hooks'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
-import { dateWithFormat, relativeTime } from '../../../lib/dates'
+import { getDateWithFormat, relativeTime } from '../../../lib/dates'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
 
 const dots = '•••'
@@ -246,7 +246,9 @@ function ItemInformation({
             {parsedDate}{' '}
             {data?.dateTime !== undefined && (
               <span className="text-muted-foreground text-xs">
-                ({dateWithFormat(data.dateTime, 'MM/DD/YYYY hh:mm:ss a')})
+                (
+                {getDateWithFormat(data.dateTime, 'MM/DD/YYYY hh:mm:ss a')}
+                )
               </span>
             )}
           </>

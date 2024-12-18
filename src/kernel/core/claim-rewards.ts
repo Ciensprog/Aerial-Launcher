@@ -24,7 +24,7 @@ import {
   setSetPinnedQuests,
 } from '../../services/endpoints/mcp'
 
-import { getRawDate } from '../../lib/dates'
+import { getDateWithDefaultFormat } from '../../lib/dates'
 
 export class ClaimRewards {
   static async start(
@@ -288,7 +288,7 @@ export class ClaimRewards {
           const result: RewardsNotification = {
             accolades,
             rewards,
-            createdAt: getRawDate(),
+            createdAt: getDateWithDefaultFormat(),
             id: crypto.randomUUID(),
             accountId: account.accountId,
           }

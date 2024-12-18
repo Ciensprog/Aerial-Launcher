@@ -1,6 +1,9 @@
 import { createTheme, MantineProvider } from '@mantine/core'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 import dayjs from 'dayjs'
 import { createRoot } from 'react-dom/client'
 
@@ -8,7 +11,7 @@ import { IndexComponent } from './routes'
 import { routeTree } from './routeTree.gen'
 
 import { LoadMatchmakingPath } from './bootstrap/components/advanced-mode/load-matchmaking-path'
-import { LoadWorldInfoFiles } from './bootstrap/components/advanced-mode/load-world-info-files'
+// import { LoadWorldInfoFiles } from './bootstrap/components/advanced-mode/load-world-info-files'
 import {
   LoadHomeWorldInfo,
   LoadWorldInfoData,
@@ -23,7 +26,10 @@ import { LoadTags } from './bootstrap/components/load-tags'
 import { Toaster } from './components/ui/sonner'
 import { ThemeProvider } from './components/theme-provider'
 
+dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
+dayjs.extend(timezone)
+dayjs.extend(utc)
 
 const root = createRoot(document.getElementById('app')!)
 const router = createRouter({ routeTree })
@@ -42,7 +48,7 @@ root.render(
       <LoadFriends />
       <LoadHomeWorldInfo />
       <LoadWorldInfoData />
-      <LoadWorldInfoFiles />
+      {/* <LoadWorldInfoFiles /> */}
       <LoadMatchmakingPath />
       <LoadAutomation />
 

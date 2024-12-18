@@ -22,7 +22,7 @@ import { useGetAccounts } from '../../hooks/accounts'
 
 import { numberWithCommaSeparator } from '../../lib/parsers/numbers'
 import { parseResource } from '../../lib/parsers/resources'
-import { dateWithFormat } from '../../lib/dates'
+import { getDateWithFormat } from '../../lib/dates'
 import { parseCustomDisplayName } from '../../lib/utils'
 
 enum HistoryTabs {
@@ -167,13 +167,13 @@ function DateRange({
         First claim{' '}
         {startsAt === ''
           ? 'N/A'
-          : dateWithFormat(startsAt, 'MM/DD/YYYY hh:mm:ss a')}
+          : getDateWithFormat(startsAt, 'MM/DD/YYYY hh:mm:ss a')}
       </div>
       <div>
         Last played at{' '}
         {endsAt === ''
           ? 'N/A'
-          : dateWithFormat(endsAt, 'MM/DD/YYYY hh:mm:ss a')}
+          : getDateWithFormat(endsAt, 'MM/DD/YYYY hh:mm:ss a')}
       </div>
     </div>
   )
@@ -192,7 +192,7 @@ function RewardSection({ data }: { data: RewardsNotification }) {
         <AccoladesItem accolades={data.accolades} />
       </ul>
       <div className="mt-1 text-muted-foreground text-xs">
-        {dateWithFormat(data.createdAt, 'MM/DD/YYYY hh:mm:ss a')}
+        {getDateWithFormat(data.createdAt, 'MM/DD/YYYY hh:mm:ss a')}
       </div>
     </div>
   )

@@ -38,8 +38,8 @@ export type WorldInfoOpenResponse = {
 
 export type WorldInfoFileData = {
   createdAt: Date
-  data: WorldInfoData
-  date: string
+  data: WorldInfoData | null
+  date: Date
   filename: string
   id: string
   size: number
@@ -47,7 +47,7 @@ export type WorldInfoFileData = {
 
 export type SaveWorldInfoData = {
   data: WorldInfoData
-  date: strinng
+  filename: string
 }
 
 export type WorldInfoParsed = z.infer<typeof worldInfoSchema>

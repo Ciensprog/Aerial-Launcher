@@ -30,7 +30,6 @@ import { DataDirectory } from '../startup/data-directory'
 import { getWorldInfoData } from '../../services/endpoints/advanced-mode/world-info'
 import { createAccessTokenUsingClientCredentials } from '../../services/endpoints/oauth'
 
-import { getDate } from '../../lib/dates'
 import { localeCompareForSorting } from '../../lib/utils'
 
 export class WorldInfoManager {
@@ -92,7 +91,7 @@ export class WorldInfoManager {
       await writeFile(
         path.join(
           DataDirectory.getWorldInfoDirectoryPath(),
-          `${value.date}.json`
+          `${value.filename}.json`
         ),
         JSON.stringify(value.data, null, 2),
         {
@@ -114,61 +113,71 @@ export class WorldInfoManager {
   }
 
   static async requestFiles() {
-    const files: Array<WorldInfoFileData> = []
-
     try {
       const basePath = DataDirectory.getWorldInfoDirectoryPath()
       const dir = await readdir(basePath)
 
-      for (const filename of dir) {
+      const getFileData = async (filename: string) => {
         try {
           const filePath = path.join(basePath, filename)
-          const file = await readFile(filePath, {
-            encoding: 'utf8',
-          })
           const stats = await stat(filePath)
 
           if (
             !stats.isFile() ||
             (stats.isFile() && !filename.endsWith('.json'))
           ) {
-            continue
+            return null
           }
 
-          const parsedJson = JSON.parse(file)
+          // const file = await readFile(filePath, {
+          //   encoding: 'utf8',
+          // })
+
+          // const parsedJson = JSON.parse(file)
           const data: WorldInfoFileData = {
             createdAt: stats.birthtime,
-            date: getDate(stats.birthtime),
-            data: parsedJson,
+            date: stats.birthtime,
+            data: null, // parsedJson,
             filename: filename.replace('.json', ''),
             id: crypto.randomUUID(),
             size: stats.size,
           }
 
-          files.push(data)
+          return data
 
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           //
         }
+
+        return null
       }
+
+      Promise.allSettled(dir.map(getFileData)).then((responseFiles) => {
+        const filtered = responseFiles
+          .filter((response) => response.status === 'fulfilled')
+          .map(
+            (response) =>
+              (response as PromiseFulfilledResult<WorldInfoFileData>).value
+          ) as Array<WorldInfoFileData>
+
+        const sortedFiles = filtered.toSorted(
+          (itemA, itemB) =>
+            (itemB.createdAt?.getTime() ?? 0) -
+              (itemA.createdAt?.getTime() ?? 0) ||
+            localeCompareForSorting(itemB.filename, itemA.filename)
+        )
+
+        MainWindow.instance.webContents.send(
+          ElectronAPIEventKeys.WorldInfoResponseFiles,
+          sortedFiles
+        )
+      })
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
-
-    const sortedFiles = files.toSorted(
-      (itemA, itemB) =>
-        (itemB.createdAt?.getTime() ?? 0) -
-          (itemA.createdAt?.getTime() ?? 0) ||
-        localeCompareForSorting(itemB.filename, itemA.filename)
-    )
-
-    MainWindow.instance.webContents.send(
-      ElectronAPIEventKeys.WorldInfoResponseFiles,
-      sortedFiles
-    )
   }
 
   static async deleteFile(data: WorldInfoFileData) {
@@ -226,9 +235,17 @@ export class WorldInfoManager {
       }
 
       try {
+        const basePath = DataDirectory.getWorldInfoDirectoryPath()
+        const filePath = path.join(basePath, `${value.filename}.json`)
+
+        const file = await readFile(filePath, {
+          encoding: 'utf8',
+        })
+        const parsedJson = JSON.parse(file)
+
         await writeFile(
           response.filePath,
-          JSON.stringify(value.data, null, 2),
+          JSON.stringify(parsedJson, null, 2),
           {
             encoding: 'utf8',
           }
@@ -315,7 +332,7 @@ export class WorldInfoManager {
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      //
+      console.error(error)
     }
 
     MainWindow.instance.webContents.send(

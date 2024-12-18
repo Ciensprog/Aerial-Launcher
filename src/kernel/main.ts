@@ -22,7 +22,10 @@ import type {
 } from '../types/xpboosts'
 
 import path from 'node:path'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 import dayjs from 'dayjs'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
 import schedule from 'node-schedule'
@@ -58,7 +61,10 @@ import {
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
 
+dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
+dayjs.extend(timezone)
+dayjs.extend(utc)
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
