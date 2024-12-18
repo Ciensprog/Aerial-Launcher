@@ -36,7 +36,7 @@ import {
   useSearch,
 } from './-hooks'
 
-import { getExtendedDateFormat, relativeTime } from '../../../lib/dates'
+import { getShortDateFormat, relativeTime } from '../../../lib/dates'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -245,7 +245,7 @@ function Item({ data }: { data: WorldInfoFileData }) {
       </CardContent>
       <CardFooter className="bg-muted-foreground/5 px-2 py-1 rounded-b">
         <div className="leading-4 py-0.5 rounded text-muted-foreground text-sm">
-          {getExtendedDateFormat(data.date)}
+          {getShortDateFormat(data.date)}
           <span className="italic ml-1">
             ({relativeTime(data.createdAt)})
           </span>

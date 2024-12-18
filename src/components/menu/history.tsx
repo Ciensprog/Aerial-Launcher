@@ -22,7 +22,7 @@ import { useGetAccounts } from '../../hooks/accounts'
 
 import { numberWithCommaSeparator } from '../../lib/parsers/numbers'
 import { parseResource } from '../../lib/parsers/resources'
-import { getDateWithFormat } from '../../lib/dates'
+import { getDateWithFormat, getShortDateFormat } from '../../lib/dates'
 import { parseCustomDisplayName } from '../../lib/utils'
 
 enum HistoryTabs {
@@ -192,7 +192,7 @@ function RewardSection({ data }: { data: RewardsNotification }) {
         <AccoladesItem accolades={data.accolades} />
       </ul>
       <div className="mt-1 text-muted-foreground text-xs">
-        {getDateWithFormat(data.createdAt, 'MM/DD/YYYY hh:mm:ss a')}
+        {getShortDateFormat(data.createdAt)}
       </div>
     </div>
   )

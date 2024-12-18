@@ -31,5 +31,9 @@ export function relativeTime(config?: ConfigType) {
 }
 
 export function getExtendedDateFormat(config?: ConfigType) {
+  return getDateWithFormat(config, 'dddd, MMMM D, YYYY h:mm:ss A')
+}
+
+export function getShortDateFormat(config?: ConfigType) {
   return getDateWithFormat(config, 'ddd, MMM D, YYYY h:mm:ss A')
 }
