@@ -9,7 +9,11 @@ import {
   useWorldInfoFiles,
 } from '../../../hooks/advanced-mode/world-info'
 
-import { getDateWithFormat, getDate } from '../../../lib/dates'
+import {
+  getDateWithFormat,
+  getDate,
+  getExtendedDateFormat,
+} from '../../../lib/dates'
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
@@ -36,7 +40,7 @@ export function useSearch({ files }: { files: Array<WorldInfoFileData> }) {
     searchValue.length > 0
       ? files.filter((item) => {
           const data = [
-            getDateWithFormat(item.date, 'dddd, MMMM D, YYYY h:m:s A'),
+            getExtendedDateFormat(item.date),
             getDate(item.date),
             item.filename,
           ]

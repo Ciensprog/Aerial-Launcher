@@ -13,7 +13,7 @@ import { usePlayerData, usePlayerDataActions } from './-hooks'
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 import { extractCommanderLevel } from '../../../lib/parsers/query-profile'
 import { whatIsThis } from '../../../lib/callbacks'
-import { getDateWithFormat } from '../../../lib/dates'
+import { getShortDateFormat } from '../../../lib/dates'
 
 export function BasicInformation() {
   const { playerData } = useAlertsDoneData()
@@ -23,16 +23,10 @@ export function BasicInformation() {
   const firstMission = missions.last()
   const lastMission = missions.first()
   const firstDate = firstMission
-    ? getDateWithFormat(
-        firstMission.redemptionDateUtc,
-        'MM/DD/YYYY hh:mm:ss a'
-      )
+    ? getShortDateFormat(firstMission.redemptionDateUtc)
     : 'N/A'
   const lastDate = lastMission
-    ? getDateWithFormat(
-        lastMission.redemptionDateUtc,
-        'MM/DD/YYYY hh:mm:ss a'
-      )
+    ? getShortDateFormat(lastMission.redemptionDateUtc)
     : 'N/A'
 
   if (!playerData?.data) {

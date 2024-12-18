@@ -22,7 +22,7 @@ import { useGetAccounts } from '../../hooks/accounts'
 
 import { numberWithCommaSeparator } from '../../lib/parsers/numbers'
 import { parseResource } from '../../lib/parsers/resources'
-import { getDateWithFormat, getShortDateFormat } from '../../lib/dates'
+import { getShortDateFormat } from '../../lib/dates'
 import { parseCustomDisplayName } from '../../lib/utils'
 
 enum HistoryTabs {
@@ -164,16 +164,12 @@ function DateRange({
   return (
     <div className="mb-2 text-muted-foreground text-xs">
       <div>
-        First claim{' '}
-        {startsAt === ''
-          ? 'N/A'
-          : getDateWithFormat(startsAt, 'MM/DD/YYYY hh:mm:ss a')}
+        First claim:{' '}
+        {startsAt === '' ? 'N/A' : getShortDateFormat(startsAt)}
       </div>
       <div>
-        Last played at{' '}
-        {endsAt === ''
-          ? 'N/A'
-          : getDateWithFormat(endsAt, 'MM/DD/YYYY hh:mm:ss a')}
+        Last played at:{' '}
+        {endsAt === '' ? 'N/A' : getShortDateFormat(endsAt)}
       </div>
     </div>
   )
