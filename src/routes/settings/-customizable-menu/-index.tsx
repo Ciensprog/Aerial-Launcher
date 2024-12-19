@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import {
   Card,
   CardContent,
@@ -15,19 +17,19 @@ import {
 import { cn } from '../../../lib/utils'
 
 export function CustomizableMenu() {
+  const { t } = useTranslation(['settings'])
+
   return (
     <Card className="w-full">
       <CardHeader className="border-b">
-        <CardDescription>
-          You can customize menu sections/options visibility.
-        </CardDescription>
+        <CardDescription>{t('custom-menu.description')}</CardDescription>
       </CardHeader>
       <CardContent
         className={cn(
           'p-6 space-y-4',
           '[&_.category:not(:last-child)]:border-b [&_.category:not(:last-child)]:pb-4',
           '[&_.list]:gap-x-6 [&_.list]:gap-y-1 [&_.list]:grid [&_.list]:grid-cols-2',
-          '[&_.title]:flex-1 [&_.title]:cursor-pointer',
+          '[&_.title]:flex-1 [&_.title]:cursor-pointer [&_.title]:leading-4',
           '[&_.item]:flex [&_.item]:items-center [&_.item]:justify-between [&_.item.main]:mb-2'
         )}
       >
@@ -41,6 +43,8 @@ export function CustomizableMenu() {
 }
 
 function STWOperationsSection() {
+  const { t } = useTranslation(['sidebar'])
+
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
   const { updateMenuOption } = useCustomizableMenuSettingsActions()
@@ -52,7 +56,7 @@ function STWOperationsSection() {
           className="title text-lg"
           htmlFor="stw-operations"
         >
-          STW Operations
+          {t('stw-operations.title')}
         </Label>
         <Switch
           id="stw-operations"
@@ -66,7 +70,7 @@ function STWOperationsSection() {
             className="title"
             htmlFor="auto-kick"
           >
-            Auto-kick
+            {t('stw-operations.options.auto-kick')}
           </Label>
           <Switch
             id="auto-kick"
@@ -79,7 +83,7 @@ function STWOperationsSection() {
             className="title"
             htmlFor="party"
           >
-            Party
+            {t('stw-operations.options.party')}
           </Label>
           <Switch
             id="party"
@@ -92,7 +96,7 @@ function STWOperationsSection() {
             className="title"
             htmlFor="save-quests"
           >
-            Save Quests
+            {t('stw-operations.options.save-quests')}
           </Label>
           <Switch
             id="save-quests"
@@ -105,7 +109,7 @@ function STWOperationsSection() {
             className="title"
             htmlFor="homebase-name"
           >
-            Homebase name
+            {t('stw-operations.options.homebase-name')}
           </Label>
           <Switch
             id="homebase-name"
@@ -118,7 +122,7 @@ function STWOperationsSection() {
             className="title"
             htmlFor="xp-boosts"
           >
-            XP Boosts
+            {t('stw-operations.options.xp-boosts')}
           </Label>
           <Switch
             id="xp-boosts"
@@ -131,7 +135,7 @@ function STWOperationsSection() {
             className="title"
             htmlFor="auto-pin-urns"
           >
-            Auto-pin Urns
+            {t('stw-operations.options.auto-pin-urns')}
           </Label>
           <Switch
             id="auto-pin-urns"
@@ -145,6 +149,8 @@ function STWOperationsSection() {
 }
 
 function AccountManagementSection() {
+  const { t } = useTranslation(['sidebar'])
+
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
   const { updateMenuOption } = useCustomizableMenuSettingsActions()
@@ -156,7 +162,7 @@ function AccountManagementSection() {
           className="title text-lg"
           htmlFor="account-management"
         >
-          Account Management
+          {t('account-management.title')}
         </Label>
         <Switch
           id="account-management"
@@ -170,7 +176,7 @@ function AccountManagementSection() {
             className="title"
             htmlFor="vbucks-information"
           >
-            V-Bucks Information
+            {t('account-management.options.vbucks-information')}
           </Label>
           <Switch
             id="vbucks-information"
@@ -183,7 +189,7 @@ function AccountManagementSection() {
             className="title"
             htmlFor="redeem-codes"
           >
-            Redeem Codes
+            {t('account-management.options.redeem-codes')}
           </Label>
           <Switch
             id="redeem-codes"
@@ -196,7 +202,7 @@ function AccountManagementSection() {
             className="title"
             htmlFor="devices-auth"
           >
-            Devices Auth
+            {t('account-management.options.devices-auth')}
           </Label>
           <Switch
             id="devices-auth"
@@ -209,7 +215,7 @@ function AccountManagementSection() {
             className="title"
             htmlFor="epic-games-settings"
           >
-            Epic Games Settings
+            {t('account-management.options.epic-settings')}
           </Label>
           <Switch
             id="epic-games-settings"
@@ -223,6 +229,8 @@ function AccountManagementSection() {
 }
 
 function AdvancedModeSection() {
+  const { t } = useTranslation(['sidebar'])
+
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
   const { updateMenuOption } = useCustomizableMenuSettingsActions()
@@ -234,7 +242,7 @@ function AdvancedModeSection() {
           className="title text-lg"
           htmlFor="advanced-mode"
         >
-          Advanced Mode
+          {t('advanced-mode.title')}
         </Label>
         <Switch
           id="advanced-mode"
@@ -248,7 +256,7 @@ function AdvancedModeSection() {
             className="title"
             htmlFor="matchmaking-track"
           >
-            Matchmaking Track
+            {t('advanced-mode.options.matchmaking-track')}
           </Label>
           <Switch
             id="matchmaking-track"
@@ -261,7 +269,7 @@ function AdvancedModeSection() {
             className="title"
             htmlFor="world-info"
           >
-            World Info
+            {t('advanced-mode.options.world-info')}
           </Label>
           <Switch
             id="world-info"
@@ -275,6 +283,8 @@ function AdvancedModeSection() {
 }
 
 function MyAccountsSection() {
+  const { t } = useTranslation(['sidebar'])
+
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
   const { updateMenuOption } = useCustomizableMenuSettingsActions()
@@ -286,7 +296,7 @@ function MyAccountsSection() {
           className="title text-lg"
           htmlFor="my-accounts"
         >
-          My Accounts
+          {t('accounts.title')}
         </Label>
         <Switch
           id="my-accounts"
@@ -300,7 +310,7 @@ function MyAccountsSection() {
             className="title"
             htmlFor="show-total-accounts"
           >
-            Show Total Accounts
+            {t('accounts.options.show-total-accounts')}
           </Label>
           <Switch
             id="show-total-accounts"
@@ -315,7 +325,7 @@ function MyAccountsSection() {
             className="title"
             htmlFor="authorization-code"
           >
-            Authorization Code
+            {t('accounts.options.auth')}
           </Label>
           <Switch
             id="authorization-code"
@@ -328,7 +338,7 @@ function MyAccountsSection() {
             className="title"
             htmlFor="exchange-code"
           >
-            Exchange Code
+            {t('accounts.options.exchange')}
           </Label>
           <Switch
             id="exchange-code"
@@ -341,7 +351,7 @@ function MyAccountsSection() {
             className="title"
             htmlFor="device-auth"
           >
-            Device Auth
+            {t('accounts.options.device')}
           </Label>
           <Switch
             id="device-auth"
@@ -354,7 +364,7 @@ function MyAccountsSection() {
             className="title"
             htmlFor="remove-account"
           >
-            Remove Account
+            {t('accounts.options.remove')}
           </Label>
           <Switch
             id="remove-account"

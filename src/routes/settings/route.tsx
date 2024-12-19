@@ -1,5 +1,6 @@
 import { createRoute } from '@tanstack/react-router'
 import { ChevronDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../__root'
 
@@ -39,6 +40,8 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/settings',
   component: () => {
+    const { t } = useTranslation(['general'])
+
     return (
       <>
         <Breadcrumb>
@@ -46,7 +49,7 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Settings</BreadcrumbPage>
+              <BreadcrumbPage>{t('settings')} </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -57,6 +60,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['settings'])
+
   const { accountsArray } = useGetAccounts()
 
   return (
@@ -83,7 +88,8 @@ function Content() {
                 hideIcon
               >
                 <SeparatorWithTitle className="section-title">
-                  App Settings <ChevronDown className="section-icon" />
+                  {t('app-settings.title')}{' '}
+                  <ChevronDown className="section-icon" />
                 </SeparatorWithTitle>
               </AccordionTrigger>
               <AccordionContent className="section-content">
@@ -100,7 +106,7 @@ function Content() {
                 hideIcon
               >
                 <SeparatorWithTitle className="section-title">
-                  Customizable Menu{' '}
+                  {t('custom-menu.title')}{' '}
                   <ChevronDown className="section-icon" />
                 </SeparatorWithTitle>
               </AccordionTrigger>
@@ -118,7 +124,8 @@ function Content() {
                 hideIcon
               >
                 <SeparatorWithTitle className="section-title">
-                  Tags Management <ChevronDown className="section-icon" />
+                  {t('tags-management.title')}{' '}
+                  <ChevronDown className="section-icon" />
                 </SeparatorWithTitle>
               </AccordionTrigger>
               <AccordionContent className="section-content">
@@ -136,7 +143,7 @@ function Content() {
                   hideIcon
                 >
                   <SeparatorWithTitle className="section-title">
-                    Account Customization{' '}
+                    {t('account-customization.title')}{' '}
                     <ChevronDown className="section-icon" />
                   </SeparatorWithTitle>
                 </AccordionTrigger>
