@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "change": "Change",
+    "create": "Create",
+    "update": "Update"
+  },
+  "go-to-current-alerts": "Go To Current Alerts",
+  "settings": "Settings",
+  "update-information": "Update Information"
+}

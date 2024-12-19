@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "change": "Cambiar",
+    "create": "Crear",
+    "update": "Actualizar"
+  },
+  "go-to-current-alerts": "Ir A Las Misiones Actuales",
+  "settings": "Configuraciones",
+  "update-information": "Actualizar Información"
+}

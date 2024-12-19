@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import {
   defaultMissionInterval,
   missionIntervalRange,
@@ -23,6 +25,8 @@ import { Switch } from '../../../components/ui/switch'
 import { useSetupForm } from '../-hooks'
 
 export function AppSettingsBaseForm() {
+  const { t } = useTranslation(['settings', 'general'])
+
   const { form, onSubmit } = useSetupForm()
 
   return (
@@ -38,7 +42,9 @@ export function AppSettingsBaseForm() {
               name="path"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Custom Path</FormLabel>
+                  <FormLabel>
+                    {t('app-settings.form.path.label')}
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -52,9 +58,9 @@ export function AppSettingsBaseForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Custom User Agent{' '}
+                    {t('app-settings.form.user-agent.label')}{' '}
                     <span className="block text-muted-foreground text-xs">
-                      Only is applied if you don't have Fortnite installed.
+                      {t('app-settings.form.user-agent.note')}
                     </span>
                   </FormLabel>
                   <FormControl>
@@ -70,18 +76,21 @@ export function AppSettingsBaseForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Custom Delay For Claiming Rewards{' '}
+                    {t('app-settings.form.claiming-rewards.label')}{' '}
                     <span className="block text-muted-foreground text-xs">
-                      Value in seconds between{' '}
-                      {claimingRewardsDelayRange.min} and{' '}
-                      {claimingRewardsDelayRange.max}. Default is:{' '}
-                      {defaultClaimingRewardsDelay}.
+                      {t('app-settings.form.claiming-rewards.note', {
+                        min: claimingRewardsDelayRange.min,
+                        max: claimingRewardsDelayRange.max,
+                        default: defaultClaimingRewardsDelay,
+                      })}
                     </span>
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Examples: 0, 1, 1.5, 3, 4, 4.2 or 5"
+                      placeholder={t(
+                        'app-settings.form.claiming-rewards.input.placeholder'
+                      )}
                       onChange={(event) => {
                         const newValue = event.target.value.replace(
                           /[^0-9.]+/gi,
@@ -102,29 +111,29 @@ export function AppSettingsBaseForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Custom Interval Time For Checking Current Mission
+                    {t('app-settings.form.mission-interval.label')}
                     <span className="block mb-2 text-muted-foreground text-xs">
-                      Means every{' '}
-                      {form.getValues('missionInterval') === ''
-                        ? 3
-                        : form.getValues('missionInterval')}{' '}
-                      second
-                      {form.getValues('missionInterval') === '1'
-                        ? ''
-                        : 's'}{' '}
-                      is checking if you are on a mission. This is used
-                      with automation feature.
+                      {t('app-settings.form.mission-interval.note1', {
+                        value:
+                          form.getValues('missionInterval') === ''
+                            ? 3
+                            : form.getValues('missionInterval'),
+                      })}
                     </span>
                     <span className="block text-muted-foreground text-xs">
-                      Value in seconds between {missionIntervalRange.min}{' '}
-                      and {missionIntervalRange.max}. Default is:{' '}
-                      {defaultMissionInterval}.
+                      {t('app-settings.form.mission-interval.note2', {
+                        min: missionIntervalRange.min,
+                        max: missionIntervalRange.max,
+                        default: defaultMissionInterval,
+                      })}
                     </span>
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Examples: 1, 3, 4 or 5"
+                      placeholder={t(
+                        'app-settings.form.mission-interval.input.placeholder'
+                      )}
                       onChange={(event) => {
                         const newValue = event.target.value.replace(
                           /[^0-9]+/gi,
@@ -144,7 +153,9 @@ export function AppSettingsBaseForm() {
               name="systemTray"
               render={({ field }) => (
                 <FormItem className="flex items-center space-y-0">
-                  <FormLabel>Hide to system tray</FormLabel>
+                  <FormLabel>
+                    {t('app-settings.form.tray.label')}
+                  </FormLabel>
                   <FormControl className="ml-auto">
                     <Switch
                       checked={field.value}
@@ -161,7 +172,9 @@ export function AppSettingsBaseForm() {
               type="submit"
               className="w-full"
             >
-              Update Information
+              {t('update-information', {
+                ns: 'general',
+              })}
             </Button>
           </CardFooter>
         </Card>

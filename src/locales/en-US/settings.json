@@ -1,0 +1,70 @@
+{
+  "app-settings": {
+    "title": "App Settings",
+    "form": {
+      "path": {
+        "label": "Custom path"
+      },
+      "user-agent": {
+        "label": "Custom User Agent",
+        "note": "Only is applied if you don't have Fortnite installed."
+      },
+      "claiming-rewards": {
+        "label": "Custom delay for claiming rewards",
+        "note": "Value in seconds between {{min}} and {{max}}. Default is: {{default}}.",
+        "input": {
+          "placeholder": "Examples: 0, 1, 1.5, 3, 4, 4.2 or 5"
+        }
+      },
+      "mission-interval": {
+        "label": "Custom interval time for checking current mission",
+        "note1": "Means every {{value}} second/s is checking if you are on a mission. This is used with automation feature.",
+        "note2": "Value in seconds between {{min}} and {{max}}. Default is: {{default}}.",
+        "input": {
+          "placeholder": "Examples: 1, 3, 4 or 5"
+        }
+      },
+      "tray": {
+        "label": "Hide to system tray"
+      }
+    }
+  },
+  "custom-menu": {
+    "title": "Customizable Menu",
+    "description": "You can customize menu sections/options visibility."
+  },
+  "tags-management": {
+    "title": "Tags Management",
+    "description": "You can create tags to group accounts easily and run bulk operations in a more organized way.",
+    "form": {
+      "input": {
+        "placeholder": "Type a tag name"
+      }
+    },
+    "search": {
+      "input": {
+        "placeholder": "Search on {{total}} tags"
+      },
+      "empty": "No tag found"
+    }
+  },
+  "account-customization": {
+    "title": "Account Customization",
+    "description": "Sometimes you could need a specific display name for identifying an account. If you want, you can change the current display name with a custom name.",
+    "note": "Note: this only applies visually to the Aerial accounts.",
+    "search": {
+      "input": {
+        "placeholder": "Search on {{total}} accounts",
+        "placeholder-private": "Search on your accounts"
+      },
+      "empty": "No account found"
+    }
+  },
+  "form": {
+    "submit": {
+      "status": {
+        "success": "Information updated"
+      }
+    }
+  }
+}

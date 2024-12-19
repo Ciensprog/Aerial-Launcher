@@ -26,6 +26,8 @@ import { LoadTags } from './bootstrap/components/load-tags'
 import { Toaster } from './components/ui/sonner'
 import { ThemeProvider } from './components/theme-provider'
 
+import './locale'
+
 dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
 dayjs.extend(timezone)
