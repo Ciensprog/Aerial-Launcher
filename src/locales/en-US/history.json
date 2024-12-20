@@ -1,0 +1,11 @@
+{
+  "history": {
+    "note": "Note: This is a temporal history.",
+    "empty": "Claimed Rewards History"
+  },
+  "summary": {
+    "note": "Note: This summary is based on your temporal history.",
+    "empty": "Summary Of Claimed Rewards History",
+    "all-accounts": "Summary of all accounts"
+  }
+}

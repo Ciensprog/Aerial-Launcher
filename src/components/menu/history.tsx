@@ -1,6 +1,7 @@
 import type { RewardsNotification } from '../../types/notifications'
 
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { repositoryAssetsURL } from '../../config/about/links'
 
@@ -32,6 +33,8 @@ enum HistoryTabs {
 const defaultSelectedTab: HistoryTabs = HistoryTabs.History
 
 export function HistoryMenu() {
+  const { t } = useTranslation(['history', 'general'])
+
   const { data } = useClaimedRewards()
   const dataOrderByDesc = data.toReversed()
 
@@ -43,8 +46,16 @@ export function HistoryMenu() {
       >
         <div className="app-draggable-region flex gap-1.5 h-[var(--header-height)] items-center px-1.5">
           <TabsList className="not-draggable-region">
-            <TabsTrigger value={HistoryTabs.History}>History</TabsTrigger>
-            <TabsTrigger value={HistoryTabs.Summary}>Summary</TabsTrigger>
+            <TabsTrigger value={HistoryTabs.History}>
+              {t('history', {
+                ns: 'general',
+              })}
+            </TabsTrigger>
+            <TabsTrigger value={HistoryTabs.Summary}>
+              {t('summary', {
+                ns: 'general',
+              })}
+            </TabsTrigger>
           </TabsList>
           <SheetClose className="not-draggable-region ml-auto mr-3">
             <X />
@@ -56,7 +67,7 @@ export function HistoryMenu() {
           className="mt-0 mx-1.5"
         >
           <div className="border-l-4 italic mb-1.5 pl-2 py-1 text-muted-foreground text-xs">
-            Note: This is a temporal history.
+            {t('history.note')}
           </div>
           <ScrollArea className="h-[calc(100vh-var(--header-height))]">
             {dataOrderByDesc.length > 0 ? (
@@ -73,7 +84,7 @@ export function HistoryMenu() {
                 </div>
               </>
             ) : (
-              <EmptyHistoryMessage title="Claimed Rewards History" />
+              <EmptyHistoryMessage title={t('history.empty')} />
             )}
           </ScrollArea>
         </TabsContent>
@@ -82,7 +93,7 @@ export function HistoryMenu() {
           className="mt-0 mx-1.5"
         >
           <div className="border-l-4 italic mb-1.5 mt-2- pl-2 py-1 text-muted-foreground text-xs">
-            Note: This summary is based on your temporal history data.
+            {t('summary.note')}
           </div>
           <ScrollArea className="h-[calc(100vh-var(--header-height)-1.875rem-0.375rem)]">
             <SummarySection />
@@ -94,14 +105,14 @@ export function HistoryMenu() {
 }
 
 function SummarySection() {
+  const { t } = useTranslation(['history', 'general'])
+
   const { accountList } = useGetAccounts()
   const { accountsSummary, globalSummary } = useParseSummary()
   const isEmpty = Object.values(globalSummary.rewards).length <= 0
 
   if (isEmpty) {
-    return (
-      <EmptyHistoryMessage title="Summary Of Claimed Rewards History" />
-    )
+    return <EmptyHistoryMessage title={t('summary.empty')} />
   }
 
   return (
@@ -115,7 +126,7 @@ function SummarySection() {
         value="summary"
       >
         <AccordionTrigger className="bg-muted-foreground/5 px-2 py-2">
-          Summary of all accounts
+          {t('summary.all-accounts')}
         </AccordionTrigger>
         <AccordionContent className="px-2 py-2">
           <DateRange
@@ -136,7 +147,10 @@ function SummarySection() {
           key={account.accountId}
         >
           <AccordionTrigger className="bg-muted-foreground/5 px-2 py-2">
-            {parseCustomDisplayName(accountList[account.accountId])}:
+            {t(parseCustomDisplayName(accountList[account.accountId]), {
+              ns: 'general',
+            })}
+            :
           </AccordionTrigger>
           <AccordionContent className="px-2 py-2">
             <DateRange
@@ -161,27 +175,35 @@ function DateRange({
   endsAt: string
   startsAt: string
 }) {
+  const { t } = useTranslation(['general'])
+
   return (
     <div className="mb-2 text-muted-foreground text-xs">
       <div>
-        First claim:{' '}
-        {startsAt === '' ? 'N/A' : getShortDateFormat(startsAt)}
+        {t('first-claim', {
+          date: startsAt === '' ? 'N/A' : getShortDateFormat(startsAt),
+          interpolation: { escapeValue: false },
+        })}
       </div>
       <div>
-        Last played at:{' '}
-        {endsAt === '' ? 'N/A' : getShortDateFormat(endsAt)}
+        {t('last-played', {
+          date: endsAt === '' ? 'N/A' : getShortDateFormat(endsAt),
+          interpolation: { escapeValue: false },
+        })}
       </div>
     </div>
   )
 }
 
 function RewardSection({ data }: { data: RewardsNotification }) {
+  const { t } = useTranslation(['general'])
+
   const { accountList } = useGetAccounts()
 
   return (
     <div className="px-2">
       <div className="font-bold mb-2 break-all">
-        {parseCustomDisplayName(accountList[data.accountId])}:
+        {t(parseCustomDisplayName(accountList[data.accountId]))}:
       </div>
       <ul className="space-y-1">
         <RewardItems rewards={data.rewards} />
@@ -241,7 +263,7 @@ function AccoladesItem({
 
 function EmptyHistoryMessage({ title }: { title: string }) {
   return (
-    <div className="flex items-center justify-center text-muted-foreground min-h-[calc(100vh-var(--header-height)-1.875rem-0.375rem)]">
+    <div className="flex items-center justify-center px-5 text-balance text-center text-muted-foreground min-h-[calc(100vh-var(--header-height)-1.875rem-0.375rem)]">
       {title}
     </div>
   )

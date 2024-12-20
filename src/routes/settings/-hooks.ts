@@ -7,8 +7,11 @@ import { useSettingsStore } from '../../state/settings/main'
 
 import { settingsSchema } from '../../lib/validations/schemas/settings'
 import { toast } from '../../lib/notifications'
+import { useTranslation } from 'react-i18next'
 
 export function useSetupForm() {
+  const { t } = useTranslation(['settings'])
+
   const { claimingRewards, missionInterval, path, systemTray, userAgent } =
     useSettingsStore(
       useShallow((state) => ({
@@ -35,7 +38,7 @@ export function useSetupForm() {
       ...values,
     })
 
-    toast('Information updated')
+    toast(t('form.submit.status.success'))
   }
 
   return {

@@ -2,15 +2,19 @@ import type { Tag } from '../../../types/tags'
 
 import { ColorInput } from '@mantine/core'
 import { Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { defaultColor } from '../../../config/constants/colors'
 
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 
+import { useInputPaddingButton } from '../../../hooks/ui/inputs'
 import { useFormUpdate } from './-hooks'
 
 export function TagItem({ data }: { data: Tag }) {
+  const { t } = useTranslation(['settings', 'general'])
+
   const {
     color,
     name,
@@ -21,6 +25,7 @@ export function TagItem({ data }: { data: Tag }) {
   } = useFormUpdate({
     rawData: data,
   })
+  const [$updateInput, $updateButton] = useInputPaddingButton()
 
   return (
     <div className="flex gap-4 relative">
@@ -35,17 +40,19 @@ export function TagItem({ data }: { data: Tag }) {
           withEyeDropper={false}
         />
         <Input
-          className="pr-20"
+          className="pr-[var(--pr-button-width)]"
           placeholder={data.name}
           value={name}
           onChange={onChangeName}
+          ref={$updateInput}
         />
         <Button
           type="submit"
           variant="secondary"
           className="absolute h-8 px-2 right-1 w-auto"
+          ref={$updateButton}
         >
-          Update
+          {t('general:actions.update')}
         </Button>
       </form>
       <Button

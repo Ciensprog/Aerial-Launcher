@@ -3,6 +3,7 @@ import type { MouseEventHandler, PropsWithChildren } from 'react'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Link } from '@tanstack/react-router'
 import { Copyright } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { forwardRef } from 'react'
 
 import packageJson from '../../../package.json'
@@ -42,6 +43,8 @@ export function SidebarMenu({
 }: {
   onOpenChange?: (open: boolean) => void
 }) {
+  const { t } = useTranslation(['sidebar'])
+
   const accounts = useAccountListStore((state) => state.accounts)
   const { status } = useGetAutomationDataStatus()
   const { getMenuOptionVisibility } =
@@ -79,7 +82,7 @@ export function SidebarMenu({
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
           {getMenuOptionVisibility('stwOperations', true) && (
             <>
-              <Title className="pb-0">STW Operations</Title>
+              <Title className="pb-0">{t('stw-operations.title')}</Title>
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',
@@ -98,20 +101,24 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        <span className="flex relative">
-                          Auto-kick
+                        <span className="flex flex-wrap gap-x-2 gap-y-0.5 items-center">
+                          {t('stw-operations.options.auto-kick')}
                           {status !== null && (
                             <span
                               className={cn(
-                                'absolute left-[calc(100%+0.5rem)] border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
+                                'border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
                                 status === AutomationStatusType.ISSUE
                                   ? 'border-yellow-600 text-yellow-600'
                                   : 'border-green-600 text-green-600'
                               )}
                             >
                               {status === AutomationStatusType.ISSUE
-                                ? 'Issue'
-                                : 'Active'}
+                                ? t(
+                                    'stw-operations.auto-kick-status.issue'
+                                  )
+                                : t(
+                                    'stw-operations.auto-kick-status.active'
+                                  )}
                             </span>
                           )}
                         </span>
@@ -129,7 +136,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Party
+                        {t('stw-operations.options.party')}
                       </Link>
                     </li>
                   )}
@@ -144,7 +151,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Save Quests
+                        {t('stw-operations.options.save-quests')}
                       </Link>
                     </li>
                   )}
@@ -159,7 +166,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Homebase Name
+                        {t('stw-operations.options.homebase-name')}
                       </Link>
                     </li>
                   )}
@@ -174,7 +181,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        XP Boosts
+                        {t('stw-operations.options.xp-boosts')}
                       </Link>
                     </li>
                   )}
@@ -189,7 +196,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Auto-pin Urns
+                        {t('stw-operations.options.auto-pin-urns')}
                       </Link>
                     </li>
                   )}
@@ -200,7 +207,9 @@ export function SidebarMenu({
 
           {getMenuOptionVisibility('accountManagement', true) && (
             <>
-              <Title className="pb-0">Account Management</Title>
+              <Title className="pb-0">
+                {t('account-management.title')}
+              </Title>
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',
@@ -219,7 +228,9 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        V-Bucks Information
+                        {t(
+                          'account-management.options.vbucks-information'
+                        )}
                       </Link>
                     </li>
                   )}
@@ -234,7 +245,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Redeem Codes
+                        {t('account-management.options.redeem-codes')}
                       </Link>
                     </li>
                   )}
@@ -256,7 +267,7 @@ export function SidebarMenu({
                         onAuxClick={whatIsThis()}
                         disabled={!areThereAccounts}
                       >
-                        Devices Auth
+                        {t('account-management.options.devices-auth')}
                       </Link>
                     </li>
                   )}
@@ -278,7 +289,7 @@ export function SidebarMenu({
                         onAuxClick={whatIsThis()}
                         disabled={!areThereAccounts}
                       >
-                        Epic Games Settings
+                        {t('account-management.options.epic-settings')}
                       </Link>
                     </li>
                   )}
@@ -289,7 +300,7 @@ export function SidebarMenu({
 
           {getMenuOptionVisibility('advancedMode', true) && (
             <>
-              <Title className="pb-0">Advanced Mode</Title>
+              <Title className="pb-0">{t('advanced-mode.title')}</Title>
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',
@@ -315,7 +326,7 @@ export function SidebarMenu({
                         onAuxClick={whatIsThis()}
                         disabled={!areThereAccounts}
                       >
-                        Matchmaking Track
+                        {t('advanced-mode.options.matchmaking-track')}
                       </Link>
                     </li>
                   )}
@@ -330,7 +341,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        World Info
+                        {t('advanced-mode.options.world-info')}
                       </Link>
                     </li>
                   )}
@@ -348,7 +359,7 @@ export function SidebarMenu({
           {getMenuOptionVisibility('myAccounts', true) && (
             <>
               <Title className="pb-0">
-                My Accounts
+                {t('accounts.title')}
                 {getMenuOptionVisibility('showTotalAccounts') &&
                 totalInText !== '0'
                   ? ` (${totalInText})`
@@ -373,7 +384,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Authorization Code
+                        {t('accounts.options.auth')}
                       </Link>
                     </li>
                   )}
@@ -389,7 +400,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Exchange Code
+                        {t('accounts.options.exchange')}
                       </Link>
                     </li>
                   )}
@@ -405,7 +416,7 @@ export function SidebarMenu({
                         onClick={goToPage}
                         onAuxClick={whatIsThis()}
                       >
-                        Device Auth
+                        {t('accounts.options.device')}
                       </Link>
                     </li>
                   )}
@@ -427,7 +438,7 @@ export function SidebarMenu({
                         onAuxClick={whatIsThis()}
                         disabled={!areThereAccounts}
                       >
-                        Remove Account
+                        {t('accounts.options.remove')}
                       </Link>
                     </li>
                   )}
@@ -467,7 +478,7 @@ export function SidebarMenu({
                     fill="currentColor"
                   />
                 </svg>
-                Discord Server
+                {t('links.discord')}
               </a>
             </Button>
             <Button
@@ -484,7 +495,7 @@ export function SidebarMenu({
             >
               <a href={repositoryURL}>
                 <GitHubLogoIcon />
-                View on GitHub
+                {t('links.github')}
               </a>
             </Button>
             <Button
@@ -501,23 +512,25 @@ export function SidebarMenu({
             >
               <Link to="/information/credits">
                 <Copyright className="size-4" />
-                <span className="-m-0.5">Credits & Greetings</span>
+                <span className="-m-0.5">{t('links.credits')}</span>
               </Link>
             </Button>
           </div>
         </nav>
         <div className="px-5 text-center text-xs text-muted-foreground/60 lg:pl-7">
           <p>
-            Release v{packageJson.version} -{' '}
-            <a
-              href={repositoryReleasesURL}
-              className="underline hover:text-muted-foreground"
-              onClick={goToReleasesURL}
-              onAuxClick={whatIsThis()}
-            >
-              All Releases
-            </a>
+            {t('version.release', {
+              version: packageJson.version,
+            })}
           </p>
+          <a
+            href={repositoryReleasesURL}
+            className="inline-block mt-0.5 underline hover:text-muted-foreground"
+            onClick={goToReleasesURL}
+            onAuxClick={whatIsThis()}
+          >
+            {t('version.all-releases')}
+          </a>
         </div>
       </div>
     </ScrollArea>
