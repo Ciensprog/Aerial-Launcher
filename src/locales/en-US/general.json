@@ -4,7 +4,12 @@
     "create": "Create",
     "update": "Update"
   },
+  "first-claim": "First claim: {{date}}",
   "go-to-current-alerts": "Go To Current Alerts",
+  "history": "History",
+  "last-played": "Last played at: {{date}}",
   "settings": "Settings",
+  "summary": "Summary",
+  "unknown-user": "Unknown User",
   "update-information": "Update Information"
 }

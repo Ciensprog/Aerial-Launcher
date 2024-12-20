@@ -4,7 +4,12 @@
     "create": "Crear",
     "update": "Actualizar"
   },
+  "first-claim": "Primer reclamo: {{date}}",
   "go-to-current-alerts": "Ir A Las Misiones Actuales",
+  "history": "Historial",
+  "last-played": "Última partida: {{date}}",
   "settings": "Configuraciones",
+  "summary": "Resumen",
+  "unknown-user": "Usuario Desconocido",
   "update-information": "Actualizar Información"
 }
