@@ -1,5 +1,6 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { createRoute } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -28,6 +29,8 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/homebase-name',
   component: () => {
+    const { t } = useTranslation(['sidebar'])
+
     return (
       <>
         <Breadcrumb>
@@ -35,11 +38,13 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>STW Operations</BreadcrumbPage>
+              <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Homebase Name</BreadcrumbPage>
+              <BreadcrumbPage>
+                {t('stw-operations.options.homebase-name')}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -51,6 +56,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['stw-operations'])
+
   const {
     accounts,
     error,
@@ -73,8 +80,7 @@ function Content() {
         <Card className="max-w-lg w-full">
           <CardHeader className="border-b">
             <CardDescription>
-              Update homebase name (no longer visible in game) of the
-              selected accounts.
+              {t('homebase-name.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 pt-6">
@@ -92,7 +98,7 @@ function Content() {
             />
             <Input
               className="mt-2 pr-20"
-              placeholder="Set a homebase name"
+              placeholder={t('homebase-name.form.placeholder')}
               value={name}
               onChange={handleUpdateName}
             />
@@ -112,7 +118,7 @@ function Content() {
               {isLoading ? (
                 <UpdateIcon className="animate-spin" />
               ) : (
-                `Update Homebase Name`
+                t('homebase-name.form.submit-button')
               )}
             </Button>
           </CardFooter>

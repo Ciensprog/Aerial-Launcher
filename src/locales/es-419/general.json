@@ -1,13 +1,69 @@
 {
   "actions": {
+    "add": "Añadir",
     "change": "Cambiar",
     "create": "Crear",
+    "search": "Buscar",
+    "success": "Completado",
     "update": "Actualizar"
   },
+  "form": {
+    "accounts": {
+      "placeholder": "Buscar en {{total}} cuentas",
+      "placeholder_private": "Buscar en tus cuentas",
+      "search-empty": "No se encontraron cuentas",
+      "select": "Seleccionar cuenta",
+      "selected": "Cuenta seleccionada",
+      "no-available": "Sin cuentas disponibles",
+      "no-linked": "Sin cuentas vinculadas",
+      "no-options": "Sin cuentas"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Seleccionar algunas cuentas",
+        "tags": "Seleccionar algunas etiquetas",
+        "bulk-note": "Etiqueta masiva seleccionada, todas las cuentas de Aerial serán usadas."
+      }
+    },
+    "player": {
+      "search-empty": "No se encontró el jugador"
+    },
+    "search-account": {
+      "label": "Buscar jugador por accountId o nombre (epic, xbl o psn)",
+      "input": {
+        "placeholder": "Ejemplo: Sample"
+      }
+    }
+  },
+  "information": {
+    "account-id": "Id de cuenta:",
+    "power-level": "Poder de Base:",
+    "commander-level": "Nivel de Comandante:",
+    "boosted-xp": "XP Potenciado:",
+    "days-logged-in": "Días de Inicio de Sesión:",
+    "collection-book-level": "Nivel del Libro de Colección:",
+    "personal-xp-boosts": "Potenciadores Personales:",
+    "teammate-xp-boosts": "Potenciadores de Amigo:",
+    "founder-status": "Estado de Fundador:"
+  },
+  "founder": {
+    "non-founder": "No-Fundador",
+    "founder": "Fundador",
+    "standard": "Estándar Edition",
+    "deluxe": "Edición De Lujo",
+    "super-deluxe": "Edición Super De Lujo",
+    "limited": "Edición Limitada",
+    "ultimate": "Edición Definitiva"
+  },
+  "separators": {
+    "or": "O"
+  },
+  "boosts": "Potenciador/es",
   "first-claim": "Primer reclamo: {{date}}",
   "go-to-current-alerts": "Ir A Las Misiones Actuales",
   "history": "Historial",
   "last-played": "Última partida: {{date}}",
+  "public-stats": "Nota: Este usuario tiene las \"Estadísticas de Juego Públicas\" desactivadas, no se puede mostrar más información.",
   "settings": "Configuraciones",
   "summary": "Resumen",
   "unknown-user": "Usuario Desconocido",

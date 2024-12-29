@@ -26,7 +26,7 @@ import { useAccounts, useActions, useOrdering } from './-hooks'
 import { cn, tagsArrayToSelectOptions } from '../../../lib/utils'
 
 export function AccountCustomization() {
-  const { t } = useTranslation(['settings'])
+  const { t } = useTranslation(['settings', 'general'])
 
   const { tagsArray } = useGetTags()
   const { accounts, accountsArray, onChangeSearchValue, searchValue } =
@@ -54,15 +54,13 @@ export function AccountCustomization() {
           <div className="mb-5">
             <Input
               className="pr-20"
-              placeholder={
-                getMenuOptionVisibility('showTotalAccounts')
-                  ? t('account-customization.search.input.placeholder', {
-                      total: accountsArray.length,
-                    })
-                  : t(
-                      'account-customization.search.input.placeholder-private'
-                    )
-              }
+              placeholder={t('form.accounts.placeholder', {
+                ns: 'general',
+                context: !getMenuOptionVisibility('showTotalAccounts')
+                  ? 'private'
+                  : undefined,
+                total: accountsArray.length,
+              })}
               value={searchValue}
               onChange={onChangeSearchValue}
             />
@@ -98,7 +96,9 @@ export function AccountCustomization() {
           </DndContext>
         ) : (
           <div className="text-center text-muted-foreground">
-            {t('account-customization.search.empty')}
+            {t('form.accounts.search-empty', {
+              ns: 'general',
+            })}
           </div>
         )}
       </CardContent>

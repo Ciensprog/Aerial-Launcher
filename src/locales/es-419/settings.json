@@ -51,14 +51,7 @@
   "account-customization": {
     "title": "Personalización de la Cuenta",
     "description": "Algunas veces podrías necesitar especificar un nombre para identificar una cuenta. Si quieres, puedes cambiar el nombre actual con uno personalizado.",
-    "note": "Nota: Esto sólo aplica visualmente a las cuentas en Aerial.",
-    "search": {
-      "input": {
-        "placeholder": "Buscar en {{total}} cuentas",
-        "placeholder-private": "Buscar en tus cuentas"
-      },
-      "empty": "No se encontraron cuentas"
-    }
+    "note": "Nota: Esto sólo aplica visualmente a las cuentas en Aerial."
   },
   "form": {
     "submit": {

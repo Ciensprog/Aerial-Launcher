@@ -28,28 +28,35 @@ import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useAutomationData } from './-hooks'
 
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
+import { useTranslation } from 'react-i18next'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/automation',
-  component: () => (
-    <>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <HomeBreadcrumb />
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>STW Operations</BreadcrumbPage>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Auto-kick</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <Content />
-    </>
-  ),
+  component: () => {
+    const { t } = useTranslation(['sidebar'])
+
+    return (
+      <>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <HomeBreadcrumb />
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>
+                {t('stw-operations.options.auto-kick')}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Content />
+      </>
+    )
+  },
 })
 
 function StatusItem({
@@ -80,6 +87,8 @@ function StatusItem({
 }
 
 export function Content() {
+  const { t } = useTranslation(['stw-operations', 'general'])
+
   const {
     accounts,
     accountSelectorIsDisabled,
@@ -101,20 +110,15 @@ export function Content() {
         <Card className="max-w-lg w-full">
           <CardHeader className="border-b">
             <CardDescription>
-              Auto-kick will listen to the events on your selected accounts
-              and run kicking process when it detects the match has ended.
+              {t('auto-kick.description1')}
             </CardDescription>
             <CardDescription>
-              Also, remember kicking is intelligent. There's no need of
-              enabling two autokick's on your accounts if they are in the
-              same party, both of your accounts will get kicked/leave (and
-              claim rewards if you had auto-claim active) depending on the
-              case.
+              {t('auto-kick.description2')}
             </CardDescription>
             <CardDescription className="flex gap-2">
               <StatusItem
                 status={AutomationStatusType.LISTENING}
-                title="Listening"
+                title={t('auto-kick.statuses.listening')}
               />
               {/* <StatusItem
                 status={AutomationStatusType.ISSUE}
@@ -122,11 +126,11 @@ export function Content() {
               /> */}
               <StatusItem
                 status={AutomationStatusType.ERROR}
-                title="Credential Error"
+                title={t('auto-kick.statuses.credential-error')}
               />
               <StatusItem
                 status={AutomationStatusType.DISCONNECTED}
-                title="Disconnected"
+                title={t('auto-kick.statuses.disconnected')}
               />
             </CardDescription>
           </CardHeader>
@@ -136,13 +140,19 @@ export function Content() {
                 <Combobox
                   className="max-w-full"
                   emptyPlaceholder="No accounts"
-                  emptyContent="No account found"
-                  placeholder="Select an account"
-                  placeholderSearch={
-                    getMenuOptionVisibility('showTotalAccounts')
-                      ? `Search on ${options.length} accounts`
-                      : 'Search on your accounts'
-                  }
+                  emptyContent={t('form.accounts.search-empty', {
+                    ns: 'general',
+                  })}
+                  placeholder={t('form.accounts.select', {
+                    ns: 'general',
+                  })}
+                  placeholderSearch={t('form.accounts.placeholder', {
+                    ns: 'general',
+                    context: !getMenuOptionVisibility('showTotalAccounts')
+                      ? 'private'
+                      : undefined,
+                    total: options.length,
+                  })}
                   options={options}
                   value={[]}
                   customFilter={customFilter}
@@ -229,7 +239,7 @@ export function Content() {
                 </div>
                 <div className="flex flex-col gap-2 px-3 py-2 text-sm">
                   <div className="flex flex-grow items-center justify-between">
-                    <span>Auto-kick</span>
+                    <span>{t('auto-kick.options.kick')}</span>
                     <Switch
                       checked={current.actions.kick}
                       onCheckedChange={
@@ -244,7 +254,7 @@ export function Content() {
                     />
                   </div>
                   <div className="flex flex-grow items-center justify-between">
-                    <span>Auto-claim</span>
+                    <span>{t('auto-kick.options.claim')}</span>
                     <Switch
                       checked={current.actions.claim}
                       onCheckedChange={
@@ -259,7 +269,7 @@ export function Content() {
                     />
                   </div>
                   <div className="flex flex-grow items-center justify-between">
-                    <span>Auto-transfer mats</span>
+                    <span>{t('auto-kick.options.transfer-mats')}</span>
                     <Switch
                       checked={current.actions.transferMats}
                       onCheckedChange={

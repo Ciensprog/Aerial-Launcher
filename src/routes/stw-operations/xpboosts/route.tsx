@@ -1,4 +1,8 @@
-import type { MouseEventHandler, ReactNode } from 'react'
+import type {
+  ChangeEventHandler,
+  MouseEventHandler,
+  ReactNode,
+} from 'react'
 import type { MCPQueryProfileChanges } from '../../../types/services/mcp'
 import type {
   XPBoostsDataWithAccountData,
@@ -8,6 +12,7 @@ import type {
 import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { ExternalLink, Info, Send, Trash2, Undo2, X } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { repositoryAssetsURL } from '../../../config/about/links'
 import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
@@ -45,6 +50,8 @@ import {
 import { Switch } from '../../../components/ui/switch'
 import { Toggle } from '../../../components/ui/toggle'
 
+import { useInputPaddingButton } from '../../../hooks/ui/inputs'
+import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import {
   useAccountDataItem,
   useData,
@@ -71,6 +78,8 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/xpboosts',
   component: () => {
+    const { t } = useTranslation(['sidebar'])
+
     return (
       <>
         <Breadcrumb>
@@ -78,11 +87,13 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>STW Operations</BreadcrumbPage>
+              <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>XP Boosts</BreadcrumbPage>
+              <BreadcrumbPage>
+                {t('stw-operations.options.xp-boosts')}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -93,6 +104,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['stw-operations', 'general'])
+
   const {
     actionFormIsDisabled,
     accounts,
@@ -123,6 +136,8 @@ function Content() {
     handleChangeSearchDisplayName,
     handleSearchUser,
   } = useSearchUser()
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
   const { showLink, handleXD, handleWhy } = useWhy({
     inputSearchValue: inputSearchDisplayName,
   })
@@ -132,6 +147,8 @@ function Content() {
       amountToSend: amountToSendParsedToNumber,
     }
   )
+  const [$updateInput, $updateButton] = useInputPaddingButton()
+
   const userBoosts = extractXPBoosts(
     searchedUser?.success && searchedUser?.data
       ? searchedUser.data.profileChanges
@@ -153,15 +170,16 @@ function Content() {
           <Card>
             <CardHeader className="border-b">
               <CardDescription>
-                Display basic information about a player.
+                {t('xpboosts.top-search.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6 px-0 space-y-4">
               <div className="grid gap-4 px-6">
                 <div className="space-y-2">
                   <Label htmlFor="global-input-search-player">
-                    Search player by accountId or display name (epic, xbl
-                    or psn)
+                    {t('form.search-account.label', {
+                      ns: 'general',
+                    })}
                   </Label>
                   <form
                     className="flex items-center relative"
@@ -176,22 +194,31 @@ function Content() {
                     }}
                   >
                     <Input
-                      placeholder="Example: Sample"
-                      className="pr-32 pl-3 py-1"
+                      placeholder={t(
+                        'form.search-account.input.placeholder',
+                        {
+                          ns: 'general',
+                        }
+                      )}
+                      className="pr-[var(--pr-button-width)] pl-3 py-1"
                       value={inputSearchDisplayName}
                       onChange={handleChangeSearchDisplayName}
                       disabled={searchUserIsSubmitting}
                       id="global-input-search-player"
+                      ref={$updateInput}
                     />
                     <Button
                       type="submit"
                       className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
                       disabled={inputSearchButtonIsDisabled}
+                      ref={$updateButton}
                     >
                       {searchUserIsSubmitting ? (
                         <UpdateIcon className="animate-spin h-4" />
                       ) : (
-                        'Search'
+                        t('actions.search', {
+                          ns: 'general',
+                        })
                       )}
                     </Button>
                   </form>
@@ -202,10 +229,12 @@ function Content() {
                 {searchedUser &&
                   !searchedUser.success &&
                   !searchedUser.isPrivate && (
-                    <div className="mt-2 text-center text-muted-foreground">
+                    <div className="break-all mt-2 text-center text-muted-foreground">
                       {searchedUser.errorMessage
                         ? searchedUser.errorMessage
-                        : 'No player found'}
+                        : t('form.player.search-empty', {
+                            ns: 'general',
+                          })}
                     </div>
                   )}
               </div>
@@ -245,9 +274,9 @@ function Content() {
                             value={searchedUser.data.lookup.id}
                           />
                           <div className="py-1.5">
-                            <div>Note:</div>
-                            This user has "Public Game Stats" disabled,
-                            more information can't be displayed.
+                            {t('public-stats', {
+                              ns: 'general',
+                            })}
                           </div>
                         </>
                       ) : (
@@ -288,7 +317,7 @@ function Content() {
           <Card className="mt-5">
             <CardHeader className="border-b">
               <CardDescription>
-                Manage XP Boosts of the selected accounts.
+                {t('xpboosts.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 pt-6">
@@ -306,13 +335,12 @@ function Content() {
                 isDisabled={actionFormIsDisabled}
               />
               <Label htmlFor="amountToSend">
-                Amount of XP Boosts to send{' '}
-                <span className="italic">
-                  (limited to {compactNumber(maxAmountLimitedTo)})
-                </span>
+                {t('xpboosts.form.label', {
+                  limit: compactNumber(maxAmountLimitedTo),
+                })}
               </Label>
               <Input
-                placeholder="Example: 123"
+                placeholder={t('xpboosts.form.input.placeholder')}
                 value={amountToSend}
                 onChange={handleChangeAmount}
                 disabled={actionFormIsDisabled}
@@ -328,9 +356,9 @@ function Content() {
                 {isSubmitting ? (
                   <UpdateIcon className="animate-spin" />
                 ) : data.length > 0 ? (
-                  'Refetch Boosts Data'
+                  t('xpboosts.form.refetch')
                 ) : (
-                  'See Boosts'
+                  t('xpboosts.form.see-boosts')
                 )}
               </Button>
 
@@ -341,8 +369,9 @@ function Content() {
           {data.length > 0 && (
             <>
               <div className="mt-5 text-2xl text-center">
-                Summary of {data.length} account
-                {data.length > 1 ? 's' : ''}
+                {t('xpboosts.results.summary.title', {
+                  total: data.length,
+                })}
               </div>
 
               <div className="flex gap-4 max-w-lg min-w-56 mx-auto mt-5 rounded">
@@ -359,7 +388,15 @@ function Content() {
               {data.length > 1 && (
                 <div className="mt-5">
                   <Input
-                    placeholder={`Search on ${data.length} accounts`}
+                    placeholder={t('form.accounts.placeholder', {
+                      ns: 'general',
+                      context: !getMenuOptionVisibility(
+                        'showTotalAccounts'
+                      )
+                        ? 'private'
+                        : undefined,
+                      total: data.length,
+                    })}
                     value={searchValue}
                     onChange={onChangeSearchValue}
                   />
@@ -381,8 +418,12 @@ function Content() {
                   ))}
                 </div>
               ) : (
-                <div className="mt-10 text-center text-muted-foreground">
-                  <div className="mt-2">No account found</div>
+                <div className="my-10 text-center text-muted-foreground">
+                  <div className="my-2">
+                    {t('form.accounts.search-empty', {
+                      ns: 'general',
+                    })}
+                  </div>
                 </div>
               )}
             </>
@@ -396,6 +437,8 @@ function Content() {
 function SendBoostsSheet({
   recalculateTotal,
 }: Pick<ReturnType<typeof useFilterXPBoosts>, 'recalculateTotal'>) {
+  const { t } = useTranslation(['stw-operations'])
+
   const {
     success,
 
@@ -426,6 +469,7 @@ function SendBoostsSheet({
     handleSearchUser,
     handleSetXPBoostsType,
   } = useSendBoostsSheet({ recalculateTotal })
+
   const userBoosts = extractXPBoosts(
     searchedUser?.success && searchedUser?.data
       ? searchedUser.data.profileChanges
@@ -440,7 +484,7 @@ function SendBoostsSheet({
           className="w-full"
           disabled={sendBoostsButtonIsDisabled}
         >
-          Send Boosts
+          {t('xpboosts.form.send-boosts')}
         </Button>
       </SheetTrigger>
       <SheetContent
@@ -455,7 +499,7 @@ function SendBoostsSheet({
         </div>
         <SheetHeader>
           <div className="flex flex-col text-center">
-            Which XP Boosts do you want to use?
+            {t('xpboosts.sidebar.title')}
             <div className="flex gap-3 items-center mt-2 mx-auto [&_img]:size-10">
               <figure
                 className={cn({
@@ -483,17 +527,19 @@ function SendBoostsSheet({
             </div>
           </div>
         </SheetHeader>
-        <div className="flex flex-col overflow-auto">
+        <div className="flex flex-col overflow-x-hidden overflow-y-auto">
           {xpBoostType ? (
             noPersonalBoostsData ? (
               <div className="mt-14 text-center text-muted-foreground">
-                No accounts available
+                {t('form.accounts.no-available', {
+                  ns: 'general',
+                })}
               </div>
             ) : (
               <>
                 <div className="p-1">
                   <p className="px-2 text-sm">
-                    All of these accounts will use XP boosts:
+                    {t('xpboosts.sidebar.personal.description')}
                   </p>
                 </div>
                 <ScrollArea>
@@ -519,11 +565,15 @@ function SendBoostsSheet({
                     {isSubmittingPersonal ? (
                       <UpdateIcon className="animate-spin" />
                     ) : noPersonalBoostsData ? (
-                      'No accounts available'
+                      t('form.accounts.no-available', {
+                        ns: 'general',
+                      })
                     ) : amountToSendIsInvalid ? (
-                      'Please type a valid amount'
+                      t('xpboosts.sidebar.errors.valid-amount')
                     ) : (
-                      `Consume ${compactNumber(amountToSendParsedToNumber)} XP Boost${amountToSendParsedToNumber > 1 ? 's' : ''} on each account`
+                      t('xpboosts.sidebar.personal.submit-button', {
+                        total: compactNumber(amountToSendParsedToNumber),
+                      })
                     )}
                   </Button>
                 </div>
@@ -531,7 +581,9 @@ function SendBoostsSheet({
             )
           ) : noTeammateBoostsData ? (
             <div className="mt-14 text-center text-muted-foreground">
-              No accounts available
+              {t('form.accounts.no-available', {
+                ns: 'general',
+              })}
             </div>
           ) : (
             <>
@@ -550,39 +602,32 @@ function SendBoostsSheet({
                     className="text-xs"
                     htmlFor="sheet-input-search-player"
                   >
-                    Search player by accountId or display name (epic, xbl
-                    or psn)
+                    {t('form.search-account.label', {
+                      ns: 'general',
+                    })}
                   </Label>
-                  <div className="flex items-center relative">
-                    <Input
-                      placeholder="Example: Sample"
-                      className="pr-20 pl-3 py-1"
-                      value={inputSearchDisplayName}
-                      onChange={handleChangeSearchDisplayName}
-                      disabled={inputSearchIsDisabled}
-                      id="sheet-input-search-player"
-                    />
-                    <Button
-                      type="submit"
-                      className="absolute h-8 px-2 py-1.5 right-1 text-sm w-16"
-                      disabled={inputSearchButtonIsDisabled}
-                    >
-                      {searchUserIsSubmitting ? (
-                        <UpdateIcon className="animate-spin h-4" />
-                      ) : (
-                        'Search'
-                      )}
-                    </Button>
-                  </div>
+                  <SearchExternalAccount
+                    searchUserIsSubmitting={searchUserIsSubmitting}
+                    inputSearchDisplayName={inputSearchDisplayName}
+                    handleChangeSearchDisplayName={
+                      handleChangeSearchDisplayName
+                    }
+                    inputSearchIsDisabled={inputSearchIsDisabled}
+                    inputSearchButtonIsDisabled={
+                      inputSearchButtonIsDisabled
+                    }
+                  />
                 </form>
 
                 {searchedUser &&
                   !searchedUser.success &&
                   !searchedUser.isPrivate && (
-                    <div className="mt-14 text-center text-muted-foreground">
+                    <div className="break-all mt-14 text-center text-muted-foreground">
                       {searchedUser.errorMessage
                         ? searchedUser.errorMessage
-                        : 'No player found'}
+                        : t('form.player.search-empty', {
+                            ns: 'general',
+                          })}
                     </div>
                   )}
               </div>
@@ -619,13 +664,15 @@ function SendBoostsSheet({
                         {searchedUser.isPrivate ? (
                           <>
                             <AccountBasicInformationSection
-                              title="Account Id:"
+                              title={t('information.account-id', {
+                                ns: 'general',
+                              })}
                               value={searchedUser.data.lookup.id}
                             />
                             <div className="py-1.5">
-                              <div>Note:</div>
-                              This user has "Public Game Stats" disabled,
-                              more information can't be displayed.
+                              {t('public-stats', {
+                                ns: 'general',
+                              })}
                             </div>
                           </>
                         ) : (
@@ -660,8 +707,7 @@ function SendBoostsSheet({
                       <div className="mb-4 mt-4 px-1">
                         <div className="flex gap-1 items-center mb-4 px-1 text-muted-foreground text-xs">
                           <Info className="flex-shrink-0 relative size-3.5 top-[1px]" />
-                          Some boosts might not send if your ping is not
-                          stable.
+                          {t('xpboosts.sidebar.teammate.note')}
                         </div>
                         <Button
                           className="gap-1 w-full"
@@ -671,9 +717,16 @@ function SendBoostsSheet({
                           {isSubmittingTeammate ? (
                             <UpdateIcon className="animate-spin" />
                           ) : amountToSendIsInvalid ? (
-                            'Please type a valid amount'
+                            t('xpboosts.sidebar.errors.valid-amount')
                           ) : (
-                            <>
+                            <Trans
+                              ns="stw-operations"
+                              i18nKey="xpboosts.sidebar.teammate.submit-button"
+                              values={{
+                                total: compactNumber(newCalculatedTotal),
+                                name: searchedUser.data.lookup.displayName,
+                              }}
+                            >
                               Send
                               <span className="underline">
                                 {compactNumber(newCalculatedTotal)}
@@ -682,7 +735,7 @@ function SendBoostsSheet({
                               <span className="font-bold max-w-[25ch] truncate">
                                 {searchedUser.data.lookup.displayName}
                               </span>
-                            </>
+                            </Trans>
                           )}
                         </Button>
                       </div>
@@ -690,7 +743,10 @@ function SendBoostsSheet({
                         <div className="flex gap-1.5">
                           <div className="flex items-center gap-1.5 text-muted-foreground">
                             <Send className="flex-shrink-0 size-3.5" />
-                            Success:
+                            {t('actions.success', {
+                              ns: 'general',
+                            })}
+                            :
                           </div>{' '}
                           {numberWithCommaSeparator(success)}/
                           {numberWithCommaSeparator(newCalculatedTotal)}
@@ -705,6 +761,56 @@ function SendBoostsSheet({
         </div>
       </SheetContent>
     </Sheet>
+  )
+}
+
+function SearchExternalAccount({
+  inputSearchButtonIsDisabled,
+  inputSearchDisplayName,
+  inputSearchIsDisabled,
+  searchUserIsSubmitting,
+
+  handleChangeSearchDisplayName,
+}: {
+  inputSearchDisplayName: string
+  inputSearchIsDisabled: boolean
+  inputSearchButtonIsDisabled: boolean
+  searchUserIsSubmitting: boolean
+
+  handleChangeSearchDisplayName: ChangeEventHandler<HTMLInputElement>
+}) {
+  const { t } = useTranslation(['stw-operations'])
+
+  const [$updateInput, $updateButton] = useInputPaddingButton()
+
+  return (
+    <div className="flex items-center relative">
+      <Input
+        placeholder={t('form.search-account.input.placeholder', {
+          ns: 'general',
+        })}
+        className="pr-[var(--pr-button-width)] pl-3 py-1"
+        value={inputSearchDisplayName}
+        onChange={handleChangeSearchDisplayName}
+        disabled={inputSearchIsDisabled}
+        id="sheet-input-search-player"
+        ref={$updateInput}
+      />
+      <Button
+        type="submit"
+        className="absolute h-8 px-2 py-1.5 right-1 text-sm w-16"
+        disabled={inputSearchButtonIsDisabled}
+        ref={$updateButton}
+      >
+        {searchUserIsSubmitting ? (
+          <UpdateIcon className="animate-spin h-4" />
+        ) : (
+          t('actions.search', {
+            ns: 'general',
+          })
+        )}
+      </Button>
+    </div>
   )
 }
 
@@ -747,6 +853,8 @@ function AccountInformation({
   disableActions: boolean
   teammateXPBoostsFiltered: number
 }) {
+  const { t } = useTranslation(['stw-operations'])
+
   const {
     amountToSendParsedToNumber,
     isDisabled,
@@ -819,7 +927,7 @@ function AccountInformation({
             }
           )}
         >
-          Teammate XP Boosts to use:
+          {t('xpboosts.results.options.description')}
         </div>
         <div
           className={cn('flex px-1', {
@@ -835,9 +943,11 @@ function AccountInformation({
             </figure>
             <div className="flex-grow space-y-1">
               <div className="text-muted-foreground text-xs">
-                {compactNumber(teammateXPBoostsFiltered)}/
-                {compactNumber(data.items.teammate.quantity)} of a total of{' '}
-                {compactNumber(amountToSendParsedToNumber)}
+                {t('xpboosts.results.options.information', {
+                  current: compactNumber(teammateXPBoostsFiltered),
+                  total: compactNumber(data.items.teammate.quantity),
+                  amount: compactNumber(amountToSendParsedToNumber),
+                })}
               </div>
             </div>
           </div>
@@ -932,41 +1042,42 @@ export function SearchedUserData({
 
   hideXPBoostsData?: boolean
 }) {
+  const { t } = useTranslation(['general'])
+
   const extractedBoostedXP = extractBoostedXP(boostedXP)
   const individualBoosts = Math.round(extractedBoostedXP / 864191)
 
   return (
     <>
       <AccountBasicInformationSection
-        title="Account Id:"
+        title={t('information.account-id')}
         value={accountId}
       />
       {/* <AccountBasicInformationSection
-        title="Power Level:"
+        title={t('information.power-level')}
         value="⚡130"
       /> */}
       <AccountBasicInformationSection
-        title="Commander Level:"
+        title={t('information.commander-level')}
         value={numberWithCommaSeparator(commanderLevel)}
       />
       <AccountBasicInformationSection
-        title="Boosted XP:"
+        title={t('information.boosted-xp')}
         value={
           <div className="space-x-1.5">
             <span>{numberWithCommaSeparator(extractedBoostedXP)}</span>
             <span>
-              ({numberWithCommaSeparator(individualBoosts)}{' '}
-              {individualBoosts > 1 ? 'Boosts' : 'Boost'})
+              ({numberWithCommaSeparator(individualBoosts)} {t('boosts')})
             </span>
           </div>
         }
       />
       <AccountBasicInformationSection
-        title="Days Logged In:"
+        title={t('information.days-logged-in')}
         value={numberWithCommaSeparator(daysLoggedIn)}
       />
       <AccountBasicInformationSection
-        title="Collection Book Level:"
+        title={t('information.collection-book-level')}
         value={numberWithCommaSeparator(collectionBookLevel)}
       />
       {!hideXPBoostsData && (
@@ -980,7 +1091,7 @@ export function SearchedUserData({
                     className="size-[18px]"
                   />
                 </figure>
-                Personal XP Boosts:
+                {t('information.personal-xp-boosts')}
               </>
             }
             value={numberWithCommaSeparator(personalXPBoosts)}
@@ -994,7 +1105,7 @@ export function SearchedUserData({
                     className="size-[18px]"
                   />
                 </figure>
-                Teammate XP Boosts:
+                {t('information.teammate-xp-boosts')}
               </>
             }
             value={numberWithCommaSeparator(teammateXPBoosts)}
@@ -1010,10 +1121,10 @@ export function SearchedUserData({
                 className="size-[18px]"
               />
             </figure>
-            Founder Status:
+            {t('information.founder-status')}
           </>
         }
-        value={extractFounderStatus(founderStatus)}
+        value={t(`founder.${extractFounderStatus(founderStatus)}`)}
       />
     </>
   )

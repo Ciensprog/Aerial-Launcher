@@ -1,5 +1,6 @@
 import { createRoute } from '@tanstack/react-router'
 import { Info } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -32,6 +33,8 @@ export const Route = createRoute({
 })
 
 export function RouteComponent() {
+  const { t } = useTranslation(['sidebar'])
+
   useClaimedRewardsNotifications()
 
   return (
@@ -41,11 +44,13 @@ export function RouteComponent() {
           <HomeBreadcrumb />
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>STW Operations</BreadcrumbPage>
+            <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Party</BreadcrumbPage>
+            <BreadcrumbPage>
+              {t('stw-operations.options.party')}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

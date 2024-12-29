@@ -1,0 +1,10 @@
+{
+  "description": "Update homebase name (no longer visible in game) of the selected accounts.",
+  "form": {
+    "placeholder": "Set a homebase name",
+    "submit-button": "Update Homebase Name"
+  },
+  "notifications": {
+    "updated": "Homebase name updated"
+  }
+}

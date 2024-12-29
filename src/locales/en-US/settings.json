@@ -51,14 +51,7 @@
   "account-customization": {
     "title": "Account Customization",
     "description": "Sometimes you could need a specific display name for identifying an account. If you want, you can change the current display name with a custom name.",
-    "note": "Note: this only applies visually to the Aerial accounts.",
-    "search": {
-      "input": {
-        "placeholder": "Search on {{total}} accounts",
-        "placeholder-private": "Search on your accounts"
-      },
-      "empty": "No account found"
-    }
+    "note": "Note: this only applies visually to the Aerial accounts."
   },
   "form": {
     "submit": {

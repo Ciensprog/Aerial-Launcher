@@ -1,13 +1,69 @@
 {
   "actions": {
+    "add": "Add",
     "change": "Change",
     "create": "Create",
+    "search": "Search",
+    "success": "Success",
     "update": "Update"
   },
+  "form": {
+    "accounts": {
+      "placeholder": "Search on {{total}} accounts",
+      "placeholder_private": "Search on your accounts",
+      "search-empty": "No account found",
+      "select": "Select account",
+      "selected": "Account selected",
+      "no-available": "No accounts available",
+      "no-linked": "No linked accounts",
+      "no-options": "No accounts"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Select some accounts",
+        "tags": "Select some tags",
+        "bulk-note": "Bulk tag selected, all launcher accounts will be used."
+      }
+    },
+    "player": {
+      "search-empty": "No player found"
+    },
+    "search-account": {
+      "label": "Search player by accountId or display name (epic, xbl or psn)",
+      "input": {
+        "placeholder": "Example: Sample"
+      }
+    }
+  },
+  "information": {
+    "account-id": "Account Id:",
+    "power-level": "Power Level:",
+    "commander-level": "Commander Level:",
+    "boosted-xp": "Boosted XP:",
+    "days-logged-in": "Days Logged In:",
+    "collection-book-level": "Collection Book Level:",
+    "personal-xp-boosts": "Personal XP Boosts:",
+    "teammate-xp-boosts": "Teammate XP Boosts:",
+    "founder-status": "Founder Status:"
+  },
+  "founder": {
+    "non-founder": "Non-Founder",
+    "founder": "Founder",
+    "standard": "Standard Edition",
+    "deluxe": "Deluxe Edition",
+    "super-deluxe": "Super Deluxe Edition",
+    "limited": "Limited Edition",
+    "ultimate": "Ultimate Edition"
+  },
+  "separators": {
+    "or": "Or"
+  },
+  "boosts": "Boost/s",
   "first-claim": "First claim: {{date}}",
   "go-to-current-alerts": "Go To Current Alerts",
   "history": "History",
   "last-played": "Last played at: {{date}}",
+  "public-stats": "Note: This user has \"Public Game Stats\" disabled, more information can't be displayed.",
   "settings": "Settings",
   "summary": "Summary",
   "unknown-user": "Unknown User",
