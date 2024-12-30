@@ -12,6 +12,7 @@ import {
   Share,
   Trash2,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { LoadWorldInfoFiles } from '../../../bootstrap/components/advanced-mode/load-world-info-files'
 import { Route as RootRoute } from '../../__root'
@@ -29,6 +30,7 @@ import { Card, CardContent, CardFooter } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
 // import { Switch } from '../../../components/ui/switch'
 
+import { useInputPaddingButton } from '../../../hooks/ui/inputs'
 import {
   useCurrentActions,
   useData,
@@ -36,12 +38,20 @@ import {
   useSearch,
 } from './-hooks'
 
-import { getShortDateFormat, relativeTime } from '../../../lib/dates'
+import {
+  getDateWithFormat,
+  getShortDateFormat,
+  relativeTime,
+} from '../../../lib/dates'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/advanced-mode/world-info',
   component: () => {
+    const { t } = useTranslation(['sidebar'], {
+      keyPrefix: 'advanced-mode',
+    })
+
     return (
       <>
         <Breadcrumb>
@@ -49,11 +59,11 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Advanced Mode</BreadcrumbPage>
+              <BreadcrumbPage>{t('title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>World Info</BreadcrumbPage>
+              <BreadcrumbPage>{t('options.world-info')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -65,6 +75,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['advanced-mode', 'general'])
+
   const { currentData, files, isFetching, isSaving } = useData()
   const { handleRefetch, handleSave } = useCurrentActions()
   const {
@@ -109,7 +121,9 @@ function Content() {
                     {currentData.value ? currentData.date : 'N/A'}
                   </div>
                   <div className="font-medium text-muted-foreground text-xs uppercase">
-                    Current
+                    {t('current', {
+                      ns: 'general',
+                    })}
                   </div>
                 </div>
               </div>
@@ -125,7 +139,7 @@ function Content() {
                   ) : (
                     <>
                       <Save size={16} />
-                      Save On Local
+                      {t('world-info.form.save')}
                     </>
                   )}
                 </Button>
@@ -141,7 +155,7 @@ function Content() {
                   ) : (
                     <>
                       <CloudDownload size={16} />
-                      Refetch data
+                      {t('world-info.form.refetch')}
                     </>
                   )}
                 </Button>
@@ -154,12 +168,17 @@ function Content() {
                   {files.length > 1 && (
                     <div className="flex gap-3 items-center mb-5">
                       <Input
-                        placeholder={`Search on ${files.length} files`}
+                        placeholder={t(
+                          'world-info.search.input.placeholder',
+                          {
+                            total: files.length,
+                          }
+                        )}
                         value={searchValue}
                         onChange={onChangeSearchValue}
                       />
                       {/* <div className="flex flex-shrink-0 gap-2 items-center text-muted-foreground w-1/3">
-                        Include file data
+                        {t('world-info.search.include-data')}
                         <Switch
                           checked={includeFileData}
                           onCheckedChange={setIncludeFileData}
@@ -182,7 +201,9 @@ function Content() {
                           size={48}
                           className="mx-auto"
                         />
-                        <div className="mt-2">No files found</div>
+                        <div className="mt-2">
+                          {t('world-info.search.no-files')}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -193,7 +214,9 @@ function Content() {
                     size={48}
                     className="mx-auto"
                   />
-                  <div className="mt-2">No files found</div>
+                  <div className="mt-2">
+                    {t('world-info.search.no-files')}
+                  </div>
                 </div>
               )}
             </div>
@@ -205,6 +228,8 @@ function Content() {
 }
 
 function Item({ data }: { data: WorldInfoFileData }) {
+  const { t } = useTranslation(['advanced-mode', 'general'])
+
   const {
     handleDeleteFile,
     handleExportFile,
@@ -214,6 +239,10 @@ function Item({ data }: { data: WorldInfoFileData }) {
     onSubmit,
     validName,
   } = useItemData({ data })
+
+  const [$updateInput, $updateButton] = useInputPaddingButton({
+    deps: [validName],
+  })
 
   return (
     <Card>
@@ -229,17 +258,30 @@ function Item({ data }: { data: WorldInfoFileData }) {
           onSubmit={onSubmit}
         >
           <Input
-            className="h-auto pr-20 pl-3 py-1"
-            placeholder={`Default name: ${data.date}`}
+            className="h-auto pr-[var(--pr-button-width)] pl-3 py-1"
+            placeholder={t('world-info.file.input.placeholder', {
+              filename: getDateWithFormat(
+                data.date,
+                'YYYY-MM-DD HH[h] m[m] s[s]'
+              ),
+            })}
             value={name}
             onChange={handleUpdateName}
+            ref={$updateInput}
           />
           <Button
             type="submit"
             variant="secondary"
-            className="absolute h-auto px-2 py-0.5 right-1 text-sm"
+            className="absolute h-auto px-2 py-0.5 right-1 text-sm w-auto"
+            ref={$updateButton}
           >
-            {validName ? 'Update' : 'Revert'}
+            {validName
+              ? t('actions.update', {
+                  ns: 'general',
+                })
+              : t('actions.revert', {
+                  ns: 'general',
+                })}
           </Button>
         </form>
       </CardContent>

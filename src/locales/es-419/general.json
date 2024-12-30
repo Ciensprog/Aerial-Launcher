@@ -3,6 +3,7 @@
     "add": "Añadir",
     "change": "Cambiar",
     "create": "Crear",
+    "revert": "Revertir",
     "search": "Buscar",
     "success": "Completado",
     "update": "Actualizar"
@@ -26,7 +27,12 @@
       }
     },
     "player": {
-      "search-empty": "No se encontró el jugador"
+      "search-empty": "No se encontró el jugador",
+      "recently": {
+        "empty-placeholder": "Sin jugadores recientes",
+        "search-placeholder": "Buscar en {{total}} jugadores",
+        "select-placeholder": "Seleccionar un jugador reciente"
+      }
     },
     "search-account": {
       "label": "Buscar jugador por accountId o nombre (epic, xbl o psn)",
@@ -59,6 +65,7 @@
     "or": "O"
   },
   "boosts": "Potenciador/es",
+  "current": "Actual",
   "first-claim": "Primer reclamo: {{date}}",
   "go-to-current-alerts": "Ir A Las Misiones Actuales",
   "history": "Historial",

@@ -3,6 +3,7 @@
     "add": "Add",
     "change": "Change",
     "create": "Create",
+    "revert": "Revert",
     "search": "Search",
     "success": "Success",
     "update": "Update"
@@ -26,7 +27,12 @@
       }
     },
     "player": {
-      "search-empty": "No player found"
+      "search-empty": "No player found",
+      "recently": {
+        "empty-placeholder": "No recently players",
+        "search-placeholder": "Search on {{total}} player/s",
+        "select-placeholder": "Select a recently player"
+      }
     },
     "search-account": {
       "label": "Search player by accountId or display name (epic, xbl or psn)",
@@ -59,6 +65,7 @@
     "or": "Or"
   },
   "boosts": "Boost/s",
+  "current": "Current",
   "first-claim": "First claim: {{date}}",
   "go-to-current-alerts": "Go To Current Alerts",
   "history": "History",

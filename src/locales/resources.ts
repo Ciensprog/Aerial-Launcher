@@ -13,6 +13,8 @@ import enUS_stwOperations_SaveQuests from './en-US/stw-operations/save-quests.js
 import enUS_stwOperations_Party from './en-US/stw-operations/party.json'
 import enUS_stwOperations_Urns from './en-US/stw-operations/urns.json'
 import enUS_stwOperations_XPBoosts from './en-US/stw-operations/xpboosts.json'
+import enUS_advancedMode_MatchmakingTrack from './en-US/advanced-mode/matchmaking-track.json'
+import enUS_advancedMode_WorldInfo from './en-US/advanced-mode/world-info.json'
 
 const enUS = {
   sidebar: enUS_sidebar,
@@ -26,6 +28,10 @@ const enUS = {
     party: enUS_stwOperations_Party,
     urns: enUS_stwOperations_Urns,
     xpboosts: enUS_stwOperations_XPBoosts,
+  },
+  'advanced-mode': {
+    'matchmaking-track': enUS_advancedMode_MatchmakingTrack,
+    'world-info': enUS_advancedMode_WorldInfo,
   },
 }
 
@@ -42,6 +48,8 @@ import es419_stwOperations_SaveQuests from './es-419/stw-operations/save-quests.
 import es419_stwOperations_Party from './es-419/stw-operations/party.json'
 import es419_stwOperations_Urns from './es-419/stw-operations/urns.json'
 import es419_stwOperations_XPBoosts from './es-419/stw-operations/xpboosts.json'
+import es419_advancedMode_MatchmakingTrack from './es-419/advanced-mode/matchmaking-track.json'
+import es419_advancedMode_WorldInfo from './es-419/advanced-mode/world-info.json'
 
 const es419 = {
   sidebar: es419_sidebar,
@@ -55,6 +63,10 @@ const es419 = {
     party: es419_stwOperations_Party,
     urns: es419_stwOperations_Urns,
     xpboosts: es419_stwOperations_XPBoosts,
+  },
+  'advanced-mode': {
+    'matchmaking-track': es419_advancedMode_MatchmakingTrack,
+    'world-info': es419_advancedMode_WorldInfo,
   },
 }
 

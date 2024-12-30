@@ -1,0 +1,25 @@
+{
+  "description": "Check if this is the user you are looking for and request for their matchmaking information.",
+  "note": "Default path file:",
+  "form": {
+    "recently": {
+      "label": "Note: These players are stored temporarily"
+    },
+    "submit-button": "Create Matchmaking File"
+  },
+  "results": {
+    "notes": "Notes:",
+    "options": {
+      "public-stats": "This user has \"Public Game Stats\" disabled, more information can't be displayed.",
+      "continuation": "Of course, you can still generate the file."
+    }
+  },
+  "notifications": {
+    "file": {
+      "updated": "File has been updated successfully"
+    },
+    "player": {
+      "not-playing": "Specified player is probably not on a mission"
+    }
+  }
+}
