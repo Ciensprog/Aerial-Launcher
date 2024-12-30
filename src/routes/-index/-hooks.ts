@@ -4,7 +4,7 @@ import type { WorldInfoData } from '../../types/services/advanced-mode/world-inf
 
 import { Collection } from '@discordjs/collection'
 import { useDropzone } from 'react-dropzone'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { useWorldInfoActions } from '../../hooks/advanced-mode/world-info'
 import {
@@ -68,46 +68,6 @@ export function useIntersectingElement({ deps }: { deps?: unknown }) {
   )
 
   return $element
-}
-
-export function useScrollToTop() {
-  const [scrollToTopButtonIsVisible, setScrollToTopButtonIsVisible] =
-    useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setScrollToTopButtonIsVisible(!entry.isIntersecting)
-      },
-      {
-        threshold: [0],
-      }
-    )
-
-    const $container = document.getElementById(
-      'alert-navigation-container'
-    )
-
-    if ($container) {
-      observer.observe($container)
-    }
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
-
-  const scrollButtonOnClick = () => {
-    document.querySelector('.main-wrapper-content')?.scroll({
-      behavior: 'smooth',
-      top: 0,
-    })
-  }
-
-  return {
-    scrollToTopButtonIsVisible,
-    scrollButtonOnClick,
-  }
 }
 
 export function useFetchPlayerDataSync() {

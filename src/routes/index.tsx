@@ -9,10 +9,10 @@ import {
   TabsList,
   TabsTrigger,
 } from '../components/ui/tabs'
+import { GoToTop } from '../components/go-to-top'
 
 import { AlertsOverview } from './-index/-alerts-overview/-index'
 import { FetchAlertsButton } from './-index/-components/-fetch-alerts-button'
-import { GoToTop } from './-index/-components/-go-to-top'
 import { HomeAlerts } from './-index/-home/-index'
 import { CommunityInfo } from './-index/-community-info'
 import { AlertsDone } from './-index/alerts-done'
@@ -118,7 +118,7 @@ const MainContent = memo(() => {
         </TabsContent>
       </Tabs>
 
-      <GoToTop />
+      <GoToTop containerId="alert-navigation-container" />
     </>
   )
 })

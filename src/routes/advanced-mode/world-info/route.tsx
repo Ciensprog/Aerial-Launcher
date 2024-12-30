@@ -29,6 +29,7 @@ import { Button } from '../../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../../components/ui/card'
 import { Input } from '../../../components/ui/input'
 // import { Switch } from '../../../components/ui/switch'
+import { GoToTop } from '../../../components/go-to-top'
 
 import { useInputPaddingButton } from '../../../hooks/ui/inputs'
 import {
@@ -96,7 +97,10 @@ function Content() {
       <div className="flex flex-grow">
         <div className="flex items-center justify-center w-full">
           <div className="max-w-lg w-full">
-            <div className="border flex mb-10 mt-5 mx-auto rounded w-80">
+            <div
+              className="bg-red-200 border flex mb-10 mt-5 mx-auto rounded w-80"
+              id="form-current-world-info-container"
+            >
               <div className="bg-muted-foreground/5 flex flex-col justify-center py-4 w-1/2">
                 <div className="flex flex-shrink-0 justify-center mb-2 pl-2 pr-3">
                   {!isFetching && currentData.value ? (
@@ -223,6 +227,8 @@ function Content() {
           </div>
         </div>
       </div>
+
+      <GoToTop containerId="form-current-world-info-container" />
     </>
   )
 }
