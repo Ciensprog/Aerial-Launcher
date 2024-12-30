@@ -1,6 +1,6 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { BellRing, Trash2 } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { Alert, AlertDescription } from '../../../components/ui/alert'
@@ -42,13 +42,18 @@ export function InviteCard() {
     <Card className="max-w-lg w-full">
       <CardContent className="grid gap-2 pt-6">
         <CardDescription>
-          {t('form.accounts.selected', {
-            ns: 'general',
-          })}
-          :{' '}
-          <span className="font-bold">
-            {parseCustomDisplayName(selected)}
-          </span>
+          <Trans
+            ns="general"
+            i18nKey="account-selected"
+            values={{
+              name: parseCustomDisplayName(selected),
+            }}
+          >
+            Account selected:{' '}
+            <span className="font-bold">
+              {parseCustomDisplayName(selected)}
+            </span>
+          </Trans>
         </CardDescription>
         <div className="flex gap-4">
           <Combobox

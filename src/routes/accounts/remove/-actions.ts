@@ -2,6 +2,7 @@ import type { GroupRecord } from '../../../types/groups'
 
 import { useNavigate } from '@tanstack/react-router'
 import { useShallow } from 'zustand/react/shallow'
+import { useTranslation } from 'react-i18next'
 
 import { useGetAutomationActions } from '../../../hooks/stw-operations/automation'
 import {
@@ -74,6 +75,10 @@ function useClearPartySelectors() {
 }
 
 export function useHandleRemove() {
+  const { t } = useTranslation(['accounts'], {
+    keyPrefix: 'remove-account',
+  })
+
   const navigate = useNavigate()
   const { selected } = useGetSelectedAccount()
   const { removeAccount } = useRemoveSelectedAccount()
@@ -137,7 +142,11 @@ export function useHandleRemove() {
 
     const total = Object.values(removeAccount(selected.accountId)).length
 
-    toast(`Account ${parseCustomDisplayName(selected)} was removed`)
+    toast(
+      t('notifications.remove.success', {
+        name: parseCustomDisplayName(selected),
+      })
+    )
 
     const withRedirect = config?.defaultRedirect ?? true
 

@@ -3,12 +3,25 @@
     "add": "Add",
     "change": "Change",
     "create": "Create",
+    "login": "Login",
     "revert": "Revert",
     "search": "Search",
     "success": "Success",
     "update": "Update"
   },
   "form": {
+    "credentials": {
+      "account-id": "Account Id",
+      "device-id": "Device Id",
+      "secret": "Secret",
+      "login": {
+        "label": "Paste Your Code",
+        "input": {
+          "placeholder": "Example: {{code}}"
+        },
+        "get-code": "<0>Get Code</0> <1 />"
+      }
+    },
     "accounts": {
       "placeholder": "Search on {{total}} accounts",
       "placeholder_private": "Search on your accounts",
@@ -64,6 +77,25 @@
   "separators": {
     "or": "Or"
   },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ Invalid accountId"
+        },
+        "device-id": {
+          "invalid": "❌ Invalid deviceId"
+        },
+        "secret": {
+          "invalid": "❌ Invalid secret"
+        },
+        "code": {
+          "invalid": "❌ Invalid code"
+        }
+      }
+    }
+  },
+  "account-selected": "Account selected: <2>{{name}}</2>",
   "boosts": "Boost/s",
   "current": "Current",
   "first-claim": "First claim: {{date}}",

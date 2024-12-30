@@ -1,0 +1,8 @@
+{
+  "notifications": {
+    "new-account": {
+      "success": "Nueva cuenta añadida: {{name}}",
+      "error": "Error desconocido"
+    }
+  }
+}

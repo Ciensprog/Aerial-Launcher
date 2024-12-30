@@ -1,0 +1,11 @@
+{
+  "form": {
+    "label": "¿Quieres remover la cuenta <2>{{name}}</2>?",
+    "submit-button": "Si, remover la cuenta seleccionada"
+  },
+  "notifications": {
+    "remove": {
+      "success": "La cuenta {{name}} fue removida"
+    }
+  }
+}

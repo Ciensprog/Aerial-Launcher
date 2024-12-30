@@ -15,6 +15,11 @@ import enUS_stwOperations_Urns from './en-US/stw-operations/urns.json'
 import enUS_stwOperations_XPBoosts from './en-US/stw-operations/xpboosts.json'
 import enUS_advancedMode_MatchmakingTrack from './en-US/advanced-mode/matchmaking-track.json'
 import enUS_advancedMode_WorldInfo from './en-US/advanced-mode/world-info.json'
+import enUS_myAccounts_General from './en-US/accounts/general.json'
+import enUS_myAccounts_AuthCode from './en-US/accounts/auth-code.json'
+import enUS_myAccounts_ExchangeCode from './en-US/accounts/exchange-code.json'
+import enUS_myAccounts_DeviceAuth from './en-US/accounts/device-auth.json'
+import enUS_myAccounts_RemoveAccount from './en-US/accounts/remove-account.json'
 
 const enUS = {
   sidebar: enUS_sidebar,
@@ -33,6 +38,13 @@ const enUS = {
     'matchmaking-track': enUS_advancedMode_MatchmakingTrack,
     'world-info': enUS_advancedMode_WorldInfo,
   },
+  accounts: {
+    general: enUS_myAccounts_General,
+    'auth-code': enUS_myAccounts_AuthCode,
+    'exchange-code': enUS_myAccounts_ExchangeCode,
+    'device-auth': enUS_myAccounts_DeviceAuth,
+    'remove-account': enUS_myAccounts_RemoveAccount,
+  },
 }
 
 /**
@@ -50,6 +62,11 @@ import es419_stwOperations_Urns from './es-419/stw-operations/urns.json'
 import es419_stwOperations_XPBoosts from './es-419/stw-operations/xpboosts.json'
 import es419_advancedMode_MatchmakingTrack from './es-419/advanced-mode/matchmaking-track.json'
 import es419_advancedMode_WorldInfo from './es-419/advanced-mode/world-info.json'
+import es419_myAccounts_General from './es-419/accounts/general.json'
+import es419_myAccounts_AuthCode from './es-419/accounts/auth-code.json'
+import es419_myAccounts_ExchangeCode from './es-419/accounts/exchange-code.json'
+import es419_myAccounts_DeviceAuth from './es-419/accounts/device-auth.json'
+import es419_myAccounts_RemoveAccount from './es-419/accounts/remove-account.json'
 
 const es419 = {
   sidebar: es419_sidebar,
@@ -67,6 +84,13 @@ const es419 = {
   'advanced-mode': {
     'matchmaking-track': es419_advancedMode_MatchmakingTrack,
     'world-info': es419_advancedMode_WorldInfo,
+  },
+  accounts: {
+    general: es419_myAccounts_General,
+    'auth-code': es419_myAccounts_AuthCode,
+    'exchange-code': es419_myAccounts_ExchangeCode,
+    'device-auth': es419_myAccounts_DeviceAuth,
+    'remove-account': es419_myAccounts_RemoveAccount,
   },
 }
 

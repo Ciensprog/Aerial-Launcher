@@ -1,0 +1,9 @@
+{
+  "guide": {
+    "title": "How to get the code:",
+    "steps": {
+      "1": "<0>Step 1:</0> You must sign in to your Epic Games account: <3>{{url}}</3>",
+      "2": "<0>Step 2:</0> Click on <3>this link</3> or in button below (Get Code), this will be open a new tab in your browser with a json format response with your authorization code:"
+    }
+  }
+}
