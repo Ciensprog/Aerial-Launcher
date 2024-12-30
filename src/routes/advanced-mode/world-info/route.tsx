@@ -98,7 +98,7 @@ function Content() {
         <div className="flex items-center justify-center w-full">
           <div className="max-w-lg w-full">
             <div
-              className="bg-red-200 border flex mb-10 mt-5 mx-auto rounded w-80"
+              className="border flex mb-10 mt-5 mx-auto rounded w-80"
               id="form-current-world-info-container"
             >
               <div className="bg-muted-foreground/5 flex flex-col justify-center py-4 w-1/2">
