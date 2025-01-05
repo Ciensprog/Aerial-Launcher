@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { Button } from '../../../components/ui/button'
 
 import { useWorldInfo } from '../../../hooks/advanced-mode/world-info'
@@ -11,6 +13,10 @@ export function ZonePagination({
 }: {
   totalMissions: number
 } & ReturnType<typeof useZoneMissionsPagination>) {
+  const { t } = useTranslation(['alerts'], {
+    keyPrefix: 'pagination',
+  })
+
   const { isReloading } = useWorldInfo()
 
   return (
@@ -21,10 +27,10 @@ export function ZonePagination({
         onClick={pagination.previous}
         disabled={pagination.active <= 1 || isReloading}
       >
-        Show less
+        {t('actions.previous')}
       </Button>
-      <div className="text-muted-foreground text-sm">
-        <div>Results</div>
+      <div className="text-center text-muted-foreground text-sm">
+        <div>{t('results')}</div>
         <div>
           {pagination.active === totalPages
             ? totalMissions
@@ -38,7 +44,7 @@ export function ZonePagination({
         onClick={pagination.next}
         disabled={pagination.active === totalPages || isReloading}
       >
-        Show more
+        {t('actions.next')}
       </Button>
     </div>
   )

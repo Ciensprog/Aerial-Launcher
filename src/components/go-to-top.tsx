@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { memo, useEffect, useState } from 'react'
 
 import { Button } from './ui/button'
@@ -7,6 +8,31 @@ import { cn } from '../lib/utils'
 type GoToTopProps = {
   containerId: string
 }
+
+export const GoToTop = memo(({ containerId }: GoToTopProps) => {
+  const { t } = useTranslation(['general'])
+
+  const { scrollToTopButtonIsVisible, scrollButtonOnClick } =
+    useScrollToTop({
+      containerId,
+    })
+
+  return (
+    <Button
+      className={cn(
+        'bottom-5 fixed opacity-0 px-4 right-5 transition-all translate-x-28 z-10',
+        {
+          'opacity-100 translate-x-0': scrollToTopButtonIsVisible,
+        }
+      )}
+      size="sm"
+      variant="secondary"
+      onClick={scrollButtonOnClick}
+    >
+      {t('go-to-top')}
+    </Button>
+  )
+})
 
 function useScrollToTop(config: Pick<GoToTopProps, 'containerId'>) {
   const [scrollToTopButtonIsVisible, setScrollToTopButtonIsVisible] =
@@ -45,26 +71,3 @@ function useScrollToTop(config: Pick<GoToTopProps, 'containerId'>) {
     scrollButtonOnClick,
   }
 }
-
-export const GoToTop = memo(({ containerId }: GoToTopProps) => {
-  const { scrollToTopButtonIsVisible, scrollButtonOnClick } =
-    useScrollToTop({
-      containerId,
-    })
-
-  return (
-    <Button
-      className={cn(
-        'bottom-5 fixed opacity-0 px-4 right-5 transition-all translate-x-28 z-10',
-        {
-          'opacity-100 translate-x-0': scrollToTopButtonIsVisible,
-        }
-      )}
-      size="sm"
-      variant="secondary"
-      onClick={scrollButtonOnClick}
-    >
-      Go To Top
-    </Button>
-  )
-})

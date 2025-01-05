@@ -1,5 +1,6 @@
 import type { ChangeEventHandler } from 'react'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
@@ -18,6 +19,8 @@ import { parseRedeemCodes } from '../../../lib/parsers/texts'
 import { toast } from '../../../lib/notifications'
 
 export function useRedeemCodesData() {
+  const { t } = useTranslation(['general'])
+
   const {
     codes,
     isLoading,
@@ -76,7 +79,7 @@ export function useRedeemCodesData() {
     const selectedAccounts = getAccounts()
 
     if (selectedAccounts.length <= 0) {
-      toast('No linked accounts')
+      toast(t('form.accounts.no-linked'))
 
       return
     }

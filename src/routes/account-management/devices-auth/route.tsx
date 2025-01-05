@@ -4,6 +4,7 @@ import type { AccountData } from '../../../types/accounts'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { createRoute } from '@tanstack/react-router'
 import { Trash2 } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import { useState } from 'react'
 
 import { Route as RootRoute } from '../../__root'
@@ -43,6 +44,10 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/account-management/device-auth',
   component: () => {
+    const { t } = useTranslation(['sidebar'], {
+      keyPrefix: 'account-management',
+    })
+
     return (
       <>
         <Breadcrumb>
@@ -50,11 +55,11 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Account Management</BreadcrumbPage>
+              <BreadcrumbPage>{t('title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Devices Auth</BreadcrumbPage>
+              <BreadcrumbPage>{t('options.devices-auth')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -65,6 +70,10 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['account-management'], {
+    keyPrefix: 'devices-auth',
+  })
+
   const {
     data,
     disabledFetchButton,
@@ -79,18 +88,20 @@ function Content() {
       <div className="flex flex-col items-center justify-center w-full">
         <Card className="max-w-lg w-full">
           <CardHeader className="border-b">
-            <CardDescription>
-              Select an account and manage your devices auth created. User
-              Agent, Creation and Last Access are displayed with
-              information on: Location, IP Address and Date.
-            </CardDescription>
+            <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 pt-6">
             <CardDescription>
-              Account selected:{' '}
-              <span className="font-bold">
-                {parseCustomDisplayName(selected)}
-              </span>
+              <Trans
+                ns="general"
+                i18nKey="account-selected"
+                values={{ name: parseCustomDisplayName(selected) }}
+              >
+                Account selected:{' '}
+                <span className="font-bold">
+                  {parseCustomDisplayName(selected)}
+                </span>
+              </Trans>
             </CardDescription>
             <div>
               <Button
@@ -101,7 +112,7 @@ function Content() {
                 {isFetching ? (
                   <UpdateIcon className="animate-spin h-4" />
                 ) : (
-                  'Request Devices Auth'
+                  t('form.submit-button')
                 )}
               </Button>
             </div>
@@ -111,10 +122,18 @@ function Content() {
         <div className="max-w-lg mt-5 w-full">
           {data.length > 0 && (
             <p className="leading-none mb-5 text-center uppercase">
-              Devices Found:
-              <span className="block font-bold text-4xl">
-                {numberWithCommaSeparator(data.length)}
-              </span>
+              <Trans
+                ns="account-management"
+                i18nKey="devices-auth.results.title"
+                values={{
+                  total: numberWithCommaSeparator(data.length),
+                }}
+              >
+                Devices Found:
+                <span className="block font-bold text-4xl">
+                  {numberWithCommaSeparator(data.length)}
+                </span>
+              </Trans>
             </p>
           )}
           <Accordion
@@ -142,6 +161,8 @@ function DeviceItem({
   account: AccountData
   data: DeviceAuthInfoWithStates
 }) {
+  const { t } = useTranslation(['account-management', 'general'])
+
   const { identities } = useParseIdentities({ data })
   const { isFetching, handleRemoveDevice } = useActions()
 
@@ -159,10 +180,12 @@ function DeviceItem({
           <span>{data.deviceId.slice(0, 3)}•••</span>
           {'一'}
           <span className="font-bold- text-muted-foreground text-xs">
-            Last Access:{' '}
+            {t('devices-auth.results.item.last-access')}:{' '}
             {data.lastAccess
               ? relativeTime(data.lastAccess.dateTime)
-              : 'Unknown'}
+              : t('unknown', {
+                  ns: 'general',
+                })}
           </span>
           {identities.length > 0 && (
             <span className="font-bold text-muted-foreground text-xs">
@@ -182,17 +205,24 @@ function DeviceItem({
       </div>
       <AccordionContent className="flex flex-col gap-3 pt-4 px-4">
         <div>
-          <div className="font-bold">User Agent</div>
+          <div className="font-bold">
+            {t('user-agent', {
+              ns: 'general',
+            })}
+          </div>
           <p className="break-all text-muted-foreground">
-            {data.userAgent ?? 'Unknown'}
+            {data.userAgent ??
+              t('unknown', {
+                ns: 'general',
+              })}
           </p>
         </div>
         <ItemInformation
-          title="Created"
+          title={t('devices-auth.results.item.created')}
           data={data.created}
         />
         <ItemInformation
-          title="Last Access"
+          title={t('devices-auth.results.item.last-access')}
           data={data.lastAccess}
         />
       </AccordionContent>
@@ -211,10 +241,14 @@ function ItemInformation({
   }
   title: string
 }) {
+  const { t } = useTranslation(['account-management', 'general'])
+
   const [isPressed, setIsPressed] = useState(false)
   const parsedDate = data?.dateTime
     ? relativeTime(data.dateTime)
-    : 'Unknown'
+    : t('unknown', {
+        ns: 'general',
+      })
 
   return (
     <div>
@@ -228,19 +262,50 @@ function ItemInformation({
           onPressedChange={setIsPressed}
           aria-label="toggle hidden information"
         >
-          {isPressed ? 'Hide Information' : 'Show Hidden Information'}
+          {isPressed
+            ? t('hide-information', {
+                ns: 'general',
+              })
+            : t('show-information', {
+                ns: 'general',
+              })}
         </Toggle>
       </div>
       <p>
-        <span className="text-muted-foreground">Location:</span>{' '}
-        {isPressed ? data?.location ?? 'Unknown' : dots}
+        <span className="text-muted-foreground">
+          {t('location', {
+            ns: 'general',
+          })}
+          :
+        </span>{' '}
+        {isPressed
+          ? data?.location ??
+            t('unknown', {
+              ns: 'general',
+            })
+          : dots}
       </p>
       <p>
-        <span className="text-muted-foreground">IP Address:</span>{' '}
-        {isPressed ? data?.ipAddress ?? 'Unknown' : dots}
+        <span className="text-muted-foreground">
+          {t('ip-address', {
+            ns: 'general',
+          })}
+          :
+        </span>{' '}
+        {isPressed
+          ? data?.ipAddress ??
+            t('unknown', {
+              ns: 'general',
+            })
+          : dots}
       </p>
       <p>
-        <span className="text-muted-foreground">Date:</span>{' '}
+        <span className="text-muted-foreground">
+          {t('date', {
+            ns: 'general',
+          })}
+          :
+        </span>{' '}
         {isPressed ? (
           <>
             {parsedDate}{' '}

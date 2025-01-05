@@ -1,0 +1,9 @@
+{
+  "form": {
+    "submit-button": "Abrir Configuración De La Cuenta"
+  },
+  "notifications": {
+    "success": "A new tab in your browser should be opened with Epic Games settings URL for {{name}} account",
+    "error": "An error occurred while processing your request"
+  }
+}

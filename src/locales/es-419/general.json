@@ -30,7 +30,8 @@
       "selected": "Cuenta seleccionada",
       "no-available": "Sin cuentas disponibles",
       "no-linked": "Sin cuentas vinculadas",
-      "no-options": "Sin cuentas"
+      "no-options": "Sin cuentas",
+      "no-registered-accounts": "No hay cuentas registradas"
     },
     "multi": {
       "select": {
@@ -65,6 +66,13 @@
     "teammate-xp-boosts": "Potenciadores de Amigo:",
     "founder-status": "Estado de Fundador:"
   },
+  "version": {
+    "title": "Nueva versión {{version}}",
+    "description": "Puedes descargar la nueva versión (archivo .exe) desde acá:"
+  },
+  "community-info": {
+    "message": "¡¡¡Únete a nuestra <2>Comunidad de Discord<1/></2> para conocer más acerca de lo que vendrá en siguientes actualizaciones!!!"
+  },
   "founder": {
     "non-founder": "No-Fundador",
     "founder": "Fundador",
@@ -74,8 +82,26 @@
     "limited": "Edición Limitada",
     "ultimate": "Edición Definitiva"
   },
+  "launch-game": {
+    "button": "Iniciar Juego",
+    "notifications": {
+      "success": "El juego ha sido iniciado en la cuenta {{name}}",
+      "error": "Ocurrió un error al iniciar el juego en la cuenta {{name}}, por favor intenta más tarde"
+    }
+  },
   "separators": {
     "or": "O"
+  },
+  "sort": {
+    "newest": "Ordenado por más reciente"
+  },
+  "statuses": {
+    "error": "Error",
+    "loading": "Cargando",
+    "not-found": "No Encontrado",
+    "owned": "Propiedad",
+    "claimed": "Reclamado",
+    "used": "Usado"
   },
   "validations": {
     "form": {
@@ -97,14 +123,24 @@
   },
   "account-selected": "Cuenta seleccionada: <2>{{name}}</2>",
   "boosts": "Potenciador/es",
+  "credits": "Créditos",
   "current": "Actual",
+  "date": "Fecha",
   "first-claim": "Primer reclamo: {{date}}",
   "go-to-current-alerts": "Ir A Las Misiones Actuales",
+  "go-to-top": "Ir Hasta Arriba",
   "history": "Historial",
+  "hide-information": "Ocultar Información",
+  "show-information": "Mostrar Información Oculta",
+  "ip-address": "Dirección IP",
   "last-played": "Última partida: {{date}}",
+  "location": "Ubicación",
+  "missions": "Misiones",
   "public-stats": "Nota: Este usuario tiene las \"Estadísticas de Juego Públicas\" desactivadas, no se puede mostrar más información.",
   "settings": "Configuraciones",
   "summary": "Resumen",
   "unknown-user": "Usuario Desconocido",
-  "update-information": "Actualizar Información"
+  "unknown": "Desconocido",
+  "update-information": "Actualizar Información",
+  "user-agent": "Agente De Usuario"
 }

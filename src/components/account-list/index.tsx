@@ -1,4 +1,5 @@
 import { Check, ChevronsUpDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '../ui/button'
 import {
@@ -18,6 +19,8 @@ import { useAccountList } from './hooks'
 import { cn, parseCustomDisplayName } from '../../lib/utils'
 
 export function AccountList() {
+  const { t } = useTranslation(['general'])
+
   const {
     accounts,
     createKeywords,
@@ -40,7 +43,7 @@ export function AccountList() {
           className={cn(
             'not-draggable-region flex justify-between pl-3 pr-2 select-none text-left w-52',
             {
-              'justify-center px-0': accounts.length < 1,
+              'justify-center px-2': accounts.length < 1,
             }
           )}
           variant="outline"
@@ -60,12 +63,14 @@ export function AccountList() {
                   </span> */}
                 </span>
               ) : (
-                'Select account...'
+                t('form.accounts.select')
               )}
               <ChevronsUpDown className="h-4 ml-auto opacity-50 shrink-0 w-4" />
             </>
           ) : (
-            <span>No accounts registered yet</span>
+            <span className="leading-4 text-balance truncate">
+              {t('form.accounts.no-registered-accounts')}
+            </span>
           )}
         </Button>
       </PopoverTrigger>
@@ -76,17 +81,19 @@ export function AccountList() {
         >
           {accounts.length > 1 && (
             <CommandInput
-              placeholder={
-                getMenuOptionVisibility('showTotalAccounts')
-                  ? `Search on ${accounts.length} accounts...`
-                  : 'Search on your accounts'
-              }
+              placeholder={t('form.accounts.placeholder', {
+                ns: 'general',
+                context: !getMenuOptionVisibility('showTotalAccounts')
+                  ? 'private'
+                  : undefined,
+                total: accounts.length,
+              })}
               className="select-none"
               disabled={accounts.length <= 1}
             />
           )}
           <CommandListWithScrollArea>
-            <CommandEmpty>No account found</CommandEmpty>
+            <CommandEmpty>{t('form.accounts.search-empty')}</CommandEmpty>
             <CommandGroup>
               {accounts.map((account) => {
                 const displayName = parseCustomDisplayName(account)

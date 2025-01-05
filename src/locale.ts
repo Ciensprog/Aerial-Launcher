@@ -5,8 +5,7 @@ import { resources } from './locales/resources'
 
 use(initReactI18next).init({
   resources,
-  // lng: 'en-US',
-  lng: 'es-419',
+  lng: 'en-US',
   fallbackLng: 'en-US',
 })
 

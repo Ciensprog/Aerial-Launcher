@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 
 import { useGetSelectedAccount } from '../../../hooks/accounts'
@@ -6,6 +7,10 @@ import { toast } from '../../../lib/notifications'
 import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useHandlers() {
+  const { t } = useTranslation(['account-management'], {
+    keyPrefix: 'epic-settings',
+  })
+
   const { selected } = useGetSelectedAccount()
 
   useEffect(() => {
@@ -13,8 +18,10 @@ export function useHandlers() {
       async ({ account, status }) => {
         toast(
           status
-            ? `A new tab in your browser should be opened with Epic Games settings URL for ${parseCustomDisplayName(account)} account`
-            : 'An error occurred while processing your request',
+            ? t('notifications.success', {
+                name: parseCustomDisplayName(account),
+              })
+            : t('notifications.error'),
           {
             duration: status ? 6000 : undefined,
           }

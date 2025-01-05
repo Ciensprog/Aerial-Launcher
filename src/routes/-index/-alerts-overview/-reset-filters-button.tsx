@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { Button } from '../../../components/ui/button'
 
 import {
@@ -6,6 +8,10 @@ import {
 } from '../../../hooks/alerts/filters'
 
 export function ResetFiltersButton() {
+  const { t } = useTranslation(['alerts'], {
+    keyPrefix: 'filters',
+  })
+
   const { missionTypes, rarities, rewards, zones } =
     useAlertsOverviewFiltersData()
   const { resetFilters } = useAlertsOverviewFiltersActions()
@@ -23,7 +29,7 @@ export function ResetFiltersButton() {
       onClick={resetFilters}
       disabled={isDisabled}
     >
-      Clear Selections
+      {t('actions.clear')}
     </Button>
   )
 }

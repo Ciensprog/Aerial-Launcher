@@ -1,5 +1,6 @@
 import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -37,11 +38,16 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useRedeemCodesData } from './-hooks'
 
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
+import { useMemo } from 'react'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/account-management/redeem-codes',
   component: () => {
+    const { t } = useTranslation(['sidebar'], {
+      keyPrefix: 'account-management',
+    })
+
     return (
       <>
         <Breadcrumb>
@@ -49,11 +55,11 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Account Management</BreadcrumbPage>
+              <BreadcrumbPage>{t('title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Redeem Codes</BreadcrumbPage>
+              <BreadcrumbPage>{t('options.redeem-codes')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -64,6 +70,10 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['account-management'], {
+    keyPrefix: 'redeem-codes',
+  })
+
   const {
     accounts,
     codes,
@@ -87,9 +97,7 @@ function Content() {
         <div className="max-w-lg space-y-4 w-full">
           <Card className="w-full">
             <CardHeader className="border-b">
-              <CardDescription>
-                Redeem codes on each selected accounts.
-              </CardDescription>
+              <CardDescription>{t('description')}</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 pt-6">
               <AccountSelectors
@@ -106,30 +114,32 @@ function Content() {
               />
               <Textarea
                 className="[field-sizing:content] resize-none"
-                placeholder="Set codes to redeem (use newline)."
+                placeholder={t('form.input.placeholder')}
                 value={codes}
                 onChange={handleUpdateCodes}
                 disabled={isLoading}
               />
             </CardContent>
-            <CardFooter className="space-x-6">
+            <CardFooter className="flex gap-6 [&>.action]:max-w-[calc(50%-0.75rem)] [&>.action]:px-2 [&>.action]:w-full">
               <Button
-                className="w-full"
+                className="action"
                 onClick={handleRedeem}
                 disabled={isDisabledForm}
               >
                 {isLoading ? (
                   <UpdateIcon className="animate-spin" />
                 ) : (
-                  'Redeem Codes'
+                  <span className="truncate">
+                    {t('form.redeem-button')}
+                  </span>
                 )}
               </Button>
               <Button
-                className="w-full"
+                className="action"
                 onClick={handleClearForm}
                 variant="secondary"
               >
-                Clear Form
+                <span className="truncate">{t('form.clear-button')}</span>
               </Button>
             </CardFooter>
           </Card>
@@ -153,17 +163,22 @@ function Content() {
   )
 }
 
-const statusesText = {
-  [RedeemCodesStatus.ERROR]: 'Error',
-  [RedeemCodesStatus.LOADING]: 'Loading',
-  [RedeemCodesStatus.NOT_FOUND]: 'Not Found',
-  [RedeemCodesStatus.OWNED]: 'Owned',
-  [RedeemCodesStatus.SUCCESS]: 'Claimed',
-  [RedeemCodesStatus.USED]: 'Used',
-}
-
 function ResponseItem({ data }: { data: RedeemCodesData }) {
+  const { i18n, t } = useTranslation(['general'])
+
   const { accountList } = useGetAccounts()
+
+  const statusesText = useMemo(
+    () => ({
+      [RedeemCodesStatus.ERROR]: t('statuses.error'),
+      [RedeemCodesStatus.LOADING]: t('statuses.loading'),
+      [RedeemCodesStatus.NOT_FOUND]: t('statuses.not-found'),
+      [RedeemCodesStatus.OWNED]: t('statuses.owned'),
+      [RedeemCodesStatus.SUCCESS]: t('statuses.claimed'),
+      [RedeemCodesStatus.USED]: t('statuses.used'),
+    }),
+    [i18n.language]
+  )
 
   const codes = Object.values(data.codes)
   const successCounter = codes.filter((code) =>

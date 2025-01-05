@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { History, Menu, Minus, Rocket, Settings, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '../../components/ui/button'
 import {
@@ -22,6 +23,8 @@ import imgFNDBProfile from '../../_assets/fndb.png'
 import { whatIsThis } from '../../lib/callbacks'
 
 export function Header() {
+  const { t } = useTranslation(['general'])
+
   const { isButtonDisabled, open, setOpen } = useAttributesStates()
   const {
     handleCloseWindow,
@@ -48,7 +51,7 @@ export function Header() {
                 className="not-draggable-region shrink-0 md:hidden"
               >
                 <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle navigation menu</span>
+                <span className="sr-only">toggle navigation menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent
@@ -60,7 +63,7 @@ export function Header() {
                 <div className="app-draggable-region flex h-[var(--header-height)] items-center justify-center text-center-">
                   <SheetClose className="not-draggable-region">
                     <X />
-                    <span className="sr-only">Close navigation menu</span>
+                    <span className="sr-only">close navigation menu</span>
                   </SheetClose>
                 </div>
                 <SidebarMenu onOpenChange={setOpen} />
@@ -71,13 +74,19 @@ export function Header() {
           <AccountList />
 
           <Button
-            className="not-draggable-region"
+            className="leading-4 not-draggable-region px-2 py-1 w-[7.5rem]"
             size={isMinWith ? 'icon' : 'default'}
             variant="outline"
             disabled={isButtonDisabled}
             onClick={handleLaunch}
           >
-            {isMinWith ? <Rocket size={20} /> : 'Launch Game'}
+            {isMinWith ? (
+              <Rocket size={20} />
+            ) : (
+              <span className="text-balance truncate">
+                {t('launch-game.button')}
+              </span>
+            )}
           </Button>
 
           <Button
@@ -89,7 +98,7 @@ export function Header() {
           >
             <Link to="/settings">
               <Settings />
-              <span className="sr-only">Go to settings</span>
+              <span className="sr-only">go to settings</span>
             </Link>
           </Button>
 
@@ -106,7 +115,7 @@ export function Header() {
               src={imgFNDBProfile}
               className="w-8"
             />
-            <span className="sr-only">Go to FortniteDB profile</span>
+            <span className="sr-only">go to fortniteDB profile</span>
           </Button>
 
           <div className="ml-auto">
@@ -117,7 +126,7 @@ export function Header() {
               onClick={handleMinimizeWindow}
             >
               <Minus />
-              <span className="sr-only">Minimize application</span>
+              <span className="sr-only">minimize application</span>
             </Button>
             <Button
               className="not-draggable-region"
@@ -126,7 +135,7 @@ export function Header() {
               onClick={handleCloseWindow}
             >
               <X />
-              <span className="sr-only">Close application</span>
+              <span className="sr-only">close application</span>
             </Button>
           </div>
         </div>
@@ -150,7 +159,7 @@ function HistorySheet() {
           variant="ghost"
         >
           <History />
-          <span className="sr-only">Toggle history sidebar</span>
+          <span className="sr-only">toggle history sidebar</span>
         </Button>
       </SheetTrigger>
       <SheetContent

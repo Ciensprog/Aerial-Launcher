@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 
 import { fortniteDBProfileURL } from '../../config/fortnite/links'
@@ -22,6 +23,8 @@ export function useAttributesStates() {
 }
 
 export function useHandlers() {
+  const { t } = useTranslation(['general'])
+
   const { selected } = useGetSelectedAccount()
 
   useEffect(() => {
@@ -29,8 +32,12 @@ export function useHandlers() {
       window.electronAPI.onNotificationLauncher(async (data) => {
         toast(
           data.status
-            ? `The game has been launched with the account ${parseCustomDisplayName(data.account)}`
-            : `An error has occurred launching game with account ${parseCustomDisplayName(data.account)}, try again later`
+            ? t('launch-game.notifications.success', {
+                name: parseCustomDisplayName(data.account),
+              })
+            : t('launch-game.notifications.error', {
+                name: parseCustomDisplayName(data.account),
+              })
         )
       })
 

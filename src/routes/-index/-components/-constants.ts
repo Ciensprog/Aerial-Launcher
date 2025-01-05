@@ -93,13 +93,13 @@ const emptyMessages: Array<EmptyMessage> = [
 export const defaultEmptyMessage: EmptyMessage = {
   probability: 1,
   success: false,
-  text: 'No available missions',
+  text: 'missions',
 }
 export const defaultEmptyVBucksMessage: EmptyMessage = {
   icon: assets('images/random/pensive-cowboy.png'),
   probability: 1,
   success: false,
-  text: 'No V-Bucks today',
+  text: 'vbucks',
 }
 
 export function getRandomEmptyMessage(useCustomMessage?: boolean) {

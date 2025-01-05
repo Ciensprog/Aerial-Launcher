@@ -1,0 +1,9 @@
+{
+  "form": {
+    "submit-button": "Open Account Settings"
+  },
+  "notifications": {
+    "success": "A new tab in your browser should be opened with Epic Games settings URL for {{name}} account",
+    "error": "An error occurred while processing your request"
+  }
+}

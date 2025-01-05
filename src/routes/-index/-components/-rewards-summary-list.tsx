@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { EmptySection } from './-empty'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
@@ -13,10 +15,12 @@ export function RewardsSummaryList({
     }
   >
 }) {
+  const { t } = useTranslation(['alerts'])
+
   return (
     <EmptySection
       total={Object.entries(rewards).length}
-      title="No available rewards"
+      title={t('results.empty.rewards')}
     >
       <ul className="gap-1 grid grid-cols-4">
         {Object.entries(rewards).map(([itemId, item]) => (

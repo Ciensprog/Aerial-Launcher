@@ -139,7 +139,9 @@ export function Content() {
               <div className="space-y-2">
                 <Combobox
                   className="max-w-full"
-                  emptyPlaceholder="No accounts"
+                  emptyPlaceholder={t('form.accounts.no-options', {
+                    ns: 'general',
+                  })}
                   emptyContent={t('form.accounts.search-empty', {
                     ns: 'general',
                   })}
