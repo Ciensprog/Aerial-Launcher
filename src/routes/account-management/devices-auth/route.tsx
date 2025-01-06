@@ -42,7 +42,7 @@ const dots = '•••'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
-  path: '/account-management/device-auth',
+  path: '/account-management/devices-auth',
   component: () => {
     const { t } = useTranslation(['sidebar'], {
       keyPrefix: 'account-management',

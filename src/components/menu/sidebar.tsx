@@ -252,7 +252,7 @@ export function SidebarMenu({
                   {getMenuOptionVisibility('devicesAuth') && (
                     <li className="item">
                       <Link
-                        to="/account-management/device-auth"
+                        to="/account-management/devices-auth"
                         className={cn({
                           [currentClassNameHover]: areThereAccounts,
                           'cursor-not-allowed opacity-60':
