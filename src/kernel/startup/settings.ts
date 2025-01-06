@@ -1,13 +1,20 @@
 import type {
+  AppLanguageSettings,
   CustomizableMenuSettings,
+  LanguageResponse,
   Settings,
 } from '../../types/settings'
 
+import { writeFile } from 'node:fs/promises'
+
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+import { defaultAppLanguage } from '../../config/constants/settings'
 
 import { MainWindow } from './windows/main'
 import { DataDirectory } from './data-directory'
 import { SystemTray } from './system-tray'
+
+import { Language } from '../../locales/resources'
 
 export class SettingsManager {
   static async load() {
@@ -114,5 +121,44 @@ export class CustomizableMenuSettingsManager {
       ElectronAPIEventKeys.CustomizableMenuSettingsResponse,
       newData
     )
+  }
+}
+
+export class AppLanguage {
+  static async load() {
+    const data = await DataDirectory.getAppLanguageFile()
+    const response: LanguageResponse = {
+      generatedFile: true,
+      language: data?.i18n ?? defaultAppLanguage,
+    }
+
+    if (data === null) {
+      response.generatedFile = false
+    }
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.AppLanguageNotification,
+      response
+    )
+  }
+
+  static async update(language: Language) {
+    try {
+      const data: AppLanguageSettings = {
+        i18n: language,
+      }
+
+      await writeFile(
+        DataDirectory.getAppLanguageDirectoryPath(),
+        JSON.stringify(data, null, 2),
+        {
+          encoding: 'utf8',
+        }
+      )
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
   }
 }

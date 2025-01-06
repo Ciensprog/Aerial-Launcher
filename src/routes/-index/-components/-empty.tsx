@@ -50,13 +50,16 @@ export function EmptySection({
   }
 
   const message = getRandomEmptyMessage(isVBucks)
+  const isDefault = message?.isDefault ?? false
 
   return (
     <div className="border-2 border-muted-foreground/5 flex gap-2 items-center justify-center px-5 py-4 rounded-lg text-center text-muted-foreground">
       {isVBucks && message
         ? message.author
-          ? `${t(message.text)} 一 ${message.author}`
-          : t(message.text)
+          ? `${isDefault ? t(message.text) : message.text} 一 ${message.author}`
+          : isDefault
+            ? t(message.text)
+            : message.text
         : title ?? t(defaultEmptyMessage.text)}
       {message && message.icon && (
         <img

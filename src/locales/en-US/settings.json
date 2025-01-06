@@ -2,6 +2,20 @@
   "app-settings": {
     "title": "App Settings",
     "form": {
+      "language": {
+        "label": "Language",
+        "input": {
+          "placeholder": "Select language"
+        },
+        "dialog": {
+          "title": "What language do you want to use?",
+          "notes": {
+            "1": "This notification will not showing after selection.",
+            "2": "You can change this selection on the Settings page."
+          },
+          "submit-button": "Save Selection"
+        }
+      },
       "path": {
         "label": "Custom path"
       },

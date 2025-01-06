@@ -2,6 +2,20 @@
   "app-settings": {
     "title": "Configuración de la Aplicación",
     "form": {
+      "language": {
+        "label": "Idioma",
+        "input": {
+          "placeholder": "Seleccionar idioma"
+        },
+        "dialog": {
+          "title": "¿Qué idioma quieres usar?",
+          "notes": {
+            "1": "Esta notificación no se volverá a mostrar después de seleccionar.",
+            "2": "Podrás cambiar esta selección en la página de Configuraciones."
+          },
+          "submit-button": "Guardar Selección"
+        }
+      },
       "path": {
         "label": "Directorio de instalación personalizado"
       },

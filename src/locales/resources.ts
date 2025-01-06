@@ -125,7 +125,13 @@ const es419 = {
 /**
  * Export resources
  */
+
+export enum Language {
+  English = 'en-US',
+  Spanish = 'es-419',
+}
+
 export const resources: Resource = {
-  'en-US': enUS,
-  'es-419': es419,
+  [Language.English]: enUS,
+  [Language.Spanish]: es419,
 }

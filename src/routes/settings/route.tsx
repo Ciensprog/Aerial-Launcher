@@ -70,7 +70,7 @@ function Content() {
         <div className="flex flex-col max-w-lg w-full">
           <Accordion
             className={cn(
-              'space-y-2- w-full',
+              'w-full',
               '[&_.section-trigger[data-state=open]_.section-icon]:rotate-180',
               '[&_.section-title]:flex [&_.section-title]:gap-1.5 [&_.section-title]:items-center',
               '[&_.section-icon]:h-4 [&_.section-icon]:w-4 [&_.section-icon]:shrink-0 [&_.section-icon]:transition-transform [&_.section-icon]:duration-200',

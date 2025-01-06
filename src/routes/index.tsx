@@ -11,6 +11,7 @@ import {
   TabsTrigger,
 } from '../components/ui/tabs'
 import { GoToTop } from '../components/go-to-top'
+import { LanguageNotification } from '../components/language-notification'
 
 import { AlertsOverview } from './-index/-alerts-overview/-index'
 import { FetchAlertsButton } from './-index/-components/-fetch-alerts-button'
@@ -121,6 +122,7 @@ const MainContent = memo(() => {
       </Tabs>
 
       <GoToTop containerId="alert-navigation-container" />
+      <LanguageNotification />
     </>
   )
 })
