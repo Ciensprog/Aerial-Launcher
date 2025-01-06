@@ -25,10 +25,7 @@ export function LoadSettings() {
     const listener = window.electronAPI.appLanguageNotification(
       async (data) => {
         updateLanguage(data.generatedFile ? data.language : null)
-
-        if (data.generatedFile) {
-          i18n.changeLanguage(data.language)
-        }
+        i18n.changeLanguage(data.language)
       }
     )
 

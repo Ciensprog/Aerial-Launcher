@@ -28,9 +28,9 @@ export const LanguageNotification = memo(() => {
 
   const [selected, setSelected] = useState<string>()
 
-  const { language, updateLanguage } = useLanguage()
+  const { language: currentLanguage, updateLanguage } = useLanguage()
 
-  if (language !== null) {
+  if (currentLanguage !== null) {
     return null
   }
 

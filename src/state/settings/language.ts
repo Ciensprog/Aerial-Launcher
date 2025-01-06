@@ -9,7 +9,7 @@ export type LanguageState = {
 }
 
 export const useLanguageStore = create<LanguageState>()((set) => ({
-  language: Language.English,
+  language: null, // Language.English
 
   updateLanguage: (language) => {
     set({ language })

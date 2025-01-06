@@ -6,9 +6,13 @@ import type {
 } from '../../types/settings'
 
 import { writeFile } from 'node:fs/promises'
+import { app } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
-import { defaultAppLanguage } from '../../config/constants/settings'
+import {
+  availableLanguages,
+  defaultAppLanguage,
+} from '../../config/constants/settings'
 
 import { MainWindow } from './windows/main'
 import { DataDirectory } from './data-directory'
@@ -126,10 +130,24 @@ export class CustomizableMenuSettingsManager {
 
 export class AppLanguage {
   static async load() {
+    const availableLocales = availableLanguages.reduce(
+      (accumulator, language) => {
+        accumulator[language.id] = language.id
+
+        return accumulator
+      },
+      {} as Record<string, Language>
+    )
+    const currentLocale = app.getLocale()
+    const locale = currentLocale.toLowerCase().startsWith('es')
+      ? Language.Spanish
+      : currentLocale
+
     const data = await DataDirectory.getAppLanguageFile()
     const response: LanguageResponse = {
       generatedFile: true,
-      language: data?.i18n ?? defaultAppLanguage,
+      language:
+        data?.i18n ?? availableLocales[locale] ?? defaultAppLanguage,
     }
 
     if (data === null) {
