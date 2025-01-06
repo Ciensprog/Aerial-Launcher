@@ -14,6 +14,8 @@ import {
 
 import { useLanguage } from '../../../hooks/language'
 
+import { changeDateLocale } from '../../../lib/dates'
+
 export function LanguageSelector() {
   const { i18n, t } = useTranslation(['settings'])
 
@@ -29,6 +31,7 @@ export function LanguageSelector() {
           window.electronAPI.changeAppLanguage(language)
           updateLanguage(language)
           i18n.changeLanguage(language)
+          changeDateLocale(language)
         }}
         value={language ?? undefined}
       >

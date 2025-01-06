@@ -19,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 
 import { useLanguage } from '../hooks/language'
 
+import { changeDateLocale } from '../lib/dates'
 import { cn } from '../lib/utils'
 
 export const LanguageNotification = memo(() => {
@@ -26,7 +27,7 @@ export const LanguageNotification = memo(() => {
     keyPrefix: 'app-settings.form.language.dialog',
   })
 
-  const [selected, setSelected] = useState<string>()
+  const [selected, setSelected] = useState<Language>()
 
   const { language: currentLanguage, updateLanguage } = useLanguage()
 
@@ -39,9 +40,10 @@ export const LanguageNotification = memo(() => {
       return
     }
 
-    window.electronAPI.changeAppLanguage(selected as Language)
-    updateLanguage(selected as Language)
+    window.electronAPI.changeAppLanguage(selected)
+    updateLanguage(selected)
     i18n.changeLanguage(selected)
+    changeDateLocale(selected)
   }
 
   return (
@@ -62,7 +64,7 @@ export const LanguageNotification = memo(() => {
 
         <RadioGroup
           className={cn('grid grid-cols-2 gap-4')}
-          onValueChange={setSelected}
+          onValueChange={(value: Language) => setSelected(value)}
           value={selected}
         >
           {availableLanguages.map((language) => (

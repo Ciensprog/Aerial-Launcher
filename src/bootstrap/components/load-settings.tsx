@@ -9,6 +9,8 @@ import {
   useSettingsStore,
 } from '../../state/settings/main'
 
+import { changeDateLocale } from '../../lib/dates'
+
 export function LoadSettings() {
   const { i18n } = useTranslation()
 
@@ -26,6 +28,7 @@ export function LoadSettings() {
       async (data) => {
         updateLanguage(data.generatedFile ? data.language : null)
         i18n.changeLanguage(data.language)
+        changeDateLocale(data.language)
       }
     )
 
