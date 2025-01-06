@@ -5,11 +5,11 @@ import type {
   SyncAccountDataResponse,
 } from '../../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
-import type { GenerateExchangeCodeNotificationCallbackResponseParam } from '../../types/preload'
+import type {
+  EpicGamesSettingsNotificationCallbackResponseParam,
+  GenerateExchangeCodeNotificationCallbackResponseParam,
+} from '../../types/preload'
 
-import { shell } from 'electron'
-
-import { epicGamesAccountSettingsURL } from '../../config/fortnite/links'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { MainWindow } from '../startup/windows/main'
@@ -179,16 +179,13 @@ export class Authentication {
       const exchange = await getExchangeCodeUsingAccessToken(accessToken)
 
       if (exchange.data.code) {
-        await shell.openExternal(
-          epicGamesAccountSettingsURL(exchange.data.code)
-        )
-
         MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
           {
             account,
+            code: exchange.data.code,
             status: true,
-          }
+          } as EpicGamesSettingsNotificationCallbackResponseParam
         )
 
         return

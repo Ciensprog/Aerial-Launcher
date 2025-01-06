@@ -1,9 +1,11 @@
 {
   "form": {
-    "submit-button": "Open Account Settings"
+    "generate-button": "Generate Link",
+    "open-button": "<0>Open Account Settings</0> <1 />"
   },
   "notifications": {
-    "success": "A new tab in your browser should be opened with Epic Games settings URL for {{name}} account",
+    "clipboard": "Link has been copied into clipboard",
+    "success": "Epic Games settings link has been generated",
     "error": "An error occurred while processing your request"
   }
 }

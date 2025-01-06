@@ -1,8 +1,13 @@
+import { UpdateIcon } from '@radix-ui/react-icons'
 import { createRoute } from '@tanstack/react-router'
+import { Clipboard, ExternalLinkIcon } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
+
+import { epicGamesAccountSettingsURL } from '../../../config/fortnite/links'
 
 import { Route as RootRoute } from '../../__root'
 
+import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
 import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import {
   Breadcrumb,
@@ -18,11 +23,14 @@ import {
   CardDescription,
   CardFooter,
 } from '../../../components/ui/card'
+import { Input } from '../../../components/ui/input'
+import { Separator } from '../../../components/ui/separator'
 
 import { useGetSelectedAccount } from '../../../hooks/accounts'
 import { useHandlers } from './-actions'
 
-import { parseCustomDisplayName } from '../../../lib/utils'
+import { whatIsThis } from '../../../lib/callbacks'
+import { cn, parseCustomDisplayName } from '../../../lib/utils'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -57,7 +65,17 @@ function Content() {
   const { t } = useTranslation(['account-management'])
 
   const { selected } = useGetSelectedAccount()
-  const { handleOpenURL } = useHandlers()
+  const {
+    currentCode,
+    isLoading,
+    handleGenerateCode,
+    handleOpenURL,
+    handleCopyCode,
+  } = useHandlers()
+
+  const settingsUrl = currentCode
+    ? epicGamesAccountSettingsURL(currentCode)
+    : undefined
 
   return (
     <div className="flex flex-grow">
@@ -74,17 +92,76 @@ function Content() {
               >
                 Account selected:{' '}
                 <span className="font-bold">
-                  {parseCustomDisplayName(selected)}
+                  {parseCustomDisplayName(selected)}s
                 </span>
               </Trans>
             </CardDescription>
-          </CardContent>
-          <CardFooter className="space-x-6">
             <Button
               className="w-full"
-              onClick={handleOpenURL}
+              onClick={handleGenerateCode}
             >
-              {t('epic-settings.form.submit-button')}
+              {isLoading ? (
+                <UpdateIcon className="animate-spin" />
+              ) : (
+                t('epic-settings.form.generate-button')
+              )}
+            </Button>
+          </CardContent>
+
+          <Separator />
+
+          <CardFooter className="flex-col mt-6 space-y-6">
+            <div
+              className={cn(
+                'flex items-center relative rounded-md w-full'
+              )}
+            >
+              <Input
+                type="text"
+                className={cn('pr-10 select-none')}
+                defaultValue={settingsUrl}
+                disabled={settingsUrl === undefined}
+                readOnly
+              />
+              <Button
+                type="button"
+                className={cn('absolute p-0 right-1 size-8 z-20')}
+                variant="ghost"
+                onClick={handleCopyCode}
+                disabled={settingsUrl === undefined}
+              >
+                <Clipboard size={16} />
+              </Button>
+            </div>
+
+            <SeparatorWithTitle>
+              {t('separators.or', {
+                ns: 'general',
+              })}
+            </SeparatorWithTitle>
+
+            <Button
+              className={cn('space-x-1 w-full', {
+                'bg-secondary/80 cursor-not-allowed opacity-50':
+                  settingsUrl === undefined,
+              })}
+              variant="secondary"
+              asChild
+            >
+              <a
+                href={settingsUrl}
+                title={settingsUrl}
+                onClick={handleOpenURL}
+                onAuxClick={whatIsThis()}
+              >
+                <Trans
+                  ns="account-management"
+                  i18nKey="epic-settings.form.open-button"
+                >
+                  <span>Open Account Settings</span>
+                  <ExternalLinkIcon size={16} />
+                </Trans>
+              </a>
             </Button>
           </CardFooter>
         </Card>

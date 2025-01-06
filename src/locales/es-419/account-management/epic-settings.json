@@ -1,9 +1,11 @@
 {
   "form": {
-    "submit-button": "Abrir Configuración De La Cuenta"
+    "generate-button": "Generar Enlace",
+    "open-button": "<0>Abrir Configuración De La Cuenta</0> <1 />"
   },
   "notifications": {
-    "success": "A new tab in your browser should be opened with Epic Games settings URL for {{name}} account",
-    "error": "An error occurred while processing your request"
+    "clipboard": "El enlace se ha copiado en el portapapeles",
+    "success": "Se ha generado el enlace de configuración de Epic Games",
+    "error": "Ocurrió un error mientras se procesaba la petición"
   }
 }
