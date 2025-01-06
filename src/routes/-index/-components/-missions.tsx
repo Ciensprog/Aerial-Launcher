@@ -1,6 +1,8 @@
 import type { CSSProperties, PropsWithChildren } from 'react'
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
+import { useTranslation } from 'react-i18next'
+
 import { rarities } from '../../../config/constants/resources'
 
 import {
@@ -47,6 +49,10 @@ export function MissionItem({
   className?: string
   data: WorldInfoMission
 }>) {
+  const { t } = useTranslation(['alerts'], {
+    keyPrefix: 'information',
+  })
+
   const {
     raw: {
       mission: { missionGuid },
@@ -94,14 +100,14 @@ export function MissionItem({
         <div className="border-l-8 border-l-muted-foreground/10 pl-2 text-sm">
           <div className="inline-flex gap-1">
             <span className="flex-shrink-0 text-muted-foreground">
-              Tile Index:
+              {t('tile-index')}
             </span>
             {data.raw.mission.tileIndex}
           </div>
           <div className="flex flex-col">
             <div className="inline-flex gap-1">
               <span className="flex-shrink-0 text-muted-foreground">
-                Mission Alert Guid:
+                {t('alert-guid')}
               </span>
               {alert.rewards.length > 0
                 ? data.raw.alert?.missionAlertGuid ?? 'N/A'
@@ -109,7 +115,7 @@ export function MissionItem({
             </div>
             <div className="inline-flex gap-1">
               <span className="flex-shrink-0 text-muted-foreground">
-                Mission Guid:
+                {t('mission-guid')}
               </span>
               {data.raw.mission.missionGuid ?? 'N/A'}
             </div>
@@ -118,7 +124,7 @@ export function MissionItem({
         <div className="grid grid-cols-2 items-start my-2">
           {alert.rewards.length > 0 && (
             <section>
-              <h2>Alert Rewards:</h2>
+              <h2>{t('alert-rewards')}</h2>
               <div className="flex flex-col mt-1">
                 {alert.rewards.map((reward) => (
                   <div
@@ -148,7 +154,7 @@ export function MissionItem({
           <div className="gap-2 grid grid-cols-1">
             {mission.rewards.length > 0 && (
               <section>
-                <h2>Base Rewards:</h2>
+                <h2>{t('base-rewards')}</h2>
                 <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
                   {mission.rewards.map((reward) => (
                     <div
@@ -167,7 +173,7 @@ export function MissionItem({
 
             {mission.modifiers.length > 0 && (
               <section>
-                <h2>Modifiers:</h2>
+                <h2>{t('modifiers')}</h2>
                 <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
                   {mission.modifiers.map((modifier) => (
                     <div

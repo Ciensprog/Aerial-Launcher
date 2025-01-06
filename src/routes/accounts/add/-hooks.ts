@@ -1,6 +1,7 @@
 import type { MouseEventHandler } from 'react'
 import type { AuthCallbackResponseParam } from '../../../types/preload'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -47,6 +48,10 @@ export function useBaseSetupForm({
   }
   type: keyof AddAccountsLoadingsState
 }) {
+  const { t } = useTranslation(['accounts'], {
+    keyPrefix: 'general.notifications.new-account',
+  })
+
   const { updateSubmittingState } =
     useAddAccountUpdateSubmittingState(type)
   const { changeSelected, register } = useAccountListStore(
@@ -73,9 +78,13 @@ export function useBaseSetupForm({
         //   data.currentAccount
         // )
 
-        toast(`New account added: ${data.currentAccount.displayName}`)
+        toast(
+          t('success', {
+            name: data.currentAccount.displayName,
+          })
+        )
       } else if (error) {
-        toast(error ?? 'Unknown error :c')
+        toast(error ?? t('error'))
       }
 
       updateSubmittingState(false)

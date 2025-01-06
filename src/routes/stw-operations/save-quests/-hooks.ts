@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
@@ -11,6 +12,8 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
+  const { t } = useTranslation(['stw-operations', 'general'])
+
   const [isLoading, setIsLoading] = useState(false)
   const [isLeavePartyLoading, setIsLeavePartyLoading] = useState(false)
 
@@ -41,8 +44,9 @@ export function useData() {
   useEffect(() => {
     const listener = window.electronAPI.notificationClientQuestLogin(
       async () => {
-        toast('Quests progression has been saved')
         setIsLoading(false)
+
+        toast(t('save-quests.notifications.saved'))
       }
     )
 
@@ -77,7 +81,11 @@ export function useData() {
     const selectedAccounts = getAccounts()
 
     if (selectedAccounts.length <= 0) {
-      toast('No linked accounts')
+      toast(
+        t('form.accounts.no-linked', {
+          ns: 'general',
+        })
+      )
 
       return
     }
@@ -95,7 +103,11 @@ export function useData() {
     const selectedAccounts = getAccounts()
 
     if (selectedAccounts.length <= 0) {
-      toast('No linked accounts')
+      toast(
+        t('form.accounts.no-linked', {
+          ns: 'general',
+        })
+      )
 
       return
     }

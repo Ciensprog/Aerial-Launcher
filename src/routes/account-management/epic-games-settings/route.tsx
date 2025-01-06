@@ -1,4 +1,5 @@
 import { createRoute } from '@tanstack/react-router'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -27,6 +28,10 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/account-management/epic-games-settings',
   component: () => {
+    const { t } = useTranslation(['sidebar'], {
+      keyPrefix: 'account-management',
+    })
+
     return (
       <>
         <Breadcrumb>
@@ -34,11 +39,11 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Account Management</BreadcrumbPage>
+              <BreadcrumbPage>{t('title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Epic Games Settings</BreadcrumbPage>
+              <BreadcrumbPage>{t('options.epic-settings')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -49,6 +54,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['account-management'])
+
   const { selected } = useGetSelectedAccount()
   const { handleOpenURL } = useHandlers()
 
@@ -58,10 +65,18 @@ function Content() {
         <Card className="max-w-sm w-full">
           <CardContent className="grid gap-4 pt-6">
             <CardDescription>
-              Account selected:{' '}
-              <span className="font-bold">
-                {parseCustomDisplayName(selected)}
-              </span>
+              <Trans
+                ns="general"
+                i18nKey="account-selected"
+                values={{
+                  name: parseCustomDisplayName(selected),
+                }}
+              >
+                Account selected:{' '}
+                <span className="font-bold">
+                  {parseCustomDisplayName(selected)}
+                </span>
+              </Trans>
             </CardDescription>
           </CardContent>
           <CardFooter className="space-x-6">
@@ -69,7 +84,7 @@ function Content() {
               className="w-full"
               onClick={handleOpenURL}
             >
-              Open Account Settings
+              {t('epic-settings.form.submit-button')}
             </Button>
           </CardFooter>
         </Card>

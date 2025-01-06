@@ -2,6 +2,7 @@ import type { MouseEvent } from 'react'
 
 import { createRoute } from '@tanstack/react-router'
 import { ExternalLink } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import packageJson from '../../../../package.json'
 
@@ -36,6 +37,8 @@ export const Route = createRoute({
 })
 
 export function ComponentRoute() {
+  const { t } = useTranslation(['general'])
+
   const { handleEricDejaDeJoder, handleFreshAttrs, handleSick } =
     useActions()
 
@@ -51,7 +54,7 @@ export function ComponentRoute() {
           <HomeBreadcrumb />
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Credits</BreadcrumbPage>
+            <BreadcrumbPage>{t('credits')}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

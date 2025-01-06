@@ -1,6 +1,7 @@
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
+import { useTranslation } from 'react-i18next'
 
 import { EmptySection } from '../-components/-empty'
 import {
@@ -18,13 +19,15 @@ export function EndgameVenturesSection({
 }: {
   data: Collection<string, WorldInfoMission>
 }) {
+  const { t } = useTranslation(['alerts'])
+
   return (
     <section aria-labelledby="title-endgame-ventures">
       <TitleSection
         deps={data}
         id="title-endgame-ventures"
       >
-        Ventures ⚡140
+        {t('sections.ventures.title-endgame')}
       </TitleSection>
       <EmptySection total={data.size}>
         <MissionsContainer>

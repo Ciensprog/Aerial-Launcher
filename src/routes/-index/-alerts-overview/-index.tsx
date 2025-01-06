@@ -1,4 +1,5 @@
 import { Filter, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
@@ -23,6 +24,8 @@ import { ZoneSection } from './-zone-section'
 import { cn } from '../../../lib/utils'
 
 export function AlertsOverview() {
+  const { t } = useTranslation(['alerts'])
+
   const {
     $inputSearch,
     data,
@@ -41,7 +44,7 @@ export function AlertsOverview() {
             className={cn('h-9', {
               'pr-9': inputSearch.length > 0,
             })}
-            placeholder="Search: mission/alert guid, tileIndex or reward ID"
+            placeholder={t('filters.search.input.placeholder')}
             value={inputSearch}
             onChange={onChangeInputSearch}
             disabled={loading.isFetching || loading.isReloading}
@@ -68,7 +71,7 @@ export function AlertsOverview() {
               disabled={loading.isFetching || loading.isReloading}
             >
               <Filter className="mr-2 w-4" />
-              Show Filters
+              {t('filters.search.submit-button')}
             </Button>
           </SheetTrigger>
           <SheetContent
@@ -83,7 +86,7 @@ export function AlertsOverview() {
 
               <div className="bg-background bottom-0 gap-2 grid grid-cols-2 mt-5 py-2 px-3 sticky">
                 <SheetClose className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 rounded-md w-full">
-                  Back To Alerts
+                  {t('filters.actions.back')}
                 </SheetClose>
 
                 <ResetFiltersButton />
@@ -117,7 +120,7 @@ export function AlertsOverview() {
                 deps={data}
                 id="section-summary"
               >
-                Rewards Summary
+                {t('information.rewards-summary')}
               </TitleSection>
               <RewardsSummaryList rewards={alertRewards} />
             </section>

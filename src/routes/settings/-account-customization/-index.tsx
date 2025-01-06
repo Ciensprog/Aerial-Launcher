@@ -7,6 +7,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { GripVertical } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import {
   Card,
@@ -25,6 +26,8 @@ import { useAccounts, useActions, useOrdering } from './-hooks'
 import { cn, tagsArrayToSelectOptions } from '../../../lib/utils'
 
 export function AccountCustomization() {
+  const { t } = useTranslation(['settings', 'general'])
+
   const { tagsArray } = useGetTags()
   const { accounts, accountsArray, onChangeSearchValue, searchValue } =
     useAccounts()
@@ -40,12 +43,10 @@ export function AccountCustomization() {
     <Card className="w-full">
       <CardHeader className="border-b">
         <CardDescription>
-          Sometimes you could need a specific display name for identifying
-          an account. If you want, you can change the current display name
-          with a custom name.
+          {t('account-customization.description')}
         </CardDescription>
         <CardDescription className="text-muted-foreground/60">
-          Note: this only applies visually to the launcher accounts.
+          {t('account-customization.note')}
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 pt-6">
@@ -53,11 +54,13 @@ export function AccountCustomization() {
           <div className="mb-5">
             <Input
               className="pr-20"
-              placeholder={
-                getMenuOptionVisibility('showTotalAccounts')
-                  ? `Search on ${accountsArray.length} accounts`
-                  : 'Search on your accounts'
-              }
+              placeholder={t('form.accounts.placeholder', {
+                ns: 'general',
+                context: !getMenuOptionVisibility('showTotalAccounts')
+                  ? 'private'
+                  : undefined,
+                total: accountsArray.length,
+              })}
               value={searchValue}
               onChange={onChangeSearchValue}
             />
@@ -93,7 +96,9 @@ export function AccountCustomization() {
           </DndContext>
         ) : (
           <div className="text-center text-muted-foreground">
-            No account found
+            {t('form.accounts.search-empty', {
+              ns: 'general',
+            })}
           </div>
         )}
       </CardContent>

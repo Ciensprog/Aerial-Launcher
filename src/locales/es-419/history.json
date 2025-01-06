@@ -1,0 +1,11 @@
+{
+  "history": {
+    "note": "Nota: Este es un historial temporal.",
+    "empty": "Historial de Recompensas Reclamadas"
+  },
+  "summary": {
+    "note": "Nota: Este resumen se basa en tu historial temporal.",
+    "empty": "Resumen del Historial de Recompensas Reclamadas",
+    "all-accounts": "Resumen de todas las cuentas"
+  }
+}

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { Separator } from '../../../components/ui/separator'
 import { Button } from '../../../components/ui/button'
 import {
@@ -9,9 +11,12 @@ import {
 import { Input } from '../../../components/ui/input'
 import { TagItem } from './-item'
 
+import { useInputPaddingButton } from '../../../hooks/ui/inputs'
 import { useFormCreate, useGetFilteredTags } from './-hooks'
 
 export function TagsManagement() {
+  const { t } = useTranslation(['settings', 'general'])
+
   const { filteredTags, onChangeSearchValue, searchValue, tagsArray } =
     useGetFilteredTags()
   const {
@@ -20,13 +25,13 @@ export function TagsManagement() {
     onChangeInputTagValue,
     onSubmitTag,
   } = useFormCreate()
+  const [$createInput, $createButton] = useInputPaddingButton()
 
   return (
     <Card className="w-full">
       <CardHeader className="border-b">
         <CardDescription>
-          You can create tags to group accounts easily and run bulk
-          operations in a more organized way.
+          {t('tags-management.description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
@@ -36,19 +41,21 @@ export function TagsManagement() {
             onSubmit={onSubmitTag}
           >
             <Input
-              className="pr-[4.5rem]"
-              placeholder="Type a tag name"
+              className="pr-[var(--pr-button-width)]"
+              placeholder={t('tags-management.form.input.placeholder')}
               value={currentTag}
               onChange={onChangeInputTagValue}
               disabled={isSubmittingTag}
+              ref={$createInput}
             />
             <Button
               type="submit"
               variant="secondary"
               className="absolute h-8 px-2 right-1 w-auto"
               disabled={isSubmittingTag || currentTag.trim() === ''}
+              ref={$createButton}
             >
-              Create
+              {t('general:actions.create')}
             </Button>
           </form>
         </div>
@@ -61,7 +68,12 @@ export function TagsManagement() {
                 <div className="mb-5">
                   <Input
                     className="pr-20"
-                    placeholder={`Search on ${tagsArray.length} tags...`}
+                    placeholder={t(
+                      'tags-management.search.input.placeholder',
+                      {
+                        total: tagsArray.length,
+                      }
+                    )}
                     value={searchValue}
                     onChange={onChangeSearchValue}
                   />
@@ -80,7 +92,7 @@ export function TagsManagement() {
                 ))
               ) : (
                 <div className="text-center text-muted-foreground">
-                  No tag found
+                  {t('tags-management.search.empty')}
                 </div>
               )}
             </div>

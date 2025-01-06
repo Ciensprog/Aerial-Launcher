@@ -1,4 +1,5 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
 import { Button } from '../../../../components/ui/button'
@@ -19,6 +20,8 @@ import {
 import { useSetupForm } from './-hooks'
 
 export function DeviceAuthPage() {
+  const { t } = useTranslation(['general'])
+
   const { form, isSubmitting, onSubmit } = useSetupForm()
 
   return (
@@ -34,7 +37,7 @@ export function DeviceAuthPage() {
               name="accountId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Account Id</FormLabel>
+                  <FormLabel>{t('form.credentials.account-id')}</FormLabel>
                   <FormControl>
                     <InputSecret inputProps={field} />
                   </FormControl>
@@ -48,7 +51,7 @@ export function DeviceAuthPage() {
               name="deviceId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Device Id</FormLabel>
+                  <FormLabel>{t('form.credentials.device-id')}</FormLabel>
                   <FormControl>
                     <InputSecret inputProps={field} />
                   </FormControl>
@@ -62,7 +65,7 @@ export function DeviceAuthPage() {
               name="secret"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Secret</FormLabel>
+                  <FormLabel>{t('form.credentials.secret')}</FormLabel>
                   <FormControl>
                     <InputSecret inputProps={field} />
                   </FormControl>
@@ -81,7 +84,7 @@ export function DeviceAuthPage() {
               {isSubmitting ? (
                 <UpdateIcon className="animate-spin" />
               ) : (
-                'Login'
+                t('actions.login')
               )}
             </Button>
           </CardFooter>

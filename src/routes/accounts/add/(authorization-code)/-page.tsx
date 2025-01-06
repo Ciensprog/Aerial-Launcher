@@ -1,4 +1,5 @@
 import { ExternalLinkIcon, UpdateIcon } from '@radix-ui/react-icons'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { exampleCode } from '../../../../config/constants/examples'
 import {
@@ -36,6 +37,8 @@ import { useSetupForm } from './-hooks'
 import { whatIsThis } from '../../../../lib/callbacks'
 
 export function AuthorizationCodePage() {
+  const { t } = useTranslation(['accounts', 'general'])
+
   const { goToAuthorizationCodeURL, goToEpicGamesLogin } = useHandlers()
   const { form, isSubmitting, onSubmit } = useSetupForm()
 
@@ -49,35 +52,51 @@ export function AuthorizationCodePage() {
           <CardHeader className="pt-0">
             <Accordion type="multiple">
               <AccordionItem value="how-to-get">
-                <AccordionTrigger>How to get the code:</AccordionTrigger>
+                <AccordionTrigger>
+                  {t('auth-code.guide.title')}
+                </AccordionTrigger>
                 <AccordionContent className="space-y-2">
                   <CardDescription>
-                    <span className="font-bold">Step 1:</span> You must
-                    sign in to your Epic Games account:{' '}
-                    <a
-                      href={epicGamesLoginURL}
-                      className="font-medium text-primary underline-offset-4 hover:underline"
-                      title={epicGamesLoginURL}
-                      onClick={goToEpicGamesLogin}
-                      onAuxClick={whatIsThis()}
+                    <Trans
+                      ns="accounts"
+                      i18nKey="auth-code.guide.steps.1"
+                      values={{
+                        url: epicGamesLoginURL,
+                      }}
+                      shouldUnescape
                     >
-                      {epicGamesLoginURL}
-                    </a>
+                      <span className="font-bold">Step 1:</span> You must
+                      sign in to your Epic Games account:{' '}
+                      <a
+                        href={epicGamesLoginURL}
+                        className="font-medium text-primary underline-offset-4 hover:underline"
+                        title={epicGamesLoginURL}
+                        onClick={goToEpicGamesLogin}
+                        onAuxClick={whatIsThis()}
+                      >
+                        {epicGamesLoginURL}
+                      </a>
+                    </Trans>
                   </CardDescription>
                   <CardDescription>
-                    <span className="font-bold">Step 2:</span> Click on{' '}
-                    <a
-                      href={epicGamesAuthorizationCodeURL}
-                      className="font-medium text-primary underline-offset-4 hover:underline"
-                      title={epicGamesAuthorizationCodeURL}
-                      onClick={goToAuthorizationCodeURL}
-                      onAuxClick={whatIsThis()}
+                    <Trans
+                      ns="accounts"
+                      i18nKey="auth-code.guide.steps.2"
                     >
-                      this link
-                    </a>{' '}
-                    or in button below, this will be open a new tab in your
-                    browser with a json response with your authorization
-                    code:
+                      <span className="font-bold">Step 2:</span> Click on{' '}
+                      <a
+                        href={epicGamesAuthorizationCodeURL}
+                        className="font-medium text-primary underline-offset-4 hover:underline"
+                        title={epicGamesAuthorizationCodeURL}
+                        onClick={goToAuthorizationCodeURL}
+                        onAuxClick={whatIsThis()}
+                      >
+                        this link
+                      </a>{' '}
+                      or in button below, this will be open a new tab in
+                      your browser with a json response with your
+                      authorization code:
+                    </Trans>
                   </CardDescription>
                   <pre className="border p-2 text-xs">
                     <>
@@ -104,11 +123,21 @@ export function AuthorizationCodePage() {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Paste Your Code</FormLabel>
+                  <FormLabel>
+                    {t('form.credentials.login.label', {
+                      ns: 'general',
+                    })}
+                  </FormLabel>
                   <FormControl>
                     <InputSecret
                       inputProps={{
-                        placeholder: `Example: ${exampleCode}`,
+                        placeholder: t(
+                          'form.credentials.login.input.placeholder',
+                          {
+                            ns: 'general',
+                            code: exampleCode,
+                          }
+                        ),
                         ...field,
                       }}
                     />
@@ -122,7 +151,7 @@ export function AuthorizationCodePage() {
           <CardFooter className="space-x-6">
             <Button
               variant="ghost"
-              className="w-full"
+              className="space-x-1 w-full"
               asChild
             >
               <a
@@ -131,7 +160,13 @@ export function AuthorizationCodePage() {
                 onClick={goToAuthorizationCodeURL}
                 onAuxClick={whatIsThis()}
               >
-                Get Code <ExternalLinkIcon className="ml-1" />
+                <Trans
+                  ns="general"
+                  i18nKey="form.credentials.login.get-code"
+                >
+                  <span>Get Code</span>
+                  <ExternalLinkIcon />
+                </Trans>
               </a>
             </Button>
             <Button
@@ -142,7 +177,9 @@ export function AuthorizationCodePage() {
               {isSubmitting ? (
                 <UpdateIcon className="animate-spin" />
               ) : (
-                'Login'
+                t('actions.login', {
+                  ns: 'general',
+                })
               )}
             </Button>
           </CardFooter>

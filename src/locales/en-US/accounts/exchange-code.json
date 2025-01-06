@@ -1,0 +1,17 @@
+{
+  "form": {
+    "generate-code": {
+      "input": {
+        "placeholder": "Generated code will be displayed here"
+      },
+      "submit-button": "Generate Exchange Code"
+    }
+  },
+  "notifications": {
+    "generate-code": {
+      "success": "Exchange code has been generated and copied into clipboard",
+      "error": "An error has occurred trying generate exchange code, try again later"
+    },
+    "clipboard": "Exchange code has been copied into clipboard"
+  }
+}

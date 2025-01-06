@@ -1,0 +1,146 @@
+{
+  "actions": {
+    "add": "Añadir",
+    "change": "Cambiar",
+    "create": "Crear",
+    "login": "Iniciar Sesión",
+    "revert": "Revertir",
+    "search": "Buscar",
+    "success": "Completado",
+    "update": "Actualizar"
+  },
+  "form": {
+    "credentials": {
+      "account-id": "Id de Cuenta",
+      "device-id": "Id de Dispositivo",
+      "secret": "Secreto",
+      "login": {
+        "label": "Pega Tu Código",
+        "input": {
+          "placeholder": "Ejemplo: {{code}}"
+        },
+        "get-code": "<0>Obtener Código</0> <1 />"
+      }
+    },
+    "accounts": {
+      "placeholder": "Buscar en {{total}} cuentas",
+      "placeholder_private": "Buscar en tus cuentas",
+      "search-empty": "No se encontraron cuentas",
+      "select": "Seleccionar cuenta",
+      "selected": "Cuenta seleccionada",
+      "no-available": "Sin cuentas disponibles",
+      "no-linked": "Sin cuentas vinculadas",
+      "no-options": "Sin cuentas",
+      "no-registered-accounts": "No hay cuentas registradas"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Seleccionar algunas cuentas",
+        "tags": "Seleccionar algunas etiquetas",
+        "bulk-note": "Etiqueta masiva seleccionada, todas las cuentas de Aerial serán usadas."
+      }
+    },
+    "player": {
+      "search-empty": "No se encontró el jugador",
+      "recently": {
+        "empty-placeholder": "Sin jugadores recientes",
+        "search-placeholder": "Buscar en {{total}} jugadores",
+        "select-placeholder": "Seleccionar un jugador reciente"
+      }
+    },
+    "search-account": {
+      "label": "Buscar jugador por accountId o nombre (epic, xbl o psn)",
+      "input": {
+        "placeholder": "Ejemplo: Sample"
+      }
+    }
+  },
+  "information": {
+    "account-id": "Id de Cuenta:",
+    "power-level": "Poder de Base:",
+    "commander-level": "Nivel de Comandante:",
+    "boosted-xp": "XP Potenciado:",
+    "days-logged-in": "Días de Inicio de Sesión:",
+    "collection-book-level": "Nivel del Libro de Colección:",
+    "personal-xp-boosts": "Potenciadores Personales:",
+    "teammate-xp-boosts": "Potenciadores de Amigo:",
+    "founder-status": "Estado de Fundador:"
+  },
+  "version": {
+    "title": "Nueva versión {{version}}",
+    "description": "Puedes descargar la nueva versión (archivo .exe) desde acá:"
+  },
+  "community-info": {
+    "message": "¡¡¡Únete a nuestra <2>Comunidad de Discord<1/></2> para conocer más acerca de lo que vendrá en siguientes actualizaciones!!!"
+  },
+  "founder": {
+    "non-founder": "No-Fundador",
+    "founder": "Fundador",
+    "standard": "Estándar Edition",
+    "deluxe": "Edición De Lujo",
+    "super-deluxe": "Edición Super De Lujo",
+    "limited": "Edición Limitada",
+    "ultimate": "Edición Definitiva"
+  },
+  "launch-game": {
+    "button": "Iniciar Juego",
+    "notifications": {
+      "success": "El juego ha sido iniciado en la cuenta {{name}}",
+      "error": "Ocurrió un error al iniciar el juego en la cuenta {{name}}, por favor intenta más tarde"
+    }
+  },
+  "separators": {
+    "or": "O"
+  },
+  "sort": {
+    "newest": "Ordenado por más reciente"
+  },
+  "statuses": {
+    "error": "Error",
+    "loading": "Cargando",
+    "not-found": "No Encontrado",
+    "owned": "Propiedad",
+    "claimed": "Reclamado",
+    "used": "Usado"
+  },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ Id de cuenta inválido"
+        },
+        "device-id": {
+          "invalid": "❌ Id de dispositivo inválido"
+        },
+        "secret": {
+          "invalid": "❌ Secreto inválido"
+        },
+        "code": {
+          "invalid": "❌ Código inválido"
+        }
+      }
+    }
+  },
+  "account-selected": "Cuenta seleccionada: <2>{{name}}</2>",
+  "boosts": "Potenciador/es",
+  "credits": "Créditos",
+  "current": "Actual",
+  "date": "Fecha",
+  "first-claim": "Primer Reclamo: {{date}}",
+  "go-to-current-alerts": "Ir A Las Misiones Actuales",
+  "go-to-top": "Ir Hasta Arriba",
+  "history": "Historial",
+  "hide-information": "Ocultar Información",
+  "show-information": "Mostrar Información Oculta",
+  "ip-address": "Dirección IP",
+  "last-played": "Última Partida: {{date}}",
+  "location": "Ubicación",
+  "missions": "Misiones",
+  "public-stats": "Nota: Este usuario tiene las \"Estadísticas de Juego Públicas\" desactivadas, no se puede mostrar más información.",
+  "settings": "Configuraciones",
+  "summary": "Resumen",
+  "unknown-user": "Usuario Desconocido",
+  "unknown": "Desconocido",
+  "update-information": "Actualizar Información",
+  "user-agent": "Agente De Usuario"
+}

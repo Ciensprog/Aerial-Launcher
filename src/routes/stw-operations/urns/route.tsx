@@ -1,6 +1,7 @@
 // import { UpdateIcon } from '@radix-ui/react-icons'
 import { createRoute } from '@tanstack/react-router'
 import { Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import { Combobox } from '../../../components/ui/extended/combobox'
@@ -31,27 +32,35 @@ import { parseCustomDisplayName } from '../../../lib/utils'
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/urns',
-  component: () => (
-    <>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <HomeBreadcrumb />
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>STW Operations</BreadcrumbPage>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Auto-pin Urns</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <Content />
-    </>
-  ),
+  component: () => {
+    const { t } = useTranslation(['sidebar'])
+
+    return (
+      <>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <HomeBreadcrumb />
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>
+                {t('stw-operations.options.auto-pin-urns')}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Content />
+      </>
+    )
+  },
 })
 
 export function Content() {
+  const { t } = useTranslation(['stw-operations', 'general'])
+
   const {
     accounts,
     accountSelectorIsDisabled,
@@ -73,29 +82,31 @@ export function Content() {
         <Card className="max-w-lg w-full">
           <CardHeader className="border-b">
             <CardDescription className="border-l-4 pl-2">
-              <span className="font-bold">Note:</span> Only works during
-              dungeon seasons.
+              {t('urns.note')}
             </CardDescription>
-            <CardDescription>
-              This feature will automatically pin "Urn Your Keep" quest
-              every time it claims it (with the launcher). So you guys can
-              always have track of the urns you are missing and don't
-              bother pinning it before every run.
-            </CardDescription>
+            <CardDescription>{t('urns.description')}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 pt-6">
             <div className="grid gap-4">
               <div className="space-y-2">
                 <Combobox
                   className="max-w-full"
-                  emptyPlaceholder="No accounts"
-                  emptyContent="No account found"
-                  placeholder="Select an account"
-                  placeholderSearch={
-                    getMenuOptionVisibility('showTotalAccounts')
-                      ? `Search on ${options.length} accounts`
-                      : 'Search on your accounts'
-                  }
+                  placeholder={t('form.accounts.select', {
+                    ns: 'general',
+                  })}
+                  placeholderSearch={t('form.accounts.placeholder', {
+                    ns: 'general',
+                    context: !getMenuOptionVisibility('showTotalAccounts')
+                      ? 'private'
+                      : undefined,
+                    total: options.length,
+                  })}
+                  emptyPlaceholder={t('form.accounts.no-options', {
+                    ns: 'general',
+                  })}
+                  emptyContent={t('form.accounts.search-empty', {
+                    ns: 'general',
+                  })}
                   options={options}
                   value={[]}
                   customFilter={customFilter}
@@ -129,7 +140,9 @@ export function Content() {
                     {parseCustomDisplayName(account)}
                   </div>
                   <div className="flex gap-3 items-center ml-auto">
-                    <Label htmlFor="switch-urns">Urns</Label>
+                    <Label htmlFor="switch-urns">
+                      {t('urns.options.urns')}
+                    </Label>
                     <Switch
                       id="switch-urns"
                       checked={value}
@@ -138,7 +151,9 @@ export function Content() {
                         'urns'
                       )}
                     />
-                    <Label htmlFor="switch-mini-bosses">Mini-Bosses</Label>
+                    <Label htmlFor="switch-mini-bosses">
+                      {t('urns.options.mini-bosses')}
+                    </Label>
                     <Switch
                       id="switch-mini-bosses"
                       checked={valueMiniBosses}

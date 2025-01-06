@@ -1,4 +1,5 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 import { exampleCode } from '../../../../config/constants/examples'
 
@@ -24,6 +25,8 @@ import { GenerateExchangeCodePage } from './-generate'
 import { useSetupForm } from './-hooks'
 
 export function ExchangeCodePage() {
+  const { t } = useTranslation(['accounts', 'general'])
+
   const { form, isSubmitting, selected, onSubmit } = useSetupForm()
 
   return (
@@ -31,7 +34,11 @@ export function ExchangeCodePage() {
       {selected && (
         <>
           <GenerateExchangeCodePage />
-          <SeparatorWithTitle>Or</SeparatorWithTitle>
+          <SeparatorWithTitle>
+            {t('separators.or', {
+              ns: 'general',
+            })}
+          </SeparatorWithTitle>
         </>
       )}
 
@@ -47,11 +54,21 @@ export function ExchangeCodePage() {
                 name="code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Paste Your Code</FormLabel>
+                    <FormLabel>
+                      {t('form.credentials.login.label', {
+                        ns: 'general',
+                      })}
+                    </FormLabel>
                     <FormControl>
                       <InputSecret
                         inputProps={{
-                          placeholder: `Example: ${exampleCode}`,
+                          placeholder: t(
+                            'form.credentials.login.input.placeholder',
+                            {
+                              ns: 'general',
+                              code: exampleCode,
+                            }
+                          ),
                           ...field,
                         }}
                       />
@@ -71,7 +88,9 @@ export function ExchangeCodePage() {
                 {isSubmitting ? (
                   <UpdateIcon className="animate-spin" />
                 ) : (
-                  'Login'
+                  t('actions.login', {
+                    ns: 'general',
+                  })
                 )}
               </Button>
             </CardFooter>

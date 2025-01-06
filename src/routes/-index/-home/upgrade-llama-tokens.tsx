@@ -1,6 +1,7 @@
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
+import { useTranslation } from 'react-i18next'
 
 import { EmptySection } from '../-components/-empty'
 import {
@@ -17,13 +18,15 @@ export function UpgradeLlamaTokensSection({
 }: {
   data: Collection<string, WorldInfoMission>
 }) {
+  const { t } = useTranslation(['alerts'])
+
   return (
     <section aria-labelledby="title-upgrade-llama-tokens">
       <TitleSection
         deps={data}
         id="title-upgrade-llama-tokens"
       >
-        Upgrade Llama Tokens
+        {t('sections.llamas.title')}
       </TitleSection>
       <EmptySection total={data.size}>
         <MissionsContainer>
