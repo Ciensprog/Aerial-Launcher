@@ -21,6 +21,7 @@ import { useAttributesStates, useHandlers, useWindowEvents } from './hooks'
 import imgFNDBProfile from '../../_assets/fndb.png'
 
 import { whatIsThis } from '../../lib/callbacks'
+import { cn } from '../../lib/utils'
 
 export function Header() {
   const { t } = useTranslation(['general'])
@@ -74,7 +75,9 @@ export function Header() {
           <AccountList />
 
           <Button
-            className="leading-4 not-draggable-region px-2 py-1 w-[7.5rem]"
+            className={cn('leading-4 not-draggable-region px-2 py-1', {
+              'w-[7.5rem]': !isMinWith,
+            })}
             size={isMinWith ? 'icon' : 'default'}
             variant="outline"
             disabled={isButtonDisabled}
