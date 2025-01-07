@@ -2,7 +2,8 @@
   "notifications": {
     "new-account": {
       "success": "New account added: {{name}}",
-      "error": "Unknown error"
+      "error": "Unknown error",
+      "launcher-auth-login": "Unable to add account, please check if the credentials are valid"
     }
   }
 }

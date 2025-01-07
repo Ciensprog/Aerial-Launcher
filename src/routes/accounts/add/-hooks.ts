@@ -15,6 +15,7 @@ import { useAddAccountUpdateSubmittingState } from '../../../hooks/accounts'
 import { AddAccountsLoadingsState } from '../../../state/accounts/add'
 import { useAccountListStore } from '../../../state/accounts/list'
 
+import { LauncherAuthError } from '../../../lib/validations/schemas/fortnite/auth'
 import { toast } from '../../../lib/notifications'
 
 export function useHandlers() {
@@ -84,7 +85,13 @@ export function useBaseSetupForm({
           })
         )
       } else if (error) {
-        toast(error ?? t('error'))
+        const cuystomKeys: Array<string> = [LauncherAuthError.login]
+
+        if (cuystomKeys.includes(error)) {
+          toast(t(LauncherAuthError.login))
+        } else {
+          toast(error ?? t('error'))
+        }
       }
 
       updateSubmittingState(false)

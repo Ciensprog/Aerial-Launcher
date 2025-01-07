@@ -58,6 +58,14 @@ export class AccountsManager {
       return account
     })
 
+    const current = accounts.find(
+      (item) => item.accountId === data.accountId
+    )
+
+    if (!current) {
+      accounts.push(data)
+    }
+
     AccountsManager._accounts.set(data.accountId, {
       ...data,
       accessToken: undefined,

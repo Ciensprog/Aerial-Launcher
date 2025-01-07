@@ -2,7 +2,8 @@
   "notifications": {
     "new-account": {
       "success": "Nueva cuenta añadida: {{name}}",
-      "error": "Error desconocido"
+      "error": "Error desconocido",
+      "launcher-auth-login": "No se puede agregar la cuenta, verifique si las credenciales son válidas"
     }
   }
 }
