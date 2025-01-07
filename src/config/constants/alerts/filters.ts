@@ -1,6 +1,7 @@
 import {
   World,
   WorldLetter,
+  zonesCategories,
 } from '../../../config/constants/fortnite/world-info'
 import { RarityType } from '../../../config/constants/resources'
 
@@ -11,14 +12,14 @@ import {
   imgWorld,
 } from '../../../lib/repository'
 
-type FilterOption = {
+type FilterOption<Value extends string | undefined = undefined> = {
   color?: string
   icon?: string
   label: string
-  value: string
+  value: Value extends undefined ? string : Value
 }
 
-export const zoneOptions: Array<FilterOption> = [
+export const zoneOptions: Array<FilterOption<World | 'ventures'>> = [
   {
     color: 'border-stonewood text-stonewood',
     label: WorldLetter.Stonewood,
@@ -46,11 +47,28 @@ export const zoneOptions: Array<FilterOption> = [
   },
 ]
 
-export const missionTypeOptions: Array<FilterOption> = [
+export const missionTypeOptions: Array<
+  FilterOption<keyof typeof zonesCategories>
+> = [
   {
     icon: imgWorld('atlas.png'),
     label: 'Atlas',
     value: 'atlas',
+  },
+  {
+    icon: imgWorld('atlas-c2.png'),
+    label: 'Atlas',
+    value: 'atlas-c2',
+  },
+  {
+    icon: imgWorld('atlas-c3.png'),
+    label: 'Atlas',
+    value: 'atlas-c3',
+  },
+  {
+    icon: imgWorld('atlas-c4.png'),
+    label: 'Atlas',
+    value: 'atlas-c4',
   },
   {
     icon: imgWorld('dtb.png'),
@@ -109,7 +127,7 @@ export const missionTypeOptions: Array<FilterOption> = [
   },
 ]
 
-export const rarityOptions: Array<FilterOption> = [
+export const rarityOptions: Array<FilterOption<RarityType>> = [
   {
     icon: imgRarities(`${RarityType.Common}.png`),
     label: 'Common',
