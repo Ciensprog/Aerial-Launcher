@@ -200,6 +200,21 @@ export function SidebarMenu({
                       </Link>
                     </li>
                   )}
+                  {getMenuOptionVisibility('autoLlamas') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/auto-llamas"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        {t('stw-operations.options.auto-llamas')}
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
             </>

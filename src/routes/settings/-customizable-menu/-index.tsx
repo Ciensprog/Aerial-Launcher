@@ -143,6 +143,19 @@ function STWOperationsSection() {
             onCheckedChange={updateMenuOption('autoPinUrns')}
           />
         </div>
+        <div className="item">
+          <Label
+            className="title"
+            htmlFor="auto-llamas"
+          >
+            {t('stw-operations.options.auto-llamas')}
+          </Label>
+          <Switch
+            id="auto-llamas"
+            checked={getMenuOptionVisibility('autoLlamas')}
+            onCheckedChange={updateMenuOption('autoLlamas')}
+          />
+        </div>
       </div>
     </div>
   )
