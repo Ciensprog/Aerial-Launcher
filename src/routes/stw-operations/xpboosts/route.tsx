@@ -15,7 +15,10 @@ import { ExternalLink, Info, Send, Trash2, Undo2, X } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { repositoryAssetsURL } from '../../../config/about/links'
-import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
+import {
+  individualLimitBoostedXP,
+  maxAmountLimitedTo,
+} from '../../../config/constants/xpboosts'
 import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 
 import { Route as RootRoute } from '../../__root'
@@ -1045,7 +1048,9 @@ export function SearchedUserData({
   const { t } = useTranslation(['general'])
 
   const extractedBoostedXP = extractBoostedXP(boostedXP)
-  const individualBoosts = Math.round(extractedBoostedXP / 864191)
+  const individualBoosts = Math.round(
+    extractedBoostedXP / individualLimitBoostedXP
+  )
 
   return (
     <>
