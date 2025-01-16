@@ -1,0 +1,27 @@
+{
+  "description1": "Auto-llamas reclamará las llamas mejorables gratuitas en las cuentas seleccionadas.",
+  "note1": "<0>1</0> También puedes habilitar la compra de llamas mejorables (50 V-Bucks) si lo deseas. Esta compra se realizará si hay al menos un superviviente legendario o mítico.",
+  "form": {
+    "actions": {
+      "buttons": {
+        "add": {
+          "accounts": "Añadir Todas Las Cuentas"
+        },
+        "remove": {
+          "accounts": "Remover Todas Las Cuentas"
+        },
+        "enable": {
+          "buy": "Habilitar Compra"
+        },
+        "disable": {
+          "buy": "Deshabilitar Compra"
+        }
+      }
+    }
+  },
+  "results": {
+    "features": {
+      "survivors": "Comprar superviviente<1>1</1>"
+    }
+  }
+}

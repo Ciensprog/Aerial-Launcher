@@ -131,6 +131,7 @@
   "go-to-top": "Go To Top",
   "history": "History",
   "hide-information": "Hide Information",
+  "note": "Note",
   "show-information": "Show Hiden Information",
   "ip-address": "IP Address",
   "last-played": "Last Played At: {{date}}",
