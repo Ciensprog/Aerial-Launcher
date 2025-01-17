@@ -217,6 +217,19 @@ function AccountManagementSection() {
             onCheckedChange={updateMenuOption('epicGamesSettings')}
           />
         </div>
+        <div className="item">
+          <Label
+            className="title"
+            htmlFor="eula"
+          >
+            EULA
+          </Label>
+          <Switch
+            id="eula"
+            checked={getMenuOptionVisibility('eula')}
+            onCheckedChange={updateMenuOption('eula')}
+          />
+        </div>
       </div>
     </div>
   )

@@ -88,6 +88,9 @@ export enum ElectronAPIEventKeys {
 
   SyncAccessToken = 'auth:access-token:sync',
 
+  EULAVerificationRequest = 'eula:request',
+  EULAVerificationResponse = 'eula:response',
+
   /**
    * Launcher
    */

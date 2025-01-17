@@ -37,6 +37,7 @@ import { AlertsDone } from './core/alerts'
 import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
 import { DevicesAuthManager } from './core/devices-auth'
+import { EULATracking } from './core/eula-tracking'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { MatchmakingTrack } from './core/matchmaking-track'
@@ -651,6 +652,13 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.DevicesAuthRemove,
       async (_, account: AccountData, deviceId: string) => {
         await DevicesAuthManager.remove(account, deviceId)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.EULAVerificationRequest,
+      async (_, accountIds: Array<string>) => {
+        await EULATracking.verify(accountIds)
       }
     )
 

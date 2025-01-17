@@ -9,6 +9,8 @@ import { ipcRenderer } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { EULAAccountStatus } from '../../state/accounts/eula'
+
 /**
  * Accounts
  */
@@ -57,6 +59,40 @@ export function syncAccountData(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.SyncAccessToken,
+        customCallback
+      ),
+  }
+}
+
+/**
+ * EULA
+ */
+
+export function eulaVerification(accountIds: Array<string>) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.EULAVerificationRequest,
+    accountIds
+  )
+}
+
+export function eulaVerificationResponse(
+  callback: (value: Record<string, EULAAccountStatus>) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: Record<string, EULAAccountStatus>
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.EULAVerificationResponse,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.EULAVerificationResponse,
         customCallback
       ),
   }
