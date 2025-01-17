@@ -1,0 +1,17 @@
+{
+  "form": {
+    "generate-code": {
+      "input": {
+        "placeholder": "El código generado se mostrará aquí"
+      },
+      "submit-button": "Generar Código de Intercambio"
+    }
+  },
+  "notifications": {
+    "generate-code": {
+      "success": "El código de intercambio ha sido generado y se ha copiado en el portapapeles",
+      "error": "Ocurrió un error al intentar generar el código, por favor intenta más tarde"
+    },
+    "clipboard": "El código de intercambio se ha copiado en el portapapeles"
+  }
+}

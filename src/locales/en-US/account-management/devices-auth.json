@@ -1,0 +1,18 @@
+{
+  "description": "Select an account and manage your devices auth created. User Agent, Creation and Last Access are displayed with information on: Location, IP Address and Date.",
+  "form": {
+    "submit-button": "Request Devices Auth"
+  },
+  "results": {
+    "title": "Devices Found: <1>{{total}}</1>",
+    "item": {
+      "created": "Created",
+      "last-access": "Last Access"
+    }
+  },
+  "notifications": {
+    "no-devices": "No devices found",
+    "success": "DeviceId {{deviceId}} was removed successfully",
+    "error": "An error occurred while trying to remove deviceId: {{deviceId}}"
+  }
+}

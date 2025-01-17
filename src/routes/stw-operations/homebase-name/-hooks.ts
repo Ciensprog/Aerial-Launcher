@@ -1,5 +1,6 @@
 import type { ChangeEventHandler } from 'react'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
@@ -12,6 +13,8 @@ import {
 import { toast } from '../../../lib/notifications'
 
 export function useHomebaseNameData() {
+  const { t } = useTranslation(['stw-operations', 'general'])
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const [name, setName] = useState('')
@@ -46,7 +49,7 @@ export function useHomebaseNameData() {
         if (!response.errorMessage) {
           setName('')
 
-          toast('Homebase name updated')
+          toast(t('homebase-name.notifications.updated'))
         }
       }
     )
@@ -64,7 +67,11 @@ export function useHomebaseNameData() {
     const selectedAccounts = getAccounts()
 
     if (selectedAccounts.length <= 0) {
-      toast('No linked accounts')
+      toast(
+        t('form.accounts.no-linked', {
+          ns: 'general',
+        })
+      )
 
       return
     }

@@ -1,6 +1,7 @@
 import type { MouseEventHandler } from 'react'
 import type { AuthCallbackResponseParam } from '../../../types/preload'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -14,6 +15,7 @@ import { useAddAccountUpdateSubmittingState } from '../../../hooks/accounts'
 import { AddAccountsLoadingsState } from '../../../state/accounts/add'
 import { useAccountListStore } from '../../../state/accounts/list'
 
+import { LauncherAuthError } from '../../../lib/validations/schemas/fortnite/auth'
 import { toast } from '../../../lib/notifications'
 
 export function useHandlers() {
@@ -47,6 +49,10 @@ export function useBaseSetupForm({
   }
   type: keyof AddAccountsLoadingsState
 }) {
+  const { t } = useTranslation(['accounts'], {
+    keyPrefix: 'general.notifications.new-account',
+  })
+
   const { updateSubmittingState } =
     useAddAccountUpdateSubmittingState(type)
   const { changeSelected, register } = useAccountListStore(
@@ -73,9 +79,19 @@ export function useBaseSetupForm({
         //   data.currentAccount
         // )
 
-        toast(`New account added: ${data.currentAccount.displayName}`)
+        toast(
+          t('success', {
+            name: data.currentAccount.displayName,
+          })
+        )
       } else if (error) {
-        toast(error ?? 'Unknown error :c')
+        const cuystomKeys: Array<string> = [LauncherAuthError.login]
+
+        if (cuystomKeys.includes(error)) {
+          toast(t(LauncherAuthError.login))
+        } else {
+          toast(error ?? t('error'))
+        }
       }
 
       updateSubmittingState(false)

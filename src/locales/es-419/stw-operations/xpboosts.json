@@ -1,0 +1,46 @@
+{
+  "description": "Administrar los Potenciadores de las cuentas seleccionadas.",
+  "form": {
+    "label": "Cantidad de Potenciadores a enviar (limitado a {{limit}})",
+    "input": {
+      "placeholder": "Ejemplo: 123"
+    },
+    "refetch": "Volver A Consultar",
+    "see-boosts": "Ver Potenciadores",
+    "send-boosts": "Enviar Potenciadores"
+  },
+  "top-search": {
+    "description": "Mostrar información básica de un jugador."
+  },
+  "sidebar": {
+    "title": "¿Cuáles Potenciadores quieres usar?",
+    "personal": {
+      "description": "Todas estas cuentas usarán potenciadores:",
+      "submit-button": "Consumir {{total}} potenciador/es en cada cuenta"
+    },
+    "teammate": {
+      "note": "Algunos potenciadores podrían no enviarse sin ping estable.",
+      "submit-button": "Enviar <1>{{total}}</1> a: <3>{{name}}</3>"
+    },
+    "errors": {
+      "valid-amount": "Por favor escribir un total válido"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "Resumen de {{total}} cuenta/s"
+    },
+    "options": {
+      "description": "Potenciadores de amigo a usar:",
+      "information": "{{current}}/{{total}} de un total de {{amount}}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "Un total de {{current}}/{{expected}} Potenciador fue consumido. Resumen de {{totalAccounts}} cuenta/s",
+      "personal_other": "Un total de {{current}}/{{expected}} Potenciadores fueron consumidos. Resumen de {{totalAccounts}} cuenta/s",
+      "teammate_one": "Un total de {{current}}/{{expected}} Potenciador fue enviado a {{name}}. Resumen de {{totalAccounts}} cuenta/s",
+      "teammate_other": "Un total de {{current}}/{{expected}} Potenciadores fueron enviados a {{name}}. Resumen de {{totalAccounts}} cuenta/s"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "Kick All Party"
+    },
+    "notifications": {
+      "success": "Kicked {{total}} user/s",
+      "nothing": "No user has been kicked"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "Leave Party"
+    }
+  },
+  "claim": {
+    "title": "Claim rewards after leaving mission",
+    "form": {
+      "submit-button": "Claim Rewards"
+    },
+    "notifications": {
+      "success": "Rewards claimed"
+    }
+  },
+  "friends": {
+    "note": "If the invited player is not your friend, the launcher will automatically send him a friend request.",
+    "form": {
+      "select": {
+        "placeholder": "Select friends",
+        "search": {
+          "placeholder": "Invite people"
+        },
+        "empty": {
+          "placeholder": "No friends",
+          "options": "Type to add them to the list"
+        }
+      },
+      "submit-button": "Invite"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} was added to friends",
+        "default-error": "An error occurred while trying to add to {{name}}"
+      },
+      "remove": {
+        "success": "{{name}} was removed from the list",
+        "default-error": "An error occurred trying to remove to {{name}}"
+      },
+      "invite": {
+        "sent_one": "{{count}} invitation was sent",
+        "sent_other": "{{count}} invitations were sent",
+        "error": "An error occurred while sending invitations"
+      },
+      "request": {
+        "sent_one": "{{count}} friend request was sent",
+        "sent_other": "{{count}} friend requests were sent"
+      }
+    }
+  }
+}

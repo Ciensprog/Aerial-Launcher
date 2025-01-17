@@ -1,6 +1,7 @@
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
+import { useTranslation } from 'react-i18next'
 
 import {
   MissionItem,
@@ -20,6 +21,8 @@ export function CommonMissionsSection({
   currentPageTotalResults?: number
   missions: Collection<string, WorldInfoMission>
 }) {
+  const { t } = useTranslation(['alerts'])
+
   const currentMissions =
     currentPageTotalResults !== undefined
       ? missions.entries().toArray().slice(0, currentPageTotalResults)
@@ -105,7 +108,7 @@ export function CommonMissionsSection({
                     )}
                     {reward.isBad && (
                       <span className="font-medium ml-1 px-1 rounded text-[#ff6868] text-[0.625rem] uppercase">
-                        Mid
+                        {t('sections.twine-peaks.mid')}
                       </span>
                     )}
                   </span>

@@ -12,19 +12,22 @@ import { TitleSection } from '../-components/-title'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 import { cn } from '../../../lib/utils'
+import { useTranslation } from 'react-i18next'
 
 export function EndgameTwinePeaksSection({
   data,
 }: {
   data: Collection<string, WorldInfoMission>
 }) {
+  const { t } = useTranslation(['alerts', 'zones'])
+
   return (
     <section aria-labelledby="title-endgame-twine-peaks">
       <TitleSection
         deps={data}
         id="title-endgame-twine-peaks"
       >
-        Twine Peaks ⚡160
+        {t('sections.twine-peaks.title-endgame')}
       </TitleSection>
       <EmptySection total={data.size}>
         <MissionsContainer>
@@ -61,7 +64,7 @@ export function EndgameTwinePeaksSection({
                         )}
                         {reward.isBad && (
                           <span className="font-medium ml-1 px-1 rounded text-[#ff6868] text-[0.625rem] uppercase">
-                            Mid
+                            {t('sections.twine-peaks.mid')}
                           </span>
                         )}
                       </span>

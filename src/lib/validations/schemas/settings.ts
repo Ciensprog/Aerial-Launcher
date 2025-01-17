@@ -9,6 +9,14 @@ import {
   defaultClaimingRewardsDelay,
 } from '../../../config/constants/mcp'
 
+import { Language } from '../../../locales/resources'
+
+export const appLanguageSchema = z.object({
+  i18n: z
+    .enum([Language.English, Language.Spanish])
+    .default(Language.English),
+})
+
 export const settingsSchema = z.object({
   claimingRewards: createRangeValidation({
     defaultValue: defaultClaimingRewardsDelay,
@@ -39,6 +47,7 @@ export const customizableMenuSettingsSchema = z
     homebaseName: z.boolean().default(true),
     xpBoosts: z.boolean().default(true),
     autoPinUrns: z.boolean().default(true),
+    autoLlamas: z.boolean().default(true),
 
     accountManagement: z.boolean().default(true),
     vbucksInformation: z.boolean().default(true),

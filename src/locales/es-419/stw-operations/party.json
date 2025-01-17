@@ -1,0 +1,60 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "Expulsar A Todos"
+    },
+    "notifications": {
+      "success": "Expulsado {{total}} usuario/s",
+      "nothing": "Nadie fue expulsado"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "Dejar Grupo"
+    }
+  },
+  "claim": {
+    "title": "Reclamar recompensas al dejar el grupo",
+    "form": {
+      "submit-button": "Reclamar Recompensas"
+    },
+    "notifications": {
+      "success": "Recompensas reclamadas"
+    }
+  },
+  "friends": {
+    "note": "Si el jugador invitado no es tu amigo, Aerial automáticamente le enviará una petición de amistad.",
+    "form": {
+      "select": {
+        "placeholder": "Seleccionar amigos",
+        "search": {
+          "placeholder": "Invitar personas"
+        },
+        "empty": {
+          "placeholder": "Sin amigos",
+          "options": "Escribe para añadirlos"
+        }
+      },
+      "submit-button": "Invitar"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} fue agregado a amigos",
+        "default-error": "Ocurrió un error al intentar añadir a {{name}}"
+      },
+      "remove": {
+        "success": "{{name}} fue removido de la lista",
+        "default-error": "Ocurrió un error al intentar remover a {{name}}"
+      },
+      "invite": {
+        "sent_one": "{{count}} invitación fue enviada",
+        "sent_other": "{{count}} invitaciones fueron enviadas",
+        "error": "Ocurrió un error al intentar enviar invitaciones"
+      },
+      "request": {
+        "sent_one": "{{count}} petición de amistad enviada",
+        "sent_other": "{{count}} peticiones de amistad enviadas"
+      }
+    }
+  }
+}

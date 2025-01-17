@@ -56,26 +56,26 @@ export function extractFounderStatus(value?: MCPQueryProfileChanges) {
   })
 
   if (founderType[FounderEdition.ULTIMATE]) {
-    return 'Ultimate Edition'
+    return 'ultimate'
   }
 
   if (founderType[FounderEdition.LIMITED]) {
-    return 'Limited Edition'
+    return 'limited'
   }
 
   if (founderType[FounderEdition.SUPER_DELUXE]) {
-    return 'Super Deluxe Edition'
+    return 'super-deluxe'
   }
 
   if (founderType[FounderEdition.DELUXE]) {
-    return 'Deluxe Edition'
+    return 'deluxe'
   }
 
   if (founderType[FounderEdition.STANDARD]) {
-    return 'Standard Edition'
+    return 'standard'
   }
 
-  return isFounder ? 'Founder' : 'Non-Founder'
+  return isFounder ? 'founder' : 'non-founder'
 }
 
 export function extractCommanderLevel(value?: MCPQueryProfileChanges) {

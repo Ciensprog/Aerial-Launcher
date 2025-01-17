@@ -1,0 +1,90 @@
+{
+  "heading": {
+    "title": "Good to know:",
+    "items": {
+      "1": "Click on the Aerial logo (top left corner) to return here.",
+      "2": "Drag and drop a World Info file onto the page to load other missions/alerts."
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "overview": "Alerts Overview",
+    "done": "Alerts Done"
+  },
+  "sections": {
+    "vbucks": {
+      "title": "V-Bucks"
+    },
+    "twine-peaks": {
+      "title-endgame": "Twine Peaks ⚡160",
+      "mid": "Mid"
+    },
+    "ventures": {
+      "title-endgame": "Ventures ⚡140"
+    },
+    "survivors": {
+      "title": "Legendary/Mythic Survivors",
+      "empty": "No survivors to rescue"
+    },
+    "llamas": {
+      "title": "Upgrade Llama Tokens"
+    },
+    "uc-perk": {
+      "title": "Uncommon PERK-UP!"
+    }
+  },
+  "information": {
+    "missions": "{{total}} mission/s",
+    "tile-index": "Tile Index:",
+    "alert-guid": "Mission Alert Guid:",
+    "mission-guid": "Mission Guid:",
+    "alert-rewards": "Alert Rewards:",
+    "base-rewards": "Base Rewards:",
+    "modifiers": "Modifiers:",
+    "first-claim": "First Claim:",
+    "last-played": "Last Played At:",
+    "alerts-completed": "Alerts Completed",
+    "rewards-summary": "Rewards Summary"
+  },
+  "pagination": {
+    "results": "Results",
+    "actions": {
+      "previous": "Show Less",
+      "next": "Show More"
+    }
+  },
+  "filters": {
+    "search": {
+      "input": {
+        "placeholder": "Search: mission/alert guid, tileIndex or reward ID"
+      },
+      "submit-button": "Show Filters"
+    },
+    "sections": {
+      "zones": "Select Zones",
+      "types": "Select Mission Types",
+      "rarities": "Select Rarities",
+      "rewards": "Select Rewards"
+    },
+    "actions": {
+      "back": "Back To Alerts",
+      "clear": "Clear Selections"
+    }
+  },
+  "world-info": {
+    "dnd": {
+      "title": "Drop .json File"
+    },
+    "notifications": {
+      "error": "Unable to load World Info file, please check if it's the correct file and doesn't have missing data"
+    }
+  },
+  "results": {
+    "empty": {
+      "alerts-done": "Found alerts do not match with any of today's missions",
+      "vbucks": "No V-Bucks today",
+      "missions": "No available missions",
+      "rewards": "No available rewards"
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import {
   missionTypeOptions,
   rarityOptions,
@@ -19,6 +21,10 @@ import {
 import { cn } from '../../../lib/utils'
 
 export function AlertFilters() {
+  const { t } = useTranslation(['alerts'], {
+    keyPrefix: 'filters',
+  })
+
   const { missionTypes, rarities, rewards, zones } =
     useAlertsOverviewFiltersData()
   const { toggleFilterKeys } = useAlertsOverviewFiltersActions()
@@ -35,7 +41,7 @@ export function AlertFilters() {
     >
       <div className="flex flex-col gap-5">
         <div>
-          <Label className="label">Select Zones</Label>
+          <Label className="label">{t('sections.zones')}</Label>
           <ToggleGroup
             className="toggle-group"
             type="multiple"
@@ -70,7 +76,7 @@ export function AlertFilters() {
         </div>
 
         <div>
-          <Label className="label">Select Mission Types</Label>
+          <Label className="label">{t('sections.types')}</Label>
           <ToggleGroup
             className="toggle-group"
             type="multiple"
@@ -94,7 +100,7 @@ export function AlertFilters() {
         </div>
 
         <div>
-          <Label className="label">Select Rarities</Label>
+          <Label className="label">{t('sections.rarities')}</Label>
           <ToggleGroup
             className="toggle-group"
             type="multiple"
@@ -118,7 +124,7 @@ export function AlertFilters() {
         </div>
 
         <div>
-          <Label className="label">Select Rewards</Label>
+          <Label className="label">{t('sections.rewards')}</Label>
           <ToggleGroup
             className="toggle-group"
             type="multiple"

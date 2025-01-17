@@ -1,3 +1,7 @@
+import type {
+  ComboboxOption,
+  ComboboxProps,
+} from '../components/ui/extended/combobox/hooks'
 import type { AccountDataRecord } from '../types/accounts'
 
 import { DragEndEvent } from '@dnd-kit/core'
@@ -9,6 +13,10 @@ import {
   useAddAccountsStore,
 } from '../state/accounts/add'
 import { useAccountListStore } from '../state/accounts/list'
+import { useGetGroups } from './groups'
+
+import { checkIfCustomDisplayNameIsValid } from '../lib/validations/properties'
+import { parseCustomDisplayName } from '../lib/utils'
 
 export function useGetSelectedAccount() {
   const { selected } = useAccountListStore(
@@ -87,4 +95,73 @@ export function useAddAccountUpdateSubmittingState(
   }
 
   return { isSubmitting, updateSubmittingState }
+}
+
+export function useGetComboboxAccounts<
+  Data extends Record<string, unknown>,
+>({ selected }: { selected: Data }) {
+  const { accountsArray, accountList, idsList } = useGetAccounts()
+  const { getGroupTagsByAccountId } = useGetGroups()
+
+  const selectedAccounts = idsList.reduce(
+    (accumulator, accountId) => {
+      if (selected[accountId] !== undefined) {
+        accumulator[accountId] = selected[accountId]
+      }
+
+      return accumulator
+    },
+    {} as Record<string, unknown>
+  )
+  const options = accountsArray
+    .filter((account) => !selectedAccounts[account.accountId])
+    .map((account) => {
+      const _keys: Array<string> = [account.displayName]
+      const tags = getGroupTagsByAccountId(account.accountId)
+
+      if (checkIfCustomDisplayNameIsValid(account.customDisplayName)) {
+        _keys.push(account.customDisplayName)
+      }
+
+      if (tags.length > 0) {
+        tags.forEach((tagName) => {
+          _keys.push(tagName)
+        })
+      }
+
+      return {
+        keywords: _keys,
+        label: parseCustomDisplayName(account),
+        value: account.accountId,
+      } as ComboboxOption
+    })
+  const accounts = Object.keys(selectedAccounts)
+    .filter((accountId) => accountList[accountId])
+    .map((accountId) => accountList[accountId])
+  const accountSelectorIsDisabled = options.length <= 0
+
+  const customFilter: ComboboxProps['customFilter'] = (
+    _value,
+    search,
+    keywords
+  ) => {
+    const _search = search.toLowerCase().trim()
+    const _keys =
+      keywords &&
+      keywords.some((keyword) =>
+        keyword.toLowerCase().trim().includes(_search)
+      )
+
+    return _keys ? 1 : 0
+  }
+
+  return {
+    accountList,
+    accounts,
+    options,
+    accountSelectorIsDisabled,
+    selectedAccounts: selectedAccounts as Data,
+
+    customFilter,
+  }
 }

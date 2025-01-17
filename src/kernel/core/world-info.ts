@@ -332,7 +332,7 @@ export class WorldInfoManager {
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error(error)
+      //
     }
 
     MainWindow.instance.webContents.send(

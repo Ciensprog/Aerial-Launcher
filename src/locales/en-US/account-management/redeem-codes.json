@@ -1,0 +1,10 @@
+{
+  "description": "Redeem codes on each selected accounts.",
+  "form": {
+    "input": {
+      "placeholder": "Set codes to redeem (use newline)."
+    },
+    "redeem-button": "Redeem Codes",
+    "clear-button": "Clear Form"
+  }
+}

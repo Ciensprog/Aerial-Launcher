@@ -1,4 +1,5 @@
 import { ExternalLink } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 
@@ -16,6 +17,8 @@ import { whatIsThis } from '../../../lib/callbacks'
 import { getShortDateFormat } from '../../../lib/dates'
 
 export function BasicInformation() {
+  const { t } = useTranslation(['alerts', 'general'])
+
   const { playerData } = useAlertsDoneData()
   const { handleOpenExternalFNDBProfileUrl } = usePlayerDataActions()
   const { missions } = usePlayerData()
@@ -61,24 +64,30 @@ export function BasicInformation() {
           {playerData.isPrivate ? (
             <>
               <AccountBasicInformationSection
-                title="Account Id:"
+                title={t('information.account-id', {
+                  ns: 'general',
+                })}
                 value={playerData.data.lookup.id}
               />
               <div className="py-1.5">
-                <div>Note:</div>
-                This user has "Public Game Stats" disabled, more
-                information can't be displayed.
+                {t('public-stats', {
+                  ns: 'general',
+                })}
               </div>
             </>
           ) : (
             playerData.success && (
               <>
                 <AccountBasicInformationSection
-                  title="Account Id:"
+                  title={t('information.account-id', {
+                    ns: 'general',
+                  })}
                   value={playerData.data.lookup.id}
                 />
                 <AccountBasicInformationSection
-                  title="Commander Level:"
+                  title={t('information.commander-level', {
+                    ns: 'general',
+                  })}
                   value={numberWithCommaSeparator(
                     extractCommanderLevel(playerData.data.profileChanges)
                       .total
@@ -86,11 +95,11 @@ export function BasicInformation() {
                 />
                 <div className="pt-2">
                   <AccountBasicInformationSection
-                    title="First claim:"
+                    title={t('information.first-claim')}
                     value={firstDate}
                   />
                   <AccountBasicInformationSection
-                    title="Last played at:"
+                    title={t('information.last-played')}
                     value={lastDate}
                   />
                 </div>

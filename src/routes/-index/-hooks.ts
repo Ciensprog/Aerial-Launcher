@@ -4,7 +4,8 @@ import type { WorldInfoData } from '../../types/services/advanced-mode/world-inf
 
 import { Collection } from '@discordjs/collection'
 import { useDropzone } from 'react-dropzone'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { useWorldInfoActions } from '../../hooks/advanced-mode/world-info'
 import {
@@ -70,46 +71,6 @@ export function useIntersectingElement({ deps }: { deps?: unknown }) {
   return $element
 }
 
-export function useScrollToTop() {
-  const [scrollToTopButtonIsVisible, setScrollToTopButtonIsVisible] =
-    useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setScrollToTopButtonIsVisible(!entry.isIntersecting)
-      },
-      {
-        threshold: [0],
-      }
-    )
-
-    const $container = document.getElementById(
-      'alert-navigation-container'
-    )
-
-    if ($container) {
-      observer.observe($container)
-    }
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
-
-  const scrollButtonOnClick = () => {
-    document.querySelector('.main-wrapper-content')?.scroll({
-      behavior: 'smooth',
-      top: 0,
-    })
-  }
-
-  return {
-    scrollToTopButtonIsVisible,
-    scrollButtonOnClick,
-  }
-}
-
 export function useFetchPlayerDataSync() {
   const { updateSearchIsSubmitting } = useAlertsDoneLoader()
   const { updateData } = useAlertsDoneDataActions()
@@ -129,40 +90,42 @@ export function useFetchPlayerDataSync() {
 }
 
 export function useDropzoneConfig() {
+  const { i18n, t } = useTranslation(['alerts'])
+
   const { setWorldInfoData, updateWorldInfoLoading } =
     useWorldInfoActions()
   const { initPagination } = useAlertsOverviewPaginationInit()
 
   const onDropAccepted: NonNullable<DropzoneOptions['onDropAccepted']> =
-    useCallback(async (files) => {
-      const [currentFile] = files
+    useCallback(
+      async (files) => {
+        const [currentFile] = files
 
-      if (currentFile) {
-        try {
-          updateWorldInfoLoading('isReloading', true)
+        if (currentFile) {
+          try {
+            updateWorldInfoLoading('isReloading', true)
 
-          const blob = new Blob([currentFile], {
-            type: 'application/json',
-          })
-          const result = worldInfoSchema.parse(
-            JSON.parse(await blob.text())
-          ) as WorldInfoData
-          const { worldInfo } = worlInfoParser(result)
+            const blob = new Blob([currentFile], {
+              type: 'application/json',
+            })
+            const result = worldInfoSchema.parse(
+              JSON.parse(await blob.text())
+            ) as WorldInfoData
+            const { worldInfo } = worlInfoParser(result)
 
-          initPagination(worldInfo.keys().toArray())
-          setWorldInfoData(worldInfo)
-        } catch (error) {
-          toast(
-            `Unable to load World Info file, please check if it's the correct file and doesn't have missing data`,
-            {
+            initPagination(worldInfo.keys().toArray())
+            setWorldInfoData(worldInfo)
+          } catch (error) {
+            toast(t('world-info.notifications.error'), {
               duration: 5000,
-            }
-          )
-        } finally {
-          updateWorldInfoLoading('isReloading', false)
+            })
+          } finally {
+            updateWorldInfoLoading('isReloading', false)
+          }
         }
-      }
-    }, [])
+      },
+      [i18n.language]
+    )
   const { getRootProps, isDragActive, isDragAccept, isDragReject } =
     useDropzone({
       onDropAccepted,

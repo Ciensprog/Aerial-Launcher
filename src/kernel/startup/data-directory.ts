@@ -3,6 +3,7 @@ import type { AutomationAccountFileDataList } from '../../types/automation'
 import type { FriendRecord } from '../../types/friends'
 import type { GroupRecord } from '../../types/groups'
 import type {
+  AppLanguageSettings,
   CustomizableMenuSettings,
   DevSettings,
   Settings,
@@ -23,6 +24,7 @@ import { friendsSchema } from '../../lib/validations/schemas/friends'
 import { groupsSchema } from '../../lib/validations/schemas/groups'
 import { matchmakingsSchema } from '../../lib/validations/schemas/matchmaking'
 import {
+  appLanguageSchema,
   customizableMenuSettingsSchema,
   devSettingsSchema,
   settingsSchema,
@@ -57,6 +59,11 @@ export class DataDirectory {
       )
     : path.join(DataDirectory.dataDirectoryPath, 'accounts.json')
   private static accountsDefaultData: AccountList = []
+
+  private static appLanguageFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'i18n.json'
+  )
 
   private static settingsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
@@ -149,6 +156,10 @@ export class DataDirectory {
     return DataDirectory.dataDirectoryPath
   }
 
+  static getAppLanguageDirectoryPath() {
+    return DataDirectory.appLanguageFilePath
+  }
+
   static getWorldInfoDirectoryPath() {
     return DataDirectory.worldInfoDirectoryPath
   }
@@ -189,6 +200,32 @@ export class DataDirectory {
     }
 
     return { accounts: DataDirectory.accountsDefaultData }
+  }
+
+  /**
+   * Get data from i18n.json
+   */
+  static async getAppLanguageFile(): Promise<AppLanguageSettings | null> {
+    const checkFile = () =>
+      readFile(DataDirectory.appLanguageFilePath, {
+        encoding: 'utf8',
+      })
+    let data: AppLanguageSettings | null = null
+
+    try {
+      const result = await checkFile()
+      const settings = appLanguageSchema.safeParse(JSON.parse(result))
+
+      if (settings.success) {
+        data = settings.data
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    return data
   }
 
   /**

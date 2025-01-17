@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 
 import {
   BreadcrumbItem,
@@ -8,6 +9,8 @@ import {
 import { whatIsThis } from '../../../lib/callbacks'
 
 export function HomeBreadcrumb() {
+  const { t } = useTranslation(['general'])
+
   return (
     <BreadcrumbItem>
       <BreadcrumbLink asChild>
@@ -15,7 +18,7 @@ export function HomeBreadcrumb() {
           to="/"
           onAuxClick={whatIsThis()}
         >
-          Go To Current Alerts
+          {t('go-to-current-alerts')}
         </Link>
       </BreadcrumbLink>
     </BreadcrumbItem>

@@ -138,7 +138,7 @@ export function usePlayerData() {
 
   const { missions, rewards } = useMemo(() => {
     const myAlerts =
-      playerData?.data?.profileChanges.profile.stats.attributes
+      playerData?.data?.profileChanges?.profile.stats.attributes
         .mission_alert_redemption_record?.claimData ?? []
 
     const tmpRewards: Record<

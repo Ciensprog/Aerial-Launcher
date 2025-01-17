@@ -1,6 +1,7 @@
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
+import { useTranslation } from 'react-i18next'
 
 import { EmptySection } from '../-components/-empty'
 import {
@@ -17,16 +18,21 @@ export function UncommonPerkUpSection({
 }: {
   data: Collection<string, WorldInfoMission>
 }) {
+  const { t } = useTranslation(['alerts'])
+
   return (
     <section aria-labelledby="title-uncommon-perks">
       <TitleSection
         deps={data}
         id="title-uncommon-perks"
       >
-        Uncommon PERK-UP!
+        {t('sections.uc-perk.title')}
         <span className="text-muted-foreground text-sm">
-          ({data.size} mission
-          {data.size === 1 ? '' : 's'})
+          (
+          {t('information.missions', {
+            total: data.size,
+          })}
+          )
         </span>
       </TitleSection>
       <EmptySection total={data.size}>

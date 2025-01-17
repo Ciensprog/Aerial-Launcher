@@ -1,6 +1,7 @@
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
+import { useTranslation } from 'react-i18next'
 
 import {
   World,
@@ -23,6 +24,8 @@ export function ZoneSection({
   missions: Collection<string, WorldInfoMission>
   theaterId: World
 }) {
+  const { t } = useTranslation(['alerts', 'zones'])
+
   const { pagination, perPage, totalPages } = useZoneMissionsPagination({
     id: theaterId,
     total: missions.size,
@@ -39,10 +42,19 @@ export function ZoneSection({
       >
         {worldNameByTheaterId[
           theaterId as keyof typeof worldNameByTheaterId
-        ] ?? 'Ventures'}
+        ]
+          ? t(theaterId, {
+              ns: 'zones',
+            })
+          : t('ventures', {
+              ns: 'zones',
+            })}
         <span className="text-muted-foreground text-sm">
-          ({missions.size} mission
-          {missions.size === 1 ? '' : 's'})
+          (
+          {t('information.missions', {
+            total: missions.size,
+          })}
+          )
         </span>
       </TitleSection>
       <EmptySection total={missions.size}>

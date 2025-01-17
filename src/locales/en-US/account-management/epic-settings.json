@@ -1,0 +1,11 @@
+{
+  "form": {
+    "generate-button": "Generate Link",
+    "open-button": "<0>Open Account Settings</0> <1 />"
+  },
+  "notifications": {
+    "clipboard": "Link has been copied into clipboard",
+    "success": "Epic Games settings link has been generated",
+    "error": "An error occurred while processing your request"
+  }
+}

@@ -7,12 +7,22 @@ export type AlertsDoneSearchPlayerConfig = {
   inputSearch: string
 }
 
-export type AlertsDoneSearchPlayerResponse = {
-  data: AlertsDoneSearchPlayerData | null
-  errorMessage: string | null
-  isPrivate: boolean
-  success: boolean
-}
+export type AlertsDoneSearchPlayerResponse =
+  | {
+      data:
+        | (Pick<AlertsDoneSearchPlayerData, 'lookup'> &
+            Partial<Pick<AlertsDoneSearchPlayerData, 'profileChanges'>>)
+        | null
+      errorMessage: string | null
+      isPrivate: boolean
+      success: false
+    }
+  | {
+      data: AlertsDoneSearchPlayerData
+      errorMessage: null
+      isPrivate: false
+      success: true
+    }
 
 export type AlertsDoneSearchPlayerData = {
   lookup: LookupFindOneByDisplayNameResponse &

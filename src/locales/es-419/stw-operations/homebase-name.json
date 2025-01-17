@@ -1,0 +1,10 @@
+{
+  "description": "Actualizar el nombre de la base (ya no es visible en el juego) de las cuentas seleccionadas.",
+  "form": {
+    "placeholder": "Ingresar un nombre de base",
+    "submit-button": "Actualizar Nombre De La Base"
+  },
+  "notifications": {
+    "updated": "Nombre de la base actualizado"
+  }
+}

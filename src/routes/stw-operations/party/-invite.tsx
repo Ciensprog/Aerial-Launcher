@@ -1,5 +1,6 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { BellRing, Trash2 } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { Alert, AlertDescription } from '../../../components/ui/alert'
@@ -18,6 +19,8 @@ import { useGetSelectedAccount } from '../../../hooks/accounts'
 import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function InviteCard() {
+  const { t } = useTranslation(['stw-operations', 'general'])
+
   const { selected } = useGetSelectedAccount()
   const { hasValues, setValue, value } = useInviteFriendsForm()
   const {
@@ -39,18 +42,30 @@ export function InviteCard() {
     <Card className="max-w-lg w-full">
       <CardContent className="grid gap-2 pt-6">
         <CardDescription>
-          Account selected:{' '}
-          <span className="font-bold">
-            {parseCustomDisplayName(selected)}
-          </span>
+          <Trans
+            ns="general"
+            i18nKey="account-selected"
+            values={{
+              name: parseCustomDisplayName(selected),
+            }}
+          >
+            Account selected:{' '}
+            <span className="font-bold">
+              {parseCustomDisplayName(selected)}
+            </span>
+          </Trans>
         </CardDescription>
         <div className="flex gap-4">
           <Combobox
-            classNamePopoverContent="max-w-60 w-60-"
-            emptyPlaceholder="No friends"
-            emptyOptions="Type to add them to the list"
-            placeholder="Select friends"
-            placeholderSearch="Invite people"
+            classNamePopoverContent="max-w-60"
+            emptyPlaceholder={t(
+              'party.friends.form.select.empty.placeholder'
+            )}
+            emptyOptions={t('party.friends.form.select.empty.options')}
+            placeholder={t('party.friends.form.select.placeholder')}
+            placeholderSearch={t(
+              'party.friends.form.select.search.placeholder'
+            )}
             options={friendOptions}
             inputSearchValue={inputSearchValue}
             value={value}
@@ -70,7 +85,9 @@ export function InviteCard() {
                     <UpdateIcon className="animate-spin" />
                   ) : (
                     <>
-                      Add
+                      {t('actions.add', {
+                        ns: 'general',
+                      })}
                       <span className="max-w-32 ml-1.5 truncate">
                         {displayName.trim()}
                       </span>
@@ -112,7 +129,7 @@ export function InviteCard() {
             showNames
           />
           <Button
-            className="w-16"
+            className="flex-shrink-0 px-0.5 w-16"
             size="sm"
             onClick={handleInvite(value)}
             disabled={!selected || !hasValues || isInviting}
@@ -120,15 +137,16 @@ export function InviteCard() {
             {isInviting ? (
               <UpdateIcon className="animate-spin" />
             ) : (
-              'Invite'
+              <span className="truncate">
+                {t('party.friends.form.submit-button')}
+              </span>
             )}
           </Button>
         </div>
         <Alert className="border-none pb-0">
           <BellRing className="h-4 stroke-muted-foreground w-4" />
           <AlertDescription className="text-muted-foreground text-xs">
-            If the invited player is not your friend, the launcher will
-            automatically send him a friend request.
+            {t('party.friends.note')}
           </AlertDescription>
         </Alert>
       </CardContent>

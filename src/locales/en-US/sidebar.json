@@ -1,0 +1,53 @@
+{
+  "stw-operations": {
+    "title": "STW Operations",
+    "options": {
+      "auto-kick": "Auto-kick",
+      "party": "Party",
+      "save-quests": "Save Quests",
+      "homebase-name": "Homebase Name",
+      "xp-boosts": "XP Boosts",
+      "auto-pin-urns": "Auto-pin Urns",
+      "auto-llamas": "Auto-llamas"
+    },
+    "auto-kick-status": {
+      "issue": "Issue",
+      "active": "Active"
+    }
+  },
+  "account-management": {
+    "title": "Account Management",
+    "options": {
+      "vbucks-information": "V-Bucks Information",
+      "redeem-codes": "Redeem Codes",
+      "devices-auth": "Devices Auth",
+      "epic-settings": "Epic Games Settings"
+    }
+  },
+  "advanced-mode": {
+    "title": "Advanced Mode",
+    "options": {
+      "matchmaking-track": "Matchmaking Track",
+      "world-info": "World Info"
+    }
+  },
+  "accounts": {
+    "title": "My Accounts",
+    "options": {
+      "show-total-accounts": "Show Total Accounts",
+      "auth": "Authorization Code",
+      "exchange": "Exchange Code",
+      "device": "Device Auth",
+      "remove": "Remove Account"
+    }
+  },
+  "links": {
+    "discord": "Discord Server",
+    "github": "View on GitHub",
+    "credits": "Credits"
+  },
+  "version": {
+    "release": "Release v{{version}}",
+    "all-releases": "All Releases"
+  }
+}

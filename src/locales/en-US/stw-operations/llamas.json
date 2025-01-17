@@ -1,0 +1,27 @@
+{
+  "description1": "Auto-llamas will claim the free upgradable llamas on the selected accounts.",
+  "note1": "<0>1</0> You can also enable the purchase of an upgrade llama (50 V-Bucks) if you want. This purchase will only be made if there's at least one legendary or mythic survivor.",
+  "form": {
+    "actions": {
+      "buttons": {
+        "add": {
+          "accounts": "Add All Accounts"
+        },
+        "remove": {
+          "accounts": "Remove All Accounts"
+        },
+        "enable": {
+          "buy": "Enable Buy"
+        },
+        "disable": {
+          "buy": "Disable Buy"
+        }
+      }
+    }
+  },
+  "results": {
+    "features": {
+      "survivors": "Buy survivor<1>1</1>"
+    }
+  }
+}

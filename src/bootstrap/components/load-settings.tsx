@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
+
+import { useLanguage } from '../../hooks/language'
 
 import { useCustomizableMenuSettingsStore } from '../../state/settings/customizable-menu'
 import {
@@ -6,7 +9,11 @@ import {
   useSettingsStore,
 } from '../../state/settings/main'
 
+import { changeDateLocale } from '../../lib/dates'
+
 export function LoadSettings() {
+  const { i18n } = useTranslation()
+
   const updateSettings = useSettingsStore((state) => state.updateSettings)
   const updateDevSettings = useDevSettingsStore(
     (state) => state.updateDevSettings
@@ -14,6 +21,23 @@ export function LoadSettings() {
   const syncMenuOptions = useCustomizableMenuSettingsStore(
     (state) => state.syncMenuOptions
   )
+  const { updateLanguage } = useLanguage()
+
+  useEffect(() => {
+    const listener = window.electronAPI.appLanguageNotification(
+      async (data) => {
+        updateLanguage(data.generatedFile ? data.language : null)
+        i18n.changeLanguage(data.language)
+        changeDateLocale(data.language)
+      }
+    )
+
+    window.electronAPI.requestAppLanguage()
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
 
   useEffect(() => {
     const listener = window.electronAPI.responseSettings(

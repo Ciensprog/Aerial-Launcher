@@ -1,5 +1,6 @@
 import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -29,6 +30,8 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/save-quests',
   component: () => {
+    const { t } = useTranslation(['sidebar'])
+
     return (
       <>
         <Breadcrumb>
@@ -36,11 +39,13 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>STW Operations</BreadcrumbPage>
+              <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Save Quests</BreadcrumbPage>
+              <BreadcrumbPage>
+                {t('stw-operations.options.save-quests')}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -51,6 +56,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['stw-operations'])
+
   const {
     accounts,
     claimState,
@@ -78,7 +85,7 @@ function Content() {
           <Card className="w-full">
             <CardHeader className="border-b">
               <CardDescription>
-                Save quests progression of the selected accounts.
+                {t('save-quests.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 pt-6">
@@ -104,7 +111,7 @@ function Content() {
                 {isLoading ? (
                   <UpdateIcon className="animate-spin" />
                 ) : (
-                  'Save Quests'
+                  t('save-quests.form.submit-button')
                 )}
               </Button>
             </CardFooter>
@@ -113,9 +120,7 @@ function Content() {
           <Card className="flex flex-col flex-shrink-0 justify-center w-full">
             <CardContent className="block pt-6 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="pr-5">
-                  Claim rewards after leaving mission
-                </span>
+                <span className="pr-5">{t('party.claim.title')}</span>
                 <Switch
                   onCheckedChange={changeClaimState}
                   checked={claimState}
@@ -132,7 +137,7 @@ function Content() {
                   {isLeavePartyLoading ? (
                     <UpdateIcon className="animate-spin" />
                   ) : (
-                    'Leave Party'
+                    t('party.leave.form.submit-button')
                   )}
                 </Button>
               </div>

@@ -1,0 +1,8 @@
+{
+  "note": "Nota: Sólo funciona en temporada de Mazmorras.",
+  "description": "Esta funcionalidad automáticamente fijará la misión \"Urn Your Keep\" cada vez que se reclame (con Aerial). Así que siempre podrán estar pendiente de las urnas que falten y evitar fijar manualmente en cada partida.",
+  "options": {
+    "urns": "Urnas",
+    "mini-bosses": "Mini-Jefes"
+  }
+}

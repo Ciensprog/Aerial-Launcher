@@ -1,6 +1,7 @@
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
+import { useTranslation } from 'react-i18next'
 
 import { EmptySection } from '../-components/-empty'
 import {
@@ -17,13 +18,15 @@ export function VBucksSection({
 }: {
   data: Collection<string, WorldInfoMission>
 }) {
+  const { t } = useTranslation(['alerts'])
+
   return (
     <section aria-labelledby="title-vbucks">
       <TitleSection
         deps={data}
         id="title-vbucks"
       >
-        V-Bucks
+        {t('sections.vbucks.title')}
       </TitleSection>
       <EmptySection
         total={data.size}

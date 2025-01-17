@@ -1,0 +1,77 @@
+{
+  "app-settings": {
+    "title": "Configuración de la Aplicación",
+    "form": {
+      "language": {
+        "label": "Idioma",
+        "input": {
+          "placeholder": "Seleccionar idioma"
+        },
+        "dialog": {
+          "title": "¿Qué idioma quieres usar?",
+          "notes": {
+            "1": "Esta notificación no se volverá a mostrar después de seleccionar.",
+            "2": "Podrás cambiar esta selección en la página de Configuraciones."
+          },
+          "submit-button": "Guardar Selección"
+        }
+      },
+      "path": {
+        "label": "Directorio de instalación personalizado"
+      },
+      "user-agent": {
+        "label": "Agente de Usuario personalizado",
+        "note": "Sólo aplica si no tienes Fortnite instalado."
+      },
+      "claiming-rewards": {
+        "label": "Retraso personalizado antes de empezar a reclamar recompensas",
+        "note": "Valor en segundos entre {{min}} y {{max}}. Por defecto es: {{default}}.",
+        "input": {
+          "placeholder": "Ejemplos: 0, 1, 1.5, 3, 4, 4.2 or 5"
+        }
+      },
+      "mission-interval": {
+        "label": "Intérvalo de tiempo personalizado para comprobar si estás en misión",
+        "note1": "Significa que cada {{value}} segundo/s está comprobando si estás en una misión. Esto es usado para el sistema de automatización.",
+        "note2": "Valor en segundos entre {{min}} y {{max}}. Por defecto es: {{default}}.",
+        "input": {
+          "placeholder": "Ejemplos: 1, 3, 4 or 5"
+        }
+      },
+      "tray": {
+        "label": "Ocultar en la bandeja del sistema"
+      }
+    }
+  },
+  "custom-menu": {
+    "title": "Personalización del Menú",
+    "description": "Puedes personalizar la visibilidad de las secciones/opciones del menú."
+  },
+  "tags-management": {
+    "title": "Administración de Etiquetas",
+    "description": "Puedes crear etiquetas para agrupar cuentas fácilmente y ejecutar operaciones masivas de manera más organizada.",
+    "form": {
+      "input": {
+        "placeholder": "Escribe un nombre de etiqueta"
+      }
+    },
+    "search": {
+      "input": {
+        "placeholder": "Buscar en {{total}} etiquetas"
+      },
+      "empty": "No se encontraron etiquetas"
+    }
+  },
+  "account-customization": {
+    "title": "Personalización de la Cuenta",
+    "description": "Algunas veces podrías necesitar especificar un nombre para identificar una cuenta. Si quieres, puedes cambiar el nombre actual con uno personalizado.",
+    "note": "Nota: Esto sólo aplica visualmente a las cuentas en Aerial."
+  },
+  "form": {
+    "submit": {
+      "status": {
+        "success": "Información actualizada"
+      }
+    }
+  }
+}

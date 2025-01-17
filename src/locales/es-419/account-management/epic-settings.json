@@ -1,0 +1,11 @@
+{
+  "form": {
+    "generate-button": "Generar Enlace",
+    "open-button": "<0>Abrir Configuración De La Cuenta</0> <1 />"
+  },
+  "notifications": {
+    "clipboard": "El enlace se ha copiado en el portapapeles",
+    "success": "Se ha generado el enlace de configuración de Epic Games",
+    "error": "Ocurrió un error mientras se procesaba la petición"
+  }
+}

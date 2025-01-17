@@ -47,20 +47,23 @@ export class AccountsManager {
 
   static async add(data: AccountBasicInfo) {
     const result = await DataDirectory.getAccountsFile()
-    const current = result.accounts.find(
-      ({ accountId }) => accountId === data.accountId
-    )
-    let accounts: AccountList = []
+    const accounts: AccountList = result.accounts.map((account) => {
+      if (account.accountId === data.accountId) {
+        return {
+          ...account,
+          ...data,
+        }
+      }
 
-    if (current) {
-      accounts = [
-        ...result.accounts.filter(
-          ({ accountId }) => accountId !== data.accountId
-        ),
-        data,
-      ]
-    } else {
-      accounts = [...result.accounts, data]
+      return account
+    })
+
+    const current = accounts.find(
+      (item) => item.accountId === data.accountId
+    )
+
+    if (!current) {
+      accounts.push(data)
     }
 
     AccountsManager._accounts.set(data.accountId, {

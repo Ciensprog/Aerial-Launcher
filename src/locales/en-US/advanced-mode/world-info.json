@@ -1,0 +1,40 @@
+{
+  "form": {
+    "save": "Save On Local",
+    "refetch": "Refetch Data"
+  },
+  "search": {
+    "input": {
+      "placeholder": "Search on {{total}} files"
+    },
+    "include-data": "Include file data",
+    "no-files": "No files found"
+  },
+  "file": {
+    "input": {
+      "placeholder": "Default name: {{filename}}"
+    }
+  },
+  "notifications": {
+    "save": {
+      "success": "The file has been saved",
+      "error": "The file can't be saved, please try again later"
+    },
+    "delete": {
+      "success": "The file \"{{filename}}\" has been deleted",
+      "error": "The file \"{{filename}}\" can't be deleted, please try again later"
+    },
+    "export": {
+      "success": "The file has been exported",
+      "error": "The file can't be exported, please try again later"
+    },
+    "open": {
+      "success": "The file \"{{filename}}\" has been opened",
+      "error": "The file \"{{filename}}\" can't be opened, please try again later"
+    },
+    "rename": {
+      "success": "The file has been renamed",
+      "error": "The file can't be renamed, please try again later"
+    }
+  }
+}

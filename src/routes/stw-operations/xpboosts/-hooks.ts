@@ -4,6 +4,7 @@ import type {
   XPBoostsSearchUserResponse,
 } from '../../../types/xpboosts'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 
 import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
@@ -118,6 +119,8 @@ export function useSearchUser(config?: {
 }
 
 export function useData() {
+  const { t } = useTranslation(['stw-operations', 'general'])
+
   const [searchValue, setSearchValue] = useState('')
 
   const { accountList } = useGetAccounts()
@@ -239,7 +242,12 @@ export function useData() {
           )
 
           toast(
-            `A total of ${currentTotalXPBoosts}/${expectedTotalXPBoosts} XP boost${total.xpBoosts.current > 1 ? 's were' : ' was'} consumed. Summary of ${compactNumber(total.accounts)} account${total.accounts > 1 ? 's' : ''}`,
+            t('xpboosts.notifications.success.personal', {
+              count: total.xpBoosts.current,
+              current: currentTotalXPBoosts,
+              expected: expectedTotalXPBoosts,
+              totalAccounts: compactNumber(total.accounts),
+            }),
             {
               duration: 6000,
             }
@@ -264,7 +272,17 @@ export function useData() {
           )
 
           toast(
-            `A total of ${currentTotalXPBoosts}/${expectedTotalXPBoosts} XP boost${total.xpBoosts.current > 1 ? 's were' : ' was'} send to ${total.destinationAccount.displayName ?? 'Unknown User'}. Summary of ${compactNumber(total.accounts)} account${total.accounts > 1 ? 's' : ''}`,
+            t('xpboosts.notifications.success.teammate', {
+              count: total.xpBoosts.current,
+              current: currentTotalXPBoosts,
+              expected: expectedTotalXPBoosts,
+              totalAccounts: compactNumber(total.accounts),
+              name:
+                total.destinationAccount.displayName ??
+                t('unknown-user', {
+                  ns: 'general',
+                }),
+            }),
             {
               duration: 6000,
             }
@@ -298,7 +316,11 @@ export function useData() {
     const parsedAccounts = getAccounts()
 
     if (parsedAccounts.length <= 0) {
-      toast('No linked accounts')
+      toast(
+        t('form.accounts.no-linked', {
+          ns: 'general',
+        })
+      )
 
       return
     }

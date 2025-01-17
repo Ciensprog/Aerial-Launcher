@@ -1,23 +1,33 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useMemo } from 'react'
 import { z } from 'zod'
 
 import { useAddAccountUpdateSubmittingState } from '../../../../hooks/accounts'
 import { useBaseSetupForm } from '../-hooks'
 
-const formSchema = z.object({
-  accountId: z.string().min(32, {
-    message: '❌ Invalid accountId',
-  }),
-  deviceId: z.string().min(32, {
-    message: '❌ Invalid deviceId',
-  }),
-  secret: z.string().min(32, {
-    message: '❌ Invalid secret',
-  }),
-})
-
 export function useSetupForm() {
+  const { t, i18n } = useTranslation(['general'], {
+    keyPrefix: 'validations.form.input',
+  })
+
+  const formSchema = useMemo(
+    () =>
+      z.object({
+        accountId: z.string().min(32, {
+          message: t('account-id.invalid'),
+        }),
+        deviceId: z.string().min(32, {
+          message: t('device-id.invalid'),
+        }),
+        secret: z.string().min(32, {
+          message: t('secret.invalid'),
+        }),
+      }),
+    [i18n.language]
+  )
+
   const { isSubmitting, updateSubmittingState } =
     useAddAccountUpdateSubmittingState('deviceAuth')
   const form = useForm<z.infer<typeof formSchema>>({

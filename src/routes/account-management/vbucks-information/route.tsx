@@ -1,5 +1,6 @@
 import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 import Masonry from 'react-responsive-masonry'
 
 import { repositoryAssetsURL } from '../../../config/about/links'
@@ -37,6 +38,10 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/account-management/vbucks-information',
   component: () => {
+    const { t } = useTranslation(['sidebar'], {
+      keyPrefix: 'account-management',
+    })
+
     return (
       <>
         <Breadcrumb>
@@ -44,11 +49,13 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Account Management</BreadcrumbPage>
+              <BreadcrumbPage>{t('title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>V-Bucks Information</BreadcrumbPage>
+              <BreadcrumbPage>
+                {t('options.vbucks-information')}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -59,6 +66,10 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['account-management'], {
+    keyPrefix: 'vbucks-information',
+  })
+
   const {
     accounts,
     data,
@@ -79,9 +90,7 @@ function Content() {
         <div className="max-w-lg space-y-4 w-full">
           <Card className="w-full">
             <CardHeader className="border-b">
-              <CardDescription>
-                V-Bucks information on each selected accounts.
-              </CardDescription>
+              <CardDescription>{t('description')}</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 pt-6">
               <AccountSelectors
@@ -106,7 +115,7 @@ function Content() {
                 {isLoading ? (
                   <UpdateIcon className="animate-spin" />
                 ) : (
-                  'Show Information'
+                  t('form.submit-button')
                 )}
               </Button>
             </CardFooter>
@@ -115,8 +124,9 @@ function Content() {
           {data.length > 0 && (
             <div className="max-w-lg pt-1 w-full">
               <div className="leading-none mb-5 text-center uppercase">
-                V-Bucks Summary On {data.length} Account
-                {data.length > 1 ? 's' : ''}:
+                {t('results.title', {
+                  total: data.length,
+                })}
                 <div className="flex font-bold gap-1 items-center justify-center text-4xl">
                   <figure className="relative top-0.5">
                     <img

@@ -2,6 +2,7 @@ import type { DeviceAuthInfoWithStates } from '../../../state/accounts/devices-a
 import type { AccountData } from '../../../types/accounts'
 
 import { useNavigate } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 
 import { bots } from '../../../config/constants/bots'
@@ -17,6 +18,10 @@ import { useGetSelectedAccount } from '../../../hooks/accounts'
 import { toast } from '../../../lib/notifications'
 
 export function useData() {
+  const { t } = useTranslation(['account-management'], {
+    keyPrefix: 'devices-auth.notifications',
+  })
+
   const navigate = useNavigate()
   const { selected } = useGetSelectedAccount()
   const { data, isFetching } = useDevicesAuthData()
@@ -33,7 +38,7 @@ export function useData() {
         updateFetching(false)
 
         if (devices.length <= 0) {
-          toast('No devices found')
+          toast(t('no-devices'))
         }
       }
     )
@@ -66,8 +71,8 @@ export function useData() {
 
         toast(
           status
-            ? `DeviceId ${deviceIdText} was removed successfully`
-            : `An error occurred while trying to remove deviceId: ${deviceIdText}`
+            ? t('success', { deviceIdText })
+            : t('error', { deviceIdText })
         )
       }
     )
