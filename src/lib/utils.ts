@@ -61,7 +61,7 @@ export function sortTags(data: TagRecord) {
 
 export function parseCustomDisplayName(account?: AccountData | null) {
   if (!account) {
-    return 'Unknown User'
+    return 'unknown-user'
   }
 
   const customDisplayNameText = checkIfCustomDisplayNameIsValid(

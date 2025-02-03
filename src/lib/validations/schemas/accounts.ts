@@ -1,3 +1,5 @@
+import type { AccountBasicInfo } from '../../../types/accounts'
+
 import { z } from 'zod'
 
 export const accountBasicInformationSchema = z.object({
@@ -16,5 +18,9 @@ export const accountDataSchema = z.intersection(
   })
 )
 
-export const accountListSchema = z.array(accountBasicInformationSchema)
+export const accountListSchema = z
+  .array(z.any())
+  .transform<
+    Array<AccountBasicInfo>
+  >((value) => value.filter((item) => accountBasicInformationSchema.safeParse(item).success))
 export const accountDataListSchema = z.array(accountDataSchema)

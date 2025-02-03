@@ -1,0 +1,9 @@
+{
+  "description": "Guardar progreso de misiones de las cuentas seleccionadas.",
+  "form": {
+    "submit-button": "Guardar Misiones"
+  },
+  "notifications": {
+    "saved": "Progreso de misiones guardado"
+  }
+}

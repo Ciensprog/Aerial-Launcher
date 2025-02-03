@@ -27,7 +27,7 @@ import { Route as AccountManagementVbucksInformationRouteImport } from './routes
 import { Route as AccountManagementRedeemCodesRouteImport } from './routes/account-management/redeem-codes/route'
 import { Route as AccountManagementEulaRouteImport } from './routes/account-management/eula/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
-import { Route as AccountManagementDeviceAuthRouteImport } from './routes/account-management/device-auth/route'
+import { Route as AccountManagementDevicesAuthRouteImport } from './routes/account-management/devices-auth/route'
 import { Route as AccountsAddTypeImport } from './routes/accounts/add/$type'
 
 // Create/Update Routes
@@ -125,9 +125,9 @@ const AccountManagementEpicGamesSettingsRouteRoute =
     getParentRoute: () => rootRoute,
   } as any)
 
-const AccountManagementDeviceAuthRouteRoute =
-  AccountManagementDeviceAuthRouteImport.update({
-    path: '/account-management/device-auth',
+const AccountManagementDevicesAuthRouteRoute =
+  AccountManagementDevicesAuthRouteImport.update({
+    path: '/account-management/devices-auth',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -148,8 +148,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRoute
     }
-    '/account-management/device-auth': {
-      preLoaderRoute: typeof AccountManagementDeviceAuthRouteImport
+    '/account-management/devices-auth': {
+      preLoaderRoute: typeof AccountManagementDevicesAuthRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/epic-games-settings': {
@@ -220,7 +220,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   SettingsRouteRoute,
-  AccountManagementDeviceAuthRouteRoute,
+  AccountManagementDevicesAuthRouteRoute,
   AccountManagementEpicGamesSettingsRouteRoute,
   AccountManagementEulaRouteRoute,
   AccountManagementRedeemCodesRouteRoute,

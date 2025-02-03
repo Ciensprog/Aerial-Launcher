@@ -5,6 +5,7 @@ import type {
 import type { PartyCommonSelectorState } from '../../../state/stw-operations/party'
 import type { AccountData } from '../../../types/accounts'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 
 import { useGetAccounts } from '../../../hooks/accounts'
@@ -88,6 +89,8 @@ export function useKickActions({
   claimState: boolean
   value: Array<ComboboxOption>
 }) {
+  const { t } = useTranslation(['stw-operations'])
+
   const { accountsArray, accountList } = useGetAccounts()
   const [isPending, setIsPending] = useState(false)
 
@@ -97,8 +100,10 @@ export function useKickActions({
 
       toast(
         total === 0
-          ? 'No user has been kicked'
-          : `Kicked ${total} user${total > 1 ? 's' : ''}`
+          ? t('party.kick.notifications.nothing')
+          : t('party.kick.notifications.success', {
+              total,
+            })
       )
     })
 
@@ -143,6 +148,8 @@ export function useClaimActions({
 }: {
   value: Array<ComboboxOption>
 }) {
+  const { t } = useTranslation(['stw-operations'])
+
   const { accountList } = useGetAccounts()
   const [isPending, setIsPending] = useState(false)
 
@@ -151,7 +158,7 @@ export function useClaimActions({
       async () => {
         setIsPending(false)
 
-        toast('Rewards claimed')
+        toast(t('party.claim.notifications.success'))
       }
     )
 
@@ -204,6 +211,8 @@ export function useInviteActions({
 }: {
   selected: AccountData | null
 }) {
+  const { t } = useTranslation(['stw-operations'])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isInviting, setIsInviting] = useState(false)
   const [inputSearchValue, setInputSearchValue] = useState('')
@@ -229,10 +238,14 @@ export function useInviteActions({
 
         toast(
           success
-            ? `${displayName} was added to friends`
+            ? t('party.friends.notifications.added.success', {
+                name: displayName,
+              })
             : errorMessage
               ? errorMessage
-              : `An error occurred while trying to add to ${displayName}`
+              : t('party.friends.notifications.added.default-error', {
+                  name: displayName,
+                })
         )
       }
     )
@@ -250,8 +263,12 @@ export function useInviteActions({
 
         toast(
           status
-            ? `${displayName} was removed from the list`
-            : `An error occurred trying to remove to ${displayName}`
+            ? t('party.friends.notifications.remove.success', {
+                name: displayName,
+              })
+            : t('party.friends.notifications.remove.default-error', {
+                name: displayName,
+              })
         )
       }
     )
@@ -267,7 +284,7 @@ export function useInviteActions({
         setIsInviting(false)
 
         if (response.length <= 0) {
-          toast('An error occurred while sending invitations')
+          toast(t('party.friends.notifications.invite.error'))
         } else {
           const totalInvitations = response.filter(
             (item) => item.type === 'invite'
@@ -279,17 +296,17 @@ export function useInviteActions({
 
           if (totalInvitations > 0) {
             messages.push(
-              totalInvitations > 1
-                ? `${totalInvitations} invitations were sent`
-                : `${totalInvitations} invitation was sent`
+              t('party.friends.notifications.invite.sent', {
+                count: totalInvitations,
+              })
             )
           }
 
           if (totalFriendRequests > 0) {
             messages.push(
-              totalFriendRequests > 1
-                ? `${totalFriendRequests} friend requests were sent`
-                : `${totalFriendRequests} friend request was sent`
+              t('party.friends.notifications.request.sent', {
+                count: totalFriendRequests,
+              })
             )
           }
 

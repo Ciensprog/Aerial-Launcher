@@ -55,12 +55,15 @@ import { Automation } from './startup/automation'
 import { DataDirectory } from './startup/data-directory'
 import { GroupsManager } from './startup/groups'
 import {
+  AppLanguage,
   CustomizableMenuSettingsManager,
   DevSettingsManager,
   SettingsManager,
 } from './startup/settings'
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
+
+import { Language } from '../locales/resources'
 
 dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
@@ -162,6 +165,17 @@ const gotTheLock = app.requestSingleInstanceLock()
     /**
      * Settings
      */
+
+    ipcMain.on(ElectronAPIEventKeys.AppLanguageRequest, async () => {
+      await AppLanguage.load()
+    })
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AppLanguageUpdate,
+      async (_, language: Language) => {
+        await AppLanguage.update(language)
+      }
+    )
 
     ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
       await AccountsManager.load()

@@ -1,6 +1,7 @@
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
 import { Collection } from '@discordjs/collection'
+import { useTranslation } from 'react-i18next'
 
 import { EmptySection } from '../-components/-empty'
 import {
@@ -18,17 +19,19 @@ export function SurvivorsSection({
 }: {
   data: Collection<string, WorldInfoMission>
 }) {
+  const { t } = useTranslation(['alerts'])
+
   return (
     <section aria-labelledby="title-survivors">
       <TitleSection
         deps={data}
         id="title-survivors"
       >
-        Legendary/Mythic Survivors
+        {t('sections.survivors.title')}
       </TitleSection>
       <EmptySection
         total={data.size}
-        title="No survivors to rescue"
+        title={t('sections.survivors.empty')}
       >
         <MissionsContainer>
           {data.map((mission) => {

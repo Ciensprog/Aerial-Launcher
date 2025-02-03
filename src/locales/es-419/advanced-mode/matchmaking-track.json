@@ -1,0 +1,25 @@
+{
+  "description": "Revisar si este usuario es el que estás buscando y solicitar la información de emparejamiento.",
+  "note": "Ubicación del archivo por defecto:",
+  "form": {
+    "recently": {
+      "label": "Nota: Estos jugadores se almacenan temporalmente"
+    },
+    "submit-button": "Crear Archivo De Emparejamiento"
+  },
+  "results": {
+    "notes": "Notas:",
+    "options": {
+      "public-stats": "Este usuario tiene las \"Estadísticas de Juego Públicas\" desactivadas, no se puede mostrar más información.",
+      "continuation": "Por supuesto, aún puedes generar el archivo."
+    }
+  },
+  "notifications": {
+    "file": {
+      "updated": "El archivo ha sido actualizado"
+    },
+    "player": {
+      "not-playing": "El jugador especificado probablemente no está en una misión"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 import { Combobox } from '../../../components/ui/extended/combobox'
 import { SeparatorWithTitle } from '../../../components/ui/extended/separator'
@@ -6,10 +7,13 @@ import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Label } from '../../../components/ui/label'
 
+import { useInputPaddingButton } from '../../../hooks/ui/inputs'
 import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useFormData } from './-hooks'
 
 export function SearchForm() {
+  const { t } = useTranslation(['alerts', 'general'])
+
   const {
     $submitButton,
     accountSelectorIsDisabled,
@@ -27,6 +31,10 @@ export function SearchForm() {
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
 
+  const [$updateInput] = useInputPaddingButton({
+    customButtonRef: $submitButton,
+  })
+
   return (
     <div
       className="grid gap-4"
@@ -38,14 +46,22 @@ export function SearchForm() {
         </Label>
         <Combobox
           className="max-w-full"
-          emptyPlaceholder="No accounts"
-          emptyContent="No account found"
-          placeholder="Select an account"
-          placeholderSearch={
-            getMenuOptionVisibility('showTotalAccounts')
-              ? `Search on ${options.length} accounts`
-              : 'Search on your accounts'
-          }
+          emptyPlaceholder={t('form.accounts.no-options', {
+            ns: 'general',
+          })}
+          emptyContent={t('form.accounts.search-empty', {
+            ns: 'general',
+          })}
+          placeholder={t('form.accounts.select', {
+            ns: 'general',
+          })}
+          placeholderSearch={t('form.accounts.placeholder', {
+            ns: 'general',
+            context: !getMenuOptionVisibility('showTotalAccounts')
+              ? 'private'
+              : undefined,
+            total: options.length,
+          })}
           options={options}
           value={[]}
           customFilter={customFilter}
@@ -59,7 +75,11 @@ export function SearchForm() {
           hideSelectorOnSelectItem
         />
       </div>
-      <SeparatorWithTitle>Or</SeparatorWithTitle>
+      <SeparatorWithTitle>
+        {t('separators.or', {
+          ns: 'general',
+        })}
+      </SeparatorWithTitle>
       <form
         className="space-y-2"
         onSubmit={(event) => {
@@ -74,16 +94,21 @@ export function SearchForm() {
           className="text-muted-foreground"
           htmlFor="alerts-done-input-search-player"
         >
-          Search player by accountId or display name (epic, xbl or psn)
+          {t('form.search-account.label', {
+            ns: 'general',
+          })}
         </Label>
         <div className="flex items-center relative">
           <Input
-            placeholder="Example: Sample"
-            className="pr-32 pl-3 py-1"
+            placeholder={t('form.search-account.input.placeholder', {
+              ns: 'general',
+            })}
+            className="pr-[var(--pr-button-width)] pl-3 py-1"
             value={inputSearch}
             onChange={handleChangeSearchDisplayName}
             disabled={formDisabled || searchIsSubmitting}
             id="alerts-done-input-search-player"
+            ref={$updateInput}
           />
           <Button
             type="submit"
@@ -95,7 +120,9 @@ export function SearchForm() {
             {searchIsSubmitting ? (
               <UpdateIcon className="animate-spin h-4" />
             ) : (
-              'Search'
+              t('actions.search', {
+                ns: 'general',
+              })
             )}
           </Button>
         </div>

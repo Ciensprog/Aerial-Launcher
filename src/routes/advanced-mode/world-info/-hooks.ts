@@ -1,6 +1,7 @@
 import type { ChangeEventHandler, FormEventHandler } from 'react'
 import type { WorldInfoFileData } from '../../../types/data/advanced-mode/world-info'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 
 import {
@@ -75,6 +76,10 @@ export function useSearch({ files }: { files: Array<WorldInfoFileData> }) {
 }
 
 export function useCurrentActions() {
+  const { t } = useTranslation(['advanced-mode'], {
+    keyPrefix: 'world-info',
+  })
+
   const { setIsFetching, setIsSaving } = useCurrentWorldInfoActions()
   const { data, isFetching, isSaving } = useCurrentWorldInfoData()
 
@@ -85,8 +90,8 @@ export function useCurrentActions() {
 
         toast(
           status
-            ? 'The file has been saved'
-            : "The file can't be saved, please try again later"
+            ? t('notifications.save.success')
+            : t('notifications.save.error')
         )
 
         if (status) {
@@ -105,8 +110,12 @@ export function useCurrentActions() {
       async ({ filename, status }) => {
         toast(
           status
-            ? `The file "${filename}" has been saved`
-            : `The file "${filename}" can't be deleted, please try again later`
+            ? t('notifications.delete.success', {
+                filename,
+              })
+            : t('notifications.delete.error', {
+                filename,
+              })
         )
 
         if (status) {
@@ -126,8 +135,8 @@ export function useCurrentActions() {
         if (status !== 'canceled') {
           toast(
             status === 'success'
-              ? 'The file has been exported'
-              : `The file can't be exported, please try again later`
+              ? t('notifications.export.success')
+              : t('notifications.export.error')
           )
         }
       }
@@ -143,8 +152,12 @@ export function useCurrentActions() {
       async ({ filename, status }) => {
         toast(
           status
-            ? `The file "${filename}" has been opened`
-            : `The file "${filename}" can't be opened, please try again later`
+            ? t('notifications.open.success', {
+                filename,
+              })
+            : t('notifications.open.error', {
+                filename,
+              })
         )
 
         if (status) {
@@ -163,8 +176,8 @@ export function useCurrentActions() {
       async (status) => {
         toast(
           status
-            ? 'The file has been renamed'
-            : "The file can't be renamed, please try again later"
+            ? t('notifications.rename.success')
+            : t('notifications.rename.error')
         )
 
         if (status) {

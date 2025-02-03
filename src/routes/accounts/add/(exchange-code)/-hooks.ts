@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
 
 import {
@@ -11,13 +12,21 @@ import { useBaseSetupForm } from '../-hooks'
 
 import { toast } from '../../../../lib/notifications'
 
-const formSchema = z.object({
-  code: z.string().length(32, {
-    message: '❌ Invalid code',
-  }),
-})
-
 export function useSetupForm() {
+  const { t, i18n } = useTranslation(['general'], {
+    keyPrefix: 'validations.form.input',
+  })
+
+  const formSchema = useMemo(
+    () =>
+      z.object({
+        code: z.string().length(32, {
+          message: t('code.invalid'),
+        }),
+      }),
+    [i18n.language]
+  )
+
   const { isSubmitting, updateSubmittingState } =
     useAddAccountUpdateSubmittingState('exchangeCode')
   const { selected } = useGetSelectedAccount()
@@ -47,6 +56,10 @@ export function useSetupForm() {
 }
 
 export function useGenerateHandlers() {
+  const { t } = useTranslation(['accounts'], {
+    keyPrefix: 'exchange-code.notifications',
+  })
+
   const { selected } = useGetSelectedAccount()
   const [generatedCode, setGeneratedCode] = useState<string | null>(null)
 
@@ -59,9 +72,7 @@ export function useGenerateHandlers() {
         }
 
         toast(
-          status
-            ? 'Exchange code has been generated and copied into clipboard'
-            : 'An error has occurred trying generate exchange code, try again later'
+          status ? t('generate-code.success') : t('generate-code.error')
         )
       }
     )
@@ -86,7 +97,7 @@ export function useGenerateHandlers() {
     window.navigator.clipboard
       .writeText(generatedCode)
       .then(() => {
-        toast('Exchange code has been copied into clipboard')
+        toast(t('clipboard'))
       })
       .catch(() => {})
   }
