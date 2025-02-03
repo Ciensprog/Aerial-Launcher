@@ -54,6 +54,7 @@ export const customizableMenuSettingsSchema = z
     redeemCodes: z.boolean().default(true),
     devicesAuth: z.boolean().default(true),
     epicGamesSettings: z.boolean().default(true),
+    eula: z.boolean().default(true),
 
     advancedMode: z.boolean().default(true),
     matchmakingTrack: z.boolean().default(true),

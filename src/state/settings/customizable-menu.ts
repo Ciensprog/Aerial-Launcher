@@ -38,6 +38,7 @@ export const customizableMenuSettingsRelations: Record<
     'redeemCodes',
     'devicesAuth',
     'epicGamesSettings',
+    'eula',
   ],
   advancedMode: ['matchmakingTrack', 'worldInfo'],
   myAccounts: [

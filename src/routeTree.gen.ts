@@ -26,6 +26,7 @@ import { Route as AdvancedModeMatchmakingTrackRouteImport } from './routes/advan
 import { Route as AccountsRemoveRouteImport } from './routes/accounts/remove/route'
 import { Route as AccountManagementVbucksInformationRouteImport } from './routes/account-management/vbucks-information/route'
 import { Route as AccountManagementRedeemCodesRouteImport } from './routes/account-management/redeem-codes/route'
+import { Route as AccountManagementEulaRouteImport } from './routes/account-management/eula/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
 import { Route as AccountManagementDevicesAuthRouteImport } from './routes/account-management/devices-auth/route'
 import { Route as AccountsAddTypeImport } from './routes/accounts/add/$type'
@@ -118,6 +119,13 @@ const AccountManagementRedeemCodesRouteRoute =
     getParentRoute: () => rootRoute,
   } as any)
 
+const AccountManagementEulaRouteRoute = AccountManagementEulaRouteImport.update(
+  {
+    path: '/account-management/eula',
+    getParentRoute: () => rootRoute,
+  } as any,
+)
+
 const AccountManagementEpicGamesSettingsRouteRoute =
   AccountManagementEpicGamesSettingsRouteImport.update({
     path: '/account-management/epic-games-settings',
@@ -153,6 +161,10 @@ declare module '@tanstack/react-router' {
     }
     '/account-management/epic-games-settings': {
       preLoaderRoute: typeof AccountManagementEpicGamesSettingsRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/account-management/eula': {
+      preLoaderRoute: typeof AccountManagementEulaRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/redeem-codes': {
@@ -221,6 +233,7 @@ export const routeTree = rootRoute.addChildren([
   SettingsRouteRoute,
   AccountManagementDevicesAuthRouteRoute,
   AccountManagementEpicGamesSettingsRouteRoute,
+  AccountManagementEulaRouteRoute,
   AccountManagementRedeemCodesRouteRoute,
   AccountManagementVbucksInformationRouteRoute,
   AccountsRemoveRouteRoute,

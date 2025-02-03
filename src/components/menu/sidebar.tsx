@@ -308,6 +308,28 @@ export function SidebarMenu({
                       </Link>
                     </li>
                   )}
+                  {getMenuOptionVisibility('eula') && (
+                    <li className="item">
+                      <Link
+                        to="/account-management/eula"
+                        className={cn({
+                          [currentClassNameHover]: areThereAccounts,
+                          'cursor-not-allowed opacity-60':
+                            !areThereAccounts,
+                        })}
+                        activeProps={{
+                          className: cn({
+                            [activeClassName]: areThereAccounts,
+                          }),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                        disabled={!areThereAccounts}
+                      >
+                        EULA
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
             </>
