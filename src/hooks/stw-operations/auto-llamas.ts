@@ -29,34 +29,40 @@ export function useAutoLlamaData() {
     )
 
     addAccounts(list)
-    // window.electronAPI.()
+    window.electronAPI.autoLlamasAccountAdd(list)
   }
 
   const handleRemoveAccount = (accountId: string) => () => {
     removeAccounts([accountId])
-    // window.electronAPI.()
+    window.electronAPI.autoLlamasAccountRemove([accountId])
   }
   const handleRemoveAllAccounts = () => {
     removeAccounts(null)
-    // window.electronAPI.()
+    window.electronAPI.autoLlamasAccountRemove(null)
   }
 
   const handleUpdateAccounts: typeof updateAccounts = (data) => {
     updateAccounts(data)
-    // window.electronAPI.()
+    window.electronAPI.autoLlamasAccountUpdate(data)
   }
   const handleEnableBuy = () => {
     updateAccounts(AutoLlamasBulkAction.EnableBuy)
-    // window.electronAPI.()
+    window.electronAPI.autoLlamasAccountUpdate(
+      AutoLlamasBulkAction.EnableBuy
+    )
   }
   const handleDisableBuy = () => {
     updateAccounts(AutoLlamasBulkAction.DisableBuy)
-    // window.electronAPI.()
+    window.electronAPI.autoLlamasAccountUpdate(
+      AutoLlamasBulkAction.DisableBuy
+    )
   }
 
   const onSelectItem = (accountId: string) => {
-    addAccounts({ [accountId]: { accountId } })
-    // window.electronAPI.()
+    const accounts = { [accountId]: { accountId } }
+
+    addAccounts(accounts)
+    window.electronAPI.autoLlamasAccountAdd(accounts)
   }
 
   return {

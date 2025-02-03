@@ -8,33 +8,32 @@ export enum AutoLlamasBulkAction {
   DisableBuy = 'disable-buy',
 }
 
-export type AutoLlamasState = {
-  accounts: Record<string, AutoLlamasData>
-
-  addAccounts: (
-    data: Record<
+export type AutoLlamasAccountAddParams = Record<
+  string,
+  {
+    accountId: string
+    actions?: Partial<AutoLlamasData['actions']>
+  }
+>
+export type AutoLlamasAccountUpdateParams =
+  | Record<
       string,
       {
         accountId: string
-        actions?: Partial<AutoLlamasData['actions']>
+        config: {
+          type: keyof AutoLlamasData['actions']
+          value: boolean | 'toggle'
+        }
       }
     >
-  ) => void
+  | AutoLlamasBulkAction
+
+export type AutoLlamasState = {
+  accounts: Record<string, AutoLlamasData>
+
+  addAccounts: (data: AutoLlamasAccountAddParams) => void
   removeAccounts: (accountIds: Array<string> | null) => void
-  updateAccounts: (
-    accounts:
-      | Record<
-          string,
-          {
-            accountId: string
-            config: {
-              type: keyof AutoLlamasData['actions']
-              value: boolean | 'toggle'
-            }
-          }
-        >
-      | AutoLlamasBulkAction
-  ) => void
+  updateAccounts: (accounts: AutoLlamasAccountUpdateParams) => void
 }
 
 export const useAutoLlamaStore = create<AutoLlamasState>()(
@@ -50,7 +49,6 @@ export const useAutoLlamaStore = create<AutoLlamasState>()(
               accumulator[current.accountId] = {
                 accountId: current.accountId,
                 actions: {
-                  free: current.actions?.free ?? false,
                   survivors: current.actions?.survivors ?? false,
                 },
               }

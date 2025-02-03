@@ -203,6 +203,16 @@ export enum ElectronAPIEventKeys {
   UrnsServiceRemoveNotification = 'urns:service:remove:notification',
 
   /**
+   * Auto-llamas
+   */
+
+  AutoLlamasLoadAccountsRequest = 'auto-llamas:load:accounts:request',
+  AutoLlamasLoadAccountsResponse = 'auto-llamas:load:accounts:response',
+  AutoLlamasAccountAdd = 'auto-llamas:account:add',
+  AutoLlamasAccountUpdate = 'auto-llamas:account:update',
+  AutoLlamasAccountRemove = 'auto-llamas:account:remove',
+
+  /**
    * V-Bucks Information
    */
 
