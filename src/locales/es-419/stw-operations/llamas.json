@@ -1,6 +1,8 @@
 {
-  "description1": "Auto-llamas reclamará las llamas mejorables gratuitas en las cuentas seleccionadas.",
-  "note1": "<0>1</0> También puedes habilitar la compra de llamas mejorables (50 V-Bucks) si lo deseas. Esta compra se realizará si hay al menos un superviviente legendario o mítico.",
+  "description": "Auto-llamas reclamará las llamas mejorables gratuitas or comprará una llama si tiene al menos un superviviente legendario/mítico en las cuentas seleccionadas.",
+  "note1": "<0>1</0> Si hay al menos una llama mejorable gratis será reclamada.",
+  "note2": "<0>2</0> También puedes habilitar la compra de llamas mejorables (50 V-Bucks) si lo deseas. Esta compra se realizará si hay al menos un superviviente legendario o mítico.",
+  "note3": "<0>3</0> Puedes escoger si usar cupón de Rayos X o ficha de llama (Defecto: Rayos X).",
   "form": {
     "actions": {
       "buttons": {
@@ -11,17 +13,19 @@
           "accounts": "Remover Todas Las Cuentas"
         },
         "enable": {
-          "buy": "Habilitar Compra"
+          "buy": "Habilitar Compras Gratis"
         },
         "disable": {
-          "buy": "Deshabilitar Compra"
+          "buy": "Deshabilitar Compras Gratis"
         }
       }
     }
   },
   "results": {
     "features": {
-      "survivors": "Comprar superviviente<1>1</1>"
+      "free-llamas": "Llamas gratis<1>1</1>",
+      "survivors": "Supervivientes<1>2</1>",
+      "use-token": "Usar ficha<1>3</1>"
     }
   }
 }

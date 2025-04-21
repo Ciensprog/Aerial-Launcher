@@ -44,13 +44,18 @@ import { MatchmakingTrack } from './core/matchmaking-track'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
 import { RedeemCodes } from './core/redeem-codes'
+import { Storefront } from './core/storefront'
 import { VBucksInformation } from './core/vbucks-information'
 import { WorldInfoManager } from './core/world-info'
 import { XPBoostsManager } from './core/xpboosts'
 import { MainWindow } from './startup/windows/main'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
-import { AutoLlamas } from './startup/auto-llamas'
+import {
+  AutoLlamas,
+  ProcessAutoLlamas,
+  ProcessLlamaType,
+} from './startup/auto-llamas'
 import { AutoPinUrns } from './startup/auto-pin-urns'
 import { Automation } from './startup/automation'
 import { DataDirectory } from './startup/data-directory'
@@ -721,12 +726,12 @@ const gotTheLock = app.requestSingleInstanceLock()
     schedule.scheduleJob(
       {
         /**
-         * Executes in every reset at time: 00:00:02 AM
+         * Executes in every reset at time: 00:00:10 AM
          * Hour: 00
          * Minute: 00
-         * Second: 02
+         * Second: 10
          */
-        rule: '2 0 0 * * *',
+        rule: '10 0 0 * * *',
         /**
          * Time zone
          */
@@ -735,6 +740,56 @@ const gotTheLock = app.requestSingleInstanceLock()
       () => {
         WorldInfoManager.requestForHome().catch(() => {})
         WorldInfoManager.requestForAdvanceSection().catch(() => {})
+      }
+    )
+
+    schedule.scheduleJob(
+      {
+        /**
+         * Runs: daily every hour
+         * Hour: every hour
+         * Minute: 1
+         */
+        rule: '1 * * * *',
+        /**
+         * Time zone
+         */
+        tz: 'UTC',
+      },
+      () => {
+        Storefront.checkUpgradeFreeLlama().then((available) => {
+          if (available) {
+            ProcessAutoLlamas.start({
+              selected: AutoLlamas.getAccounts({
+                type: ProcessLlamaType.FreeUpgrade,
+              }),
+              type: ProcessLlamaType.FreeUpgrade,
+            })
+          }
+        })
+      }
+    )
+
+    schedule.scheduleJob(
+      {
+        /**
+         * Runs: every reset at time: 00:01:00 AM
+         * Hour: 0 AM (midnight)
+         * Minute: 1
+         */
+        rule: '1 0 * * *',
+        /**
+         * Time zone
+         */
+        tz: 'UTC',
+      },
+      () => {
+        ProcessAutoLlamas.start({
+          selected: AutoLlamas.getAccounts({
+            type: ProcessLlamaType.Survivor,
+          }),
+          type: ProcessLlamaType.Survivor,
+        })
       }
     )
   })

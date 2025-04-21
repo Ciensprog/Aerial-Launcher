@@ -39,8 +39,8 @@
     "success": {
       "personal_one": "A total of {{current}}/{{expected}} XP boost was consumed. Summary of {{totalAccounts}} account/s",
       "personal_other": "A total of {{current}}/{{expected}} XP boosts were consumed. Summary of {{totalAccounts}} account/s",
-      "teammate_one": "A total of {{current}}/{{expected}} XP boost was send to {{name}}. Summary of {{totalAccounts}} account/s",
-      "teammate_other": "A total of {{current}}/{{expected}} XP boosts were send to {{name}}. Summary of {{totalAccounts}} account/s"
+      "teammate_one": "A total of {{current}}/{{expected}} XP boost was sent to {{name}}. Summary of {{totalAccounts}} account/s",
+      "teammate_other": "A total of {{current}}/{{expected}} XP boosts were sent to {{name}}. Summary of {{totalAccounts}} account/s"
     }
   }
 }

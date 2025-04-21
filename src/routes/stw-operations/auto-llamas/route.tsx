@@ -18,6 +18,7 @@ import {
   CardDescription,
   CardHeader,
 } from '../../../components/ui/card'
+import { Separator } from '../../../components/ui/separator'
 import { Switch } from '../../../components/ui/switch'
 
 import { Route as RootRoute } from '../../__root'
@@ -90,15 +91,33 @@ export function Content() {
       <div className="flex flex-col items-center justify-center w-full">
         <Card className="max-w-lg w-full">
           <CardHeader className="border-b">
-            <CardDescription>{t('llamas.description1')}</CardDescription>
+            <CardDescription>{t('llamas.description')}</CardDescription>
             <CardDescription>
               <Trans
                 ns="stw-operations"
                 i18nKey="llamas.note1"
               >
-                <sup>1</sup> You can also enable the purchase of an upgrade
+                <sup>1</sup> If there's at least one free upgrade llama
+                available it will be claimed.
+              </Trans>
+            </CardDescription>
+            <CardDescription>
+              <Trans
+                ns="stw-operations"
+                i18nKey="llamas.note2"
+              >
+                <sup>2</sup> You can also enable the purchase of an upgrade
                 llama (50 V-Bucks) if you want. This purchase will only be
-                made if there's at least one legendary or mythic survivor
+                made if there's at least one legendary or mythic survivor.
+              </Trans>
+            </CardDescription>
+            <CardDescription>
+              <Trans
+                ns="stw-operations"
+                i18nKey="llamas.note3"
+              >
+                <sup>3</sup> You can choose whether to use an X-Ray Tickets
+                or a llama token.
               </Trans>
             </CardDescription>
           </CardHeader>
@@ -131,6 +150,7 @@ export function Content() {
               disabledItem={accountSelectorIsDisabled}
               inputSearchIsDisabled={accountSelectorIsDisabled}
               hideInputSearchWhenOnlyOneOptionIsAvailable
+              hideSelectorOnSelectItem
             />
             <div className="gap-2 grid grid-cols-2">
               <Button
@@ -208,26 +228,89 @@ export function Content() {
                     <span>
                       <Trans
                         ns="stw-operations"
-                        i18nKey="llamas.results.features.survivors"
+                        i18nKey="llamas.results.features.free-llamas"
                       >
-                        Buy survivor
+                        Free llamas
                         <sup className="text-muted-foreground">1</sup>
                       </Trans>
                     </span>
                     <Switch
-                      checked={current.actions.survivors}
+                      checked={current.actions['free-llamas']}
                       onCheckedChange={(value) =>
                         handleUpdateAccounts({
                           [current.accountId]: {
                             accountId: current.accountId,
                             config: {
-                              type: 'survivors',
+                              type: 'free-llamas',
                               value,
                             },
                           },
                         })
                       }
                     />
+                  </div>
+                  <Separator />
+                  <div className="flex flex-col gap-1">
+                    <div className="flex gap-2 items-center justify-between w-full">
+                      <span>
+                        <Trans
+                          ns="stw-operations"
+                          i18nKey="llamas.results.features.survivors"
+                        >
+                          Survivors
+                          <sup className="text-muted-foreground">2</sup>
+                        </Trans>
+                      </span>
+                      <Switch
+                        checked={current.actions.survivors}
+                        onCheckedChange={(value) =>
+                          handleUpdateAccounts({
+                            [current.accountId]: {
+                              accountId: current.accountId,
+                              config: {
+                                type: 'survivors',
+                                value,
+                              },
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="flex gap-2 items-center justify-between w-full">
+                      <span
+                        className={cn({
+                          'text-muted-foreground':
+                            !current.actions.survivors,
+                        })}
+                      >
+                        <Trans
+                          ns="stw-operations"
+                          i18nKey="llamas.results.features.use-token"
+                        >
+                          Use token
+                          <sup className="text-muted-foreground">3</sup>
+                        </Trans>
+                      </span>
+                      <Switch
+                        checked={current.actions['use-token']}
+                        onCheckedChange={(value) => {
+                          if (!current.actions.survivors) {
+                            return
+                          }
+
+                          handleUpdateAccounts({
+                            [current.accountId]: {
+                              accountId: current.accountId,
+                              config: {
+                                type: 'use-token',
+                                value,
+                              },
+                            },
+                          })
+                        }}
+                        disabled={!current.actions.survivors}
+                      />
+                    </div>
                   </div>
                 </div>
               </article>

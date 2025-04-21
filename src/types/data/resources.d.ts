@@ -1,3 +1,5 @@
+import type { WorldInfoMission } from './advanced-mode/world-info'
+
 export type ResourceType =
   | 'construction'
   | 'currency'

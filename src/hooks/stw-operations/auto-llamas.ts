@@ -13,7 +13,7 @@ export function useAutoLlamaData() {
     }))
 
   const totalEnabled = Object.values(selected).filter(
-    (current) => current.actions.survivors
+    (current) => current.actions['free-llamas']
   ).length
   const isAllEnabled = totalEnabled >= Object.keys(selected).length
   const isDisableBuyButtonDisabled = totalEnabled <= 0

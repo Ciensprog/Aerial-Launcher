@@ -1,3 +1,4 @@
 export type StringUnion<Values> =
   | Values
-  | (string & Record<string, unknown>)
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  | (string & {})

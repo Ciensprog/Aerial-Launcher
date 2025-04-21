@@ -30,7 +30,7 @@ import {
   imgWorld,
 } from '../repository'
 
-function getKey<Data = unknown>(
+export function getKey<Data = unknown>(
   key: string,
   resource: Record<string, Data>
 ) {

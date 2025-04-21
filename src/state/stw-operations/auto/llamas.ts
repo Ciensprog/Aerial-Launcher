@@ -50,6 +50,8 @@ export const useAutoLlamaStore = create<AutoLlamasState>()(
                 accountId: current.accountId,
                 actions: {
                   survivors: current.actions?.survivors ?? false,
+                  'free-llamas': current.actions?.['free-llamas'] ?? false,
+                  'use-token': current.actions?.['use-token'] ?? false,
                 },
               }
 
@@ -88,7 +90,9 @@ export const useAutoLlamaStore = create<AutoLlamasState>()(
         const newValue = Object.values(currentAccounts).reduce(
           (accumulator, value) => {
             accumulator[value.accountId] = value
-            accumulator[value.accountId].actions.survivors =
+            // accumulator[value.accountId].actions.survivors =
+            //   accounts === AutoLlamasBulkAction.EnableBuy
+            accumulator[value.accountId].actions['free-llamas'] =
               accounts === AutoLlamasBulkAction.EnableBuy
 
             return accumulator
