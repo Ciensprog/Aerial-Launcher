@@ -131,6 +131,7 @@
   "go-to-top": "Ir Hasta Arriba",
   "history": "Historial",
   "hide-information": "Ocultar Información",
+  "note": "Nota",
   "show-information": "Mostrar Información Oculta",
   "ip-address": "Dirección IP",
   "last-played": "Última Partida: {{date}}",

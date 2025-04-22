@@ -107,9 +107,15 @@ export type MCPQueryProfileChanges = {
           statName: StringUnion<'habaneroprogression' | 'zonescompleted'>
           statValue: number
         }>
-        event_currency: {
+        event_currency?: {
           cf: number
-          templateId: StringUnion<'AccountResource:eventcurrency_roadtrip'>
+          templateId: StringUnion<
+            | 'AccountResource:eventcurrency_lunar'
+            | 'AccountResource:eventcurrency_adventure'
+            | 'AccountResource:eventcurrency_roadtrip'
+            | 'AccountResource:eventcurrency_candy'
+            | 'AccountResource:eventcurrency_snowballs'
+          >
         }
         matches_played?: number
         xp_lost?: number
@@ -154,6 +160,15 @@ export type MCPQueryProfileChanges = {
       | MCPQueryProfileProfileChangesWorker
     >
   }
+}
+
+export type MCPQueryProfileProfileChangesAccountResource = {
+  templateId: `AccountResource:${string}`
+  attributes: {
+    level: number
+    item_seen: boolean
+  }
+  quantity: 1480
 }
 
 export type MCPQueryProfileProfileChangesCardPack = {
@@ -262,6 +277,37 @@ export type MCPQueryProfileProfileChangesWorker = {
     building_slot_used: number
     set_bonus?: string
     managerSynergy?: string
+  }
+  quantity: number
+}
+
+export type MCPQueryProfileProfileChangesPrerollData = {
+  templateId: `PrerollData:${string}`
+  attributes: {
+    fulfillmentId: string
+    expended_streakbreakers: Record<string, unknown>
+    level: number
+    highest_rarity: number
+    offerId: string
+    expiration: string
+    items: Array<
+      | {
+          itemType: `Schematic:${string}`
+          attributes?: {
+            Alteration: {
+              LootTierGroup: string
+              Tier: number
+            }
+            alterations: Array<string>
+          }
+          quantity: number
+        }
+      | {
+          itemType: string
+          attributes: Record<string, unknown>
+          quantity: number
+        }
+    >
   }
   quantity: number
 }

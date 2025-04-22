@@ -13,6 +13,7 @@ import type { MCPHomebaseNameResponse } from '../../types/services/mcp/homebase-
 import type {
   MCPActivateConsumableResponse,
   MCPClientQuestLoginResponse,
+  MCPPurchaseCatalogEntryResponse,
   MCPQueryProfile,
   MCPQueryProfileMainProfile,
   MCPQueryProfileStorageProfile,
@@ -104,6 +105,87 @@ export function getQueryPublicProfile({
       },
       params: {
         profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function populatePrerolledOffers({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return baseGameService.post<MCPQueryProfile>(
+    `/profile/${accountId}/client/PopulatePrerolledOffers`,
+    {},
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function purchaseCatalogEntry({
+  accessToken,
+  accountId,
+
+  offerId,
+  currency = 'GameItem',
+  purchaseQuantity = 1,
+  currencySubType = 'AccountResource:currency_xrayllama',
+  expectedTotalPrice = 0,
+  gameContext = 'fn',
+}: {
+  accessToken: string
+  accountId: string
+
+  offerId: string
+  currency?: string
+  purchaseQuantity?: number
+  currencySubType?: string
+  expectedTotalPrice?: number
+  gameContext?: string
+}) {
+  return baseGameService.post<MCPPurchaseCatalogEntryResponse>(
+    `/profile/${accountId}/client/PurchaseCatalogEntry`,
+    {
+      offerId,
+      currency,
+      currencySubType,
+      expectedTotalPrice,
+      purchaseQuantity,
+      gameContext,
+      client_request_id: '',
+      additionalData: {
+        islandId: 'campaign',
+        islandTitle: 'None',
+        productTag: 'Product.STW',
+        storeContext: 'FrontEnd',
+        sourceContext: '',
+        checkoutProperties: {},
+        itemShopFilterContext: {
+          activeFilters: [],
+          inactiveFilters: [],
+        },
+        storefront: 'CardPackStorePreroll',
+        storeId: '',
+        groupId: '',
+      },
+    },
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'common_core',
         rvn: -1,
       },
     }
@@ -354,6 +436,7 @@ export function setSetPinnedQuests({
     }
   )
 }
+
 export function setStorageTransfer({
   accessToken,
   accountId,

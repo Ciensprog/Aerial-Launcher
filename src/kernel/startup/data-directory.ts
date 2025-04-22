@@ -1,4 +1,5 @@
 import type { AccountList } from '../../types/accounts'
+import type { AutoLlamasRecord } from '../../types/auto-llamas'
 import type { AutomationAccountFileDataList } from '../../types/automation'
 import type { FriendRecord } from '../../types/friends'
 import type { GroupRecord } from '../../types/groups'
@@ -18,6 +19,7 @@ import { defaultMissionInterval } from '../../config/constants/automation'
 import { defaultClaimingRewardsDelay } from '../../config/constants/mcp'
 
 import { accountListSchema } from '../../lib/validations/schemas/accounts'
+import { autoLlamasDataRecordSchema } from '../../lib/validations/schemas/auto-llamas'
 import { autoPinUrnsDataSchema } from '../../lib/validations/schemas/auto-pin-urns-data'
 import { automationFileSchema } from '../../lib/validations/schemas/automation'
 import { friendsSchema } from '../../lib/validations/schemas/friends'
@@ -126,6 +128,12 @@ export class DataDirectory {
   )
   private static urnsDefaultData: AutoPinUrnDataList = {}
 
+  static autoLlamasFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'auto-llamas.json'
+  )
+  private static autoLlamasDefaultData: AutoLlamasRecord = {}
+
   static miniBossesFilePath = path.join(
     DataDirectory.dataDirectoryPath,
     'mini-bosses.json'
@@ -179,6 +187,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateMatchmakingJsonFile()
     await DataDirectory.getOrCreateAutomationJsonFile()
     await DataDirectory.getOrCreateUrnsJsonFile()
+    await DataDirectory.getOrCreateAutoLlamasJsonFile()
     await DataDirectory.getOrCreateMiniBossesJsonFile()
   }
 
@@ -439,6 +448,30 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from auto-llamas.json
+   */
+  static async getAutoLlamasFile(): Promise<{
+    autoLlamas: AutoLlamasRecord
+  }> {
+    const result = await DataDirectory.getOrCreateAutoLlamasJsonFile()
+
+    try {
+      const list = autoLlamasDataRecordSchema.safeParse(JSON.parse(result))
+      const autoLlamas = list.success
+        ? list.data
+        : DataDirectory.autoLlamasDefaultData
+
+      return { autoLlamas }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    return { autoLlamas: DataDirectory.autoLlamasDefaultData }
+  }
+
+  /**
    * Get data from mini-bosses.json
    */
   static async getMiniBossesFile(): Promise<{
@@ -540,6 +573,16 @@ export class DataDirectory {
    */
   static async updateUrnsFile(data: AutoPinUrnDataList) {
     await DataDirectory.updateJsonFile(DataDirectory.urnsFilePath, data)
+  }
+
+  /**
+   * Update auto-llamas.json
+   */
+  static async updateAutoLlamasFile(data: AutoLlamasRecord) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.autoLlamasFilePath,
+      data
+    )
   }
 
   /**
@@ -731,6 +774,23 @@ export class DataDirectory {
 
     return await DataDirectory.getOrCreateJsonFile(
       DataDirectory.urnsFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      }
+    )
+  }
+
+  /**
+   * Creating auto-llamas.json
+   */
+  private static async getOrCreateAutoLlamasJsonFile() {
+    const initialData = DataDirectory.autoLlamasDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.autoLlamasFilePath,
       {
         defaults: {
           rawString: JSON.stringify(initialData),

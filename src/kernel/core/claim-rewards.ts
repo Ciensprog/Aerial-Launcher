@@ -243,6 +243,13 @@ export class ClaimRewards {
                         quantity: loot.quantity,
                       })
                     })
+                  } else if (notification.lootResult) {
+                    notification.lootResult?.items.forEach((loot) => {
+                      notifications.push({
+                        itemType: loot.itemType,
+                        quantity: loot.quantity,
+                      })
+                    })
                   }
                 })
               })
@@ -274,7 +281,7 @@ export class ClaimRewards {
               const newItemType =
                 itemType === 'AccountResource:campaign_event_currency'
                   ? profileChanges.profile.stats.attributes.event_currency
-                      .templateId
+                      ?.templateId ?? itemType
                   : itemType
 
               if (!rewards[newItemType]) {

@@ -9,6 +9,7 @@ export type MCPCommonNotification = Array<{
     | 'missionAlertComplete'
     | 'phoenixLevelUp'
     | 'questClaim'
+    | 'CatalogPurchase'
   >
   primary: boolean
   client_request_id: string
@@ -39,6 +40,20 @@ export type MCPCommonNotification = Array<{
     }>
   }
   lootGranted?: {
+    items: Array<{
+      itemType: string
+      itemGuid?: string
+      itemProfile: StringUnion<'campaign'>
+      quantity: number
+      attributes?: {
+        Alteration: {
+          Tier: number
+          LootTierGroup: string
+        }
+      }
+    }>
+  }
+  lootResult?: {
     items: Array<{
       itemType: string
       itemGuid?: string

@@ -7,7 +7,8 @@
       "save-quests": "Save Quests",
       "homebase-name": "Homebase Name",
       "xp-boosts": "XP Boosts",
-      "auto-pin-urns": "Auto-pin Urns"
+      "auto-pin-urns": "Auto-pin Urns",
+      "auto-llamas": "Auto-llamas"
     },
     "auto-kick-status": {
       "issue": "Issue",
