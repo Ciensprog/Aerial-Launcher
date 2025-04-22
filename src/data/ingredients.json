@@ -29,6 +29,9 @@
   "ore_coal": {
     "name": "Coal"
   },
+  "improvised": {
+    "name": "Rotating Gizmo"
+  },
   "rare_mechanism": {
     "name": "Rotating Gizmo"
   },

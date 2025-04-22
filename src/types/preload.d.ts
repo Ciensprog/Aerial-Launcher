@@ -42,7 +42,9 @@ export type LauncherNotificationCallbackResponseParam =
   CommonNotificationCallbackResponseParam
 
 export type EpicGamesSettingsNotificationCallbackResponseParam =
-  CommonNotificationCallbackResponseParam
+  CommonNotificationCallbackResponseParam & {
+    code?: string
+  }
 
 export type GenerateExchangeCodeNotificationCallbackResponseParam =
   | {

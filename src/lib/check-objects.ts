@@ -2,11 +2,18 @@ import type {
   MCPQueryProfileProfileChangesCardPack,
   MCPQueryProfileProfileChangesConsumableAccountItem,
   MCPQueryProfileProfileChangesHero,
+  MCPQueryProfileProfileChangesPrerollData,
   MCPQueryProfileProfileChangesQuest,
   MCPQueryProfileProfileChangesSchematic,
   MCPQueryProfileProfileChangesToken,
   MCPQueryProfileProfileChangesWorker,
 } from '../types/services/mcp'
+
+export function isMCPQueryProfileChangesAccountResource(value: {
+  templateId: string
+}): value is MCPQueryProfileProfileChangesAccountResource {
+  return value?.templateId?.startsWith('AccountResource:')
+}
 
 export function isMCPQueryProfileChangesCardPack(value: {
   templateId: string
@@ -48,4 +55,10 @@ export function isMCPQueryProfileChangesWorker(value: {
   templateId: string
 }): value is MCPQueryProfileProfileChangesWorker {
   return value?.templateId?.startsWith('Worker:')
+}
+
+export function isMCPQueryProfileChangesPrerollData(value: {
+  templateId: string
+}): value is MCPQueryProfileProfileChangesPrerollData {
+  return value?.templateId?.startsWith('PrerollData:')
 }

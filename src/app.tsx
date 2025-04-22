@@ -17,6 +17,7 @@ import {
   LoadWorldInfoData,
 } from './bootstrap/components/advanced-mode/load-world-info'
 import { LoadAccounts } from './bootstrap/components/load-accounts'
+import { LoadAutoLlamas } from './bootstrap/components/load-auto-llamas'
 import { LoadAutomation } from './bootstrap/components/load-automation'
 import { LoadFriends } from './bootstrap/components/load-friends'
 import { LoadGroups } from './bootstrap/components/load-groups'
@@ -25,6 +26,9 @@ import { LoadTags } from './bootstrap/components/load-tags'
 
 import { Toaster } from './components/ui/sonner'
 import { ThemeProvider } from './components/theme-provider'
+
+import 'dayjs/locale/es'
+import './locale'
 
 dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
@@ -51,6 +55,7 @@ root.render(
       {/* <LoadWorldInfoFiles /> */}
       <LoadMatchmakingPath />
       <LoadAutomation />
+      <LoadAutoLlamas />
 
       <RouterProvider
         router={router}

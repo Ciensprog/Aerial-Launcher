@@ -1,0 +1,147 @@
+{
+  "actions": {
+    "add": "Add",
+    "change": "Change",
+    "create": "Create",
+    "login": "Login",
+    "revert": "Revert",
+    "search": "Search",
+    "success": "Success",
+    "update": "Update"
+  },
+  "form": {
+    "credentials": {
+      "account-id": "Account Id",
+      "device-id": "Device Id",
+      "secret": "Secret",
+      "login": {
+        "label": "Paste Your Code",
+        "input": {
+          "placeholder": "Example: {{code}}"
+        },
+        "get-code": "<0>Get Code</0> <1 />"
+      }
+    },
+    "accounts": {
+      "placeholder": "Search on {{total}} accounts",
+      "placeholder_private": "Search on your accounts",
+      "search-empty": "No account found",
+      "select": "Select account",
+      "selected": "Account selected",
+      "no-available": "No accounts available",
+      "no-linked": "No linked accounts",
+      "no-options": "No accounts",
+      "no-registered-accounts": "No accounts registered yet"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Select some accounts",
+        "tags": "Select some tags",
+        "bulk-note": "Bulk tag selected, all launcher accounts will be used."
+      }
+    },
+    "player": {
+      "search-empty": "No player found",
+      "recently": {
+        "empty-placeholder": "No recently players",
+        "search-placeholder": "Search on {{total}} player/s",
+        "select-placeholder": "Select a recently player"
+      }
+    },
+    "search-account": {
+      "label": "Search player by accountId or display name (epic, xbl or psn)",
+      "input": {
+        "placeholder": "Example: Sample"
+      }
+    }
+  },
+  "information": {
+    "account-id": "Account Id:",
+    "power-level": "Power Level:",
+    "commander-level": "Commander Level:",
+    "boosted-xp": "Boosted XP:",
+    "days-logged-in": "Days Logged In:",
+    "collection-book-level": "Collection Book Level:",
+    "personal-xp-boosts": "Personal XP Boosts:",
+    "teammate-xp-boosts": "Teammate XP Boosts:",
+    "founder-status": "Founder Status:"
+  },
+  "version": {
+    "title": "New version {{version}}",
+    "description": "You can download new version (.exe file) from here:"
+  },
+  "community-info": {
+    "message": "Join our <2>Discord Community<1/></2> to know more about what's coming on next updates!!!"
+  },
+  "founder": {
+    "non-founder": "Non-Founder",
+    "founder": "Founder",
+    "standard": "Standard Edition",
+    "deluxe": "Deluxe Edition",
+    "super-deluxe": "Super Deluxe Edition",
+    "limited": "Limited Edition",
+    "ultimate": "Ultimate Edition"
+  },
+  "launch-game": {
+    "button": "Launch Game",
+    "notifications": {
+      "success": "The game has been launched with the account {{name}}",
+      "error": "An error has occurred launching game with account {{name}}, try again later"
+    }
+  },
+  "separators": {
+    "or": "Or"
+  },
+  "sort": {
+    "newest": "Sorted by newest"
+  },
+  "statuses": {
+    "error": "Error",
+    "loading": "Loading",
+    "not-found": "Not Found",
+    "owned": "Owned",
+    "claimed": "Claimed",
+    "used": "Used"
+  },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ Invalid accountId"
+        },
+        "device-id": {
+          "invalid": "❌ Invalid deviceId"
+        },
+        "secret": {
+          "invalid": "❌ Invalid secret"
+        },
+        "code": {
+          "invalid": "❌ Invalid code"
+        }
+      }
+    }
+  },
+  "account-selected": "Account selected: <2>{{name}}</2>",
+  "boosts": "Boost/s",
+  "credits": "Credits",
+  "current": "Current",
+  "date": "Date",
+  "first-claim": "First Claim: {{date}}",
+  "go-to-current-alerts": "Go To Current Alerts",
+  "go-to-top": "Go To Top",
+  "history": "History",
+  "hide-information": "Hide Information",
+  "note": "Note",
+  "show-information": "Show Hiden Information",
+  "ip-address": "IP Address",
+  "last-played": "Last Played At: {{date}}",
+  "location": "Location",
+  "missions": "Missions",
+  "public-stats": "Note: This user has \"Public Game Stats\" disabled, more information can't be displayed.",
+  "settings": "Settings",
+  "summary": "Summary",
+  "unknown-user": "Unknown User",
+  "unknown": "Unknown",
+  "update-information": "Update Information",
+  "user-agent": "User Agent"
+}

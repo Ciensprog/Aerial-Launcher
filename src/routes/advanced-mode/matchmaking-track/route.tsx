@@ -3,6 +3,7 @@ import type { MouseEventHandler } from 'react'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { createRoute } from '@tanstack/react-router'
 import { ExternalLink } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { fortniteDBProfileURL } from '../../../config/fortnite/links'
 
@@ -40,6 +41,7 @@ import {
   useMatchmakingPath,
   useMatchmakingPlayersPath,
 } from '../../../hooks/advanced-mode/matchmaking'
+import { useInputPaddingButton } from '../../../hooks/ui/inputs'
 import { useCurrentActions } from './-hooks'
 
 import {
@@ -52,6 +54,8 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/advanced-mode/matchmaking-track',
   component: () => {
+    const { t } = useTranslation(['sidebar'])
+
     return (
       <>
         <Breadcrumb>
@@ -59,11 +63,13 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Advanced Mode</BreadcrumbPage>
+              <BreadcrumbPage>{t('advanced-mode.title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Matchmaking Track</BreadcrumbPage>
+              <BreadcrumbPage>
+                {t('advanced-mode.options.matchmaking-track')}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -75,6 +81,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['advanced-mode', 'general'])
+
   const { updateRecentlyPlayers } = useMatchmakingPlayersPath()
   const {
     inputSearchButtonIsDisabled,
@@ -104,6 +112,8 @@ function Content() {
     handleManualChangeSearchDisplayName,
   })
 
+  const [$updateInput, $updateButton] = useInputPaddingButton()
+
   const userBoosts = extractXPBoosts(
     searchedUser?.success && searchedUser?.data
       ? searchedUser.data.profileChanges
@@ -125,12 +135,11 @@ function Content() {
           <Card>
             <CardHeader className="border-b">
               <CardDescription>
-                Check if this is the user you are looking for and request
-                for their matchmaking information.
+                {t('matchmaking-track.description')}
               </CardDescription>
               {path && (
                 <CardDescription className="border-l-4 pl-2 space-y-1">
-                  <span>Default path file:</span>
+                  <span>{t('matchmaking-track.note')}</span>
                   <span className="bg-muted/20 block px-2 py-1 rounded">
                     {path}
                   </span>
@@ -144,14 +153,30 @@ function Content() {
                     className="text-muted-foreground text-sm"
                     htmlFor="global-input-recently-players"
                   >
-                    Note: This players are stored temporarily
+                    {t('matchmaking-track.form.recently.label')}
                   </Label>
                   <Combobox
                     className="max-w-full"
-                    emptyPlaceholder="No recently players"
-                    emptyContent="No player found"
-                    placeholder="Select a recently player"
-                    placeholderSearch={`Search on ${options.length} player(s)`}
+                    emptyPlaceholder={t(
+                      'form.player.recently.empty-placeholder',
+                      {
+                        ns: 'general',
+                      }
+                    )}
+                    emptyContent={t('form.player.search-empty')}
+                    placeholder={t(
+                      'form.player.recently.select-placeholder',
+                      {
+                        ns: 'general',
+                      }
+                    )}
+                    placeholderSearch={t(
+                      'form.player.recently.search-placeholder',
+                      {
+                        ns: 'general',
+                        total: options.length,
+                      }
+                    )}
                     options={options}
                     value={[]}
                     customFilter={customFilter}
@@ -165,7 +190,11 @@ function Content() {
                   />
                 </div>
 
-                <SeparatorWithTitle>Or</SeparatorWithTitle>
+                <SeparatorWithTitle>
+                  {t('separators.or', {
+                    ns: 'general',
+                  })}
+                </SeparatorWithTitle>
 
                 <form
                   className="space-y-2"
@@ -178,27 +207,37 @@ function Content() {
                   }}
                 >
                   <Label htmlFor="global-input-search-player">
-                    Search player by accountId or display name (epic, xbl
-                    or psn)
+                    {t('form.search-account.label', {
+                      ns: 'general',
+                    })}
                   </Label>
                   <div className="flex items-center relative">
                     <Input
-                      placeholder="Example: Sample"
-                      className="pr-32 pl-3 py-1"
+                      placeholder={t(
+                        'form.search-account.input.placeholder',
+                        {
+                          ns: 'general',
+                        }
+                      )}
+                      className="pr-[var(--pr-button-width)] pl-3 py-1"
                       value={inputSearchDisplayName}
                       onChange={handleChangeSearchDisplayName}
                       disabled={searchUserIsSubmitting}
                       id="global-input-search-player"
+                      ref={$updateInput}
                     />
                     <Button
                       type="submit"
                       className="absolute h-8 px-2 py-1.5 right-1 text-sm w-28"
                       disabled={inputSearchButtonIsDisabled}
+                      ref={$updateButton}
                     >
                       {searchUserIsSubmitting ? (
                         <UpdateIcon className="animate-spin h-4" />
                       ) : (
-                        'Search'
+                        t('actions.search', {
+                          ns: 'general',
+                        })
                       )}
                     </Button>
                   </div>
@@ -210,7 +249,9 @@ function Content() {
                     <div className="mt-2 text-center text-muted-foreground">
                       {searchedUser.errorMessage
                         ? searchedUser.errorMessage
-                        : 'No player found'}
+                        : t('form.player.search-empty', {
+                            ns: 'general',
+                          })}
                     </div>
                   )}
               </div>
@@ -247,18 +288,25 @@ function Content() {
                       {searchedUser.isPrivate ? (
                         <>
                           <AccountBasicInformationSection
-                            title="Account Id:"
+                            title={t('information.account-id', {
+                              ns: 'general',
+                            })}
                             value={searchedUser.data.lookup.id}
                           />
                           <div className="py-1.5">
-                            <div>Notes:</div>
+                            <div>
+                              {t('matchmaking-track.results.notes')}
+                            </div>
                             <ul className="list-disc pl-5">
                               <li>
-                                This user has "Public Game Stats" disabled,
-                                more information can't be displayed.
+                                {t(
+                                  'matchmaking-track.results.options.public-stats'
+                                )}
                               </li>
                               <li className="italic">
-                                Of course, you can still generate the file.
+                                {t(
+                                  'matchmaking-track.results.options.continuation'
+                                )}
                               </li>
                             </ul>
                           </div>
@@ -297,14 +345,16 @@ function Content() {
 
                   <div className="mt-5 text-center">
                     <Button
-                      className="w-48"
+                      className="px-1 w-48"
                       onClick={handleSave(searchedUser.data.lookup.id)}
                       disabled={searchUserIsSubmitting}
                     >
                       {isLoading ? (
                         <UpdateIcon className="animate-spin h-4" />
                       ) : (
-                        'Create Matchmaking File'
+                        <span className="leading-4 text-balance truncate">
+                          {t('matchmaking-track.form.submit-button')}
+                        </span>
                       )}
                     </Button>
                   </div>

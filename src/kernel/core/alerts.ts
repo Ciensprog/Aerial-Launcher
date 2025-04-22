@@ -53,6 +53,10 @@ export class AlertsDone {
           return
         }
 
+        defaultResponse.data = {
+          lookup: response.data,
+        }
+
         const accessToken =
           await Authentication.verifyAccessToken(currentAccount)
 

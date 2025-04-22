@@ -1,0 +1,9 @@
+{
+  "description": "Save quests progression of the selected accounts.",
+  "form": {
+    "submit-button": "Save Quests"
+  },
+  "notifications": {
+    "saved": "Quests progression has been saved"
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
@@ -13,6 +14,8 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { toast } from '../../../lib/notifications'
 
 export function useVBucksInformationData() {
+  const { t } = useTranslation(['general'])
+
   const { accountsArray } = useGetAccounts()
   const { data, isLoading, selectedAccounts, selectedTags } =
     useGetVBucksInformationData()
@@ -77,7 +80,7 @@ export function useVBucksInformationData() {
     const selectedAccounts = getAccounts()
 
     if (selectedAccounts.length <= 0) {
-      toast('No linked accounts')
+      toast(t('form.accounts.no-linked'))
 
       return
     }

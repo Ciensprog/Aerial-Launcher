@@ -1,0 +1,46 @@
+{
+  "description": "Manage XP Boosts of the selected accounts.",
+  "form": {
+    "label": "Amount of XP Boosts to send (limited to {{limit}})",
+    "input": {
+      "placeholder": "Example: 123"
+    },
+    "refetch": "Refetch Boosts Data",
+    "see-boosts": "See Boosts",
+    "send-boosts": "Send Boosts"
+  },
+  "top-search": {
+    "description": "Display basic information about a player."
+  },
+  "sidebar": {
+    "title": "Which XP Boosts do you want to use?",
+    "personal": {
+      "description": "All of these accounts will use XP boosts:",
+      "submit-button": "Consume {{total}} XP Boost/s on each account"
+    },
+    "teammate": {
+      "note": "Some boosts might not send if your ping is not stable.",
+      "submit-button": "Send <1>{{total}}</1> to: <3>{{name}}</3>"
+    },
+    "errors": {
+      "valid-amount": "Please type a valid amount"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "Summary of {{total}} account/s"
+    },
+    "options": {
+      "description": "Teammate XP Boosts to use:",
+      "information": "{{current}}/{{total}} of a total of {{amount}}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "A total of {{current}}/{{expected}} XP boost was consumed. Summary of {{totalAccounts}} account/s",
+      "personal_other": "A total of {{current}}/{{expected}} XP boosts were consumed. Summary of {{totalAccounts}} account/s",
+      "teammate_one": "A total of {{current}}/{{expected}} XP boost was sent to {{name}}. Summary of {{totalAccounts}} account/s",
+      "teammate_other": "A total of {{current}}/{{expected}} XP boosts were sent to {{name}}. Summary of {{totalAccounts}} account/s"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import type { XPBoostsSearchUserResponse } from '../../../types/xpboosts'
 
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 
 import {
@@ -21,6 +22,10 @@ export function useCurrentActions({
 
   handleManualChangeSearchDisplayName: (value: string) => void
 }) {
+  const { t } = useTranslation(['advanced-mode'], {
+    keyPrefix: 'matchmaking-track',
+  })
+
   const [isLoading, setIsLoading] = useState(false)
 
   const { selected } = useGetSelectedAccount()
@@ -39,8 +44,8 @@ export function useCurrentActions({
 
         toast(
           response
-            ? 'File has been updated successfully'
-            : 'Specified player is probably not on a mission'
+            ? t('notifications.file.updated')
+            : t('notifications.player.not-playing')
         )
       }
     )

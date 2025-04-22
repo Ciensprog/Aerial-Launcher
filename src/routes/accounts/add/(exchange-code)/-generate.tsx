@@ -1,4 +1,5 @@
 import { Clipboard } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { InputSecret } from '../../../../components/ui/extended/form/input-secret'
 import { Button } from '../../../../components/ui/button'
@@ -14,6 +15,10 @@ import { useGenerateHandlers } from './-hooks'
 import { parseCustomDisplayName } from '../../../../lib/utils'
 
 export function GenerateExchangeCodePage() {
+  const { t } = useTranslation(['accounts'], {
+    keyPrefix: 'exchange-code.form.generate-code',
+  })
+
   const {
     generatedCode,
     selected,
@@ -26,10 +31,18 @@ export function GenerateExchangeCodePage() {
       <Card className="max-w-sm w-full">
         <CardContent className="grid gap-4 pt-6">
           <CardDescription>
-            Account selected:{' '}
-            <span className="font-bold">
-              {parseCustomDisplayName(selected)}
-            </span>
+            <Trans
+              ns="general"
+              i18nKey="account-selected"
+              values={{
+                name: parseCustomDisplayName(selected),
+              }}
+            >
+              Account selected:{' '}
+              <span className="font-bold">
+                {parseCustomDisplayName(selected)}
+              </span>
+            </Trans>
           </CardDescription>
           <InputSecret
             buttonProps={{
@@ -37,7 +50,7 @@ export function GenerateExchangeCodePage() {
               onClick: handleCopyCode,
             }}
             inputProps={{
-              placeholder: 'Generated code will be displayed here',
+              placeholder: t('input.placeholder'),
               value: generatedCode ?? '',
               disabled: true,
             }}
@@ -49,7 +62,7 @@ export function GenerateExchangeCodePage() {
             className="w-full"
             onClick={handleGenerateExchange}
           >
-            Generate Exchange Code
+            {t('submit-button')}
           </Button>
         </CardFooter>
       </Card>

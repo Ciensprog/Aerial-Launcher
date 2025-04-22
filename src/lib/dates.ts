@@ -2,6 +2,21 @@ import type { ConfigType } from 'dayjs'
 
 import dayjs from 'dayjs'
 
+import { Language } from '../locales/resources'
+
+export function changeDateLocale(language: Language) {
+  const locales: Partial<Record<Language, () => void>> = {
+    [Language.Spanish]: () => dayjs.locale('es'),
+  }
+  const current = locales[language]
+
+  if (current !== undefined) {
+    return current()
+  }
+
+  dayjs.locale('en')
+}
+
 export function getDate(config?: ConfigType) {
   return dayjs(config).format('YYYY-MM-DD')
 }

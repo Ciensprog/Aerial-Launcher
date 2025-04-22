@@ -19,6 +19,7 @@ import { Route as StwOperationsSaveQuestsRouteImport } from './routes/stw-operat
 import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/party/route'
 import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
 import { Route as StwOperationsAutomationRouteImport } from './routes/stw-operations/automation/route'
+import { Route as StwOperationsAutoLlamasRouteImport } from './routes/stw-operations/auto-llamas/route'
 import { Route as InformationCreditsRouteImport } from './routes/information/credits/route'
 import { Route as AdvancedModeWorldInfoRouteImport } from './routes/advanced-mode/world-info/route'
 import { Route as AdvancedModeMatchmakingTrackRouteImport } from './routes/advanced-mode/matchmaking-track/route'
@@ -27,7 +28,7 @@ import { Route as AccountManagementVbucksInformationRouteImport } from './routes
 import { Route as AccountManagementRedeemCodesRouteImport } from './routes/account-management/redeem-codes/route'
 import { Route as AccountManagementEulaRouteImport } from './routes/account-management/eula/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
-import { Route as AccountManagementDeviceAuthRouteImport } from './routes/account-management/device-auth/route'
+import { Route as AccountManagementDevicesAuthRouteImport } from './routes/account-management/devices-auth/route'
 import { Route as AccountsAddTypeImport } from './routes/accounts/add/$type'
 
 // Create/Update Routes
@@ -74,6 +75,12 @@ const StwOperationsHomebaseNameRouteRoute =
 const StwOperationsAutomationRouteRoute =
   StwOperationsAutomationRouteImport.update({
     path: '/stw-operations/automation',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const StwOperationsAutoLlamasRouteRoute =
+  StwOperationsAutoLlamasRouteImport.update({
+    path: '/stw-operations/auto-llamas',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -125,9 +132,9 @@ const AccountManagementEpicGamesSettingsRouteRoute =
     getParentRoute: () => rootRoute,
   } as any)
 
-const AccountManagementDeviceAuthRouteRoute =
-  AccountManagementDeviceAuthRouteImport.update({
-    path: '/account-management/device-auth',
+const AccountManagementDevicesAuthRouteRoute =
+  AccountManagementDevicesAuthRouteImport.update({
+    path: '/account-management/devices-auth',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -148,8 +155,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRoute
     }
-    '/account-management/device-auth': {
-      preLoaderRoute: typeof AccountManagementDeviceAuthRouteImport
+    '/account-management/devices-auth': {
+      preLoaderRoute: typeof AccountManagementDevicesAuthRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/epic-games-settings': {
@@ -182,6 +189,10 @@ declare module '@tanstack/react-router' {
     }
     '/information/credits': {
       preLoaderRoute: typeof InformationCreditsRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/stw-operations/auto-llamas': {
+      preLoaderRoute: typeof StwOperationsAutoLlamasRouteImport
       parentRoute: typeof rootRoute
     }
     '/stw-operations/automation': {
@@ -220,7 +231,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   SettingsRouteRoute,
-  AccountManagementDeviceAuthRouteRoute,
+  AccountManagementDevicesAuthRouteRoute,
   AccountManagementEpicGamesSettingsRouteRoute,
   AccountManagementEulaRouteRoute,
   AccountManagementRedeemCodesRouteRoute,
@@ -229,6 +240,7 @@ export const routeTree = rootRoute.addChildren([
   AdvancedModeMatchmakingTrackRouteRoute,
   AdvancedModeWorldInfoRouteRoute,
   InformationCreditsRouteRoute,
+  StwOperationsAutoLlamasRouteRoute,
   StwOperationsAutomationRouteRoute,
   StwOperationsHomebaseNameRouteRoute,
   StwOperationsPartyRouteRoute,

@@ -87,7 +87,7 @@ export type WorldInfoData = {
         brush_L: Brush
         brush_XL: Brush
       }
-      theaterColorInfo: TheaterColorInfo
+      theaterColorInfo: unknown
       socket: string
       missionAlertRequirements: Requirements
       missionAlertCategoryRequirements: Array<MissionAlertCategoryRequirement>

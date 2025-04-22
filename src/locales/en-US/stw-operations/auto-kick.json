@@ -1,0 +1,14 @@
+{
+  "description1": "Auto-kick will listen to the events on your selected accounts and run kicking process when it detects the match has ended.",
+  "description2": "Also, remember kicking is intelligent. There's no need of enabling two autokick's on your accounts if they are in the same party, both of your accounts will get kicked/leave (and claim rewards if you had auto-claim active) depending on the case.",
+  "statuses": {
+    "listening": "Listening",
+    "credential-error": "Credential Error",
+    "disconnected": "Disconnected"
+  },
+  "options": {
+    "kick": "Kick",
+    "claim": "Claim",
+    "transfer-mats": "Transfer mats"
+  }
+}

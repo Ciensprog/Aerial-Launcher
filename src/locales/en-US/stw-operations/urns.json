@@ -1,0 +1,8 @@
+{
+  "note": "Note: Only works during dungeon seasons.",
+  "description": "This feature will automatically pin \"Urn Your Keep\" quest every time it claims it (with the launcher). So you guys can always have track of the urns you are missing and don't bother pinning it before every run.",
+  "options": {
+    "urns": "Urns",
+    "mini-bosses": "Mini-Bosses"
+  }
+}

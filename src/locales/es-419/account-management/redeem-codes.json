@@ -1,0 +1,10 @@
+{
+  "description": "Reclamar códigos en las cuentas seleccionadas.",
+  "form": {
+    "input": {
+      "placeholder": "Ingresa los códigos a reclamar (usa nueva línea)."
+    },
+    "redeem-button": "Reclamar Códigos",
+    "clear-button": "Limpiar Formulario"
+  }
+}

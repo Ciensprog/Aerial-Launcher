@@ -25,11 +25,12 @@ export function FetchAlertsButton() {
       onClick={fetchAlerts}
       disabled={isFetching || isReloading}
     >
-      <span className={cn('absolute', { hidden: !isReloading })}>
-        <UpdateIcon className="animate-spin" />
-      </span>
-      <span className={cn({ 'opacity-0 select-none': isReloading })}>
-        Fetch Alerts
+      <span
+        className={cn({
+          'animate-spin': isReloading,
+        })}
+      >
+        <UpdateIcon className="size-4" />
       </span>
     </Button>
   )

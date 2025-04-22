@@ -5,11 +5,11 @@ import type {
   SyncAccountDataResponse,
 } from '../../types/accounts'
 import type { AuthenticationByDeviceProperties } from '../../types/authentication'
-import type { GenerateExchangeCodeNotificationCallbackResponseParam } from '../../types/preload'
+import type {
+  EpicGamesSettingsNotificationCallbackResponseParam,
+  GenerateExchangeCodeNotificationCallbackResponseParam,
+} from '../../types/preload'
 
-import { shell } from 'electron'
-
-import { epicGamesAccountSettingsURL } from '../../config/fortnite/links'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { MainWindow } from '../startup/windows/main'
@@ -25,6 +25,9 @@ import {
   oauthVerify,
 } from '../../services/endpoints/oauth'
 
+import { LauncherAuthError } from '../../lib/validations/schemas/fortnite/auth'
+import { accountDataSchema } from '../../lib/validations/schemas/accounts'
+
 export class Authentication {
   static async authorization(code: string) {
     try {
@@ -39,39 +42,68 @@ export class Authentication {
           }
         )
 
+      const accountData = {
+        accessToken: responseAuthorization.data.access_token,
+        accountId: responseAuthorization.data.account_id,
+        deviceId: responseDevice?.deviceId,
+        displayName: responseAuthorization.data.displayName,
+        secret: responseDevice?.secret,
+      } as {
+        accessToken: string
+        accountId: string
+        deviceId: string
+        displayName: string
+        secret: string
+      }
+
+      accountDataSchema.parse(accountData)
+
       if (responseDevice) {
         await Authentication.registerAccount(
           ElectronAPIEventKeys.ResponseAuthWithAuthorization,
-          {
-            accessToken: responseAuthorization.data.access_token,
-            accountId: responseAuthorization.data.account_id,
-            deviceId: responseDevice.deviceId,
-            displayName: responseAuthorization.data.displayName,
-            secret: responseDevice.secret,
-          }
+          accountData
         )
       }
     } catch (error) {
-      Authentication.responseError({
+      return Authentication.responseError({
         key: ElectronAPIEventKeys.ResponseAuthWithAuthorization,
         error,
       })
     }
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.ResponseAuthWithAuthorization,
+      {
+        accessToken: null,
+        data: null,
+        error: LauncherAuthError.login,
+      }
+    )
   }
 
   static async device(data: AuthenticationByDeviceProperties) {
     try {
       const responseDevice = await getAccessTokenUsingDeviceAuth(data)
 
+      const accountData = {
+        accessToken: responseDevice.data.access_token,
+        accountId: responseDevice.data.account_id,
+        deviceId: data.deviceId,
+        displayName: responseDevice.data.displayName,
+        secret: data.secret,
+      } as {
+        accessToken: string
+        accountId: string
+        deviceId: string
+        displayName: string
+        secret: string
+      }
+
+      accountDataSchema.parse(accountData)
+
       await Authentication.registerAccount(
         ElectronAPIEventKeys.ResponseAuthWithDevice,
-        {
-          accessToken: responseDevice.data.access_token,
-          accountId: responseDevice.data.account_id,
-          deviceId: data.deviceId,
-          displayName: responseDevice.data.displayName,
-          secret: data.secret,
-        }
+        accountData
       )
     } catch (error) {
       Authentication.responseError({
@@ -93,24 +125,43 @@ export class Authentication {
           }
         )
 
+      const accountData = {
+        accessToken: responseExchange.data.access_token,
+        accountId: responseExchange.data.account_id,
+        deviceId: responseDevice?.deviceId,
+        displayName: responseExchange.data.displayName,
+        secret: responseDevice?.secret,
+      } as {
+        accessToken: string
+        accountId: string
+        deviceId: string
+        displayName: string
+        secret: string
+      }
+
+      accountDataSchema.parse(accountData)
+
       if (responseDevice) {
         await Authentication.registerAccount(
           ElectronAPIEventKeys.ResponseAuthWithExchange,
-          {
-            accessToken: responseExchange.data.access_token,
-            accountId: responseExchange.data.account_id,
-            deviceId: responseDevice.deviceId,
-            displayName: responseExchange.data.displayName,
-            secret: responseDevice.secret,
-          }
+          accountData
         )
       }
     } catch (error) {
-      Authentication.responseError({
+      return Authentication.responseError({
         key: ElectronAPIEventKeys.ResponseAuthWithExchange,
         error,
       })
     }
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.ResponseAuthWithAuthorization,
+      {
+        accessToken: null,
+        data: null,
+        error: LauncherAuthError.login,
+      }
+    )
   }
 
   static async generateExchangeCode(account: AccountData) {
@@ -179,16 +230,13 @@ export class Authentication {
       const exchange = await getExchangeCodeUsingAccessToken(accessToken)
 
       if (exchange.data.code) {
-        await shell.openExternal(
-          epicGamesAccountSettingsURL(exchange.data.code)
-        )
-
         MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.OpenEpicGamesSettingsNotification,
           {
             account,
+            code: exchange.data.code,
             status: true,
-          }
+          } as EpicGamesSettingsNotificationCallbackResponseParam
         )
 
         return
@@ -361,7 +409,9 @@ export class Authentication {
     MainWindow.instance.webContents.send(key, {
       accessToken: null,
       data: null,
-      error: (error.response?.data as CommonErrorResponse).errorMessage,
+      error:
+        (error.response?.data as CommonErrorResponse)?.errorMessage ??
+        LauncherAuthError.login,
     })
   }
 }

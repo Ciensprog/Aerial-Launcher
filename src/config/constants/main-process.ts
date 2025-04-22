@@ -10,6 +10,11 @@ export enum ElectronAPIEventKeys {
    * Settings
    */
 
+  AppLanguageRequest = 'settings:language:request',
+  AppLanguageInit = 'settings:language:init',
+  AppLanguageNotification = 'settings:language:notification',
+  AppLanguageUpdate = 'settings:language:update',
+
   RequestSettings = 'request:settings',
   OnLoadSettings = 'on:load:settings',
   UpdateSettings = 'settings:update',
@@ -199,6 +204,16 @@ export enum ElectronAPIEventKeys {
   UrnsServiceUpdateNotification = 'urns:service:update:notification',
   UrnsServiceRemove = 'urns:service:remove',
   UrnsServiceRemoveNotification = 'urns:service:remove:notification',
+
+  /**
+   * Auto-llamas
+   */
+
+  AutoLlamasLoadAccountsRequest = 'auto-llamas:load:accounts:request',
+  AutoLlamasLoadAccountsResponse = 'auto-llamas:load:accounts:response',
+  AutoLlamasAccountAdd = 'auto-llamas:account:add',
+  AutoLlamasAccountUpdate = 'auto-llamas:account:update',
+  AutoLlamasAccountRemove = 'auto-llamas:account:remove',
 
   /**
    * V-Bucks Information
