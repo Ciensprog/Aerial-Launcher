@@ -750,7 +750,7 @@ const gotTheLock = app.requestSingleInstanceLock()
          * Hour: every hour
          * Minute: 1
          */
-        rule: '1 * * * *',
+        rule: '* * * * *',
         /**
          * Time zone
          */
