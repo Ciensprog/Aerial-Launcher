@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import schedule from 'node-schedule'
 
 import { Automation } from '../automation'
+import { SystemTray } from '../system-tray'
 
 export class MainWindow {
   private static value: BrowserWindow
@@ -26,6 +27,8 @@ export class MainWindow {
       accountService.destroy()
     })
     schedule.gracefulShutdown().catch(() => {})
+
+    SystemTray.destroy()
   }
 
   static closeApp() {

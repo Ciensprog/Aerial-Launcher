@@ -638,6 +638,24 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.AutoLlamasLoadAccountsRequest,
       async () => {
         await AutoLlamas.load()
+
+        Storefront.checkUpgradeFreeLlama().then((available) => {
+          if (available) {
+            ProcessAutoLlamas.start({
+              selected: AutoLlamas.getAccounts({
+                type: ProcessLlamaType.FreeUpgrade,
+              }),
+              type: ProcessLlamaType.FreeUpgrade,
+            })
+          }
+        })
+
+        ProcessAutoLlamas.start({
+          selected: AutoLlamas.getAccounts({
+            type: ProcessLlamaType.Survivor,
+          }),
+          type: ProcessLlamaType.Survivor,
+        })
       }
     )
 
@@ -750,7 +768,7 @@ const gotTheLock = app.requestSingleInstanceLock()
          * Hour: every hour
          * Minute: 1
          */
-        rule: '* * * * *',
+        rule: '1 * * * *',
         /**
          * Time zone
          */
