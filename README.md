@@ -4,6 +4,11 @@
 
 ![GitHub License](https://img.shields.io/github/license/Ciensprog/Aerial-Launcher?label=License) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ciensprog/Aerial-Launcher/release.yml?label=Build) ![GitHub Repo Size](https://img.shields.io/github/repo-size/Ciensprog/Aerial-Launcher?label=Repo%20Size) ![GitHub package.json Version](https://img.shields.io/github/package-json/v/Ciensprog/Aerial-Launcher?label=Current%20Version) ![GitHub last commit](https://img.shields.io/github/last-commit/Ciensprog/Aerial-Launcher?label=Last%20Commit)
 
+> [!IMPORTANT]
+>
+> - None developer of this application is associated with Epic Games.
+> - **_Since this project is Open-Source, be careful if you download the installer for a version from sources other than this repository, those other sources may have malicious code_**.
+
 # Aerial Launcher
 
 A Windows desktop application (based on Potato Launcher) to manage things on Fortnite STW.
@@ -127,11 +132,3 @@ You can access the FortniteDB profile of the selected account.
 1. [Submit a Pull Request](https://github.com/Ciensprog/Aerial-Launcher/pulls).
 
 Alternatively, you can [create an issue](https://github.com/Ciensprog/Aerial-Launcher/issues/new) for reporting any bugs that you find.
-
----
-
-> [!IMPORTANT]
->
-> - None developer of this application is associated with Epic Games.
-> - Please consider not using this application to abuse some features of FortniteDB.
-> - **_Since this project is Open-Source, be careful if you download the installer for a version from sources other than this repository, those other sources may have malicious code_**.
