@@ -94,40 +94,40 @@ export function useEULAActions() {
   }
 }
 
-export function useScrollToTop() {
-  const [scrollToTopButtonIsVisible, setScrollToTopButtonIsVisible] =
-    useState(false)
+// export function useScrollToTop() {
+//   const [scrollToTopButtonIsVisible, setScrollToTopButtonIsVisible] =
+//     useState(false)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setScrollToTopButtonIsVisible(!entry.isIntersecting)
-      },
-      {
-        threshold: [0],
-      }
-    )
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         setScrollToTopButtonIsVisible(!entry.isIntersecting)
+//       },
+//       {
+//         threshold: [0],
+//       }
+//     )
 
-    const $container = document.getElementById('gtk-eula')
+//     const $container = document.getElementById('gtk-eula')
 
-    if ($container) {
-      observer.observe($container)
-    }
+//     if ($container) {
+//       observer.observe($container)
+//     }
 
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
+//     return () => {
+//       observer.disconnect()
+//     }
+//   }, [])
 
-  const scrollButtonOnClick = () => {
-    document.querySelector('.main-wrapper-content')?.scroll({
-      behavior: 'smooth',
-      top: 0,
-    })
-  }
+//   const scrollButtonOnClick = () => {
+//     document.querySelector('.main-wrapper-content')?.scroll({
+//       behavior: 'smooth',
+//       top: 0,
+//     })
+//   }
 
-  return {
-    scrollToTopButtonIsVisible,
-    scrollButtonOnClick,
-  }
-}
+//   return {
+//     scrollToTopButtonIsVisible,
+//     scrollButtonOnClick,
+//   }
+// }

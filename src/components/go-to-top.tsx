@@ -20,7 +20,7 @@ export const GoToTop = memo(({ containerId }: GoToTopProps) => {
   return (
     <Button
       className={cn(
-        'bottom-5 fixed opacity-0 px-4 right-5 transition-all translate-x-28 z-10',
+        'bottom-5 fixed opacity-0 px-4 right-5 transition-all translate-x-28 z-30',
         {
           'opacity-100 translate-x-0': scrollToTopButtonIsVisible,
         }

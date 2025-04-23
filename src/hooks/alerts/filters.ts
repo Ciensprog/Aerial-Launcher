@@ -14,6 +14,7 @@ export function useAlertsOverviewFiltersData() {
     rarities,
     rewards,
     zones,
+    group,
     changeInputSearch,
   } = useAlertsOverviewFiltersStore(
     useShallow((state) => ({
@@ -22,6 +23,7 @@ export function useAlertsOverviewFiltersData() {
       missionTypes: state.missionTypes,
       rarities: state.rarities,
       rewards: state.rewards,
+      group: state.group,
 
       changeInputSearch: state.changeInputSearch,
     }))
@@ -33,6 +35,7 @@ export function useAlertsOverviewFiltersData() {
     rarities,
     rewards,
     zones,
+    group,
 
     changeInputSearch,
   }
@@ -40,21 +43,24 @@ export function useAlertsOverviewFiltersData() {
 
 export function useAlertsOverviewFiltersActions() {
   const { initPagination } = useAlertsOverviewPaginationInit()
-  const { resetFilters, toggleFilterKeys } = useAlertsOverviewFiltersStore(
-    useShallow((state) => ({
-      resetFilters: () => {
-        initPagination([])
-        state.resetFilters()
-      },
-      toggleFilterKeys: (keys: FilterKeys) => (ids: Array<string>) => {
-        initPagination([])
-        state.toggleFilterKeys(keys)(ids)
-      },
-    }))
-  )
+  const { resetFilters, toggleFilterKeys, toggleGroup } =
+    useAlertsOverviewFiltersStore(
+      useShallow((state) => ({
+        resetFilters: () => {
+          initPagination([])
+          state.resetFilters()
+        },
+        toggleFilterKeys: (keys: FilterKeys) => (ids: Array<string>) => {
+          initPagination([])
+          state.toggleFilterKeys(keys)(ids)
+        },
+        toggleGroup: state.toggleGroup,
+      }))
+    )
 
   return {
     resetFilters,
     toggleFilterKeys,
+    toggleGroup,
   }
 }

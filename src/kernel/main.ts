@@ -45,6 +45,7 @@ import { Manifest } from './core/manifest'
 import { Party } from './core/party'
 import { RedeemCodes } from './core/redeem-codes'
 import { Storefront } from './core/storefront'
+import { Unlock } from './core/unlock'
 import { VBucksInformation } from './core/vbucks-information'
 import { WorldInfoManager } from './core/world-info'
 import { XPBoostsManager } from './core/xpboosts'
@@ -412,6 +413,13 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.XPBoostsGeneralSearchUser,
       async (_, config: XPBoostsSearchUserConfig) => {
         await XPBoostsManager.generalSearchUser(config)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.UnlockRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await Unlock.start(accounts)
       }
     )
 

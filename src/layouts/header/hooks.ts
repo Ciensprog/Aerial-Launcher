@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 
-import { fortniteDBProfileURL } from '../../config/fortnite/links'
+import { stwNewsProfileURL } from '../../config/fortnite/links'
 
 import { useGetSelectedAccount } from '../../hooks/accounts'
 
@@ -52,10 +52,10 @@ export function useHandlers() {
     }
   }
 
-  const handleOpenFNDBProfile = () => {
+  const handleOpenSTWNewsProfile = () => {
     if (selected) {
       window.electronAPI.openExternalURL(
-        fortniteDBProfileURL(selected.accountId)
+        stwNewsProfileURL(selected.accountId)
       )
     }
   }
@@ -72,7 +72,7 @@ export function useHandlers() {
     handleCloseWindow,
     handleLaunch,
     handleMinimizeWindow,
-    handleOpenFNDBProfile,
+    handleOpenSTWNewsProfile,
   }
 }
 

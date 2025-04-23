@@ -68,6 +68,7 @@
     "immer": "^10.1.1",
     "just-random": "^3.2.0",
     "lucide-react": "^0.372.0",
+    "modern-screenshot": "^4.6.0",
     "next-themes": "^0.3.0",
     "node-schedule": "^2.1.1",
     "react": "^18.3.1",

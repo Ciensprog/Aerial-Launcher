@@ -32,6 +32,7 @@ export function useAlertsOverviewData() {
     rarities,
     rewards,
     zones,
+    group,
     changeInputSearch,
   } = useAlertsOverviewFiltersData()
 
@@ -47,6 +48,16 @@ export function useAlertsOverviewData() {
 
       if (checkZone) {
         const tmpMissions = missions.filter((mission) => {
+          let checkGroupMission: boolean = true
+
+          if (group) {
+            checkGroupMission = mission.ui.mission.zone.theme.isGroup
+          }
+
+          if (!checkGroupMission) {
+            return false
+          }
+
           let checkMissionTypes: boolean = true
 
           if (missionTypes.length > 0) {
@@ -70,15 +81,16 @@ export function useAlertsOverviewData() {
 
           if (rarities.length > 0) {
             checkRarities = rarities.some((rarity) =>
-              mission.filters.some((fitlerKey) => {
+              mission.filters.some((filterKey) => {
                 const ratityValidation =
-                  fitlerKey.includes(`_${rarity}_`) ||
-                  fitlerKey.endsWith(`_${rarity}`)
+                  filterKey.includes(`_${rarity}_`) ||
+                  filterKey.endsWith(`_${rarity}`)
 
-                return fitlerKey.includes('currency_mtxswap') ||
-                  fitlerKey.includes('Worker') ||
-                  fitlerKey.includes('Hero') ||
-                  fitlerKey.includes('Schematic')
+                return filterKey.includes('currency_mtxswap') ||
+                  filterKey.includes('Worker') ||
+                  filterKey.includes('Hero') ||
+                  filterKey.includes('Defender') ||
+                  filterKey.includes('Schematic')
                   ? ratityValidation
                   : false
               })
@@ -90,9 +102,31 @@ export function useAlertsOverviewData() {
           }
 
           if (rewards.length > 0) {
-            return rewards.some((key) =>
-              mission.filters.some((fitlerKey) => fitlerKey.includes(key))
-            )
+            return rewards.some((key) => {
+              const isCommandSection =
+                key === 'Defender' ||
+                key === 'Hero' ||
+                key === 'Worker' ||
+                key === 'Manager'
+              const isArsenalSection =
+                key === 'Melee' || key === 'Ranged' || key === 'Trap'
+
+              return mission.filters.some((filterKey) => {
+                if (key === 'Manager') {
+                  return filterKey.startsWith('Worker:manager')
+                }
+
+                if (isCommandSection) {
+                  return filterKey.startsWith(key)
+                }
+
+                if (isArsenalSection) {
+                  return filterKey.includes(key)
+                }
+
+                return filterKey.includes(key.toLowerCase())
+              })
+            })
           }
 
           const valueToSearch = inputSearch.trim()

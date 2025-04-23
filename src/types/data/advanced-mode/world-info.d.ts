@@ -96,6 +96,8 @@ export type WorldInfoMission = {
         letter: string
         theme: {
           id: string
+          isGroup: boolean
+          generator: string
         }
         type: {
           id: keyof typeof zonesCategories | 'unknown'

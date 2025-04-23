@@ -57,6 +57,12 @@ export function SidebarMenu({
   const goToPage = () => {
     onOpenChange?.(false)
   }
+  const gotToPage: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault()
+    window.electronAPI.openExternalURL(
+      (event.currentTarget as unknown as HTMLAnchorElement).href
+    )
+  }
   const goToDiscordServerURL: MouseEventHandler<HTMLButtonElement> = (
     event
   ) => {
@@ -212,6 +218,21 @@ export function SidebarMenu({
                         onAuxClick={whatIsThis()}
                       >
                         {t('stw-operations.options.auto-llamas')}
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('unlock') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/unlock"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        {t('stw-operations.options.unlock')}
                       </Link>
                     </li>
                   )}
@@ -489,6 +510,68 @@ export function SidebarMenu({
           )}
 
           <div>
+            <Button
+              className={cn(
+                'flex items-center gap-3 justify-center px-3 py-2 rounded-lg transition-all w-full',
+                'text-muted-foreground',
+                'hover:bg-muted hover:text-primary'
+              )}
+              size="sm"
+              variant="ghost"
+              onClick={gotToPage}
+              onAuxClick={whatIsThis()}
+              asChild
+            >
+              <a href="https://ko-fi.com/ciensprog">
+                <img
+                  src="https://stwcdn.com/ko-fi.webp"
+                  className="flex-shrink-0 h-5"
+                  alt="icon"
+                />
+              </a>
+            </Button>
+            <Button
+              className={cn(
+                'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
+                'text-muted-foreground',
+                'hover:bg-muted hover:text-primary'
+              )}
+              size="sm"
+              variant="ghost"
+              onClick={gotToPage}
+              onAuxClick={whatIsThis()}
+              asChild
+            >
+              <a href="https://stw.news/">
+                <img
+                  src="https://stwcdn.com/aerial-stwnews.webp"
+                  className="flex-shrink-0 -ml-0.5 size-5"
+                  alt="icon"
+                />
+                <span className="-ml-1">STW News</span>
+              </a>
+            </Button>
+            <Button
+              className={cn(
+                'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
+                'text-muted-foreground',
+                'hover:bg-muted hover:text-primary'
+              )}
+              size="sm"
+              variant="ghost"
+              onClick={gotToPage}
+              onAuxClick={whatIsThis()}
+              asChild
+            >
+              <a href="https://discord.gg/XbGSTuXZdy">
+                <img
+                  src="https://stwcdn.com/aerial-ml-corp.webp"
+                  className="flex-shrink-0 -ml-0.5 size-5"
+                  alt="icon"
+                />
+                <span className="-ml-1">ML Corp</span>
+              </a>
+            </Button>
             <Button
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',

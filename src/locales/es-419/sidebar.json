@@ -8,7 +8,8 @@
       "homebase-name": "Nombre de la base",
       "xp-boosts": "Potenciadores",
       "auto-pin-urns": "Auto-fijar Urnas",
-      "auto-llamas": "Auto-llamas"
+      "auto-llamas": "Auto-llamas",
+      "unlock": "Omitir Escudos"
     },
     "auto-kick-status": {
       "issue": "Revisar",

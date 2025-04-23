@@ -180,6 +180,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
           missions.forEach((mission) => {
             const zoneInfo = zoneParser({
               missionGenerator: mission.missionGenerator,
+              theaterId: theaterId as World,
             })
 
             // if (zoneInfo.type === 'quest') {
@@ -261,19 +262,27 @@ export function worlInfoParser(data: WorldInfoData | null) {
               )
               .map((item) => {
                 const parsedResource = parseResource({
+                  context: 'world-info',
                   key: item.itemType,
                   quantity: item.quantity,
                 })
 
-                filters.push(item.itemType)
+                filters.push(parsedResource.itemType)
 
                 if (item.attributes?.Alteration?.LootTierGroup) {
                   filters.push(item.attributes?.Alteration?.LootTierGroup)
+                } else if (
+                  item.itemType.includes('floor_tar') ||
+                  item.itemType.includes('floor_ward')
+                ) {
+                  filters.push(
+                    `AlterationTG.Trap.${parsedResource.rarity.toUpperCase()}`
+                  )
                 }
 
                 return {
                   imageUrl: parsedResource.imgUrl,
-                  itemId: item.itemType,
+                  itemId: parsedResource.itemType,
                   quantity: item.quantity ?? 1,
                   rarity: parsedResource.rarity,
                   type: parsedResource.type,
@@ -299,12 +308,13 @@ export function worlInfoParser(data: WorldInfoData | null) {
               )
               .map((item) => {
                 const parsedResource = parseResource({
+                  context: 'world-info',
                   key: item.itemType,
                   quantity: item.quantity,
                 })
                 let isBad = false
 
-                filters.push(item.itemType)
+                filters.push(parsedResource.itemType)
 
                 if (
                   isEvoMat(parsedResource.itemType) &&
@@ -320,7 +330,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
                 return {
                   isBad,
                   imageUrl: parsedResource.imgUrl,
-                  itemId: item.itemType,
+                  itemId: parsedResource.itemType,
                   key: parsedResource.key,
                   quantity: item.quantity ?? 1,
                 }
@@ -347,6 +357,8 @@ export function worlInfoParser(data: WorldInfoData | null) {
                     letter: zoneLetter,
                     theme: {
                       id: zoneInfo.theme,
+                      generator: zoneInfo.generator,
+                      isGroup: zoneInfo.isGroup,
                     },
                     type: {
                       id: zoneInfo.type as
@@ -427,10 +439,14 @@ export function worlInfoParser(data: WorldInfoData | null) {
 
 export function zoneParser({
   missionGenerator,
+  theaterId,
 }: {
   missionGenerator: string
+  theaterId: World
 }): {
+  isGroup: boolean
   imageUrl: string
+  generator: string
   theme: string
   type: keyof typeof zonesCategories | 'unknown'
 } {
@@ -441,20 +457,36 @@ export function zoneParser({
 
   if (current) {
     const [key] = current
-    const isGroup = generator.toLowerCase().includes('group')
+    const newKey =
+      theaterId === World.Stonewood && key === 'ets' ? 'rescue' : key
+    const isGroup =
+      theaterId === World.Stonewood && newKey === 'rescue'
+        ? false
+        : generator.toLowerCase().includes('group')
 
     return {
+      isGroup,
+      generator,
+      // imageUrl:
+      //   isGroup &&
+      //   zonesGroups.includes(key as keyof typeof zonesCategories)
+      //     ? imgWorld(`${key}-group.png`)
+      //     : imgWorld(`${key}.png`),
       imageUrl:
-        isGroup &&
-        zonesGroups.includes(key as keyof typeof zonesCategories)
-          ? imgWorld(`${key}-group.png`)
-          : imgWorld(`${key}.png`),
+        theaterId === World.Stonewood && key === 'ets'
+          ? imgWorld('rescue.png')
+          : isGroup &&
+              zonesGroups.includes(key as keyof typeof zonesCategories)
+            ? imgWorld(`${key}-group.png`)
+            : imgWorld(`${key}.png`),
       theme: 'unknown',
-      type: key as keyof typeof zonesCategories | 'unknown',
+      type: newKey as keyof typeof zonesCategories | 'unknown',
     }
   }
 
   return {
+    generator,
+    isGroup: false,
     imageUrl: imgWorld('question.png'),
     theme: 'unknown',
     type: 'unknown',

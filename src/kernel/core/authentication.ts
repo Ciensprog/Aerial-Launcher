@@ -15,6 +15,7 @@ import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { MainWindow } from '../startup/windows/main'
 import { AccountsManager } from '../startup/accounts'
 import { DataDirectory } from '../startup/data-directory'
+import { Unlock } from './unlock'
 
 import {
   createDeviceAuthCredentials,
@@ -63,6 +64,9 @@ export class Authentication {
           ElectronAPIEventKeys.ResponseAuthWithAuthorization,
           accountData
         )
+        await Authentication.createStoreAccess(accountData)
+
+        return
       }
     } catch (error) {
       return Authentication.responseError({
@@ -105,6 +109,7 @@ export class Authentication {
         ElectronAPIEventKeys.ResponseAuthWithDevice,
         accountData
       )
+      await Authentication.createStoreAccess(accountData)
     } catch (error) {
       Authentication.responseError({
         key: ElectronAPIEventKeys.ResponseAuthWithDevice,
@@ -146,6 +151,9 @@ export class Authentication {
           ElectronAPIEventKeys.ResponseAuthWithExchange,
           accountData
         )
+        await Authentication.createStoreAccess(accountData)
+
+        return
       }
     } catch (error) {
       return Authentication.responseError({
@@ -325,6 +333,22 @@ export class Authentication {
     }
 
     return null
+  }
+
+  private static async createStoreAccess(accountData: AccountData) {
+    try {
+      const newAccessToken =
+        await Authentication.verifyAccessToken(accountData)
+
+      if (newAccessToken) {
+        await Unlock.storeAccess({
+          accessToken: newAccessToken,
+          accountId: accountData.accountId,
+        })
+      }
+    } catch (error) {
+      //
+    }
   }
 
   private static async registerAccount(

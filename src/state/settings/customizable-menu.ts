@@ -32,6 +32,7 @@ export const customizableMenuSettingsRelations: Record<
     'xpBoosts',
     'autoPinUrns',
     'autoLlamas',
+    'unlock',
   ],
   accountManagement: [
     'vbucksInformation',

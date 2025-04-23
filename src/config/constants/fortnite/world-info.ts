@@ -179,9 +179,19 @@ export const zonesCategories = {
     'StabilizeTheRift',
     'StC',
     'StormQuest2018Landmark',
-    'TestTheSuit',
     'VindermanMansion',
     'WatchTheSkies',
+
+    // Blockbuster
+    'TestTheSuit',
+
+    // Ventures related
+    'FinalFrontier',
+    'FinalRehearsal',
+
+    // Pirate season related (EventFlag.Phoenix.Adventure)
+    'AdventureRevenge',
+    'Yarrr',
   ],
   atlas: ['1Gate', 'Cat1FtS', 'GateSingle'],
   'atlas-c2': ['2Gates'],

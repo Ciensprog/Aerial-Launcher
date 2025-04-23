@@ -1,6 +1,10 @@
 import type { CSSProperties, PropsWithChildren } from 'react'
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
 
+import { UpdateIcon } from '@radix-ui/react-icons'
+import { Image } from 'lucide-react'
+import { domToBlob } from 'modern-screenshot'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { rarities } from '../../../config/constants/resources'
@@ -11,8 +15,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../../../components/ui/accordion'
+import { Button } from '../../../components/ui/button'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
+import { toast } from '../../../lib/notifications'
 import { imgRarities, imgWorld } from '../../../lib/repository'
 import { cn } from '../../../lib/utils'
 
@@ -45,9 +51,11 @@ export function MissionItem({
   data,
   children,
   className,
+  hideScreenshotButton,
 }: PropsWithChildren<{
   className?: string
   data: WorldInfoMission
+  hideScreenshotButton?: boolean
 }>) {
   const { t } = useTranslation(['alerts'], {
     keyPrefix: 'information',
@@ -61,138 +69,202 @@ export function MissionItem({
   } = data
 
   return (
-    <AccordionItem
-      className={cn('item', className)}
-      value={missionGuid}
-    >
-      <AccordionTrigger className="trigger bg-muted-foreground/5 px-2 py-0 rounded hover:bg-muted-foreground/15 hover:no-underline">
-        <span className="flex gap-1 items-center max-w-[29.375rem] overflow-hidden py-0.5">
-          {!mission.zone.iconUrl ? (
-            <span
-              className={cn(
-                'border border-opacity-40 flex flex-shrink-0 font-bold items-center justify-center relative rounded size-5 text-xs uppercase',
-                'border-[color:var(--zone-color)] text-[color:var(--zone-color)]'
-              )}
-              style={
-                {
-                  '--zone-color': mission.zone.color,
-                } as CSSProperties
-              }
-            >
-              {mission.zone.letter}
-            </span>
-          ) : (
+    <div className="flex gap-2 items-start">
+      <AccordionItem
+        className={cn('item w-full', className)}
+        id={`mission-${missionGuid}`}
+        value={missionGuid}
+      >
+        <AccordionTrigger className="trigger bg-muted-foreground/5 px-2 py-0 rounded hover:bg-muted-foreground/15 hover:no-underline">
+          <span className="flex gap-1 items-center max-w-[29.375rem] overflow-hidden py-0.5">
+            {!mission.zone.iconUrl ? (
+              <span
+                className={cn(
+                  'border border-opacity-40 flex flex-shrink-0 font-bold items-center justify-center relative rounded size-5 text-xs uppercase',
+                  'border-[color:var(--zone-color)] text-[color:var(--zone-color)]'
+                )}
+                style={
+                  {
+                    '--zone-color': mission.zone.color,
+                  } as CSSProperties
+                }
+              >
+                {mission.zone.letter}
+              </span>
+            ) : (
+              <img
+                src={mission.zone.iconUrl}
+                className="img-type"
+              />
+            )}
             <img
-              src={mission.zone.iconUrl}
+              src={mission.zone.type.imageUrl}
               className="img-type"
             />
-          )}
-          <img
-            src={mission.zone.type.imageUrl}
-            className="img-type"
-          />
-          <span className="power">⚡{powerLevel}</span>
-          {children}
-        </span>
-      </AccordionTrigger>
+            <span className="power">⚡{powerLevel}</span>
+            {children}
+          </span>
+        </AccordionTrigger>
 
-      <AccordionContent className="px-4 py-2">
-        <div className="border-l-8 border-l-muted-foreground/10 pl-2 text-sm">
-          <div className="inline-flex gap-1">
-            <span className="flex-shrink-0 text-muted-foreground">
-              {t('tile-index')}
-            </span>
-            {data.raw.mission.tileIndex}
-          </div>
-          <div className="flex flex-col">
+        <AccordionContent className="px-4 py-2">
+          <div className="border-l-8 border-l-muted-foreground/10 pl-2 text-sm">
             <div className="inline-flex gap-1">
               <span className="flex-shrink-0 text-muted-foreground">
-                {t('alert-guid')}
+                {t('tile-index')}
               </span>
-              {alert.rewards.length > 0
-                ? data.raw.alert?.missionAlertGuid ?? 'N/A'
-                : 'N/A'}
+              {data.raw.mission.tileIndex}
             </div>
-            <div className="inline-flex gap-1">
-              <span className="flex-shrink-0 text-muted-foreground">
-                {t('mission-guid')}
-              </span>
-              {data.raw.mission.missionGuid ?? 'N/A'}
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 items-start my-2">
-          {alert.rewards.length > 0 && (
-            <section>
-              <h2>{t('alert-rewards')}</h2>
-              <div className="flex flex-col mt-1">
-                {alert.rewards.map((reward) => (
-                  <div
-                    className="flex gap-1 items-center"
-                    key={reward.itemId}
-                  >
-                    <img
-                      src={imgWorld('alert.png')}
-                      className="img-alert"
-                    />
-                    <div className="flex gap-1 items-center">
-                      <img
-                        src={reward.imageUrl}
-                        className="img-type"
-                      />
-                      {reward.quantity <= 1
-                        ? ''
-                        : numberWithCommaSeparator(reward.quantity)}
-                      <SchematicRarity reward={reward} />
-                    </div>
-                  </div>
-                ))}
+            <div className="flex flex-col">
+              <div className="inline-flex gap-1">
+                <span className="flex-shrink-0 text-muted-foreground">
+                  {t('alert-guid')}
+                </span>
+                {alert.rewards.length > 0
+                  ? data.raw.alert?.missionAlertGuid ?? 'N/A'
+                  : 'N/A'}
               </div>
-            </section>
-          )}
-
-          <div className="gap-2 grid grid-cols-1">
-            {mission.rewards.length > 0 && (
+              <div className="inline-flex gap-1">
+                <span className="flex-shrink-0 text-muted-foreground">
+                  {t('mission-guid')}
+                </span>
+                {data.raw.mission.missionGuid ?? 'N/A'}
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 items-start my-2">
+            {alert.rewards.length > 0 && (
               <section>
-                <h2>{t('base-rewards')}</h2>
-                <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
-                  {mission.rewards.map((reward) => (
+                <h2>{t('alert-rewards')}</h2>
+                <div className="flex flex-col mt-1">
+                  {alert.rewards.map((reward) => (
                     <div
                       className="flex gap-1 items-center"
                       key={reward.itemId}
                     >
                       <img
-                        src={reward.imageUrl}
-                        className="img-type"
+                        src={imgWorld('alert.png')}
+                        className="img-alert"
                       />
+                      <div className="flex gap-1 items-center">
+                        <img
+                          src={reward.imageUrl}
+                          className="img-type"
+                        />
+                        {reward.quantity <= 1
+                          ? ''
+                          : numberWithCommaSeparator(reward.quantity)}
+                        <SchematicRarity reward={reward} />
+                      </div>
                     </div>
                   ))}
                 </div>
               </section>
             )}
 
-            {mission.modifiers.length > 0 && (
-              <section>
-                <h2>{t('modifiers')}</h2>
-                <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
-                  {mission.modifiers.map((modifier) => (
-                    <div
-                      className="flex gap-1 items-center"
-                      key={modifier.id}
-                    >
-                      <img
-                        src={modifier.imageUrl}
-                        className="img-modifier"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+            <div className="gap-2 grid grid-cols-1">
+              {mission.rewards.length > 0 && (
+                <section>
+                  <h2>{t('base-rewards')}</h2>
+                  <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
+                    {mission.rewards.map((reward) => (
+                      <div
+                        className="flex gap-1 items-center"
+                        key={reward.itemId}
+                      >
+                        <img
+                          src={reward.imageUrl}
+                          className="img-type"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {mission.modifiers.length > 0 && (
+                <section>
+                  <h2>{t('modifiers')}</h2>
+                  <div className="flex flex-wrap gap-x-1 gap-y-1 mt-1">
+                    {mission.modifiers.map((modifier) => (
+                      <div
+                        className="flex gap-1 items-center"
+                        key={modifier.id}
+                      >
+                        <img
+                          src={modifier.imageUrl}
+                          className="img-modifier"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
           </div>
-        </div>
-      </AccordionContent>
-    </AccordionItem>
+        </AccordionContent>
+      </AccordionItem>
+
+      {!hideScreenshotButton && (
+        <ScreenshotButton id={`mission-${missionGuid}`} />
+      )}
+    </div>
+  )
+}
+
+function ScreenshotButton({ id }: { id: string }) {
+  const { t } = useTranslation(['general'])
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleGeneration = async () => {
+    if (isLoading) {
+      return
+    }
+
+    const $element = document.getElementById(id)
+
+    if (!$element) {
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      const data = await domToBlob($element, {
+        backgroundColor: 'hsl(240 3% 6%)',
+        type: 'image/png',
+      })
+
+      await window.navigator.clipboard.write([
+        new ClipboardItem({
+          'image/png': data,
+        }),
+      ])
+
+      toast(t('validations.screenshot.success'))
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast(t('validations.screenshot.error'))
+    }
+
+    setIsLoading(false)
+  }
+
+  return (
+    <div className="flex-shrink-0">
+      <Button
+        className="p-0 size-7"
+        variant="ghost"
+        onClick={handleGeneration}
+      >
+        {isLoading ? (
+          <UpdateIcon className="animate-spin h-4" />
+        ) : (
+          <Image className="size-5 text-muted-foreground" />
+        )}
+      </Button>
+    </div>
   )
 }
 

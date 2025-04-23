@@ -52,9 +52,11 @@ export function parseModifier(key: string) {
 }
 
 export function parseResource({
+  context,
   key,
   quantity,
 }: {
+  context?: 'world-info'
   key: string
   quantity: number
 }) {
@@ -127,10 +129,26 @@ export function parseResource({
         ? survivorData.name
         : `${rarities[rarity.rarity]} Survivor`
     } else {
+      const convertRarity = {
+        [RarityType.Common]: RarityType.Uncommon,
+        [RarityType.Uncommon]: RarityType.Rare,
+        [RarityType.Rare]: RarityType.Epic,
+        [RarityType.Epic]: RarityType.Legendary,
+      }
+      const isLeader = newKey.includes('manager')
+      const newRarity =
+        isLeader && context === 'world-info'
+          ? convertRarity[rarity.rarity as keyof typeof convertRarity]
+          : rarity.rarity
+
       data.imgUrl = imgResources(
-        `voucher_generic_${newKey.includes('manager') ? 'manager' : 'worker'}_${rarity.rarity}.png`
+        `voucher_generic_${isLeader ? 'manager' : 'worker'}_${newRarity}.png`
       )
-      data.name = `${rarities[rarity.rarity]} Survivor`
+      data.itemType = key.replace(`_${rarity.rarity}_`, `_${newRarity}_`)
+      data.name = `${rarities[newRarity as RarityType]} ${
+        isLeader ? 'Lead ' : ''
+      }Survivor`
+      data.rarity = newRarity
     }
 
     data.type = 'worker'

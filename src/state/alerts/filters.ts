@@ -10,10 +10,12 @@ export type AlertsOverviewFiltersState = {
   missionTypes: Array<string>
   rarities: Array<string>
   rewards: Array<string>
+  group: boolean
 
   changeInputSearch: (value: string) => void
   resetFilters: () => void
   toggleFilterKeys: (type: FilterKeys) => (keys: Array<string>) => void
+  toggleGroup: (value: boolean) => void
 }
 
 export const useAlertsOverviewFiltersStore =
@@ -25,6 +27,7 @@ export const useAlertsOverviewFiltersStore =
       missionTypes: [],
       rarities: [],
       rewards: [],
+      group: false,
 
       changeInputSearch: (inputSearch) => set({ inputSearch }),
       resetFilters: () => {
@@ -38,6 +41,11 @@ export const useAlertsOverviewFiltersStore =
       toggleFilterKeys: (type) => (keys) => {
         set((state) => {
           state[type] = keys
+        })
+      },
+      toggleGroup: (value) => {
+        set((state) => {
+          state.group = value
         })
       },
     }))

@@ -1,7 +1,7 @@
 import { ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { fortniteDBProfileURL } from '../../../config/fortnite/links'
+import { stwNewsProfileURL } from '../../../config/fortnite/links'
 
 import {
   AccountBasicInformationSection,
@@ -41,7 +41,7 @@ export function BasicInformation() {
       <div>
         <div>
           <a
-            href={fortniteDBProfileURL(playerData.data.lookup.id)}
+            href={stwNewsProfileURL(playerData.data.lookup.id)}
             className="inline-flex gap-2 items-center hover:opacity-75"
             onClick={handleOpenExternalFNDBProfileUrl(
               playerData.data.lookup.id

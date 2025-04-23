@@ -1,0 +1,7 @@
+{
+  "description": "Esta funcionalidad es útil si quieres desbloquear las recompensas de las defensas de escudo como espacios de escuadrones de supervivientes, defensores, etc aunque aún no se hayan realizado.",
+  "form": {
+    "submit-button": "Desbloquear",
+    "clear-button": "Limpiar Selecciones"
+  }
+}

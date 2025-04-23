@@ -83,7 +83,7 @@ const MainContent = memo(() => {
     <>
       <CommunityInfo />
 
-      <section className="border-l-8 mt-4 max-w-lg mx-auto px-2 py-1 text-sm">
+      <section className="border-l-8 hidden mt-4 max-w-lg mx-auto px-2 py-1 text-sm">
         <h2 className="font-bold text-muted-foreground">
           {t('heading.title')}
         </h2>

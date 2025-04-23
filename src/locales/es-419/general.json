@@ -119,6 +119,10 @@
           "invalid": "❌ Código inválido"
         }
       }
+    },
+    "screenshot": {
+      "success": "Captura de pantalla generada y copiada al portapapeles",
+      "error": "No se pudo generar la captura de pantalla, inténtalo nuevamente más tarde"
     }
   },
   "account-selected": "Cuenta seleccionada: <2>{{name}}</2>",
@@ -143,5 +147,6 @@
   "unknown-user": "Usuario Desconocido",
   "unknown": "Desconocido",
   "update-information": "Actualizar Información",
-  "user-agent": "Agente De Usuario"
+  "user-agent": "Agente De Usuario",
+  "generate-screenshot": "Generar Captura"
 }

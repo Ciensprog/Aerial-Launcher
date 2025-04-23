@@ -17,9 +17,6 @@ import { SidebarMenu } from '../../components/menu/sidebar'
 import { useUISidebarHistory } from '../../hooks/ui/sidebars'
 import { useAttributesStates, useHandlers, useWindowEvents } from './hooks'
 
-// @ts-expect-error assets/image
-import imgFNDBProfile from '../../_assets/fndb.png'
-
 import { whatIsThis } from '../../lib/callbacks'
 import { cn } from '../../lib/utils'
 
@@ -31,7 +28,7 @@ export function Header() {
     handleCloseWindow,
     handleLaunch,
     handleMinimizeWindow,
-    handleOpenFNDBProfile,
+    handleOpenSTWNewsProfile,
   } = useHandlers()
   const { isMinWith } = useWindowEvents()
 
@@ -112,13 +109,13 @@ export function Header() {
             size="icon"
             variant="ghost"
             disabled={isButtonDisabled}
-            onClick={handleOpenFNDBProfile}
+            onClick={handleOpenSTWNewsProfile}
           >
             <img
-              src={imgFNDBProfile}
+              src="https://stwcdn.com/aerial-stwnews.webp"
               className="w-8"
             />
-            <span className="sr-only">go to fortniteDB profile</span>
+            <span className="sr-only">go to stw news profile</span>
           </Button>
 
           <div className="ml-auto">

@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 
 import { maxAmountLimitedTo } from '../../../config/constants/xpboosts'
-import { fortniteDBProfileURL } from '../../../config/fortnite/links'
+import { stwNewsProfileURL } from '../../../config/fortnite/links'
 
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
 
@@ -518,7 +518,7 @@ export function useSendBoostsSheet({
     (accountId: string): MouseEventHandler =>
     (event) => {
       event.preventDefault()
-      window.electronAPI.openExternalURL(fortniteDBProfileURL(accountId))
+      window.electronAPI.openExternalURL(stwNewsProfileURL(accountId))
     }
 
   const handleSetXPBoostsType = (value: boolean) => {

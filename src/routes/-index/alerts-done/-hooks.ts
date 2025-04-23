@@ -8,7 +8,7 @@ import type {
 import { Collection } from '@discordjs/collection'
 import { useMemo, useRef } from 'react'
 
-import { fortniteDBProfileURL } from '../../../config/fortnite/links'
+import { stwNewsProfileURL } from '../../../config/fortnite/links'
 
 import { useWorldInfo } from '../../../hooks/advanced-mode/world-info'
 import {
@@ -124,7 +124,7 @@ export function usePlayerDataActions() {
     (event) => {
       event.preventDefault()
 
-      window.electronAPI.openExternalURL(fortniteDBProfileURL(accountId))
+      window.electronAPI.openExternalURL(stwNewsProfileURL(accountId))
     }
 
   return {

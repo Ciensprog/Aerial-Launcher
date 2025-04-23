@@ -16,6 +16,7 @@ import enUS_stwOperations_Party from './en-US/stw-operations/party.json'
 import enUS_stwOperations_Urns from './en-US/stw-operations/urns.json'
 import enUS_stwOperations_XPBoosts from './en-US/stw-operations/xpboosts.json'
 import enUS_stwOperations_Llamas from './en-US/stw-operations/llamas.json'
+import enUS_stwOperations_Unlock from './en-US/stw-operations/unlock.json'
 import enUS_accountManagement_VBucksInformation from './en-US/account-management/vbucks-information.json'
 import enUS_accountManagement_RedeemCodes from './en-US/account-management/redeem-codes.json'
 import enUS_accountManagement_DevicesAuth from './en-US/account-management/devices-auth.json'
@@ -43,6 +44,7 @@ const enUS = {
     urns: enUS_stwOperations_Urns,
     xpboosts: enUS_stwOperations_XPBoosts,
     llamas: enUS_stwOperations_Llamas,
+    unlock: enUS_stwOperations_Unlock,
   },
   'account-management': {
     'vbucks-information': enUS_accountManagement_VBucksInformation,
@@ -79,6 +81,7 @@ import es419_stwOperations_Party from './es-419/stw-operations/party.json'
 import es419_stwOperations_Urns from './es-419/stw-operations/urns.json'
 import es419_stwOperations_XPBoosts from './es-419/stw-operations/xpboosts.json'
 import es419_stwOperations_Llamas from './es-419/stw-operations/llamas.json'
+import es419_stwOperations_Unlock from './es-419/stw-operations/unlock.json'
 import es419_accountManagement_VBucksInformation from './es-419/account-management/vbucks-information.json'
 import es419_accountManagement_RedeemCodes from './es-419/account-management/redeem-codes.json'
 import es419_accountManagement_DevicesAuth from './es-419/account-management/devices-auth.json'
@@ -106,6 +109,7 @@ const es419 = {
     urns: es419_stwOperations_Urns,
     xpboosts: es419_stwOperations_XPBoosts,
     llamas: es419_stwOperations_Llamas,
+    unlock: es419_stwOperations_Unlock,
   },
   'account-management': {
     'vbucks-information': es419_accountManagement_VBucksInformation,

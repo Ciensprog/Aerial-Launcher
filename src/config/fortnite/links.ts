@@ -7,6 +7,6 @@ export function epicGamesAccountSettingsURL(exchangeCode: string) {
   return `https://www.epicgames.com/id/exchange?exchangeCode=${exchangeCode}`
 }
 
-export function fortniteDBProfileURL(displayName: string) {
-  return `https://fortnitedb.com/profile/${displayName}`
+export function stwNewsProfileURL(displayName: string) {
+  return `https://stw.news/${displayName}`
 }

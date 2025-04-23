@@ -14,6 +14,7 @@ import {
 } from '../../../components/ui/breadcrumb'
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
+import { GoToTop } from '../../../components/go-to-top'
 
 import {
   defaultEULAAccountStatus,
@@ -21,7 +22,7 @@ import {
 } from '../../../state/accounts/eula'
 
 import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
-import { useEULAActions, useScrollToTop } from './-hooks'
+import { useEULAActions } from './-hooks'
 
 import { whatIsThis } from '../../../lib/callbacks'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
@@ -61,8 +62,8 @@ function Content() {
     handleVerifyById,
     onChangeSearchValue,
   } = useEULAActions()
-  const { scrollToTopButtonIsVisible, scrollButtonOnClick } =
-    useScrollToTop()
+  // const { scrollToTopButtonIsVisible, scrollButtonOnClick } =
+  //   useScrollToTop()
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
 
@@ -208,7 +209,7 @@ function Content() {
         </div>
       </div>
 
-      <Button
+      {/* <Button
         className={cn(
           'bottom-5 fixed opacity-0 px-4 right-5 transition-all translate-x-28 z-50',
           {
@@ -220,7 +221,8 @@ function Content() {
         onClick={scrollButtonOnClick}
       >
         Go To Top
-      </Button>
+      </Button> */}
+      <GoToTop containerId="gtk-eula" />
     </>
   )
 }

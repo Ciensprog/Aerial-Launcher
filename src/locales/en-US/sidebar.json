@@ -8,7 +8,8 @@
       "homebase-name": "Homebase Name",
       "xp-boosts": "XP Boosts",
       "auto-pin-urns": "Auto-pin Urns",
-      "auto-llamas": "Auto-llamas"
+      "auto-llamas": "Auto-llamas",
+      "unlock": "SSD Skip"
     },
     "auto-kick-status": {
       "issue": "Issue",

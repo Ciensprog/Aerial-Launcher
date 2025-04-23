@@ -125,6 +125,9 @@ export enum ElectronAPIEventKeys {
   XPBoostsConsumeTeammateNotification = 'xpboosts:consume:teammate:notification',
   XPBoostsConsumeTeammateProgressionNotification = 'xpboosts:consume:teammate:progression:notification',
 
+  UnlockRequest = 'unlock:request',
+  UnlockNotification = 'unlock:notification',
+
   /**
    * Party
    */

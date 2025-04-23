@@ -156,6 +156,19 @@ function STWOperationsSection() {
             onCheckedChange={updateMenuOption('autoLlamas')}
           />
         </div>
+        <div className="item">
+          <Label
+            className="title"
+            htmlFor="unlock"
+          >
+            {t('stw-operations.options.unlock')}
+          </Label>
+          <Switch
+            id="unlock"
+            checked={getMenuOptionVisibility('unlock')}
+            onCheckedChange={updateMenuOption('unlock')}
+          />
+        </div>
       </div>
     </div>
   )

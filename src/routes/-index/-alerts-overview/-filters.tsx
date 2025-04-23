@@ -8,6 +8,7 @@ import {
 } from '../../../config/constants/alerts/filters'
 
 import { Label } from '../../../components/ui/label'
+import { Switch } from '../../../components/ui/switch'
 import {
   ToggleGroup,
   ToggleGroupItem,
@@ -25,9 +26,10 @@ export function AlertFilters() {
     keyPrefix: 'filters',
   })
 
-  const { missionTypes, rarities, rewards, zones } =
+  const { missionTypes, rarities, rewards, zones, group } =
     useAlertsOverviewFiltersData()
-  const { toggleFilterKeys } = useAlertsOverviewFiltersActions()
+  const { toggleFilterKeys, toggleGroup } =
+    useAlertsOverviewFiltersActions()
 
   return (
     <div
@@ -76,7 +78,23 @@ export function AlertFilters() {
         </div>
 
         <div>
-          <Label className="label">{t('sections.types')}</Label>
+          <div className="flex font-medium items-center mb-2.5">
+            <Label className="">{t('sections.types')}</Label>
+            <div className="flex gap-2 items-center ml-auto">
+              <Label
+                className="max-sm:text-xs"
+                htmlFor="group-missions"
+              >
+                Group Missions
+              </Label>
+              <Switch
+                className="cursor-pointer"
+                id="group-missions"
+                onCheckedChange={toggleGroup}
+                checked={group}
+              />
+            </div>
+          </div>
           <ToggleGroup
             className="toggle-group"
             type="multiple"

@@ -119,6 +119,10 @@
           "invalid": "❌ Invalid code"
         }
       }
+    },
+    "screenshot": {
+      "success": "Screenshot generated and copied to clipboard",
+      "error": "Couldn't generate screenshot, please try again later"
     }
   },
   "account-selected": "Account selected: <2>{{name}}</2>",
@@ -143,5 +147,6 @@
   "unknown-user": "Unknown User",
   "unknown": "Unknown",
   "update-information": "Update Information",
-  "user-agent": "User Agent"
+  "user-agent": "User Agent",
+  "generate-screenshot": "Generate Screenshot"
 }

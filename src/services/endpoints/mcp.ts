@@ -365,6 +365,32 @@ export function setOpenCardPackBatch({
   )
 }
 
+export function setPurchaseOrUpgradeHomebaseNode({
+  accessToken,
+  accountId,
+  nodeId,
+}: {
+  accessToken: string
+  accountId: string
+  nodeId: string
+}) {
+  return baseGameService.post<unknown>(
+    `/profile/${accountId}/client/PurchaseOrUpgradeHomebaseNode`,
+    {
+      nodeId,
+    },
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
 export function setRecordCampaignMatchEnded({
   accessToken,
   accountId,
@@ -425,6 +451,28 @@ export function setSetPinnedQuests({
     {
       pinnedQuestIds,
     } as MCPSetPinnedQuestsPayload,
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setSkipTutorial({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return baseGameService.post<unknown>(
+    `/profile/${accountId}/client/SkipTutorial`,
+    {},
     {
       headers: {
         Authorization: `bearer ${accessToken}`,

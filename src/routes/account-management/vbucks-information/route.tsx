@@ -24,6 +24,7 @@ import {
   CardFooter,
   CardHeader,
 } from '../../../components/ui/card'
+import { GoToTop } from '../../../components/go-to-top'
 
 import { VBucksInformationData } from '../../../state/management/vbucks-information'
 
@@ -85,76 +86,83 @@ function Content() {
   } = useVBucksInformationData()
 
   return (
-    <div className="flex flex-grow">
-      <div className="flex items-center justify-center w-full">
-        <div className="max-w-lg space-y-4 w-full">
-          <Card className="w-full">
-            <CardHeader className="border-b">
-              <CardDescription>{t('description')}</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4 pt-6">
-              <AccountSelectors
-                accounts={{
-                  options: accounts,
-                  value: parsedSelectedAccounts,
-                }}
-                tags={{
-                  options: tags,
-                  value: parsedSelectedTags,
-                }}
-                onUpdateAccounts={vbucksInformationUpdateAccounts}
-                onUpdateTags={vbucksInformationUpdateTags}
-              />
-            </CardContent>
-            <CardFooter className="space-x-6">
-              <Button
-                className="w-full"
-                onClick={handleGetInfo}
-                disabled={isDisabledForm}
-              >
-                {isLoading ? (
-                  <UpdateIcon className="animate-spin" />
-                ) : (
-                  t('form.submit-button')
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
+    <>
+      <div className="flex flex-grow">
+        <div className="flex items-center justify-center w-full">
+          <div className="max-w-lg space-y-4 w-full">
+            <Card
+              className="w-full"
+              id="selector-card"
+            >
+              <CardHeader className="border-b">
+                <CardDescription>{t('description')}</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4 pt-6">
+                <AccountSelectors
+                  accounts={{
+                    options: accounts,
+                    value: parsedSelectedAccounts,
+                  }}
+                  tags={{
+                    options: tags,
+                    value: parsedSelectedTags,
+                  }}
+                  onUpdateAccounts={vbucksInformationUpdateAccounts}
+                  onUpdateTags={vbucksInformationUpdateTags}
+                />
+              </CardContent>
+              <CardFooter className="space-x-6">
+                <Button
+                  className="w-full"
+                  onClick={handleGetInfo}
+                  disabled={isDisabledForm}
+                >
+                  {isLoading ? (
+                    <UpdateIcon className="animate-spin" />
+                  ) : (
+                    t('form.submit-button')
+                  )}
+                </Button>
+              </CardFooter>
+            </Card>
 
-          {data.length > 0 && (
-            <div className="max-w-lg pt-1 w-full">
-              <div className="leading-none mb-5 text-center uppercase">
-                {t('results.title', {
-                  total: data.length,
-                })}
-                <div className="flex font-bold gap-1 items-center justify-center text-4xl">
-                  <figure className="relative top-0.5">
-                    <img
-                      src={vbucksImageUrl}
-                      className="size-8"
-                      alt="vbucks"
-                    />
-                  </figure>
-                  {numberWithCommaSeparator(vbucksSummary)}
+            {data.length > 0 && (
+              <div className="max-w-lg pt-1 w-full">
+                <div className="leading-none mb-5 text-center uppercase">
+                  {t('results.title', {
+                    total: data.length,
+                  })}
+                  <div className="flex font-bold gap-1 items-center justify-center text-4xl">
+                    <figure className="relative top-0.5">
+                      <img
+                        src={vbucksImageUrl}
+                        className="size-8"
+                        alt="vbucks"
+                      />
+                    </figure>
+                    {numberWithCommaSeparator(vbucksSummary)}
+                  </div>
                 </div>
-              </div>
 
-              <Masonry
-                columnsCount={2}
-                gutter="0.75rem"
-              >
-                {data.map((item) => (
-                  <AccountInfo
-                    data={item}
-                    key={item.accountId}
-                  />
-                ))}
-              </Masonry>
-            </div>
-          )}
+                <Masonry
+                  columnsCount={2}
+                  gutter="0.75rem"
+                >
+                  {data.map((item) => (
+                    <AccountInfo
+                      data={item}
+                      key={item.accountId}
+                    />
+                  ))}
+                </Masonry>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <GoToTop containerId="selector-card" />
+    </>
   )
 }
 
@@ -162,7 +170,10 @@ function AccountInfo({ data }: { data: VBucksInformationData }) {
   const { account, details, total } = useParseAccountInfo({ data })
 
   return (
-    <div className="border rounded">
+    <div
+      className="border rounded w-full"
+      key={data.accountId}
+    >
       <header className="bg-muted-foreground/5 px-2 py-2">
         <div className="max-w-36 mx-auto text-center text-sm truncate">
           {parseCustomDisplayName(account)}

@@ -125,6 +125,11 @@ export const missionTypeOptions: Array<
     label: 'Repair The Shelter',
     value: 'rts',
   },
+  {
+    icon: imgWorld('htm.png'),
+    label: 'Hunt The Titan',
+    value: 'htm',
+  },
 ]
 
 export const rarityOptions: Array<FilterOption<RarityType>> = [
@@ -165,6 +170,16 @@ export const rewardOptions: Array<FilterOption> = [
     icon: imgResources('voucher_generic_worker.png'),
     label: 'Survivors',
     value: 'Worker',
+  },
+  {
+    icon: imgResources('voucher_generic_manager.png'),
+    label: 'Lead Survivors',
+    value: 'Manager',
+  },
+  {
+    icon: imgResources('voucher_generic_defender.png'),
+    label: 'Defenders',
+    value: 'Defender',
   },
   {
     icon: imgResources('voucher_generic_hero.png'),

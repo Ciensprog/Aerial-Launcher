@@ -5,7 +5,7 @@ import { createRoute } from '@tanstack/react-router'
 import { ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { fortniteDBProfileURL } from '../../../config/fortnite/links'
+import { stwNewsProfileURL } from '../../../config/fortnite/links'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -125,7 +125,7 @@ function Content() {
     (event) => {
       event.preventDefault()
 
-      window.electronAPI.openExternalURL(fortniteDBProfileURL(accountId))
+      window.electronAPI.openExternalURL(stwNewsProfileURL(accountId))
     }
 
   return (
@@ -261,7 +261,7 @@ function Content() {
                   <div>
                     <div>
                       <a
-                        href={fortniteDBProfileURL(
+                        href={stwNewsProfileURL(
                           searchedUser.data.lookup.id
                         )}
                         className="inline-flex gap-2 items-center hover:opacity-75"
