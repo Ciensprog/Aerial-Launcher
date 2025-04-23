@@ -69,7 +69,7 @@ export function CommunityInfo() {
             >
               <a
                 href={link.url}
-                className="border-2 flex font-medium gap-2 h-9 items-center pl-1.5 pr-2.5 py-1 rounded text-base hover:bg-secondary"
+                className="border-2 border-transparent flex font-medium gap-2 h-9 items-center pl-1.5 pr-2.5 py-1 rounded text-base transition-colors hover:bg-secondary"
                 onClick={handleOpenLink(link.url)}
                 onAuxClick={whatIsThis()}
               >
