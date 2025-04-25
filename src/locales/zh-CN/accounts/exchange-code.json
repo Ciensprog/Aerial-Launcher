@@ -1,0 +1,17 @@
+{
+  "form": {
+    "generate-code": {
+      "input": {
+        "placeholder": "生成的账号授权码将显示在此处"
+      },
+      "submit-button": "生成授权码"
+    }
+  },
+  "notifications": {
+    "generate-code": {
+      "success": "账号授权码已生成并复制到剪贴板",
+      "error": "尝试生成账号授权码时发生错误，请稍后再试"
+    },
+    "clipboard": "账号授权码已复制到剪贴板"
+  }
+}

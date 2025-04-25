@@ -1,6 +1,7 @@
 import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { Check, Clipboard, FileWarning, X } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
@@ -31,6 +32,10 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/account-management/eula',
   component: () => {
+    const { t } = useTranslation(['sidebar'], {
+      keyPrefix: 'account-management',
+    })
+
     return (
       <>
         <Breadcrumb>
@@ -38,7 +43,7 @@ export const Route = createRoute({
             <HomeBreadcrumb />
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Account Management</BreadcrumbPage>
+              <BreadcrumbPage>{t('title')}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -53,6 +58,8 @@ export const Route = createRoute({
 })
 
 function Content() {
+  const { t } = useTranslation(['account-management', 'general'])
+
   const {
     accounts,
     accountsArray,
@@ -76,24 +83,34 @@ function Content() {
             id="gtk-eula"
           >
             <h2 className="font-bold text-muted-foreground">
-              Good To Know:
+              {t('eula.good-to-know', {
+                ns: 'account-management',
+              })}
             </h2>
             <p className="text-muted-foreground">
-              You can go to{' '}
-              <a
-                href="https://www.epicgames.com/account/eula-history"
-                className="font-bold text-primary"
-                onClick={(event) => {
-                  event.preventDefault()
-                  window.electronAPI.openExternalURL(
-                    'https://www.epicgames.com/account/eula-history'
-                  )
+              <Trans
+                ns="account-management"
+                i18nKey="eula.link"
+                values={{
+                  link: 'https://www.epicgames.com/account/eula-history',
                 }}
-                onAuxClick={whatIsThis()}
               >
-                https://www.epicgames.com/account/eula-history
-              </a>{' '}
-              and click the "I Agree" button at the bottom of the page:
+                You can go to{' '}
+                <a
+                  href="https://www.epicgames.com/account/eula-history"
+                  className="font-bold text-primary"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    window.electronAPI.openExternalURL(
+                      'https://www.epicgames.com/account/eula-history'
+                    )
+                  }}
+                  onAuxClick={whatIsThis()}
+                >
+                  https://www.epicgames.com/account/eula-history
+                </a>{' '}
+                and click the "I Agree" button at the bottom of the page:
+              </Trans>
             </p>
             <img
               src={eulaHistoryImg}
@@ -104,11 +121,18 @@ function Content() {
           {accountsArray.length > 1 && (
             <div className="flex gap-3 items-center mb-5">
               <Input
-                placeholder={
-                  getMenuOptionVisibility('showTotalAccounts')
-                    ? `Search on ${accounts.length} accounts...`
-                    : 'Search on your accounts'
-                }
+                // placeholder={
+                //   getMenuOptionVisibility('showTotalAccounts')
+                //     ? `Search on ${accounts.length} accounts...`
+                //     : 'Search on your accounts'
+                // }
+                placeholder={t('form.accounts.placeholder', {
+                  ns: 'general',
+                  context: !getMenuOptionVisibility('showTotalAccounts')
+                    ? 'private'
+                    : undefined,
+                  total: accounts.length,
+                })}
                 value={searchValue}
                 onChange={onChangeSearchValue}
               />
@@ -144,7 +168,9 @@ function Content() {
                           {current.status ? (
                             <>
                               <Check size={16} />
-                              Accepted
+                              {t('actions.accepted', {
+                                ns: 'general',
+                              })}
                             </>
                           ) : (
                             <>
@@ -162,7 +188,9 @@ function Content() {
                           {current.isLoading ? (
                             <UpdateIcon className="animate-spin" />
                           ) : (
-                            'Verify'
+                            t('actions.verify', {
+                              ns: 'general',
+                            })
                           )}
                         </Button>
                       </div>
@@ -203,7 +231,11 @@ function Content() {
                 size={48}
                 className="mx-auto"
               />
-              <div className="mt-2">No accounts found</div>
+              <div className="mt-2">
+                {t('form.accounts.search-empty', {
+                  ns: 'general',
+                })}
+              </div>
             </div>
           )}
         </div>

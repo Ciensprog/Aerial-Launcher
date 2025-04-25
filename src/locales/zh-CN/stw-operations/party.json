@@ -1,0 +1,60 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "踢出所有队员"
+    },
+    "notifications": {
+      "success": "已踢出 {{total}} 位用户",
+      "nothing": "没有用户被踢出"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "离开队伍"
+    }
+  },
+  "claim": {
+    "title": "离开任务后领取奖励",
+    "form": {
+      "submit-button": "领取奖励"
+    },
+    "notifications": {
+      "success": "奖励已领取"
+    }
+  },
+  "friends": {
+    "note": "如果邀请的玩家不是您的好友，启动器将自动向他发送好友请求。",
+    "form": {
+      "select": {
+        "placeholder": "选择好友",
+        "search": {
+          "placeholder": "邀请好友"
+        },
+        "empty": {
+          "placeholder": "没有好友",
+          "options": "输入以将他们添加到列表"
+        }
+      },
+      "submit-button": "邀请"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} 已添加为好友",
+        "default-error": "尝试添加 {{name}} 时发生错误"
+      },
+      "remove": {
+        "success": "{{name}} 已从列表中移除",
+        "default-error": "尝试移除 {{name}} 时发生错误"
+      },
+      "invite": {
+        "sent_one": "已发送 {{count}} 个邀请",
+        "sent_other": "已发送 {{count}} 个邀请",
+        "error": "发送邀请时发生错误"
+      },
+      "request": {
+        "sent_one": "已发送 {{count}} 个好友请求",
+        "sent_other": "已发送 {{count}} 个好友请求"
+      }
+    }
+  }
+}

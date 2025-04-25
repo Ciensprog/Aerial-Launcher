@@ -1,0 +1,46 @@
+{
+  "description": "管理所选账户的经验加成。",
+  "form": {
+    "label": "要发送的经验加成数量（限制为 {{limit}}）",
+    "input": {
+      "placeholder": "例如: 123"
+    },
+    "refetch": "重新获取加成数据",
+    "see-boosts": "查看加成",
+    "send-boosts": "发送加成"
+  },
+  "top-search": {
+    "description": "显示玩家的基本信息。"
+  },
+  "sidebar": {
+    "title": "您想使用哪种经验加成？",
+    "personal": {
+      "description": "以下所有账户将使用经验加成：",
+      "submit-button": "在每个账户上消耗 {{total}} 个经验加成"
+    },
+    "teammate": {
+      "note": "如果您的网络延迟不稳定，某些加成可能无法发送。",
+      "submit-button": "给：<3>{{name}}</3> 发送 <1>{{total}}</1> 个经验加成"
+    },
+    "errors": {
+      "valid-amount": "请输入有效的数量"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "{{total}} 个账户的摘要"
+    },
+    "options": {
+      "description": "要使用的队友经验加成：",
+      "information": "{{current}}/{{total}}，总计 {{amount}}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "总计消耗了 {{current}}/{{expected}} 个经验加成。摘要：{{totalAccounts}} 个账户",
+      "personal_other": "总计消耗了 {{current}}/{{expected}} 个经验加成。摘要：{{totalAccounts}} 个账户",
+      "teammate_one": "总计给 {{name}} 发送了 {{current}}/{{expected}} 个经验加成。摘要：{{totalAccounts}} 个账户",
+      "teammate_other": "总计给 {{name}} 发送了 {{current}}/{{expected}} 个经验加成。摘要：{{totalAccounts}} 个账户"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "description": "更新所选账户的基地名称（游戏中不再可见）。",
+  "form": {
+    "placeholder": "设置基地名称",
+    "submit-button": "更新基地名称"
+  },
+  "notifications": {
+    "updated": "基地名称已更新"
+  }
+}

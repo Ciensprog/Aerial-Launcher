@@ -23,9 +23,7 @@ import { changeDateLocale } from '../lib/dates'
 import { cn } from '../lib/utils'
 
 export const LanguageNotification = memo(() => {
-  const { i18n, t } = useTranslation(['settings'], {
-    keyPrefix: 'app-settings.form.language.dialog',
-  })
+  const { i18n, t } = useTranslation(['settings', 'general'])
 
   const [selected, setSelected] = useState<Language>()
 
@@ -54,12 +52,18 @@ export const LanguageNotification = memo(() => {
         hideCloseButton
       >
         <DialogHeader>
-          <DialogTitle className="text-center">{t('title')}</DialogTitle>
+          <DialogTitle className="text-center">
+            {t('app-settings.form.language.dialog.title')}
+          </DialogTitle>
         </DialogHeader>
 
         <ul className="border-l-8- list-disc pl-6 py-1 text-muted-foreground">
-          <li className="">{t('notes.1')}</li>
-          <li className="">{t('notes.2')}</li>
+          <li className="">
+            {t('app-settings.form.language.dialog.notes.1')}
+          </li>
+          <li className="">
+            {t('app-settings.form.language.dialog.notes.2')}
+          </li>
         </ul>
 
         <RadioGroup
@@ -84,6 +88,11 @@ export const LanguageNotification = memo(() => {
               />
               <Label htmlFor={`language-option-${language.id}`}>
                 {language.title}
+                {language.completed === false
+                  ? ` ${t('under-translation', {
+                      ns: 'general',
+                    })}`
+                  : ''}
               </Label>
             </div>
           ))}
@@ -94,7 +103,7 @@ export const LanguageNotification = memo(() => {
           onClick={handleConfirmSelection}
           disabled={!selected}
         >
-          {t('submit-button')}
+          {t('app-settings.form.language.dialog.submit-button')}
         </Button>
       </DialogContent>
     </Dialog>

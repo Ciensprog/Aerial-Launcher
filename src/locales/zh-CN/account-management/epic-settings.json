@@ -1,0 +1,11 @@
+{
+  "form": {
+    "generate-button": "生成链接",
+    "open-button": "<0>打开账户设置</0> <1 />"
+  },
+  "notifications": {
+    "clipboard": "链接已复制到剪贴板",
+    "success": "Epic Games 设置链接已生成",
+    "error": "处理您的请求时发生错误"
+  }
+}

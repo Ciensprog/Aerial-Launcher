@@ -1,0 +1,9 @@
+{
+  "description": "每个选定账户的V币信息。",
+  "form": {
+    "submit-button": "显示信息"
+  },
+  "results": {
+    "title": "{{total}} 个账户的V币汇总"
+  }
+}

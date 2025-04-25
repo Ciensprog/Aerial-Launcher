@@ -1,0 +1,18 @@
+{
+  "description": "选择一个账户并管理您创建的设备授权。用户代理、创建时间和最后访问时间将显示以下信息：位置、IP地址和日期。",
+  "form": {
+    "submit-button": "请求设备授权"
+  },
+  "results": {
+    "title": "找到的设备：<1>{{total}}</1>",
+    "item": {
+      "created": "创建时间",
+      "last-access": "最后访问时间"
+    }
+  },
+  "notifications": {
+    "no-devices": "未找到设备",
+    "success": "设备ID {{deviceId}} 已成功移除",
+    "error": "尝试移除设备ID {{deviceId}} 时发生错误"
+  }
+}

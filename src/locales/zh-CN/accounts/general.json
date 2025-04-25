@@ -1,0 +1,9 @@
+{
+  "notifications": {
+    "new-account": {
+      "success": "新账户已添加：{{name}}",
+      "error": "未知错误",
+      "launcher-auth-login": "无法添加账户，请检查凭据是否有效"
+    }
+  }
+}

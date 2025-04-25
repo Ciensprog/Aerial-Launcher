@@ -1,0 +1,10 @@
+{
+  "description": "在每个选定的账户上兑换代码。",
+  "form": {
+    "input": {
+      "placeholder": "设置要兑换的代码（使用换行）。"
+    },
+    "redeem-button": "兑换代码",
+    "clear-button": "清除表单"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "stw-operations": {
+    "title": "STW 操作",
+    "options": {
+      "auto-kick": "自动踢出",
+      "party": "队伍",
+      "save-quests": "保存任务",
+      "homebase-name": "主基地名称",
+      "xp-boosts": "经验加成",
+      "auto-pin-urns": "自动标记宝箱",
+      "auto-llamas": "自动羊驼",
+      "unlock": "解锁 SSD 奖励"
+    },
+    "auto-kick-status": {
+      "issue": "未生效",
+      "active": "已生效"
+    }
+  },
+  "account-management": {
+    "title": "账户管理",
+    "options": {
+      "vbucks-information": "V币信息",
+      "redeem-codes": "兑换码",
+      "devices-auth": "设备授权",
+      "epic-settings": "Epic 游戏设置"
+    }
+  },
+  "advanced-mode": {
+    "title": "高级模式",
+    "options": {
+      "matchmaking-track": "匹配追踪",
+      "world-info": "世界信息"
+    }
+  },
+  "accounts": {
+    "title": "我的账户",
+    "options": {
+      "show-total-accounts": "显示账户总数",
+      "auth": "授权码",
+      "exchange": "生成授权码",
+      "device": "设备授权",
+      "remove": "移除账户"
+    }
+  },
+  "links": {
+    "discord": "Discord 服务器",
+    "github": "查看 GitHub",
+    "credits": "鸣谢"
+  },
+  "version": {
+    "release": "版本 v{{version}}",
+    "all-releases": "所有版本"
+  }
+}

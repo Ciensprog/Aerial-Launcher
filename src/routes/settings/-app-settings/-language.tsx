@@ -17,7 +17,7 @@ import { useLanguage } from '../../../hooks/language'
 import { changeDateLocale } from '../../../lib/dates'
 
 export function LanguageSelector() {
-  const { i18n, t } = useTranslation(['settings'])
+  const { i18n, t } = useTranslation(['settings', 'general'])
 
   const { language, updateLanguage } = useLanguage()
 
@@ -50,6 +50,11 @@ export function LanguageSelector() {
               key={language.id}
             >
               {language.title}
+              {language.completed === false
+                ? ` ${t('under-translation', {
+                    ns: 'general',
+                  })}`
+                : ''}
             </SelectItem>
           ))}
         </SelectContent>

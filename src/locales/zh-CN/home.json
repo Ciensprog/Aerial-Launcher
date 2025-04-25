@@ -1,0 +1,90 @@
+{
+  "heading": {
+    "title": "需知：",
+    "items": {
+      "1": "点击 Aerial 标志（左上角）返回此处。",
+      "2": "将一个世界信息文件拖放到页面上以加载其他任务/警报。"
+    }
+  },
+  "tabs": {
+    "home": "主页",
+    "overview": "警报概览",
+    "done": "已完成警报"
+  },
+  "sections": {
+    "vbucks": {
+      "title": "V币"
+    },
+    "twine-peaks": {
+      "title-endgame": "麻峰 ⚡160",
+      "mid": "Mid"
+    },
+    "ventures": {
+      "title-endgame": "冒险 ⚡140"
+    },
+    "survivors": {
+      "title": "传奇/神话幸存者",
+      "empty": "没有幸存者可救援"
+    },
+    "llamas": {
+      "title": "升级羊驼代币"
+    },
+    "uc-perk": {
+      "title": "普通精华!"
+    }
+  },
+  "information": {
+    "missions": "{{total}} 个任务",
+    "tile-index": "图块索引：",
+    "alert-guid": "任务警报 ：",
+    "mission-guid": "任务 GUID：",
+    "alert-rewards": "警报奖励：",
+    "base-rewards": "基础奖励：",
+    "modifiers": "激活系数：",
+    "first-claim": "首次领取：",
+    "last-played": "上次游玩时间：",
+    "alerts-completed": "已完成警报",
+    "rewards-summary": "奖励摘要"
+  },
+  "pagination": {
+    "results": "结果",
+    "actions": {
+      "previous": "显示更少",
+      "next": "显示更多"
+    }
+  },
+  "filters": {
+    "search": {
+      "input": {
+        "placeholder": "搜索：任务/警报 GUID、图块索引或奖励 ID"
+      },
+      "submit-button": "显示筛选器"
+    },
+    "sections": {
+      "zones": "选择区域",
+      "types": "选择任务类型",
+      "rarities": "选择稀有度",
+      "rewards": "选择奖励"
+    },
+    "actions": {
+      "back": "返回警报",
+      "clear": "清除选择"
+    }
+  },
+  "world-info": {
+    "dnd": {
+      "title": "拖放 .json 文件"
+    },
+    "notifications": {
+      "error": "无法加载世界信息文件，请检查文件是否正确且数据完整"
+    }
+  },
+  "results": {
+    "empty": {
+      "alerts-done": "找到的警报与今天的任务不匹配",
+      "vbucks": "今天没有V币",
+      "missions": "没有可用任务",
+      "rewards": "没有可用奖励"
+    }
+  }
+}

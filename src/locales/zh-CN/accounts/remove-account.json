@@ -1,0 +1,11 @@
+{
+  "form": {
+    "label": "您是否要移除 <2>{{name}}</2> 账户？",
+    "submit-button": "是的，移除选定的账户"
+  },
+  "notifications": {
+    "remove": {
+      "success": "账户 {{name}} 已被移除"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "description": "检查这是否是您正在寻找的用户，并请求他们的匹配信息。",
+  "note": "默认路径文件：",
+  "form": {
+    "recently": {
+      "label": "注意：这些玩家信息是临时存储的"
+    },
+    "submit-button": "创建匹配文件"
+  },
+  "results": {
+    "notes": "备注：",
+    "options": {
+      "public-stats": "该用户已禁用“公开游戏统计数据”，无法显示更多信息。",
+      "continuation": "当然，您仍然可以生成文件。"
+    }
+  },
+  "notifications": {
+    "file": {
+      "updated": "文件已成功更新"
+    },
+    "player": {
+      "not-playing": "指定的玩家可能没有执行任务"
+    }
+  }
+}

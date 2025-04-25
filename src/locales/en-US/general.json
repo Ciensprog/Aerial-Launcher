@@ -7,7 +7,9 @@
     "revert": "Revert",
     "search": "Search",
     "success": "Success",
-    "update": "Update"
+    "update": "Update",
+    "accepted": "Accepted",
+    "verify": "Verify"
   },
   "form": {
     "credentials": {
@@ -27,7 +29,7 @@
       "placeholder_private": "Search on your accounts",
       "search-empty": "No account found",
       "select": "Select account",
-      "selected": "Account selected",
+      "selected": "Selected account",
       "no-available": "No accounts available",
       "no-linked": "No linked accounts",
       "no-options": "No accounts",
@@ -125,7 +127,7 @@
       "error": "Couldn't generate screenshot, please try again later"
     }
   },
-  "account-selected": "Account selected: <2>{{name}}</2>",
+  "account-selected": "Selected account: <2>{{name}}</2>",
   "boosts": "Boost/s",
   "credits": "Credits",
   "current": "Current",
@@ -148,5 +150,6 @@
   "unknown": "Unknown",
   "update-information": "Update Information",
   "user-agent": "User Agent",
-  "generate-screenshot": "Generate Screenshot"
+  "generate-screenshot": "Generate Screenshot",
+  "under-translation": "(Under Translation)"
 }

@@ -7,7 +7,9 @@
     "revert": "Revertir",
     "search": "Buscar",
     "success": "Completado",
-    "update": "Actualizar"
+    "update": "Actualizar",
+    "accepted": "Aceptado",
+    "verify": "Verificar"
   },
   "form": {
     "credentials": {
@@ -148,5 +150,6 @@
   "unknown": "Desconocido",
   "update-information": "Actualizar Información",
   "user-agent": "Agente De Usuario",
-  "generate-screenshot": "Generar Captura"
+  "generate-screenshot": "Generar Captura",
+  "under-translation": "(En Traducción)"
 }

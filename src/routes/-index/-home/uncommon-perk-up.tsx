@@ -20,8 +20,6 @@ export function UncommonPerkUpSection({
 }) {
   const { t } = useTranslation(['alerts'])
 
-  // console.log('data ->', data)
-
   return (
     <section aria-labelledby="title-uncommon-perks">
       <TitleSection

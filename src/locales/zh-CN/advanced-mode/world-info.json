@@ -1,0 +1,40 @@
+{
+  "form": {
+    "save": "保存到本地",
+    "refetch": "重新获取数据"
+  },
+  "search": {
+    "input": {
+      "placeholder": "在 {{total}} 个文件中搜索"
+    },
+    "include-data": "包含文件数据",
+    "no-files": "未找到文件"
+  },
+  "file": {
+    "input": {
+      "placeholder": "默认名称：{{filename}}"
+    }
+  },
+  "notifications": {
+    "save": {
+      "success": "文件已保存",
+      "error": "文件无法保存，请稍后再试"
+    },
+    "delete": {
+      "success": "文件 \"{{filename}}\" 已删除",
+      "error": "文件 \"{{filename}}\" 无法删除，请稍后再试"
+    },
+    "export": {
+      "success": "文件已导出",
+      "error": "文件无法导出，请稍后再试"
+    },
+    "open": {
+      "success": "文件 \"{{filename}}\" 已打开",
+      "error": "文件 \"{{filename}}\" 无法打开，请稍后再试"
+    },
+    "rename": {
+      "success": "文件已重命名",
+      "error": "文件无法重命名，请稍后再试"
+    }
+  }
+}

@@ -62,7 +62,7 @@ export function ComponentRoute() {
         <div className="flex w-full">
           <div
             className={cn(
-              'flex flex-col max-w-md',
+              'flex flex-col max-w-md mb-5',
               '[&_.list]:space-y-5 [&_.list]:w-full',
               '[&_.link]:gap-1 [&_.link]:inline-flex [&_.link]:items-center [&_.link]:text-muted-foreground [&_.link:hover]:text-muted-foreground/80'
             )}
@@ -147,6 +147,19 @@ export function ComponentRoute() {
                   aswell as being many hours in voice chat sharing his
                   opinions and ideas about the project.
                 </div>
+              </li>
+            </ul>
+            <h2 className="mb-5 mt-5 text-3xl">Translations</h2>
+            <ul className="list">
+              <li className="item">
+                <div>
+                  Thank you for dedicating part of your time to translate
+                  Aerial to different languages 💖
+                </div>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-muted-foreground">SayaGoodBye</span>•
+                <div>Chinese (Simplified)</div>
               </li>
             </ul>
           </div>
