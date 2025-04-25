@@ -17,7 +17,8 @@
         },
         "disable": {
           "buy": "Deshabilitar Compras Gratis"
-        }
+        },
+        "check": "Revisar Manualmente"
       }
     }
   },

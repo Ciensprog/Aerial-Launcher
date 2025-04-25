@@ -5,11 +5,11 @@
       "auto-kick": "Auto-expulsar",
       "party": "Grupo",
       "save-quests": "Guardar Progreso (Misiones)",
-      "homebase-name": "Nombre de la base",
+      "homebase-name": "Nombre de la Base",
       "xp-boosts": "Potenciadores",
       "auto-pin-urns": "Auto-fijar Urnas",
       "auto-llamas": "Auto-llamas",
-      "unlock": "Omitir Escudos"
+      "unlock": "Desbloquear Recompensas de Escudos"
     },
     "auto-kick-status": {
       "issue": "Revisar",

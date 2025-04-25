@@ -688,6 +688,10 @@ const gotTheLock = app.requestSingleInstanceLock()
       }
     )
 
+    ipcMain.on(ElectronAPIEventKeys.AutoLlamasAccountCheck, async () => {
+      await AutoLlamas.check()
+    })
+
     /**
      * V-Bucks Information
      */

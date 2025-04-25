@@ -86,6 +86,9 @@ function Content() {
               id="ssd-card-header"
             >
               <CardDescription>{t('unlock.description')}</CardDescription>
+              <CardDescription className="border-l-4 pl-2">
+                {t('unlock.note')}
+              </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 pt-6">
               <AccountSelectors

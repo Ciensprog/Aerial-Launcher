@@ -1,5 +1,6 @@
 {
   "description": "This feature is useful if you want to unlock shield defense rewards like survivor squad slots, defenders, etc. even if they haven't been completed yet.",
+  "note": "Note: This will NOT claim V-Bucks or complete your stormshield defenses, you will only get the rewards mentioned above.",
   "form": {
     "submit-button": "Unlock",
     "clear-button": "Clear Selections"

@@ -1,5 +1,6 @@
 {
   "description": "Esta funcionalidad es útil si quieres desbloquear las recompensas de las defensas de escudo como espacios de escuadrones de supervivientes, defensores, etc aunque aún no se hayan realizado.",
+  "note": "Nota: Esto NO reclamará V-Bucks ni completará tus defensas de escudo contra tormentas, solo obtendrás las recompensas mencionadas anteriormente.",
   "form": {
     "submit-button": "Desbloquear",
     "clear-button": "Limpiar Selecciones"

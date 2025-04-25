@@ -29,6 +29,7 @@ import { useGetComboboxAccounts } from '../../../hooks/accounts'
 import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
+import { UpdateIcon } from '@radix-ui/react-icons'
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
@@ -63,9 +64,11 @@ export function Content() {
   const { t } = useTranslation(['stw-operations'])
 
   const {
+    checkLoading,
     isAllEnabled,
     isDisableBuyButtonDisabled,
     selected,
+    totalEnabledPurchases,
 
     handleAddAllAccounts,
     handleRemoveAccount,
@@ -73,6 +76,7 @@ export function Content() {
     handleUpdateAccounts,
     handleDisableBuy,
     handleEnableBuy,
+    handleCheck,
     onSelectItem,
   } = useAutoLlamaData()
   const {
@@ -196,6 +200,18 @@ export function Content() {
                   }
                 >
                   {t('llamas.form.actions.buttons.disable.buy')}
+                </Button>
+                <Button
+                  className="leading-4 text-balance truncate"
+                  variant="outline"
+                  onClick={handleCheck}
+                  disabled={totalEnabledPurchases <= 0 || checkLoading}
+                >
+                  {checkLoading ? (
+                    <UpdateIcon className="animate-spin" />
+                  ) : (
+                    t('llamas.form.actions.buttons.check')
+                  )}
                 </Button>
               </div>
             </CardContent>

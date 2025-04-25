@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react'
+
 import {
   AutoLlamasBulkAction,
   useAutoLlamaStore,
 } from '../../state/stw-operations/auto/llamas'
 
 export function useAutoLlamaData() {
+  const [checkLoading, setCheckLoading] = useState(false)
   const { selected, addAccounts, removeAccounts, updateAccounts } =
     useAutoLlamaStore((state) => ({
       selected: state.accounts,
@@ -15,8 +18,24 @@ export function useAutoLlamaData() {
   const totalEnabled = Object.values(selected).filter(
     (current) => current.actions['free-llamas']
   ).length
+  const totalEnabledPurchases = Object.values(selected).filter(
+    (current) =>
+      current.actions['free-llamas'] || current.actions['survivors']
+  ).length
   const isAllEnabled = totalEnabled >= Object.keys(selected).length
   const isDisableBuyButtonDisabled = totalEnabled <= 0
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationAutoLlamasCheckLoading(
+      async () => {
+        setCheckLoading(false)
+      }
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
 
   const handleAddAllAccounts = (accounts: Array<string>) => {
     const list = accounts.reduce(
@@ -57,6 +76,10 @@ export function useAutoLlamaData() {
       AutoLlamasBulkAction.DisableBuy
     )
   }
+  const handleCheck = () => {
+    setCheckLoading(true)
+    window.electronAPI.autoLlamasCheck()
+  }
 
   const onSelectItem = (accountId: string) => {
     const accounts = { [accountId]: { accountId } }
@@ -66,9 +89,11 @@ export function useAutoLlamaData() {
   }
 
   return {
+    checkLoading,
     isAllEnabled,
     isDisableBuyButtonDisabled,
     selected,
+    totalEnabledPurchases,
 
     handleAddAllAccounts,
     handleRemoveAccount,
@@ -76,6 +101,7 @@ export function useAutoLlamaData() {
     handleUpdateAccounts,
     handleEnableBuy,
     handleDisableBuy,
+    handleCheck,
     onSelectItem,
   }
 }

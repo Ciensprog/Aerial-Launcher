@@ -217,6 +217,8 @@ export enum ElectronAPIEventKeys {
   AutoLlamasAccountAdd = 'auto-llamas:account:add',
   AutoLlamasAccountUpdate = 'auto-llamas:account:update',
   AutoLlamasAccountRemove = 'auto-llamas:account:remove',
+  AutoLlamasAccountCheck = 'auto-llamas:account:check',
+  AutoLlamasAccountCheckLoading = 'auto-llamas:account:check:loading',
 
   /**
    * V-Bucks Information

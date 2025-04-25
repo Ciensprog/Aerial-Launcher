@@ -29,8 +29,32 @@ export function autoLlamasAccountRemove(data: Array<string> | null) {
   ipcRenderer.send(ElectronAPIEventKeys.AutoLlamasAccountRemove, data)
 }
 
+export function autoLlamasCheck() {
+  ipcRenderer.send(ElectronAPIEventKeys.AutoLlamasAccountCheck)
+}
+
 export const autoLlamasLoadAccountsResponse = createElectronNotification<
   [AutoLlamasRecord]
 >({
   key: ElectronAPIEventKeys.AutoLlamasLoadAccountsResponse,
 })
+
+export function notificationAutoLlamasCheckLoading(
+  callback: () => Promise<void>
+) {
+  const customCallback = () => {
+    callback().catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.AutoLlamasAccountCheckLoading,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.AutoLlamasAccountCheckLoading,
+        customCallback
+      ),
+  }
+}

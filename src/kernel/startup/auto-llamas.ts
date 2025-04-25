@@ -16,6 +16,7 @@ import {
 } from '../../config/constants/resources'
 
 import { Authentication } from '../core/authentication'
+import { Storefront } from '../core/storefront'
 import { MainWindow } from './windows/main'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
@@ -37,6 +38,7 @@ import { getCatalog } from '../../services/endpoints/storefront'
 import { getKey, parseRarity } from '../../lib/parsers/resources'
 import { isMCPQueryProfileChangesPrerollData } from '../../lib/check-objects'
 import { getDateWithDefaultFormat } from '../../lib/dates'
+import { sleep } from '@/lib/timers'
 
 export enum ProcessLlamaType {
   FreeUpgrade = 'free-upgrade-llama',
@@ -218,6 +220,32 @@ export class AutoLlamas {
       (account) => account.actions[action] === true
     )
   }
+
+  static async check() {
+    Storefront.checkUpgradeFreeLlama().then((available) => {
+      if (available) {
+        ProcessAutoLlamas.start({
+          selected: AutoLlamas.getAccounts({
+            type: ProcessLlamaType.FreeUpgrade,
+          }),
+          type: ProcessLlamaType.FreeUpgrade,
+        })
+      }
+    })
+
+    ProcessAutoLlamas.start({
+      selected: AutoLlamas.getAccounts({
+        type: ProcessLlamaType.Survivor,
+      }),
+      type: ProcessLlamaType.Survivor,
+    })
+
+    sleep(2).then(() => {
+      MainWindow.instance.webContents.send(
+        ElectronAPIEventKeys.AutoLlamasAccountCheckLoading
+      )
+    })
+  }
 }
 
 export class ProcessAutoLlamas {
@@ -271,12 +299,25 @@ export class ProcessAutoLlamas {
 
           // eslint-disable-next-line no-constant-condition
           while (true) {
+            let success = true
+
             try {
               const accessToken =
                 await Authentication.verifyAccessToken(account)
 
               if (!accessToken) {
                 break
+              }
+
+              try {
+                await populatePrerolledOffers({
+                  accessToken,
+                  accountId: account.accountId,
+                })
+
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              } catch (error) {
+                //
               }
 
               const queryProfile = await getQueryProfile({
@@ -287,12 +328,16 @@ export class ProcessAutoLlamas {
                 queryProfile.data.profileChanges[0] ?? null
 
               const xRayTickets =
-                Object.values(profileChanges?.profile.items).find((item) =>
-                  item.templateId.endsWith('currency_xrayllama')
+                Object.values(profileChanges?.profile.items).find(
+                  (item) =>
+                    (item.templateId as string) ===
+                    'AccountResource:currency_xrayllama'
                 )?.quantity ?? 0
               const llamaTokens =
-                Object.values(profileChanges?.profile.items).find((item) =>
-                  item.templateId.endsWith('voucher_cardpack_bronze')
+                Object.values(profileChanges?.profile.items).find(
+                  (item) =>
+                    (item.templateId as string) ===
+                    'AccountResource:voucher_cardpack_bronze'
                 )?.quantity ?? 0
 
               let currencyTotal: number | null = null
@@ -346,8 +391,8 @@ export class ProcessAutoLlamas {
                 }
 
                 return (
-                  item.devName.toLowerCase().includes('free') &&
-                  item.title.toLowerCase().includes('free') &&
+                  (item.devName.toLowerCase().includes('free') ||
+                    item.title.toLowerCase().includes('free')) &&
                   item.prices[0]?.regularPrice === 50 &&
                   item.prices[0]?.finalPrice === 0
                 )
@@ -373,14 +418,8 @@ export class ProcessAutoLlamas {
                 }
               }
 
-              const prerolledOffersQueryProfile =
-                await populatePrerolledOffers({
-                  accessToken,
-                  accountId: account.accountId,
-                })
               const prerollData = Object.values(
-                prerolledOffersQueryProfile.data.profileChanges[0]?.profile
-                  .items ?? {}
+                profileChanges.profile.items ?? {}
               ).find(
                 (item) =>
                   isMCPQueryProfileChangesPrerollData(item) &&
@@ -507,12 +546,16 @@ export class ProcessAutoLlamas {
                 ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification,
                 [result]
               )
-              MainWindow.instance.webContents.send(
-                ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
-              )
+              // MainWindow.instance.webContents.send(
+              //   ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
+              // )
 
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
+              success = false
+            }
+
+            if (!success) {
               break
             }
           }
