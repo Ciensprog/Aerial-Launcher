@@ -8,6 +8,7 @@ import {
   MissionItem,
   MissionsContainer,
   Modifiers,
+  SchematicRarity,
 } from '../-components/-missions'
 import { TitleSection } from '../-components/-title'
 
@@ -37,6 +38,52 @@ export function EndgameVenturesSection({
               key={mission.raw.mission.missionGuid}
             >
               <>
+                {mission.ui.alert.rewards.length > 0 && (
+                  <>
+                    {mission.ui.alert.rewards
+                      .map((reward) => {
+                        if (
+                          reward.itemId.includes('eventscaling') ||
+                          reward.itemId.includes(
+                            'campaign_event_currency'
+                          ) ||
+                          reward.itemId.includes('phoenixxp')
+                        ) {
+                          return null
+                        }
+
+                        return (
+                          <span
+                            className={cn(
+                              'flex flex-shrink-0 items-center rounded',
+                              {
+                                'border px-1': reward.type === 'trap',
+                              }
+                            )}
+                            key={reward.itemId}
+                          >
+                            <img
+                              src={reward.imageUrl}
+                              className="img-type"
+                            />
+                            <SchematicRarity
+                              reward={reward}
+                              preview
+                            />
+                          </span>
+                        )
+                      })
+                      .slice(0, 3)}{' '}
+                    {mission.ui.mission.rewards.filter(
+                      (reward) =>
+                        !reward.itemId.includes('eventscaling') ||
+                        reward.itemId.includes(
+                          'campaign_event_currency'
+                        ) ||
+                        reward.itemId.includes('phoenixxp')
+                    ).length > 0 && '•'}
+                  </>
+                )}
                 {mission.ui.mission.rewards
                   .map((reward) => {
                     if (

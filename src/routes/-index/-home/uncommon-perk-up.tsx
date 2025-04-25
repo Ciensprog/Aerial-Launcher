@@ -20,6 +20,8 @@ export function UncommonPerkUpSection({
 }) {
   const { t } = useTranslation(['alerts'])
 
+  // console.log('data ->', data)
+
   return (
     <section aria-labelledby="title-uncommon-perks">
       <TitleSection
@@ -50,6 +52,13 @@ export function UncommonPerkUpSection({
               return null
             }
 
+            const quantity =
+              baseReward.quantity > 1
+                ? (baseReward as any).isBad !== undefined
+                  ? `${numberWithCommaSeparator(baseReward.quantity)}x`
+                  : numberWithCommaSeparator(baseReward.quantity)
+                : null
+
             return (
               <MissionItem
                 data={mission}
@@ -60,9 +69,7 @@ export function UncommonPerkUpSection({
                     src={baseReward.imageUrl}
                     className="img-type"
                   />
-                  {baseReward.quantity > 1
-                    ? numberWithCommaSeparator(baseReward.quantity)
-                    : null}
+                  {quantity}
                   <Modifiers data={mission.ui.mission.modifiers} />
                 </>
               </MissionItem>

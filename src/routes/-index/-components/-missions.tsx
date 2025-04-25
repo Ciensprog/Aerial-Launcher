@@ -175,6 +175,7 @@ export function MissionItem({
                           src={reward.imageUrl}
                           className="img-type"
                         />
+                        {reward.quantity > 1 ? `${reward.quantity}x` : ''}
                       </div>
                     ))}
                   </div>
