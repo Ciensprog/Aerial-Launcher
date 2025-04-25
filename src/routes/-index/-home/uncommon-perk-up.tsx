@@ -52,7 +52,8 @@ export function UncommonPerkUpSection({
 
             const quantity =
               baseReward.quantity > 1
-                ? (baseReward as any).isBad !== undefined
+                ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (baseReward as any).isBad !== undefined
                   ? `${numberWithCommaSeparator(baseReward.quantity)}x`
                   : numberWithCommaSeparator(baseReward.quantity)
                 : null

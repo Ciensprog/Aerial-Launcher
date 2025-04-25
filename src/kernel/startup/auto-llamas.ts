@@ -38,7 +38,7 @@ import { getCatalog } from '../../services/endpoints/storefront'
 import { getKey, parseRarity } from '../../lib/parsers/resources'
 import { isMCPQueryProfileChangesPrerollData } from '../../lib/check-objects'
 import { getDateWithDefaultFormat } from '../../lib/dates'
-import { sleep } from '@/lib/timers'
+import { sleep } from '../../lib/timers'
 
 export enum ProcessLlamaType {
   FreeUpgrade = 'free-upgrade-llama',
