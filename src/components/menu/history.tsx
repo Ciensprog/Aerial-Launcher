@@ -69,7 +69,7 @@ export function HistoryMenu() {
           <div className="border-l-4 italic mb-1.5 pl-2 py-1 text-muted-foreground text-xs">
             {t('history.note')}
           </div>
-          <ScrollArea className="h-[calc(100vh-var(--header-height))]">
+          <ScrollArea className="h-[calc(100vh-var(--header-height)-1.875rem-0.375rem)]">
             {dataOrderByDesc.length > 0 ? (
               <>
                 <div className="flex-1 pb-6 space-y-2">
