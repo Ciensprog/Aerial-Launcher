@@ -75,8 +75,8 @@ export function MissionItem({
         id={`mission-${missionGuid}`}
         value={missionGuid}
       >
-        <AccordionTrigger className="trigger bg-muted-foreground/5 px-2 py-0 rounded hover:bg-muted-foreground/15 hover:no-underline">
-          <span className="flex gap-1 items-center max-w-[29.375rem] overflow-hidden py-0.5">
+        <AccordionTrigger className="trigger bg-muted-foreground/5 pr-2 py-0 rounded hover:bg-muted-foreground/15 hover:no-underline">
+          <span className="mission-preview flex gap-1 items-center max-w-[29.375rem] overflow-hidden px-2 py-0.5">
             {!mission.zone.iconUrl ? (
               <span
                 className={cn(
@@ -221,7 +221,11 @@ function ScreenshotButton({ id }: { id: string }) {
       return
     }
 
-    const $element = document.getElementById(id)
+    let $element = document.getElementById(id)
+
+    if ($element?.getAttribute('data-state') === 'closed') {
+      $element = document.querySelector(`#${id} .mission-preview`)
+    }
 
     if (!$element) {
       return
