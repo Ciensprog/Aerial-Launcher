@@ -13,7 +13,7 @@ import { Language } from '../../../locales/resources'
 
 export const appLanguageSchema = z.object({
   i18n: z
-    .enum([Language.English, Language.Spanish, Language.Chinese])
+    .enum([Language.English, Language.Spanish, Language.Chinese,Language.Russian])
     .default(Language.English),
 })
 
