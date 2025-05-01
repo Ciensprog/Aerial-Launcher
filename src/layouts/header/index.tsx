@@ -85,7 +85,11 @@ export function Header() {
             }
           >
             {isMinWith ? (
-              <Rocket size={20} />
+              customProcessIsRunning ? (
+                <X size={20} />
+              ) : (
+                <Rocket size={20} />
+              )
             ) : (
               <span className="text-balance truncate">
                 {customProcessIsRunning
