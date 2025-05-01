@@ -1,0 +1,54 @@
+{
+  "stw-operations": {
+    "title": "ПВЕ Операции",
+    "options": {
+      "auto-kick": "АвтоКик",
+      "party": "Управление Группой",
+      "save-quests": "Сохранить Квесты",
+      "homebase-name": "Имя Главной Базы",
+      "xp-boosts": "Усилители Опыта",
+      "auto-pin-urns": "Авто Закреп Урн",
+      "auto-llamas": "Автолама",
+      "unlock": "Скип щитов"
+    },
+    "auto-kick-status": {
+      "issue": "Ошибка",
+      "active": "Активно"
+    }
+  },
+  "account-management": {
+    "title": "Управление Аккаунтом",
+    "options": {
+      "vbucks-information": "Информацию о В-баксах",
+      "redeem-codes": "Активация Кодов",
+      "devices-auth": "Аутентификация Устройств",
+      "epic-settings": "Настройки Epic Games"
+    }
+  },
+  "advanced-mode": {
+    "title": "Продвинутый Режим",
+    "options": {
+      "matchmaking-track": "Слежение Матчмейкинга",
+      "world-info": "World Info"
+    }
+  },
+  "accounts": {
+    "title": "Мои Аккаунты",
+    "options": {
+      "show-total-accounts": "Показать Количество Аккаунтов",
+      "auth": "Код Авторизации",
+      "exchange": "Код Обмена",
+      "device": "Аутентификация Устройств",
+      "remove": "Убрать Аккаунт"
+    }
+  },
+  "links": {
+    "discord": "Дискорд Сервер",
+    "github": "Посмотреть в Гитхабе",
+    "credits": "Авторы"
+  },
+  "version": {
+    "release": "Релиз v{{version}}",
+    "all-releases": "Все версии"
+  }
+}

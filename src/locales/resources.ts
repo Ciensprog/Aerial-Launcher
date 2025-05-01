@@ -202,6 +202,73 @@ const zhCN = {
 }
 
 /**
+ * @file ru-RU
+ */
+import ruRU_sidebar from './ru-RU/sidebar.json'
+import ruRU_general from './ru-RU/general.json'
+import ruRU_history from './ru-RU/history.json'
+import ruRU_settings from './ru-RU/settings.json'
+import ruRU_alerts from './ru-RU/home.json'
+import ruRU_zones from './ru-RU/zones.json'
+import ruRU_stwOperations_AutoKick from './ru-RU/stw-operations/auto-kick.json'
+import ruRU_stwOperations_HomebaseName from './ru-RU/stw-operations/homebase-name.json'
+import ruRU_stwOperations_SaveQuests from './ru-RU/stw-operations/save-quests.json'
+import ruRU_stwOperations_Party from './ru-RU/stw-operations/party.json'
+import ruRU_stwOperations_Urns from './ru-RU/stw-operations/urns.json'
+import ruRU_stwOperations_XPBoosts from './ru-RU/stw-operations/xpboosts.json'
+import ruRU_stwOperations_Llamas from './ru-RU/stw-operations/llamas.json'
+import ruRU_stwOperations_Unlock from './ru-RU/stw-operations/unlock.json'
+import ruRU_accountManagement_VBucksInformation from './ru-RU/account-management/vbucks-information.json'
+import ruRU_accountManagement_EULA from './ru-RU/account-management/eula.json'
+import ruRU_accountManagement_RedeemCodes from './ru-RU/account-management/redeem-codes.json'
+import ruRU_accountManagement_DevicesAuth from './ru-RU/account-management/devices-auth.json'
+import ruRU_accountManagement_EpicSettings from './ru-RU/account-management/epic-settings.json'
+import ruRU_advancedMode_MatchmakingTrack from './ru-RU/advanced-mode/matchmaking-track.json'
+import ruRU_advancedMode_WorldInfo from './ru-RU/advanced-mode/world-info.json'
+import ruRU_myAccounts_General from './ru-RU/accounts/general.json'
+import ruRU_myAccounts_AuthCode from './ru-RU/accounts/auth-code.json'
+import ruRU_myAccounts_ExchangeCode from './ru-RU/accounts/exchange-code.json'
+import ruRU_myAccounts_DeviceAuth from './ru-RU/accounts/device-auth.json'
+import ruRU_myAccounts_RemoveAccount from './ru-RU/accounts/remove-account.json'
+
+const ruRU = {
+  sidebar: ruRU_sidebar,
+  general: ruRU_general,
+  history: ruRU_history,
+  settings: ruRU_settings,
+  alerts: ruRU_alerts,
+  zones: ruRU_zones,
+  'stw-operations': {
+    'auto-kick': ruRU_stwOperations_AutoKick,
+    'homebase-name': ruRU_stwOperations_HomebaseName,
+    'save-quests': ruRU_stwOperations_SaveQuests,
+    party: ruRU_stwOperations_Party,
+    urns: ruRU_stwOperations_Urns,
+    xpboosts: ruRU_stwOperations_XPBoosts,
+    llamas: ruRU_stwOperations_Llamas,
+    unlock: ruRU_stwOperations_Unlock,
+  },
+  'account-management': {
+    'vbucks-information': ruRU_accountManagement_VBucksInformation,
+    'redeem-codes': ruRU_accountManagement_RedeemCodes,
+    'devices-auth': ruRU_accountManagement_DevicesAuth,
+    'epic-settings': ruRU_accountManagement_EpicSettings,
+    eula: ruRU_accountManagement_EULA,
+  },
+  'advanced-mode': {
+    'matchmaking-track': ruRU_advancedMode_MatchmakingTrack,
+    'world-info': ruRU_advancedMode_WorldInfo,
+  },
+  accounts: {
+    general: ruRU_myAccounts_General,
+    'auth-code': ruRU_myAccounts_AuthCode,
+    'exchange-code': ruRU_myAccounts_ExchangeCode,
+    'device-auth': ruRU_myAccounts_DeviceAuth,
+    'remove-account': ruRU_myAccounts_RemoveAccount,
+  },
+}
+
+/**
  * Export resources
  */
 
@@ -209,10 +276,12 @@ export enum Language {
   English = 'en-US',
   Spanish = 'es-419',
   Chinese = 'zh-CN',
+  Russian = 'ru-RU',
 }
 
 export const resources: Resource = {
   [Language.English]: enUS,
   [Language.Spanish]: es419,
   [Language.Chinese]: zhCN,
+  [Language.Russian]: ruRU,
 }

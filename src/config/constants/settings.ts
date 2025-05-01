@@ -19,4 +19,9 @@ export const availableLanguages: Array<{
     title: '简体中文',
     // completed: false,
   },
+  {
+    id: Language.Russian,
+    title: 'Русский',
+    // completed: false,
+  },
 ]

@@ -1,0 +1,155 @@
+{
+  "actions": {
+    "add": "Добавить",
+    "change": "Изменить",
+    "create": "Создать",
+    "login": "Войти",
+    "revert": "Вернуть",
+    "search": "Поиск",
+    "success": "Успех",
+    "update": "Обновление",
+    "accepted": "Принято",
+    "verify": "Принять"
+  },
+  "form": {
+    "credentials": {
+      "account-id": "Id аккаунта",
+      "device-id": "Id устройства",
+      "secret": "Секрет",
+      "login": {
+        "label": "Вставьте свой код",
+        "input": {
+          "placeholder": "Например: {{code}}"
+        },
+        "get-code": "<0>Получить код</0> <1 />"
+      }
+    },
+    "accounts": {
+      "placeholder": "Искать в {{total}} аккаунтах",
+      "placeholder_private": "Поиск в ваших аккаунтов",
+      "search-empty": "Аккаунт не найден",
+      "select": "Выберете Аккаунт",
+      "selected": "Аккаунт выбран",
+      "no-available": "Аккаунты не доступны",
+      "no-linked": "Нет связанных аккаунтов",
+      "no-options": "Нет аккаунта",
+      "no-registered-accounts": "Пока нет зарегистрированных аккаунтов"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Выберете аккаунты",
+        "tags": "Выберите теги",
+        "bulk-note": "Выбран массовый тег, будут использованы все аккаунты в лаунчере."
+      }
+    },
+    "player": {
+      "search-empty": "Игрок не найден",
+      "recently": {
+        "empty-placeholder": "Нет недавно поигравших",
+        "search-placeholder": "Поиск по {{total}} игроку/ам",
+        "select-placeholder": "Выберите недавнего игрока"
+      }
+    },
+    "search-account": {
+      "label": "Поиск игрока по accountId или отображаемого имени (epic, xbl или psn)",
+      "input": {
+        "placeholder": "Пример: Образец"
+      }
+    }
+  },
+  "information": {
+    "account-id": "Account Id:",
+    "power-level": "Уровень Мощи:",
+    "commander-level": "Уровень Коммандира:",
+    "boosted-xp": "Буст XP:",
+    "days-logged-in": "Дней В Сети:",
+    "collection-book-level": "Уровень Книги Коллекций:",
+    "personal-xp-boosts": "Усилитель Опыта:",
+    "teammate-xp-boosts": "Усилитель Оп Для Союзников:",
+    "founder-status": "Статус Основателя:"
+  },
+  "version": {
+    "title": "Новая Версия {{version}}",
+    "description": "Вы можете скачать новую версию (.exe-файл) отсюда:"
+  },
+  "community-info": {
+    "message": "Присоединяйтесь к нашему сообществу <2>Discord<1/></2>, чтобы узнать больше о следующих обновлениях !!!"
+  },
+  "founder": {
+    "non-founder": "Не Основатель",
+    "founder": "Основатель",
+    "standard": "Стандартный Набор",
+    "deluxe": "Deluxe-Набор",
+    "super-deluxe": "Super Deluxe-Набор",
+    "limited": "Limited Edition",
+    "ultimate": "Ultimate Edition"
+  },
+  "launch-game": {
+    "button": "Запуск Игры",
+    "notifications": {
+      "success": "Игра была запущена с аккаунта {{name}}",
+      "error": "Произошла ошибка при запуске игры с аккуанта {{name}}, повторите попытку позже"
+    }
+  },
+  "separators": {
+    "or": "Или"
+  },
+  "sort": {
+    "newest": "Сортировать по новым"
+  },
+  "statuses": {
+    "error": "Ошибка",
+    "loading": "Загруза",
+    "not-found": "Не найдено",
+    "owned": "Owned ",
+    "claimed": "Забран",
+    "used": "Использован"
+  },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ Неверный accountId"
+        },
+        "device-id": {
+          "invalid": "❌ Неверный deviceId"
+        },
+        "secret": {
+          "invalid": "❌ Неверный secret"
+        },
+        "code": {
+          "invalid": "❌ Неверный код"
+        }
+      }
+    },
+    "screenshot": {
+      "success": "Снимок сгенерирован и скопирован в буфер обмена",
+      "error": "Не удалось создать снимок. Попробуйте еще раз позже."
+    }
+  },
+  "account-selected": "Аккаунт выбран: <2>{{name}}</2>",
+  "boosts": "Бусты",
+  "credits": "Авторы",
+  "current": "Текущий",
+  "date": "Дата",
+  "first-claim": "Первый Сбор: {{date}}",
+  "go-to-current-alerts": "Перейти К Текущим Алертам",
+  "go-to-top": "Перейти к Началу",
+  "history": "История",
+  "hide-information": "Скрыть Информацию",
+  "note": "Примечание",
+  "show-information": "Показать Скрытую Информацию",
+  "ip-address": "IP Адрес",
+  "last-played": "Последний Раз Играл: {{date}}",
+  "location": "Локация",
+  "missions": "Миссиия",
+  "public-stats": "Примечание: У Этого Пользователя Отключена \"Общедоступная Игровая Статистика\", Доп Информация Не Может Быть Отображена.",
+  "settings": "Настройки",
+  "summary": "Журнал",
+  "unknown-user": "Неизвестный Пользователь",
+  "unknown": "Неизвестно",
+  "update-information": "Обновить информацию",
+  "user-agent": "User Agent",
+  "generate-screenshot": "Создать снимок",
+  "under-translation": "(Under Translation)"
+}
