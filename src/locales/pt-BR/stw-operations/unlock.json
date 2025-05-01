@@ -1,0 +1,8 @@
+{
+  "description": "Este recurso é útil se você quiser desbloquear recompensas de defesa do escudo, como slots de esquadrão de sobreviventes, defensores, etc., mesmo que não tenham sido concluídas ainda.",
+  "note": "Nota: Isso NÃO reivindicará V-Bucks nem completará suas defesas do escudo antitempestade, você receberá apenas as recompensas mencionadas acima.",
+  "form": {
+    "submit-button": "Desbloquear",
+    "clear-button": "Limpar Seleções"
+  }
+}

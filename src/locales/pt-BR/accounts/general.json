@@ -1,0 +1,9 @@
+{
+  "notifications": {
+    "new-account": {
+      "success": "Nova conta adicionada: {{name}}",
+      "error": "Erro desconhecido",
+      "launcher-auth-login": "Não foi possível adicionar a conta, verifique se as credenciais são válidas"
+    }
+  }
+}

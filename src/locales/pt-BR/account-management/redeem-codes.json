@@ -1,0 +1,10 @@
+{
+  "description": "Resgatar códigos em cada conta selecionada.",
+  "form": {
+    "input": {
+      "placeholder": "Insira os códigos para resgatar (use uma nova linha)."
+    },
+    "redeem-button": "Resgatar Códigos",
+    "clear-button": "Limpar Formulário"
+  }
+}

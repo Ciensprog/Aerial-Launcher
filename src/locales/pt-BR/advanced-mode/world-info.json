@@ -1,0 +1,40 @@
+{
+  "form": {
+    "save": "Salvar Localmente",
+    "refetch": "Atualizar Dados"
+  },
+  "search": {
+    "input": {
+      "placeholder": "Pesquisar em {{total}} arquivos"
+    },
+    "include-data": "Incluir dados do arquivo",
+    "no-files": "Nenhum arquivo encontrado"
+  },
+  "file": {
+    "input": {
+      "placeholder": "Nome padrão: {{filename}}"
+    }
+  },
+  "notifications": {
+    "save": {
+      "success": "O arquivo foi salvo",
+      "error": "Não foi possível salvar o arquivo, tente novamente mais tarde"
+    },
+    "delete": {
+      "success": "O arquivo \"{{filename}}\" foi excluído",
+      "error": "Não foi possível excluir o arquivo \"{{filename}}\", tente novamente mais tarde"
+    },
+    "export": {
+      "success": "O arquivo foi exportado",
+      "error": "Não foi possível exportar o arquivo, tente novamente mais tarde"
+    },
+    "open": {
+      "success": "O arquivo \"{{filename}}\" foi aberto",
+      "error": "Não foi possível abrir o arquivo \"{{filename}}\", tente novamente mais tarde"
+    },
+    "rename": {
+      "success": "O arquivo foi renomeado",
+      "error": "Não foi possível renomear o arquivo, tente novamente mais tarde"
+    }
+  }
+}

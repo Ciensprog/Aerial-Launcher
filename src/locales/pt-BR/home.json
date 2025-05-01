@@ -1,0 +1,90 @@
+{
+  "heading": {
+    "title": "Bom saber:",
+    "items": {
+      "1": "Clique no logotipo da Aerial (canto superior esquerdo) para voltar aqui.",
+      "2": "Arraste e solte um arquivo de Informações do Mundo na página para carregar outras missões/alertas."
+    }
+  },
+  "tabs": {
+    "home": "Início",
+    "overview": "Visão Geral dos Alertas",
+    "done": "Alertas Concluídos"
+  },
+  "sections": {
+    "vbucks": {
+      "title": "V-Bucks"
+    },
+    "twine-peaks": {
+      "title-endgame": "Twine Peaks ⚡160",
+      "mid": "Mid"
+    },
+    "ventures": {
+      "title-endgame": "Aventura ⚡140"
+    },
+    "survivors": {
+      "title": "Sobreviventes Lendários/Míticos",
+      "empty": "Nenhum sobrevivente para resgatar"
+    },
+    "llamas": {
+      "title": "Fichas de Lhamas de Melhoria"
+    },
+    "uc-perk": {
+      "title": "PERK-UP! Incomum"
+    }
+  },
+  "information": {
+    "missions": "{{total}} missão/ões",
+    "tile-index": "Tile Index:",
+    "alert-guid": "ID do Alerta de Missão:",
+    "mission-guid": "ID da Missão:",
+    "alert-rewards": "Recompensas do Alerta:",
+    "base-rewards": "Recompensas Básicas:",
+    "modifiers": "Modificadores:",
+    "first-claim": "Primeira Reivindicação:",
+    "last-played": "Última Jogada Em:",
+    "alerts-completed": "Alertas Concluídos",
+    "rewards-summary": "Resumo de Recompensas"
+  },
+  "pagination": {
+    "results": "Resultados",
+    "actions": {
+      "previous": "Mostrar Menos",
+      "next": "Mostrar Mais"
+    }
+  },
+  "filters": {
+    "search": {
+      "input": {
+        "placeholder": "Pesquisar: ID da missão/alerta, tileIndex ou ID da recompensa"
+      },
+      "submit-button": "Exibir Filtros"
+    },
+    "sections": {
+      "zones": "Selecionar Área",
+      "types": "Selecionar Tipos de Missão",
+      "rarities": "Selecionar Raridades",
+      "rewards": "Selecionar Recompensas"
+    },
+    "actions": {
+      "back": "Voltar para os Alertas",
+      "clear": "Limpar Seleções"
+    }
+  },
+  "world-info": {
+    "dnd": {
+      "title": "Solte o Arquivo .json"
+    },
+    "notifications": {
+      "error": "Não foi possível carregar o arquivo de Informações do Mundo, verifique se é o arquivo correto e se não há dados ausentes"
+    }
+  },
+  "results": {
+    "empty": {
+      "alerts-done": "Os alertas encontrados não correspondem a nenhuma das missões de hoje",
+      "vbucks": "Sem V-Bucks hoje",
+      "missions": "Nenhuma missão disponível",
+      "rewards": "Nenhuma recompensa disponível"
+    }
+  }
+}

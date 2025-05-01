@@ -269,6 +269,73 @@ const ruRU = {
 }
 
 /**
+ * @file pt-BR
+ */
+import ptBR_sidebar from './pt-BR/sidebar.json'
+import ptBR_general from './pt-BR/general.json'
+import ptBR_history from './pt-BR/history.json'
+import ptBR_settings from './pt-BR/settings.json'
+import ptBR_alerts from './pt-BR/home.json'
+import ptBR_zones from './pt-BR/zones.json'
+import ptBR_stwOperations_AutoKick from './pt-BR/stw-operations/auto-kick.json'
+import ptBR_stwOperations_HomebaseName from './pt-BR/stw-operations/homebase-name.json'
+import ptBR_stwOperations_SaveQuests from './pt-BR/stw-operations/save-quests.json'
+import ptBR_stwOperations_Party from './pt-BR/stw-operations/party.json'
+import ptBR_stwOperations_Urns from './pt-BR/stw-operations/urns.json'
+import ptBR_stwOperations_XPBoosts from './pt-BR/stw-operations/xpboosts.json'
+import ptBR_stwOperations_Llamas from './pt-BR/stw-operations/llamas.json'
+import ptBR_stwOperations_Unlock from './pt-BR/stw-operations/unlock.json'
+import ptBR_accountManagement_VBucksInformation from './pt-BR/account-management/vbucks-information.json'
+import ptBR_accountManagement_EULA from './pt-BR/account-management/eula.json'
+import ptBR_accountManagement_RedeemCodes from './pt-BR/account-management/redeem-codes.json'
+import ptBR_accountManagement_DevicesAuth from './pt-BR/account-management/devices-auth.json'
+import ptBR_accountManagement_EpicSettings from './pt-BR/account-management/epic-settings.json'
+import ptBR_advancedMode_MatchmakingTrack from './pt-BR/advanced-mode/matchmaking-track.json'
+import ptBR_advancedMode_WorldInfo from './pt-BR/advanced-mode/world-info.json'
+import ptBR_myAccounts_General from './pt-BR/accounts/general.json'
+import ptBR_myAccounts_AuthCode from './pt-BR/accounts/auth-code.json'
+import ptBR_myAccounts_ExchangeCode from './pt-BR/accounts/exchange-code.json'
+import ptBR_myAccounts_DeviceAuth from './pt-BR/accounts/device-auth.json'
+import ptBR_myAccounts_RemoveAccount from './pt-BR/accounts/remove-account.json'
+
+const ptBR = {
+  sidebar: ptBR_sidebar,
+  general: ptBR_general,
+  history: ptBR_history,
+  settings: ptBR_settings,
+  alerts: ptBR_alerts,
+  zones: ptBR_zones,
+  'stw-operations': {
+    'auto-kick': ptBR_stwOperations_AutoKick,
+    'homebase-name': ptBR_stwOperations_HomebaseName,
+    'save-quests': ptBR_stwOperations_SaveQuests,
+    party: ptBR_stwOperations_Party,
+    urns: ptBR_stwOperations_Urns,
+    xpboosts: ptBR_stwOperations_XPBoosts,
+    llamas: ptBR_stwOperations_Llamas,
+    unlock: ptBR_stwOperations_Unlock,
+  },
+  'account-management': {
+    'vbucks-information': ptBR_accountManagement_VBucksInformation,
+    'redeem-codes': ptBR_accountManagement_RedeemCodes,
+    'devices-auth': ptBR_accountManagement_DevicesAuth,
+    'epic-settings': ptBR_accountManagement_EpicSettings,
+    eula: ptBR_accountManagement_EULA,
+  },
+  'advanced-mode': {
+    'matchmaking-track': ptBR_advancedMode_MatchmakingTrack,
+    'world-info': ptBR_advancedMode_WorldInfo,
+  },
+  accounts: {
+    general: ptBR_myAccounts_General,
+    'auth-code': ptBR_myAccounts_AuthCode,
+    'exchange-code': ptBR_myAccounts_ExchangeCode,
+    'device-auth': ptBR_myAccounts_DeviceAuth,
+    'remove-account': ptBR_myAccounts_RemoveAccount,
+  },
+}
+
+/**
  * Export resources
  */
 
@@ -277,6 +344,7 @@ export enum Language {
   Spanish = 'es-419',
   Chinese = 'zh-CN',
   Russian = 'ru-RU',
+  Portuguese = 'pt-BR',
 }
 
 export const resources: Resource = {
@@ -284,4 +352,5 @@ export const resources: Resource = {
   [Language.Spanish]: es419,
   [Language.Chinese]: zhCN,
   [Language.Russian]: ruRU,
+  [Language.Portuguese]: ptBR,
 }

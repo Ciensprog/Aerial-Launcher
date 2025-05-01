@@ -1,0 +1,46 @@
+{
+  "description": "Gerencie os Impulsos de XP das contas selecionadas.",
+  "form": {
+    "label": "Quantidade de Impulsos de XP para enviar (limitado a {{limit}})",
+    "input": {
+      "placeholder": "Exemplo: 123"
+    },
+    "refetch": "Atualizar Dados de Impulsos",
+    "see-boosts": "Ver Impulsos",
+    "send-boosts": "Enviar Impulsos"
+  },
+  "top-search": {
+    "description": "Exibir informações básicas sobre um jogador."
+  },
+  "sidebar": {
+    "title": "Quais Impulsos de XP você deseja usar?",
+    "personal": {
+      "description": "Todas essas contas usarão Impulsos de XP:",
+      "submit-button": "Consumir {{total}} Impulso(s) de XP em cada conta"
+    },
+    "teammate": {
+      "note": "Alguns impulsos podem não ser enviados se seu ping não for estável.",
+      "submit-button": "Enviar <1>{{total}}</1> para: <3>{{name}}</3>"
+    },
+    "errors": {
+      "valid-amount": "Por favor, digite uma quantidade válida"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "Resumo de {{total}} conta(s)"
+    },
+    "options": {
+      "description": "Impulsos de XP para colegas de equipe:",
+      "information": "{{current}}/{{total}} de um total de {{amount}}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "Um total de {{current}}/{{expected}} Impulso de XP foi consumido. Resumo de {{totalAccounts}} conta(s)",
+      "personal_other": "Um total de {{current}}/{{expected}} Impulsos de XP foram consumidos. Resumo de {{totalAccounts}} conta(s)",
+      "teammate_one": "Um total de {{current}}/{{expected}} Impulso de XP foi enviado para {{name}}. Resumo de {{totalAccounts}} conta(s)",
+      "teammate_other": "Um total de {{current}}/{{expected}} Impulsos de XP foram enviados para {{name}}. Resumo de {{totalAccounts}} conta(s)"
+    }
+  }
+}

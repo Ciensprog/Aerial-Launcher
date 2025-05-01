@@ -1,0 +1,10 @@
+{
+  "description": "Atualize o nome da base principal (não mais visível no jogo) das contas selecionadas.",
+  "form": {
+    "placeholder": "Definir um nome para a base principal",
+    "submit-button": "Atualizar nome da base principal"
+  },
+  "notifications": {
+    "updated": "Nome da base principal atualizado"
+  }
+}

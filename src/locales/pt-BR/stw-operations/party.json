@@ -1,0 +1,60 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "Expulsar Todos do Grupo"
+    },
+    "notifications": {
+      "success": "{{total}} usuário(s) expulso(s)",
+      "nothing": "Nenhum usuário foi expulso"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "Sair do Grupo"
+    }
+  },
+  "claim": {
+    "title": "Coletar recompensas após sair da missão",
+    "form": {
+      "submit-button": "Coletar Recompensas"
+    },
+    "notifications": {
+      "success": "Recompensas coletadas"
+    }
+  },
+  "friends": {
+    "note": "Se o jogador convidado não for seu amigo, o launcher enviará automaticamente uma solicitação de amizade.",
+    "form": {
+      "select": {
+        "placeholder": "Selecionar amigos",
+        "search": {
+          "placeholder": "Convidar pessoas"
+        },
+        "empty": {
+          "placeholder": "Sem amigos",
+          "options": "Digite para adicioná-los à lista"
+        }
+      },
+      "submit-button": "Convidar"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} foi adicionado aos amigos",
+        "default-error": "Ocorreu um erro ao tentar adicionar {{name}}"
+      },
+      "remove": {
+        "success": "{{name}} foi removido da lista",
+        "default-error": "Ocorreu um erro ao tentar remover {{name}}"
+      },
+      "invite": {
+        "error": "Ocorreu um erro ao enviar convites",
+        "sent_one": "{{count}} convite foi enviado",
+        "sent_other": "{{count}} convites foram enviados"
+      },
+      "request": {
+        "sent_one": "{{count}} solicitação de amizade foi enviada",
+        "sent_other": "{{count}} solicitações de amizade foram enviadas"
+      }
+    }
+  }
+}

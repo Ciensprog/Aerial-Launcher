@@ -1,0 +1,80 @@
+{
+  "app-settings": {
+    "title": "Configurações do Aplicativo",
+    "form": {
+      "language": {
+        "label": "Idioma",
+        "input": {
+          "placeholder": "Selecione o idioma"
+        },
+        "dialog": {
+          "title": "Qual idioma você deseja usar?",
+          "notes": {
+            "1": "Esta notificação não será exibida após a seleção.",
+            "2": "Você pode alterar esta seleção na página de Configurações."
+          },
+          "submit-button": "Salvar Seleção"
+        }
+      },
+      "path": {
+        "label": "Caminho personalizado"
+      },
+      "user-agent": {
+        "label": "Agente de Usuário Personalizado",
+        "note": "Só é aplicado se você não tiver o Fortnite instalado."
+      },
+      "custom-process": {
+        "label": "Processo Personalizado"
+      },
+      "claiming-rewards": {
+        "label": "Atraso personalizado para coletar recompensas",
+        "note": "Valor em segundos entre {{min}} e {{max}}. O padrão é: {{default}}.",
+        "input": {
+          "placeholder": "Exemplos: 0, 1, 1.5, 3, 4, 4.2 ou 5"
+        }
+      },
+      "mission-interval": {
+        "label": "Intervalo personalizado para verificar a missão atual",
+        "note1": "Significa que a cada {{value}} segundo/s será verificado se você está em uma missão. Isso é usado com o recurso de automação.",
+        "note2": "Valor em segundos entre {{min}} e {{max}}. O padrão é: {{default}}.",
+        "input": {
+          "placeholder": "Exemplos: 1, 3, 4 ou 5"
+        }
+      },
+      "tray": {
+        "label": "Ocultar na bandeja do sistema"
+      }
+    }
+  },
+  "custom-menu": {
+    "title": "Menu Personalizável",
+    "description": "Você pode personalizar a visibilidade das seções/opções do menu."
+  },
+  "tags-management": {
+    "title": "Gerenciamento de Tags",
+    "description": "Você pode criar tags para agrupar contas facilmente e executar operações em massa de forma mais organizada.",
+    "form": {
+      "input": {
+        "placeholder": "Digite um nome para a tag"
+      }
+    },
+    "search": {
+      "input": {
+        "placeholder": "Pesquisar em {{total}} tags"
+      },
+      "empty": "Nenhuma tag encontrada"
+    }
+  },
+  "account-customization": {
+    "title": "Personalização de Conta",
+    "description": "Às vezes, você pode precisar de um nome de exibição específico para identificar uma conta. Se desejar, você pode alterar o nome de exibição atual para um nome personalizado.",
+    "note": "Nota: isso se aplica apenas visualmente às contas do Aerial."
+  },
+  "form": {
+    "submit": {
+      "status": {
+        "success": "Informações atualizadas"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "description": "Salvar o progresso das missões das contas selecionadas.",
+  "form": {
+    "submit-button": "Salvar Missões"
+  },
+  "notifications": {
+    "saved": "O progresso das missões foi salvo"
+  }
+}

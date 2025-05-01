@@ -1,0 +1,54 @@
+{
+  "stw-operations": {
+    "title": "Operações STW",
+    "options": {
+      "auto-kick": "Auto-expulsar",
+      "party": "Grupo",
+      "save-quests": "Salvar Missões",
+      "homebase-name": "Nome da Base Principal",
+      "xp-boosts": "Impulsos de XP",
+      "auto-pin-urns": "Fixar Urnas Automaticamente",
+      "auto-llamas": "Lhamas Automáticas",
+      "unlock": "Desbloquear Recompensas dos Escudos"
+    },
+    "auto-kick-status": {
+      "issue": "Problema",
+      "active": "Ativo"
+    }
+  },
+  "account-management": {
+    "title": "Gerenciamento de Conta",
+    "options": {
+      "vbucks-information": "Informações de V-Bucks",
+      "redeem-codes": "Resgatar Códigos",
+      "devices-auth": "Autenticação de Dispositivos",
+      "epic-settings": "Configurações da Epic Games"
+    }
+  },
+  "advanced-mode": {
+    "title": "Modo Avançado",
+    "options": {
+      "matchmaking-track": "Rastreamento de Partidas",
+      "world-info": "Informações do Mundo"
+    }
+  },
+  "accounts": {
+    "title": "Minhas Contas",
+    "options": {
+      "show-total-accounts": "Mostrar Total de Contas",
+      "auth": "Código de Autorização",
+      "exchange": "Código de Troca",
+      "device": "Autenticação por Dispositivo",
+      "remove": "Remover Conta"
+    }
+  },
+  "links": {
+    "discord": "Servidor do Discord",
+    "github": "Ver no GitHub",
+    "credits": "Créditos"
+  },
+  "version": {
+    "release": "Lançamento v{{version}}",
+    "all-releases": "Todas as Versões"
+  }
+}

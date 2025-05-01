@@ -1,0 +1,17 @@
+{
+  "form": {
+    "generate-code": {
+      "input": {
+        "placeholder": "O código gerado será exibido aqui"
+      },
+      "submit-button": "Gerar Exchange Code"
+    }
+  },
+  "notifications": {
+    "generate-code": {
+      "success": "Exchange Code foi gerado e copiado para a área de transferência",
+      "error": "Ocorreu um erro ao tentar gerar o Exchange Code, tente novamente mais tarde"
+    },
+    "clipboard": "O Exchange Codo foi copiado para a área de transferência"
+  }
+}

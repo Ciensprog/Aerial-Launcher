@@ -17,11 +17,13 @@ export const availableLanguages: Array<{
   {
     id: Language.Chinese,
     title: '简体中文',
-    // completed: false,
   },
   {
     id: Language.Russian,
     title: 'Русский',
-    // completed: false,
+  },
+  {
+    id: Language.Portuguese,
+    title: 'Português',
   },
 ]

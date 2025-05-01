@@ -1,0 +1,18 @@
+{
+  "description": "Selecione uma conta e gerencie as autenticações de dispositivos criadas. Agente do Usuário, Criação e Último Acesso são exibidos com informações sobre: Localização, Endereço IP e Data.",
+  "form": {
+    "submit-button": "Solicitar Devices Auth"
+  },
+  "results": {
+    "title": "Dispositivos Encontrados: <1>{{total}}</1>",
+    "item": {
+      "created": "Criado",
+      "last-access": "Último Acesso"
+    }
+  },
+  "notifications": {
+    "no-devices": "Nenhum dispositivo encontrado",
+    "success": "DeviceId {{deviceId}} foi removido com sucesso",
+    "error": "Ocorreu um erro ao tentar remover o dispositivo: {{deviceId}}"
+  }
+}
