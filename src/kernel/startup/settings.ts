@@ -14,6 +14,7 @@ import {
   defaultAppLanguage,
 } from '../../config/constants/settings'
 
+import { CustomProcess } from '../core/custom-process'
 import { MainWindow } from './windows/main'
 import { DataDirectory } from './data-directory'
 import { SystemTray } from './system-tray'
@@ -29,6 +30,9 @@ export class SettingsManager {
       settings
     )
 
+    CustomProcess.setName(settings.customProcess)
+    CustomProcess.init()
+
     await SettingsManager.update(settings)
   }
 
@@ -39,6 +43,8 @@ export class SettingsManager {
       claimingRewards:
         result.settings.claimingRewards ??
         defaultSettingsData.claimingRewards,
+      customProcess:
+        result.settings.customProcess ?? defaultSettingsData.customProcess,
       missionInterval:
         result.settings.missionInterval ??
         defaultSettingsData.missionInterval,
@@ -69,6 +75,8 @@ export class SettingsManager {
         SystemTray.destroy()
       }
     }
+
+    CustomProcess.setName(settings.customProcess)
 
     await DataDirectory.updateSettingsFile(settings)
 

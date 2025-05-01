@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import schedule from 'node-schedule'
 
+import { CustomProcess } from '../../core/custom-process'
 import { Automation } from '../automation'
 import { SystemTray } from '../system-tray'
 
@@ -28,6 +29,7 @@ export class MainWindow {
     })
     schedule.gracefulShutdown().catch(() => {})
 
+    CustomProcess.destroy()
     SystemTray.destroy()
   }
 

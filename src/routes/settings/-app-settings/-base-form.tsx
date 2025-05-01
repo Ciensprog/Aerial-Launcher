@@ -68,6 +68,21 @@ export function AppSettingsBaseForm() {
           />
           <FormField
             control={form.control}
+            name="customProcess"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {t('app-settings.form.custom-process.label')}
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="claimingRewards"
             render={({ field }) => (
               <FormItem>

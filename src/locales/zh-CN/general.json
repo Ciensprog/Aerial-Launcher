@@ -91,6 +91,9 @@
       "error": "使用帐户 {{name}} 启动游戏时发生错误，请稍后再试"
     }
   },
+  "close-game": {
+    "button": "关闭游戏"
+  },
   "separators": {
     "or": "或"
   },

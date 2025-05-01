@@ -23,6 +23,9 @@
         "label": "自定义用户代理",
         "note": "仅在您未安装 Fortnite 时适用。"
       },
+      "custom-process": {
+        "label": "定制流程"
+      },
       "claiming-rewards": {
         "label": "自定义领取奖励的延迟",
         "note": "值以秒为单位，范围在 {{min}} 到 {{max}} 之间。默认值为：{{default}}。",

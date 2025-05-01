@@ -23,9 +23,11 @@ import { cn } from '../../lib/utils'
 export function Header() {
   const { t } = useTranslation(['general'])
 
-  const { isButtonDisabled, open, setOpen } = useAttributesStates()
+  const { customProcessIsRunning, isButtonDisabled, open, setOpen } =
+    useAttributesStates()
   const {
     handleCloseWindow,
+    handleKillProcess,
     handleLaunch,
     handleMinimizeWindow,
     handleOpenSTWNewsProfile,
@@ -76,15 +78,19 @@ export function Header() {
               'w-[7.5rem]': !isMinWith,
             })}
             size={isMinWith ? 'icon' : 'default'}
-            variant="outline"
+            variant={customProcessIsRunning ? 'default' : 'outline'}
             disabled={isButtonDisabled}
-            onClick={handleLaunch}
+            onClick={
+              customProcessIsRunning ? handleKillProcess : handleLaunch
+            }
           >
             {isMinWith ? (
               <Rocket size={20} />
             ) : (
               <span className="text-balance truncate">
-                {t('launch-game.button')}
+                {customProcessIsRunning
+                  ? t('close-game.button')
+                  : t('launch-game.button')}
               </span>
             )}
           </Button>

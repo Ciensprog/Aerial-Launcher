@@ -21,6 +21,10 @@ export function updateSettings(settings: Settings) {
   ipcRenderer.send(ElectronAPIEventKeys.UpdateSettings, settings)
 }
 
+export function killProcess() {
+  ipcRenderer.send(ElectronAPIEventKeys.CustomProcessKill)
+}
+
 export function notificationDevSettings(
   callback: (value: DevSettings) => Promise<void>
 ) {
@@ -56,6 +60,26 @@ export function responseSettings(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.OnLoadSettings,
+        customCallback
+      ),
+  }
+}
+
+export function notificationCustomProcessStatus(
+  callback: (value: boolean) => Promise<void>
+) {
+  const customCallback = (_: IpcRendererEvent, value: boolean) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.CustomProcessStatus,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.CustomProcessStatus,
         customCallback
       ),
   }

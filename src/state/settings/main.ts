@@ -1,9 +1,13 @@
 import type { DevSettings, Settings } from '../../types/settings'
 
 import { create } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 
 export type SettingsState = Settings & {
+  customProcessIsRunning: boolean
+
   updateSettings: (settings: Partial<Settings>) => void
+  updateCustomProcessStatus: (value: boolean) => void
 }
 
 export type DevSettingsState = {
@@ -12,45 +16,58 @@ export type DevSettingsState = {
   updateDevSettings: (value: DevSettings) => void
 }
 
-export const useSettingsStore = create<SettingsState>()((set) => ({
-  claimingRewards: '',
-  missionInterval: '',
-  path: '',
-  systemTray: false,
-  userAgent: '',
+export const useSettingsStore = create<SettingsState>()(
+  immer((set) => ({
+    claimingRewards: '',
+    customProcess: '',
+    missionInterval: '',
+    path: '',
+    systemTray: false,
+    userAgent: '',
 
-  updateSettings: (settings) => {
-    const newData: Partial<
-      Record<keyof Settings, boolean | number | string>
-    > = {}
+    customProcessIsRunning: false,
 
-    if (settings.claimingRewards !== undefined) {
-      newData.claimingRewards = settings.claimingRewards
-    }
+    updateSettings: (settings) => {
+      const newData: Partial<
+        Record<keyof Settings, boolean | number | string>
+      > = {}
 
-    if (settings.missionInterval !== undefined) {
-      newData.missionInterval = settings.missionInterval
-    }
+      if (settings.claimingRewards !== undefined) {
+        newData.claimingRewards = settings.claimingRewards
+      }
 
-    if (settings.path !== undefined) {
-      newData.path = settings.path
-    }
+      if (settings.missionInterval !== undefined) {
+        newData.missionInterval = settings.missionInterval
+      }
 
-    if (settings.systemTray !== undefined) {
-      newData.systemTray = settings.systemTray
-    }
+      if (settings.path !== undefined) {
+        newData.path = settings.path
+      }
 
-    if (settings.userAgent !== undefined) {
-      newData.userAgent = settings.userAgent
-    }
+      if (settings.systemTray !== undefined) {
+        newData.systemTray = settings.systemTray
+      }
 
-    const total = Object.keys(newData).length
+      if (settings.userAgent !== undefined) {
+        newData.userAgent = settings.userAgent
+      }
 
-    if (total > 0) {
-      set(settings)
-    }
-  },
-}))
+      const total = Object.keys(newData).length
+
+      if (total > 0) {
+        set((state) => ({
+          ...state,
+          ...settings,
+        }))
+      }
+    },
+    updateCustomProcessStatus: (isRunning) => {
+      set((state) => {
+        state.customProcessIsRunning = isRunning
+      })
+    },
+  }))
+)
 
 export const useDevSettingsStore = create<DevSettingsState>()((set) => ({
   settings: {},

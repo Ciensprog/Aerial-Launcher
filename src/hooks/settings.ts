@@ -6,7 +6,10 @@ import {
   customizableMenuSettingsRelations,
   useCustomizableMenuSettingsStore,
 } from '../state/settings/customizable-menu'
-import { useDevSettingsStore } from '../state/settings/main'
+import {
+  useDevSettingsStore,
+  useSettingsStore,
+} from '../state/settings/main'
 
 export function useDevSettingsData() {
   const settings = useDevSettingsStore((state) => state.settings)
@@ -53,5 +56,15 @@ export function useCustomizableMenuSettingsActions() {
 
   return {
     updateMenuOption,
+  }
+}
+
+export function useCustomProcessStatus() {
+  const customProcessIsRunning = useSettingsStore(
+    (state) => state.customProcessIsRunning
+  )
+
+  return {
+    customProcessIsRunning,
   }
 }
