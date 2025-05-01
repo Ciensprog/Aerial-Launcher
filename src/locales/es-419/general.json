@@ -91,6 +91,9 @@
       "error": "Ocurrió un error al iniciar el juego en la cuenta {{name}}, por favor intenta más tarde"
     }
   },
+  "close-game": {
+    "button": "Cerrar Juego"
+  },
   "separators": {
     "or": "O"
   },

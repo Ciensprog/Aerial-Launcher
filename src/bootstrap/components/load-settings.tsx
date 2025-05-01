@@ -15,6 +15,9 @@ export function LoadSettings() {
   const { i18n } = useTranslation()
 
   const updateSettings = useSettingsStore((state) => state.updateSettings)
+  const updateCustomProcessStatus = useSettingsStore(
+    (state) => state.updateCustomProcessStatus
+  )
   const updateDevSettings = useDevSettingsStore(
     (state) => state.updateDevSettings
   )
@@ -75,6 +78,18 @@ export function LoadSettings() {
     )
 
     window.electronAPI.requestCustomizableMenuData()
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
+    const listener = window.electronAPI.notificationCustomProcessStatus(
+      async (isRunning) => {
+        updateCustomProcessStatus(isRunning)
+      }
+    )
 
     return () => {
       listener.removeListener()

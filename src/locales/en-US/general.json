@@ -91,6 +91,9 @@
       "error": "An error has occurred launching game with account {{name}}, try again later"
     }
   },
+  "close-game": {
+    "button": "Close Game"
+  },
   "separators": {
     "or": "Or"
   },

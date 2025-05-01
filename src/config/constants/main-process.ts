@@ -19,6 +19,9 @@ export enum ElectronAPIEventKeys {
   OnLoadSettings = 'on:load:settings',
   UpdateSettings = 'settings:update',
 
+  CustomProcessKill = 'custom-process:kill',
+  CustomProcessStatus = 'custom-process:status',
+
   DevSettingsRequest = 'dev-settings:request',
   DevSettingsResponse = 'dev-settings:response',
 

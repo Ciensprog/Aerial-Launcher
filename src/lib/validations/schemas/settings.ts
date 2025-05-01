@@ -13,7 +13,12 @@ import { Language } from '../../../locales/resources'
 
 export const appLanguageSchema = z.object({
   i18n: z
-    .enum([Language.English, Language.Spanish, Language.Chinese,Language.Russian])
+    .enum([
+      Language.English,
+      Language.Spanish,
+      Language.Chinese,
+      Language.Russian,
+    ])
     .default(Language.English),
 })
 
@@ -22,6 +27,7 @@ export const settingsSchema = z.object({
     defaultValue: defaultClaimingRewardsDelay,
     range: claimingRewardsDelayRange,
   }),
+  customProcess: z.string().trim().min(1),
   missionInterval: createRangeValidation({
     decimals: 0,
     defaultValue: defaultMissionInterval,

@@ -76,6 +76,7 @@ import {
 } from '../state/stw-operations/auto/llamas'
 
 import { Language } from '../locales/resources'
+import { CustomProcess } from './core/custom-process'
 
 dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
@@ -254,6 +255,10 @@ const gotTheLock = app.requestSingleInstanceLock()
         await GroupsManager.update(groups)
       }
     )
+
+    ipcMain.on(ElectronAPIEventKeys.CustomProcessKill, () => {
+      CustomProcess.kill()
+    })
 
     /**
      * General Methods

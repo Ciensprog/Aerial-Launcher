@@ -73,6 +73,7 @@ export class DataDirectory {
   )
   private static settingsDefaultData: Settings = {
     claimingRewards: `${defaultClaimingRewardsDelay}`,
+    customProcess: 'FortniteClient-Win64-Shipping.exe',
     missionInterval: `${defaultMissionInterval}`,
     path: 'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64',
     systemTray: false,

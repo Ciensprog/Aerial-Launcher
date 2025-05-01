@@ -23,6 +23,9 @@
         "label": "Custom User Agent",
         "note": "Only is applied if you don't have Fortnite installed."
       },
+      "custom-process": {
+        "label": "Custom Process"
+      },
       "claiming-rewards": {
         "label": "Custom delay for claiming rewards",
         "note": "Value in seconds between {{min}} and {{max}}. Default is: {{default}}.",

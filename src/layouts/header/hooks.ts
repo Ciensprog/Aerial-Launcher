@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { stwNewsProfileURL } from '../../config/fortnite/links'
 
 import { useGetSelectedAccount } from '../../hooks/accounts'
+import { useCustomProcessStatus } from '../../hooks/settings'
 
 import { toast } from '../../lib/notifications'
 import { parseCustomDisplayName } from '../../lib/utils'
@@ -11,10 +12,12 @@ import { parseCustomDisplayName } from '../../lib/utils'
 export function useAttributesStates() {
   const [open, setOpen] = useState(false)
   const { selected } = useGetSelectedAccount()
+  const { customProcessIsRunning } = useCustomProcessStatus()
 
   const isButtonDisabled = selected === null // || selected.accessToken === undefined
 
   return {
+    customProcessIsRunning,
     isButtonDisabled,
     open,
 
@@ -26,6 +29,7 @@ export function useHandlers() {
   const { t } = useTranslation(['general'])
 
   const { selected } = useGetSelectedAccount()
+  const { customProcessIsRunning } = useCustomProcessStatus()
 
   useEffect(() => {
     const notificationLauncherListener =
@@ -52,6 +56,12 @@ export function useHandlers() {
     }
   }
 
+  const handleKillProcess = () => {
+    if (customProcessIsRunning) {
+      window.electronAPI.killProcess()
+    }
+  }
+
   const handleOpenSTWNewsProfile = () => {
     if (selected) {
       window.electronAPI.openExternalURL(
@@ -70,6 +80,7 @@ export function useHandlers() {
 
   return {
     handleCloseWindow,
+    handleKillProcess,
     handleLaunch,
     handleMinimizeWindow,
     handleOpenSTWNewsProfile,

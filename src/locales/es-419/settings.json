@@ -23,6 +23,9 @@
         "label": "Agente de Usuario personalizado",
         "note": "Sólo aplica si no tienes Fortnite instalado."
       },
+      "custom-process": {
+        "label": "Proceso Personalizado"
+      },
       "claiming-rewards": {
         "label": "Retraso personalizado antes de empezar a reclamar recompensas",
         "note": "Valor en segundos entre {{min}} y {{max}}. Por defecto es: {{default}}.",
