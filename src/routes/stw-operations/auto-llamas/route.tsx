@@ -217,7 +217,7 @@ export function Content() {
             </CardContent>
           </Card>
 
-          <div className="gap-4 grid grid-cols-2 max-w-lg mt-5 w-full">
+          <div className="gap-4 grid grid-cols-2 max-w-lg mt-5 w-full max-[992px]:mb-14">
             {accounts.map((account) => {
               const current = selectedAccounts[account.accountId]
 
