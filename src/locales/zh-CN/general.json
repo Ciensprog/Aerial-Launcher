@@ -143,6 +143,8 @@
   "note": "备注",
   "show-information": "Show Hiden Information",
   "ip-address": "IP Address",
+  "is-running": "应用程序正在运行",
+  "is-not-running": "应用程序未运行",
   "last-played": "Last Played At: {{date}}",
   "location": "Location",
   "missions": "Missions",

@@ -143,6 +143,8 @@
   "note": "Nota",
   "show-information": "Mostrar Informações Ocultas",
   "ip-address": "Endereço IP",
+  "is-running": "Está em execução",
+  "is-not-running": "O aplicativo não está em execução",
   "last-played": "Última vez jogado em: {{date}}",
   "location": "Localização",
   "missions": "Missões",

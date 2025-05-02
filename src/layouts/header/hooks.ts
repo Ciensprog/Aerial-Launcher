@@ -29,19 +29,17 @@ export function useHandlers() {
   const { t } = useTranslation(['general'])
 
   const { selected } = useGetSelectedAccount()
-  const { customProcessIsRunning } = useCustomProcessStatus()
 
   useEffect(() => {
     const notificationLauncherListener =
       window.electronAPI.onNotificationLauncher(async (data) => {
         toast(
-          data.status
-            ? t('launch-game.notifications.success', {
-                name: parseCustomDisplayName(data.account),
-              })
-            : t('launch-game.notifications.error', {
-                name: parseCustomDisplayName(data.account),
-              })
+          t(
+            `launch-game.notifications.${data.status ? 'success' : 'error'}`,
+            {
+              name: parseCustomDisplayName(data.account),
+            }
+          )
         )
       })
 
@@ -51,23 +49,25 @@ export function useHandlers() {
   }, [])
 
   const handleLaunch = () => {
-    if (selected) {
-      window.electronAPI.launcherStart(selected)
+    if (!selected) {
+      return
     }
+
+    window.electronAPI.launcherStart(selected)
   }
 
   const handleKillProcess = () => {
-    if (customProcessIsRunning) {
-      window.electronAPI.killProcess()
-    }
+    window.electronAPI.killProcess()
   }
 
   const handleOpenSTWNewsProfile = () => {
-    if (selected) {
-      window.electronAPI.openExternalURL(
-        stwNewsProfileURL(selected.accountId)
-      )
+    if (!selected) {
+      return
     }
+
+    window.electronAPI.openExternalURL(
+      stwNewsProfileURL(selected.accountId)
+    )
   }
 
   const handleCloseWindow = () => {
@@ -88,7 +88,7 @@ export function useHandlers() {
 }
 
 export function useWindowEvents() {
-  const matchMediaRef = useRef(window.matchMedia('(min-width: 800px)'))
+  const matchMediaRef = useRef(window.matchMedia('(min-width: 930px)'))
   const [isMinWith, setIsMinWith] = useState(
     !matchMediaRef.current.matches
   )

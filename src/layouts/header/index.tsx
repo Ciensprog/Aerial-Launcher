@@ -9,6 +9,12 @@ import {
   SheetContent,
   SheetTrigger,
 } from '../../components/ui/sheet'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../components/ui/tooltip'
 
 import { AccountList } from '../../components/account-list'
 import { HistoryMenu } from '../../components/menu/history'
@@ -73,31 +79,77 @@ export function Header() {
 
           <AccountList />
 
-          <Button
-            className={cn('leading-4 not-draggable-region px-2 py-1', {
-              'w-[7.5rem]': !isMinWith,
-            })}
-            size={isMinWith ? 'icon' : 'default'}
-            variant={customProcessIsRunning ? 'default' : 'outline'}
-            disabled={isButtonDisabled}
-            onClick={
-              customProcessIsRunning ? handleKillProcess : handleLaunch
-            }
-          >
-            {isMinWith ? (
-              customProcessIsRunning ? (
-                <X size={20} />
-              ) : (
-                <Rocket size={20} />
-              )
-            ) : (
-              <span className="text-balance truncate">
-                {customProcessIsRunning
-                  ? t('close-game.button')
-                  : t('launch-game.button')}
-              </span>
-            )}
-          </Button>
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className={cn(
+                    'leading-4 not-draggable-region px-2 py-1',
+                    {
+                      'w-[7.5rem]': !isMinWith,
+                    }
+                  )}
+                  size={isMinWith ? 'icon' : 'default'}
+                  variant={
+                    customProcessIsRunning ? 'secondary' : 'outline'
+                  }
+                  disabled={isButtonDisabled}
+                  onClick={handleLaunch}
+                >
+                  {isMinWith ? (
+                    <Rocket size={20} />
+                  ) : (
+                    <span className="text-balance truncate">
+                      {t('launch-game.button')}
+                    </span>
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent
+                className={cn({
+                  hidden: !customProcessIsRunning,
+                })}
+              >
+                <p>{t('is-running')}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className={cn(
+                    'leading-4 not-draggable-region px-2 py-1',
+                    {
+                      'w-[7.5rem]': !isMinWith,
+                    }
+                  )}
+                  size={isMinWith ? 'icon' : 'default'}
+                  variant={
+                    customProcessIsRunning ? 'default' : 'secondary'
+                  }
+                  disabled={isButtonDisabled}
+                  onClick={handleKillProcess}
+                >
+                  {isMinWith ? (
+                    <X size={20} />
+                  ) : (
+                    <span className="text-balance truncate">
+                      {t('close-game.button')}
+                    </span>
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent
+                className={cn({
+                  hidden: customProcessIsRunning,
+                })}
+              >
+                <p>{t('is-not-running')}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           <Button
             className="not-draggable-region"

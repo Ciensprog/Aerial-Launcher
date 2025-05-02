@@ -143,6 +143,8 @@
   "note": "Note",
   "show-information": "Show Hiden Information",
   "ip-address": "IP Address",
+  "is-running": "App is running",
+  "is-not-running": "App is not running",
   "last-played": "Last Played At: {{date}}",
   "location": "Location",
   "missions": "Missions",

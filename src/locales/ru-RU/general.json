@@ -143,6 +143,8 @@
   "note": "Примечание",
   "show-information": "Показать Скрытую Информацию",
   "ip-address": "IP Адрес",
+  "is-running": "Приложение работает",
+  "is-not-running": "Приложение не запущено",
   "last-played": "Последний Раз Играл: {{date}}",
   "location": "Локация",
   "missions": "Миссиия",
