@@ -1,0 +1,9 @@
+{
+  "notifications": {
+    "new-account": {
+      "success": "Dodano nowe konto: {{name}}",
+      "error": "Nieznany błąd",
+      "launcher-auth-login": "Nie można dodać konta, sprawdź, czy dane uwierzytelniające są prawidłowe"
+    }
+  }
+}

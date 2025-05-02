@@ -336,6 +336,73 @@ const ptBR = {
 }
 
 /**
+ * @file pl-PL
+ */
+import plPL_sidebar from './pl-PL/sidebar.json'
+import plPL_general from './pl-PL/general.json'
+import plPL_history from './pl-PL/history.json'
+import plPL_settings from './pl-PL/settings.json'
+import plPL_alerts from './pl-PL/home.json'
+import plPL_zones from './pl-PL/zones.json'
+import plPL_stwOperations_AutoKick from './pl-PL/stw-operations/auto-kick.json'
+import plPL_stwOperations_HomebaseName from './pl-PL/stw-operations/homebase-name.json'
+import plPL_stwOperations_SaveQuests from './pl-PL/stw-operations/save-quests.json'
+import plPL_stwOperations_Party from './pl-PL/stw-operations/party.json'
+import plPL_stwOperations_Urns from './pl-PL/stw-operations/urns.json'
+import plPL_stwOperations_XPBoosts from './pl-PL/stw-operations/xpboosts.json'
+import plPL_stwOperations_Llamas from './pl-PL/stw-operations/llamas.json'
+import plPL_stwOperations_Unlock from './pl-PL/stw-operations/unlock.json'
+import plPL_accountManagement_VBucksInformation from './pl-PL/account-management/vbucks-information.json'
+import plPL_accountManagement_EULA from './pl-PL/account-management/eula.json'
+import plPL_accountManagement_RedeemCodes from './pl-PL/account-management/redeem-codes.json'
+import plPL_accountManagement_DevicesAuth from './pl-PL/account-management/devices-auth.json'
+import plPL_accountManagement_EpicSettings from './pl-PL/account-management/epic-settings.json'
+import plPL_advancedMode_MatchmakingTrack from './pl-PL/advanced-mode/matchmaking-track.json'
+import plPL_advancedMode_WorldInfo from './pl-PL/advanced-mode/world-info.json'
+import plPL_myAccounts_General from './pl-PL/accounts/general.json'
+import plPL_myAccounts_AuthCode from './pl-PL/accounts/auth-code.json'
+import plPL_myAccounts_ExchangeCode from './pl-PL/accounts/exchange-code.json'
+import plPL_myAccounts_DeviceAuth from './pl-PL/accounts/device-auth.json'
+import plPL_myAccounts_RemoveAccount from './pl-PL/accounts/remove-account.json'
+
+const plPL = {
+  sidebar: plPL_sidebar,
+  general: plPL_general,
+  history: plPL_history,
+  settings: plPL_settings,
+  alerts: plPL_alerts,
+  zones: plPL_zones,
+  'stw-operations': {
+    'auto-kick': plPL_stwOperations_AutoKick,
+    'homebase-name': plPL_stwOperations_HomebaseName,
+    'save-quests': plPL_stwOperations_SaveQuests,
+    party: plPL_stwOperations_Party,
+    urns: plPL_stwOperations_Urns,
+    xpboosts: plPL_stwOperations_XPBoosts,
+    llamas: plPL_stwOperations_Llamas,
+    unlock: plPL_stwOperations_Unlock,
+  },
+  'account-management': {
+    'vbucks-information': plPL_accountManagement_VBucksInformation,
+    'redeem-codes': plPL_accountManagement_RedeemCodes,
+    'devices-auth': plPL_accountManagement_DevicesAuth,
+    'epic-settings': plPL_accountManagement_EpicSettings,
+    eula: plPL_accountManagement_EULA,
+  },
+  'advanced-mode': {
+    'matchmaking-track': plPL_advancedMode_MatchmakingTrack,
+    'world-info': plPL_advancedMode_WorldInfo,
+  },
+  accounts: {
+    general: plPL_myAccounts_General,
+    'auth-code': plPL_myAccounts_AuthCode,
+    'exchange-code': plPL_myAccounts_ExchangeCode,
+    'device-auth': plPL_myAccounts_DeviceAuth,
+    'remove-account': plPL_myAccounts_RemoveAccount,
+  },
+}
+
+/**
  * Export resources
  */
 
@@ -345,6 +412,7 @@ export enum Language {
   Chinese = 'zh-CN',
   Russian = 'ru-RU',
   Portuguese = 'pt-BR',
+  Polish = 'pl-PL',
 }
 
 export const resources: Resource = {
@@ -353,4 +421,5 @@ export const resources: Resource = {
   [Language.Chinese]: zhCN,
   [Language.Russian]: ruRU,
   [Language.Portuguese]: ptBR,
+  [Language.Polish]: plPL,
 }

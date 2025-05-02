@@ -1,0 +1,8 @@
+{
+  "note": "Uwaga: Działa tylko podczas sezonów w których są Lochy.",
+  "description": "Ta funkcja automatycznie przypnie zadanie 'Skarby w urnach' za każdym razem, gdy zostanie ono odebrane (za pomocą launchera). Dzięki temu zawsze będziecie mogli śledzić brakujące urny i nie musicie przypinać zadania przed każdą rozgrywką.",
+  "options": {
+    "urns": "Urny",
+    "mini-bosses": "Mini-Bossowie"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "guide": {
+    "title": "Jak uzyskać kod:",
+    "steps": {
+      "1": "<0>Krok 1:</0> Musisz zalogować się na swoje konto Epic Games: <3>{{url}}</3>",
+      "2": "<0>Krok 2:</0> Kliknij na <3>ten link</3> lub przycisk poniżej (Uzyskaj Kod), otworzy on nową kartę w przeglądarce z odpowiedzią formatu json z kodem autoryzacyjnym:"
+    }
+  }
+}

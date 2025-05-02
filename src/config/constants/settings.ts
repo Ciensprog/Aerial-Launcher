@@ -26,4 +26,8 @@ export const availableLanguages: Array<{
     id: Language.Portuguese,
     title: 'Português',
   },
+  {
+    id: Language.Polish,
+    title: 'Polski',
+  },
 ]

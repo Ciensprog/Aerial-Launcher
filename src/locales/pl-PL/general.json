@@ -1,0 +1,160 @@
+{
+  "actions": {
+    "add": "Dodaj",
+    "change": "Zmień",
+    "create": "Stwórz",
+    "login": "Logowanie",
+    "revert": "Cofnij",
+    "search": "Szukaj",
+    "success": "Sukces",
+    "update": "Odśwież",
+    "accepted": "Zaakceptowano",
+    "verify": "Weryfikacja"
+  },
+  "form": {
+    "credentials": {
+      "account-id": "ID konta",
+      "device-id": "Id urządzenia",
+      "secret": "Sekret",
+      "login": {
+        "label": "Wklej swój kod",
+        "input": {
+          "placeholder": "Przykład: {{code}}"
+        },
+        "get-code": "<0>Zdobądź Kod</0> <1 />"
+      }
+    },
+    "accounts": {
+      "placeholder": "Szukaj na {{total}} kontach",
+      "placeholder_private": "Szukaj na kontach",
+      "search-empty": "Nie znaleziono konta",
+      "select": "Wybierz konto",
+      "selected": "Wybrane konto",
+      "no-available": "Brak dostępnych kont",
+      "no-linked": "Brak połączonych kont",
+      "no-options": "Brak kont",
+      "no-registered-accounts": "Brak zarejestrowanych kont"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Wybierz konta",
+        "tags": "Wybierz tagi",
+        "bulk-note": "Zaznaczono tag zbiorczy, zostaną użyte wszystkie konta w launcherze."
+      }
+    },
+    "player": {
+      "search-empty": "Nie znaleziono gracza",
+      "recently": {
+        "empty-placeholder": "Brak ostatnich graczy",
+        "search-placeholder": "Wyszukiwanie na {{total}} graczu/graczach",
+        "select-placeholder": "Wybierz ostatniego gracza"
+      }
+    },
+    "search-account": {
+      "label": "Szukaj gracza według ID konta lub nazwy wyświetlanej (Epic, Xbox Network lub PSN)",
+      "input": {
+        "placeholder": "Przykład"
+      }
+    }
+  },
+  "information": {
+    "account-id": "ID konta:",
+    "power-level": "Poziom mocy:",
+    "commander-level": "Poziom konta:",
+    "boosted-xp": "Wzmocnione PD:",
+    "days-logged-in": "Liczba dni zalogowanych:",
+    "collection-book-level": "Poziom Księgi Kolekcji:",
+    "personal-xp-boosts": "Osobiste Wzmocnienia PD:",
+    "teammate-xp-boosts": "Wzmocnienia PD Towarzysza:",
+    "founder-status": "Status Fundatora:"
+  },
+  "version": {
+    "title": "Nowa wersja {{version}}",
+    "description": "Możesz pobrać nową wersję (plik .exe) tutaj:"
+  },
+  "community-info": {
+    "message": "Dołącz do naszej <2>Społeczności na Discordzie<1/></2>, aby dowiedzieć się więcej o nadchodzących aktualizacjach!!!"
+  },
+  "founder": {
+    "non-founder": "Nie Fundator",
+    "founder": "Fundator",
+    "standard": "Edycja Standardowa",
+    "deluxe": "Edycja Deluxe",
+    "super-deluxe": "Edycja Super Deluxe",
+    "limited": "Edycja Limitowana",
+    "ultimate": "Edycja Ultimate"
+  },
+  "launch-game": {
+    "button": "Uruchom Grę",
+    "notifications": {
+      "success": "Gra została uruchomiona na koncie {{name}}",
+      "error": "Wystąpił błąd podczas uruchamiania gry na koncie {{name}}, spróbuj ponownie później"
+    }
+  },
+  "close-game": {
+    "button": "Zamknij grę"
+  },
+  "separators": {
+    "or": "Lub"
+  },
+  "sort": {
+    "newest": "Sortowane według najnowszych"
+  },
+  "statuses": {
+    "error": "Błąd",
+    "loading": "Ładowanie",
+    "not-found": "Nie znaleziono",
+    "owned": "Posiadane",
+    "claimed": "Odebrano",
+    "used": "Użyte"
+  },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ Nieprawidłowe ID konta"
+        },
+        "device-id": {
+          "invalid": "❌ Nieprawidłowe ID urządzenia"
+        },
+        "secret": {
+          "invalid": "❌ Nieprawidłowy sekret"
+        },
+        "code": {
+          "invalid": "❌ Nieprawidłowy kod"
+        }
+      }
+    },
+    "screenshot": {
+      "success": "Zrzut ekranu wygenerowany i skopiowany do schowka",
+      "error": "Nie można wygenerować zrzutu ekranu, spróbuj ponownie później"
+    }
+  },
+  "account-selected": "Wybrane konto: <2>{{name}}</2>",
+  "boosts": "Wzmocnienie/a",
+  "credits": "Podziękowania",
+  "current": "Obecny",
+  "date": "Data",
+  "first-claim": "Pierwszy odbiór: {{date}}",
+  "go-to-current-alerts": "Przejdź do aktualnych misji alarmowych",
+  "go-to-top": "Przejdź do góry",
+  "history": "Historia",
+  "hide-information": "Ukryj informacje",
+  "note": "Uwaga",
+  "show-information": "Pokaż ukryte informacje",
+  "ip-address": "Adres IP",
+  "is-running": "Aplikacja jest uruchomiona",
+  "is-not-running": "Aplikacja nie jest uruchomiona",
+  "last-played": "Ostatnio grano: {{date}}",
+  "location": "Lokalizacja",
+  "missions": "Misje",
+  "public-stats": "Uwaga: Ten użytkownik ma wyłączone \"Statystyki gry publicznej\", więcej informacji nie może być wyświetlanych.",
+  "settings": "Ustawienia",
+  "summary": "Podsumowanie",
+  "unknown-user": "Nieznany użytkownik",
+  "unknown": "Nieznane",
+  "update-information": "Aktualizacja informacji",
+  "user-agent": "User Agent",
+  "generate-screenshot": "Generuj zrzut ekranu",
+  "under-translation": "(W trakcie tłumaczenia)"
+}

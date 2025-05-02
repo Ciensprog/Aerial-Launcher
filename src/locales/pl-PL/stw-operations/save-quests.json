@@ -1,0 +1,9 @@
+{
+  "description": "Zapisz progres zadań na wybranch kontach.",
+  "form": {
+    "submit-button": "Zapisz progres"
+  },
+  "notifications": {
+    "saved": "Postęp zadań został zapisany"
+  }
+}

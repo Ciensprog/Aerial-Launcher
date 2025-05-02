@@ -1,0 +1,25 @@
+{
+  "description": "Sprawdź, czy to jest użytkownik, którego szukasz i żądaj informacji o ich matchmakingu.",
+  "note": "Domyślna ścieżka pliku:",
+  "form": {
+    "recently": {
+      "label": "Uwaga: Ci gracze są zapisani tymczasowo"
+    },
+    "submit-button": "Utwórz Plik Matchmakingu"
+  },
+  "results": {
+    "notes": "Uwagi:",
+    "options": {
+      "public-stats": "Ten użytkownik ma wyłączone \"Statystyki gry publicznej\", więcej informacji nie może być wyświetlanych.",
+      "continuation": "Oczywiście nadal możesz wygenerować plik."
+    }
+  },
+  "notifications": {
+    "file": {
+      "updated": "Plik został pomyślnie zaktualizowany"
+    },
+    "player": {
+      "not-playing": "Wybrany gracz prawdopodobnie nie jest w trakcie misji"
+    }
+  }
+}

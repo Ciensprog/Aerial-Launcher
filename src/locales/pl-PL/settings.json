@@ -1,0 +1,80 @@
+{
+  "app-settings": {
+    "title": "Ustawienia Aplikacji",
+    "form": {
+      "language": {
+        "label": "Język",
+        "input": {
+          "placeholder": "Wybierz język"
+        },
+        "dialog": {
+          "title": "Jakiego języka chcesz używać?",
+          "notes": {
+            "1": "To powiadomienie nie będzie wyświetlane po dokonaniu wyboru.",
+            "2": "Możesz zmienić ten wybór na stronie ustawień."
+          },
+          "submit-button": "Zapisz wybór"
+        }
+      },
+      "path": {
+        "label": "Niestandardowa ścieżka"
+      },
+      "user-agent": {
+        "label": "Niestandardowy User Agent",
+        "note": "Jest stosowany tylko wtedy, gdy nie masz zainstalowanego Fortnite."
+      },
+      "custom-process": {
+        "label": "Własny proces"
+      },
+      "claiming-rewards": {
+        "label": "Własne opóźnienie za otrzymywanie nagród",
+        "note": "Wartość w sekundach między {{min}} i {{max}}. Domyślnie: {{default}}.",
+        "input": {
+          "placeholder": "Przykłady: 0, 1, 1.5, 3, 4, 4.2 lub 5"
+        }
+      },
+      "mission-interval": {
+        "label": "Niestandardowy interwał czasu sprawdzania bieżącej misji",
+        "note1": "Oznacza to, że co każde {{value}} sekund/y sprawdzane jest, czy jesteś na misji. Jest to używane np. z funkcją auto-wyrzucania.",
+        "note2": "Wartość w sekundach pomiędzy {{min}} i {{max}}. Domyślnie: {{default}}.",
+        "input": {
+          "placeholder": "Przykład: 1, 3, 4 lub 5"
+        }
+      },
+      "tray": {
+        "label": "Ukryj w zasobniku systemowym"
+      }
+    }
+  },
+  "custom-menu": {
+    "title": "Dostosowywane menu",
+    "description": "Możesz dostosować widoczność sekcji/opcji menu."
+  },
+  "tags-management": {
+    "title": "Zarządzanie tagami",
+    "description": "Możesz tworzyć tagi do łatwego grupowania kont i prowadzić operacje masowe w bardziej zorganizowany sposób.",
+    "form": {
+      "input": {
+        "placeholder": "Wpisz nazwę tagu"
+      }
+    },
+    "search": {
+      "input": {
+        "placeholder": "Szukaj w {{total}} tagach"
+      },
+      "empty": "Nie znaleziono tagu"
+    }
+  },
+  "account-customization": {
+    "title": "Dostosowanie konta",
+    "description": "Czasami możesz potrzebować określonej nazwy wyświetlanej do identyfikacji konta. Jeśli chcesz, możesz zmienić obecną nazwę wyświetlaną na niestandardową.",
+    "note": "Uwaga: ma to zastosowanie tylko wizualnie do kont Aerial."
+  },
+  "form": {
+    "submit": {
+      "status": {
+        "success": "Informacje zaktualizowane"
+      }
+    }
+  }
+}

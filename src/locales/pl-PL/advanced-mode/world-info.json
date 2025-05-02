@@ -1,0 +1,40 @@
+{
+  "form": {
+    "save": "Zapisz lokalnie",
+    "refetch": "Pobierz dane"
+  },
+  "search": {
+    "input": {
+      "placeholder": "Szukaj w {{total}} plikach"
+    },
+    "include-data": "Dołącz dane pliku",
+    "no-files": "Nie znaleziono plików"
+  },
+  "file": {
+    "input": {
+      "placeholder": "Domyślna nazwa: {{filename}}"
+    }
+  },
+  "notifications": {
+    "save": {
+      "success": "Plik został zapisany",
+      "error": "Plik nie może zostać zapisany, spróbuj ponownie później"
+    },
+    "delete": {
+      "success": "Plik \"{{filename}}\" został usunięty",
+      "error": "Plik \"{{filename}}\" nie może zostać usunięty, spróbuj ponownie później"
+    },
+    "export": {
+      "success": "Plik został wyeksportowany",
+      "error": "Plik nie może być eksportowany, spróbuj ponownie później"
+    },
+    "open": {
+      "success": "Plik \"{{filename}}\" został otwarty",
+      "error": "Plik \"{{filename}}\" nie może być otwarty, spróbuj ponownie później"
+    },
+    "rename": {
+      "success": "Nazwa pliku została zmieniona",
+      "error": "Nie można zmienić nazwy pliku, spróbuj ponownie później"
+    }
+  }
+}

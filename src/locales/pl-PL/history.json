@@ -1,0 +1,11 @@
+{
+  "history": {
+    "note": "Uwaga: Jest to historia tymczasowa.",
+    "empty": "Historia zdobytych nagród"
+  },
+  "summary": {
+    "note": "Uwaga: To podsumowanie opiera się na twojej historii tymczasowej.",
+    "empty": "Podsumowanie historii zdobytych nagród",
+    "all-accounts": "Podsumowanie wszystkich kont"
+  }
+}

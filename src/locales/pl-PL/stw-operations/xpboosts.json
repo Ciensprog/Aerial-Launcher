@@ -1,0 +1,50 @@
+{
+  "description": "Zarządzaj Wzmocnieniami PD wybranych kont.",
+  "form": {
+    "label": "Ilość Wzmocnień PD do wysłania (ograniczona do {{limit}})",
+    "input": {
+      "placeholder": "Przykład: 123"
+    },
+    "refetch": "Pobierz dane Wzmocnień",
+    "see-boosts": "Zobacz Wzmocnienia",
+    "send-boosts": "Wyślij Wzmocnienia"
+  },
+  "top-search": {
+    "description": "Wyświetl podstawowe informacje o graczu."
+  },
+  "sidebar": {
+    "title": "Których Wzmocnień PD chcesz użyć?",
+    "personal": {
+      "description": "Wszystkie te konta użyją Wzmocnień PD:",
+      "submit-button": "Zużyj {{total}} Wzmocnienie/a na każdym koncie"
+    },
+    "teammate": {
+      "note": "Niektóre wzmocnienia mogą się nie wysyłać, jeśli twój ping jest niestabilny.",
+      "submit-button": "Wyślij <1>{{total}}</1> do: <3>{{name}}</3>"
+    },
+    "errors": {
+      "valid-amount": "Wprowadź prawidłową ilość"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "Podsumowanie {{total}} kont(a)"
+    },
+    "options": {
+      "description": "Wzmocnienia PD Towarzysza do użycia:",
+      "information": "„{{current}}/{{total}}, łącznie: {{amount}}”"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "Całkowita liczba wykorzystanych Wzmocnień PD: {{current}}/{{expected}}. Podsumowanie dla {{totalAccounts}} konta.",
+      "personal_few": "Całkowita liczba wykorzystanych Wzmocnień PD: {{current}}/{{expected}}. Podsumowanie dla {{totalAccounts}} kont.",
+      "personal_many": "Całkowita liczba wykorzystanych Wzmocnień PD: {{current}}/{{expected}}. Podsumowanie dla {{totalAccounts}} kont.",
+      "personal_other": "Całkowita liczba wykorzystanych Wzmocnień PD: {{current}}/{{expected}}. Podsumowanie dla {{totalAccounts}} kont.",
+      "teammate_one": "Całkowita liczba wzmocnień PD {{current}}/{{expected}} została wysłana do {{name}}. Podsumowanie dla {{totalAccounts}} konta.",
+      "teammate_few": "Całkowita liczba wzmocnień PD {{current}}/{{expected}} została wysłana do {{name}}. Podsumowanie dla {{totalAccounts}} kont.",
+      "teammate_many": "Całkowita liczba wzmocnień PD {{current}}/{{expected}} została wysłana do {{name}}. Podsumowanie dla {{totalAccounts}} kont.",
+      "teammate_other": "Całkowita liczba wzmocnień PD {{current}}/{{expected}} została wysłana do {{name}}. Podsumowanie dla {{totalAccounts}} kont."
+    }
+  }
+}

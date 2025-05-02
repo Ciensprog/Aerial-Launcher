@@ -1,0 +1,90 @@
+{
+  "heading": {
+    "title": "Warto wiedzieć:",
+    "items": {
+      "1": "Kliknij logo Aerial (w lewym górnym rogu), aby wrócić tutaj.",
+      "2": "Przeciągnij i upuść plik World Info na stronę, aby załadować inne misje/alerty."
+    }
+  },
+  "tabs": {
+    "home": "Strona główna",
+    "overview": "Przegląd misji alarmowych",
+    "done": "Wykonane misje alarmowe"
+  },
+  "sections": {
+    "vbucks": {
+      "title": "V-Dolce"
+    },
+    "twine-peaks": {
+      "title-endgame": "Twine Peaks ⚡160",
+      "mid": "Średnie"
+    },
+    "ventures": {
+      "title-endgame": "Wyprawy ⚡140"
+    },
+    "survivors": {
+      "title": "Legendarni/Mityczni Ocaleńcy",
+      "empty": "Brak ocaleńców do ratowania"
+    },
+    "llamas": {
+      "title": "Żetony Ulepszlamy"
+    },
+    "uc-perk": {
+      "title": "Niepospolity Profit+"
+    }
+  },
+  "information": {
+    "missions": "{{total}} misji",
+    "tile-index": "Indeks kafelka:",
+    "alert-guid": "Unikalny identyfikator misji alarmowej:",
+    "mission-guid": "Unikalny identyfikator misji:",
+    "alert-rewards": "Nagrody misji alarmowej:",
+    "base-rewards": "Podstawowe Nagrody:",
+    "modifiers": "Modyfikatory:",
+    "first-claim": "Pierwszy odbiór:",
+    "last-played": "Ostatnio grano:",
+    "alerts-completed": "Misje alarmowe ukończone",
+    "rewards-summary": "Podsumowanie nagród"
+  },
+  "pagination": {
+    "results": "Wyniki",
+    "actions": {
+      "previous": "Pokaż mniej",
+      "next": "Pokaż więcej"
+    }
+  },
+  "filters": {
+    "search": {
+      "input": {
+        "placeholder": "Szukaj: guid misji/alarmu, tileIndex lub ID nagrody"
+      },
+      "submit-button": "Pokaż filtry"
+    },
+    "sections": {
+      "zones": "Wybierz strefy",
+      "types": "Wybierz typy misji",
+      "rarities": "Wybierz rzadkości",
+      "rewards": "Wybierz nagrody"
+    },
+    "actions": {
+      "back": "Powrót do Alarmów",
+      "clear": "Wyczyść wybór"
+    }
+  },
+  "world-info": {
+    "dnd": {
+      "title": "Upuść plik .json"
+    },
+    "notifications": {
+      "error": "Nie można załadować pliku World Info, sprawdź czy jest to poprawny plik i nie ma brakujących danych"
+    }
+  },
+  "results": {
+    "empty": {
+      "alerts-done": "Znalezione alerty nie pasują do żadnej z dzisiejszych misji",
+      "vbucks": "Dziś nie ma V-Dolców",
+      "missions": "Brak dostępnych misji",
+      "rewards": "Brak dostępnych nagród"
+    }
+  }
+}

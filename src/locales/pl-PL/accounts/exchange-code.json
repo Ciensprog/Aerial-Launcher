@@ -1,0 +1,17 @@
+{
+  "form": {
+    "generate-code": {
+      "input": {
+        "placeholder": "Wygenerowany kod zostanie wyświetlony tutaj"
+      },
+      "submit-button": "Generuj Exchange Code"
+    }
+  },
+  "notifications": {
+    "generate-code": {
+      "success": "Exchange code został wygenerowany i skopiowany do schowka",
+      "error": "Wystąpił błąd podczas próby wygenerowania exchange code, spróbuj ponownie później"
+    },
+    "clipboard": "Exchange code został skopiowany do schowka"
+  }
+}

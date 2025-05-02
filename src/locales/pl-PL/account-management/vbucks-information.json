@@ -1,0 +1,9 @@
+{
+  "description": "Informacje o V-Dolcach na każdym z wybranych kont.",
+  "form": {
+    "submit-button": "Pokaż informacje"
+  },
+  "results": {
+    "title": "Podsumowanie V-Dolców na {{total}} koncie/kontach"
+  }
+}

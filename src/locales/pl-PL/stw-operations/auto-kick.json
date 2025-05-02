@@ -1,0 +1,14 @@
+{
+  "description1": "Auto-wyrzucanie nasłuchuje zdarzeń na wybranych kontach i uruchamia proces wyrzucenia, gdy wykryje zakończenie meczu.",
+  "description2": "Pamiętaj, że auto-wyrzucanie działa inteligentnie. Nie musisz włączać go na dwóch kontach, jeśli należą do tej samej drużyny – oba konta zostaną wyrzucone lub opuszczą mecz (i odbiorą nagrody, jeśli aktywne było auto-odbieranie), w zależności od sytuacji.",
+  "statuses": {
+    "listening": "Nasłuchiwanie",
+    "credential-error": "Błąd logowania",
+    "disconnected": "Rozłączony"
+  },
+  "options": {
+    "kick": "Wyrzuć",
+    "claim": "Odbierz",
+    "transfer-mats": "Przenieś materiały"
+  }
+}

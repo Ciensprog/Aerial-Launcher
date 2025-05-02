@@ -1,0 +1,10 @@
+{
+  "description": "Zaktualizuj nazwę bazy głównej (nie jest już widoczna w grze) wybranych kont.",
+  "form": {
+    "placeholder": "Ustaw nazwę bazy głównej",
+    "submit-button": "Zaktualizuj nazwę bazy głównej"
+  },
+  "notifications": {
+    "updated": "Nazwa bazy głównej zaktualizowana"
+  }
+}

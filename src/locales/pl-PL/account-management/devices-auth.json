@@ -1,0 +1,18 @@
+{
+  "description": "Wybierz konto i zarządzaj urządzeniami, dla których utworzono uwierzytelnianie. Wyświetlane są: agent użytkownika, data utworzenia i ostatni dostęp, wraz z informacjami o lokalizacji, adresie IP i dacie.",
+  "form": {
+    "submit-button": "Pokaż uwierzytelnione urządzenia"
+  },
+  "results": {
+    "title": "Znalezione urządzenia <1>{{total}}</1>",
+    "item": {
+      "created": "Utworzono",
+      "last-access": "Ostatni dostęp"
+    }
+  },
+  "notifications": {
+    "no-devices": "Nie znaleziono urządzeń",
+    "success": "Id urządzenia {{deviceId}} zostało usunięte pomyślnie",
+    "error": "Wystąpił błąd podczas próby usunięcia Id urządzenia: {{deviceId}}"
+  }
+}

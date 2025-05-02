@@ -1,0 +1,8 @@
+{
+  "description": "Ta funkcja jest przydatna, jeśli chcesz odblokować nagrody za obronę burzowej tarczy, takie jak sloty oddziałów ocaleńców, obrońców itp., nawet jeśli nie zostały jeszcze ukończone.",
+  "note": "Uwaga: To NIE odbierze V-Dolców ani nie dokończy obron burzowej tarczy, otrzymasz tylko wspomniane wyżej nagrody.",
+  "form": {
+    "submit-button": "Odblokuj",
+    "clear-button": "Wyczyść wybór"
+  }
+}

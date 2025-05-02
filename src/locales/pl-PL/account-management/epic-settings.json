@@ -1,0 +1,11 @@
+{
+  "form": {
+    "generate-button": "Wygeneruj Link",
+    "open-button": "<0>Otwórz ustawienia konta</0> <1 />"
+  },
+  "notifications": {
+    "clipboard": "Link został skopiowany do schowka",
+    "success": "Link do ustawień Epic Games został wygenerowany",
+    "error": "Podczas przetwarzania Twojego żądania wystąpił błąd"
+  }
+}

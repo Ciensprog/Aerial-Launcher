@@ -1,0 +1,10 @@
+{
+  "description": "Zrealizuj kody na każdym z wybranych kont.",
+  "form": {
+    "input": {
+      "placeholder": "Ustaw kody do realizacji (użyj nowej linii)."
+    },
+    "redeem-button": "Wykorzystaj kody",
+    "clear-button": "Wyczyść formularz"
+  }
+}

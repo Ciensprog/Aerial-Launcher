@@ -1,0 +1,64 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "Wyrzuć całą ekipę"
+    },
+    "notifications": {
+      "success": "Wyrzucono {{total}} użytkownika/ów",
+      "nothing": "Żaden użytkownik nie został wyrzucony"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "Opuść ekipę"
+    }
+  },
+  "claim": {
+    "title": "Odbierz nagrody po opuszczeniu misji",
+    "form": {
+      "submit-button": "Odbierz nagrody"
+    },
+    "notifications": {
+      "success": "Nagrody odebrane"
+    }
+  },
+  "friends": {
+    "note": "Jeśli zaproszony gracz nie jest twoim znajomym, launcher automatycznie wyśle mu zaproszenie do znajomych.",
+    "form": {
+      "select": {
+        "placeholder": "Wybierz znajomych",
+        "search": {
+          "placeholder": "Zaproś osoby"
+        },
+        "empty": {
+          "placeholder": "Brak znajomych",
+          "options": "Wpisz aby dodać ich do listy"
+        }
+      },
+      "submit-button": "Zaproś"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} został dodany do znajomych",
+        "default-error": "Wystąpił błąd podczas próby dodania {{name}}"
+      },
+      "remove": {
+        "success": "{{name}} został usunięty z listy",
+        "default-error": "Wystąpił błąd podczas próby usunięcia {{name}}"
+      },
+      "invite": {
+        "error": "Wystąpił błąd podczas wysyłania zaproszeń",
+        "sent_one": "{{count}} zaproszenie do ekipy zostało wysłane",
+        "sent_few": "{{count}} zaproszenia do ekipy zostały wysłane",
+        "sent_many": "{{count}} zaproszeń do ekipy zostało wysłanych",
+        "sent_other": "{{count}} zaproszeń do ekipy zostało wysłanych"
+      },
+      "request": {
+        "sent_one": "{{count}} zaproszenie do znajomych zostało wysłane",
+        "sent_few": "{{count}} zaproszenia do znajomych zostało wysłane",
+        "sent_many": "{{count}} zaproszeń do znajomych zostało wysłanych",
+        "sent_other": "{{count}} zaproszeń do znajomych zostało wysłanych"
+      }
+    }
+  }
+}
