@@ -44,7 +44,6 @@ import { MatchmakingTrack } from './core/matchmaking-track'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
 import { RedeemCodes } from './core/redeem-codes'
-import { Storefront } from './core/storefront'
 import { Unlock } from './core/unlock'
 import { VBucksInformation } from './core/vbucks-information'
 import { WorldInfoManager } from './core/world-info'
@@ -652,15 +651,11 @@ const gotTheLock = app.requestSingleInstanceLock()
       async () => {
         await AutoLlamas.load()
 
-        Storefront.checkUpgradeFreeLlama().then((available) => {
-          if (available) {
-            ProcessAutoLlamas.start({
-              selected: AutoLlamas.getAccounts({
-                type: ProcessLlamaType.FreeUpgrade,
-              }),
-              type: ProcessLlamaType.FreeUpgrade,
-            })
-          }
+        ProcessAutoLlamas.start({
+          selected: AutoLlamas.getAccounts({
+            type: ProcessLlamaType.FreeUpgrade,
+          }),
+          type: ProcessLlamaType.FreeUpgrade,
         })
 
         ProcessAutoLlamas.start({
@@ -792,15 +787,11 @@ const gotTheLock = app.requestSingleInstanceLock()
         tz: 'UTC',
       },
       () => {
-        Storefront.checkUpgradeFreeLlama().then((available) => {
-          if (available) {
-            ProcessAutoLlamas.start({
-              selected: AutoLlamas.getAccounts({
-                type: ProcessLlamaType.FreeUpgrade,
-              }),
-              type: ProcessLlamaType.FreeUpgrade,
-            })
-          }
+        ProcessAutoLlamas.start({
+          selected: AutoLlamas.getAccounts({
+            type: ProcessLlamaType.FreeUpgrade,
+          }),
+          type: ProcessLlamaType.FreeUpgrade,
         })
       }
     )

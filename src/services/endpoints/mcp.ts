@@ -163,22 +163,22 @@ export function purchaseCatalogEntry({
       expectedTotalPrice,
       purchaseQuantity,
       gameContext,
-      client_request_id: '',
-      additionalData: {
-        islandId: 'campaign',
-        islandTitle: 'None',
-        productTag: 'Product.STW',
-        storeContext: 'FrontEnd',
-        sourceContext: '',
-        checkoutProperties: {},
-        itemShopFilterContext: {
-          activeFilters: [],
-          inactiveFilters: [],
-        },
-        storefront: 'CardPackStorePreroll',
-        storeId: '',
-        groupId: '',
-      },
+      // client_request_id: '',
+      // additionalData: {
+      //   islandId: 'campaign',
+      //   islandTitle: 'None',
+      //   productTag: 'Product.STW',
+      //   storeContext: 'FrontEnd',
+      //   sourceContext: '',
+      //   checkoutProperties: {},
+      //   itemShopFilterContext: {
+      //     activeFilters: [],
+      //     inactiveFilters: [],
+      //   },
+      //   storefront: 'CardPackStorePreroll',
+      //   storeId: '',
+      //   groupId: '',
+      // },
     },
     {
       headers: {

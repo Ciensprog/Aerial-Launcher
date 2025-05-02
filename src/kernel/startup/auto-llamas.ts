@@ -16,7 +16,6 @@ import {
 } from '../../config/constants/resources'
 
 import { Authentication } from '../core/authentication'
-import { Storefront } from '../core/storefront'
 import { MainWindow } from './windows/main'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
@@ -222,15 +221,11 @@ export class AutoLlamas {
   }
 
   static async check() {
-    Storefront.checkUpgradeFreeLlama().then((available) => {
-      if (available) {
-        ProcessAutoLlamas.start({
-          selected: AutoLlamas.getAccounts({
-            type: ProcessLlamaType.FreeUpgrade,
-          }),
-          type: ProcessLlamaType.FreeUpgrade,
-        })
-      }
+    ProcessAutoLlamas.start({
+      selected: AutoLlamas.getAccounts({
+        type: ProcessLlamaType.FreeUpgrade,
+      }),
+      type: ProcessLlamaType.FreeUpgrade,
     })
 
     ProcessAutoLlamas.start({
@@ -382,6 +377,13 @@ export class ProcessAutoLlamas {
 
               const llama = cardPacks.catalogEntries.find((item) => {
                 if (type === ProcessLlamaType.Survivor) {
+                  if (
+                    currencySubType ===
+                    'AccountResource:voucher_cardpack_bronze'
+                  ) {
+                    return item.devName === 'Always.UpgradePack.02'
+                  }
+
                   return (
                     item.devName === 'Always.UpgradePack.01' &&
                     item.dailyLimit === 50 &&
@@ -402,20 +404,19 @@ export class ProcessAutoLlamas {
                 break
               }
 
-              if (type === ProcessLlamaType.Survivor) {
-                const mainProfile = await getQueryProfileMainProfile({
-                  accessToken,
-                  accountId: account.accountId,
-                })
-                const totalPurchases =
-                  mainProfile.data.profileChanges[0]?.profile.stats
-                    .attributes.daily_purchases.purchaseList[
-                    llama.offerId
-                  ] ?? 0
+              const mainProfile = await getQueryProfileMainProfile({
+                accessToken,
+                accountId: account.accountId,
+              })
+              const totalPurchases =
+                mainProfile.data.profileChanges[0]?.profile.stats
+                  .attributes.daily_purchases.purchaseList[
+                  llama.offerId
+                ] ?? 0
+              const dailyLimit = llama.dailyLimit ?? 2
 
-                if (totalPurchases >= 50) {
-                  break
-                }
+              if (totalPurchases >= dailyLimit) {
+                break
               }
 
               const prerollData = Object.values(
@@ -546,9 +547,6 @@ export class ProcessAutoLlamas {
                 ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification,
                 [result]
               )
-              // MainWindow.instance.webContents.send(
-              //   ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
-              // )
 
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
