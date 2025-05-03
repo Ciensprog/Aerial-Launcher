@@ -205,7 +205,9 @@ function Content() {
                           className={cn(
                             'border-none pr-10 select-none text-blue-400 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-transparent'
                           )}
-                          placeholder="Generated link to EULA"
+                          placeholder={t('eula.placeholder', {
+                            ns: 'account-management',
+                          })}
                           value={continuationUrl ?? ''}
                           readOnly
                         />

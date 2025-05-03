@@ -3,6 +3,7 @@ import type { StylesConfig } from 'react-select'
 
 import chroma, { contrast } from 'chroma-js'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import Select, { components } from 'react-select'
 
 import { defaultColor } from '../../../../config/constants/colors'
@@ -42,6 +43,8 @@ export function InputTags({
 
   onChange: (value: Array<SelectOption>) => void
 }) {
+  const { t } = useTranslation(['general'])
+
   const $menuPortalTarget = useRef<HTMLElement>()
 
   useEffect(() => {
@@ -57,6 +60,7 @@ export function InputTags({
   return (
     <Select
       placeholder={placeholder}
+      noOptionsMessage={() => t('no-options')}
       options={options}
       value={value}
       styles={colourStyles}

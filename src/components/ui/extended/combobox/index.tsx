@@ -4,6 +4,7 @@ import type {
 } from './hooks'
 
 import { Check, ChevronsUpDown, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '../../button'
 import {
@@ -50,6 +51,8 @@ export function Combobox({
   onInputSearchChange,
   onSelectItem,
 }: ComboboxProps) {
+  const { t } = useTranslation(['general'])
+
   const {
     __searchValue,
     currentValues,
@@ -128,8 +131,8 @@ export function Combobox({
               {options.length > 0
                 ? currentValues.length > 0
                   ? selectedName
-                  : placeholder ?? 'Select options'
-                : emptyPlaceholder ?? 'No options'}
+                  : placeholder ?? t('no-placeholder-select-options')
+                : emptyPlaceholder ?? t('no-options')}
             </div>
             <ChevronsUpDown className="h-4 ml-auto opacity-50 shrink-0 w-4" />
           </Button>
@@ -155,7 +158,7 @@ export function Combobox({
           {showInputSearch && (
             <CommandInput
               className="select-none"
-              placeholder={placeholderSearch ?? 'Placeholder'}
+              placeholder={placeholderSearch ?? t('placeholder')}
               value={innerInputSearchValue}
               onValueChange={(value) => {
                 __onSearchValueChange?.(value)
@@ -178,17 +181,17 @@ export function Combobox({
                 emptyContent ? (
                   typeof emptyContent === 'function' ? (
                     emptyContent?.(innerInputSearchValue) ??
-                    'No item found'
+                    t('no-item-found')
                   ) : (
                     emptyContent
                   )
                 ) : (
-                  'No item found'
+                  t('no-item-found')
                 )
               ) : emptyOptions ? (
                 <span className="text-xs">{emptyOptions}</span>
               ) : (
-                'No item found'
+                t('no-item-found')
               )}
             </CommandEmpty>
             {options.length > 0 && (

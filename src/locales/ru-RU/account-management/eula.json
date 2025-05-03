@@ -1,4 +1,5 @@
 {
   "good-to-know": "Полезная Информация:",
-  "link": "Вы можете перейти по ссылке <2>https://www.epicgames.com/account/eula-history</2> и нажать кнопку \"Я согласен\" внизу страницы:"
+  "link": "Вы можете перейти по ссылке <2>https://www.epicgames.com/account/eula-history</2> и нажать кнопку \"Я согласен\" внизу страницы:",
+  "placeholder": "Сгенерированная ссылка на EULA"
 }
