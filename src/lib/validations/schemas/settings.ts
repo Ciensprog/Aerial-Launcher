@@ -60,6 +60,7 @@ export const customizableMenuSettingsSchema = z
 
     accountManagement: z.boolean().default(true),
     vbucksInformation: z.boolean().default(true),
+    friendsManagement: z.boolean().default(true),
     redeemCodes: z.boolean().default(true),
     devicesAuth: z.boolean().default(true),
     epicGamesSettings: z.boolean().default(true),
