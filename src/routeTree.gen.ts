@@ -27,6 +27,7 @@ import { Route as AdvancedModeMatchmakingTrackRouteImport } from './routes/advan
 import { Route as AccountsRemoveRouteImport } from './routes/accounts/remove/route'
 import { Route as AccountManagementVbucksInformationRouteImport } from './routes/account-management/vbucks-information/route'
 import { Route as AccountManagementRedeemCodesRouteImport } from './routes/account-management/redeem-codes/route'
+import { Route as AccountManagementFriendsManagementRouteImport } from './routes/account-management/friends-management/route'
 import { Route as AccountManagementEulaRouteImport } from './routes/account-management/eula/route'
 import { Route as AccountManagementEpicGamesSettingsRouteImport } from './routes/account-management/epic-games-settings/route'
 import { Route as AccountManagementDevicesAuthRouteImport } from './routes/account-management/devices-auth/route'
@@ -125,6 +126,12 @@ const AccountManagementRedeemCodesRouteRoute =
     getParentRoute: () => rootRoute,
   } as any)
 
+const AccountManagementFriendsManagementRouteRoute =
+  AccountManagementFriendsManagementRouteImport.update({
+    path: '/account-management/friends-management',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 const AccountManagementEulaRouteRoute = AccountManagementEulaRouteImport.update(
   {
     path: '/account-management/eula',
@@ -171,6 +178,10 @@ declare module '@tanstack/react-router' {
     }
     '/account-management/eula': {
       preLoaderRoute: typeof AccountManagementEulaRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/account-management/friends-management': {
+      preLoaderRoute: typeof AccountManagementFriendsManagementRouteImport
       parentRoute: typeof rootRoute
     }
     '/account-management/redeem-codes': {
@@ -244,6 +255,7 @@ export const routeTree = rootRoute.addChildren([
   AccountManagementDevicesAuthRouteRoute,
   AccountManagementEpicGamesSettingsRouteRoute,
   AccountManagementEulaRouteRoute,
+  AccountManagementFriendsManagementRouteRoute,
   AccountManagementRedeemCodesRouteRoute,
   AccountManagementVbucksInformationRouteRoute,
   AccountsRemoveRouteRoute,
