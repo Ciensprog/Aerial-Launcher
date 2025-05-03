@@ -360,6 +360,10 @@ export class ProcessAutoLlamas {
                 }
               }
 
+              const currencyIsToken =
+                currencySubType ===
+                'AccountResource:voucher_cardpack_bronze'
+
               if (currencyTotal === null) {
                 break
               }
@@ -377,10 +381,7 @@ export class ProcessAutoLlamas {
 
               const llama = cardPacks.catalogEntries.find((item) => {
                 if (type === ProcessLlamaType.Survivor) {
-                  if (
-                    currencySubType ===
-                    'AccountResource:voucher_cardpack_bronze'
-                  ) {
+                  if (currencyIsToken) {
                     return item.devName === 'Always.UpgradePack.02'
                   }
 
@@ -393,8 +394,8 @@ export class ProcessAutoLlamas {
                 }
 
                 return (
-                  (item.devName.toLowerCase().includes('free') ||
-                    item.title.toLowerCase().includes('free')) &&
+                  (item.devName?.toLowerCase().includes('free') ||
+                    item.title?.toLowerCase().includes('free')) &&
                   item.prices[0]?.regularPrice === 50 &&
                   item.prices[0]?.finalPrice === 0
                 )
@@ -413,7 +414,10 @@ export class ProcessAutoLlamas {
                   .attributes.daily_purchases.purchaseList[
                   llama.offerId
                 ] ?? 0
-              const dailyLimit = llama.dailyLimit ?? 2
+              const dailyLimit =
+                currencyIsToken && llama.dailyLimit <= -1
+                  ? 10
+                  : llama.dailyLimit ?? 2
 
               if (totalPurchases >= dailyLimit) {
                 break

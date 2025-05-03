@@ -74,7 +74,7 @@ export const storefrontCatalogSchema = z.object({
           // ]),
           // catalogGroupPriority: z.number(),
           sortPriority: z.number(),
-          title: z.string(),
+          title: z.string().optional(),
           // shortDescription: z.string(),
           // description: z.string(),
           displayAssetPath: z.string(),

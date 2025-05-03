@@ -142,7 +142,7 @@ export function purchaseCatalogEntry({
   purchaseQuantity = 1,
   currencySubType = 'AccountResource:currency_xrayllama',
   expectedTotalPrice = 0,
-  gameContext = 'fn',
+  gameContext = 'FrontEnd.None',
 }: {
   accessToken: string
   accountId: string
