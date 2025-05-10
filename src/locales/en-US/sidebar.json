@@ -20,6 +20,7 @@
     "title": "Account Management",
     "options": {
       "vbucks-information": "V-Bucks Information",
+      "friends-management": "Friends Management",
       "redeem-codes": "Redeem Codes",
       "devices-auth": "Devices Auth",
       "epic-settings": "Epic Games Settings"

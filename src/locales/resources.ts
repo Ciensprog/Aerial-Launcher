@@ -18,6 +18,7 @@ import enUS_stwOperations_XPBoosts from './en-US/stw-operations/xpboosts.json'
 import enUS_stwOperations_Llamas from './en-US/stw-operations/llamas.json'
 import enUS_stwOperations_Unlock from './en-US/stw-operations/unlock.json'
 import enUS_accountManagement_VBucksInformation from './en-US/account-management/vbucks-information.json'
+import enUS_accountManagement_FriendsManagement from './en-US/account-management/friends-management.json'
 import enUS_accountManagement_EULA from './en-US/account-management/eula.json'
 import enUS_accountManagement_RedeemCodes from './en-US/account-management/redeem-codes.json'
 import enUS_accountManagement_DevicesAuth from './en-US/account-management/devices-auth.json'
@@ -49,6 +50,7 @@ const enUS = {
   },
   'account-management': {
     'vbucks-information': enUS_accountManagement_VBucksInformation,
+    'friends-management': enUS_accountManagement_FriendsManagement,
     'redeem-codes': enUS_accountManagement_RedeemCodes,
     'devices-auth': enUS_accountManagement_DevicesAuth,
     'epic-settings': enUS_accountManagement_EpicSettings,
