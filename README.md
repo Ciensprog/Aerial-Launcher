@@ -48,7 +48,7 @@ But what does it mean that this project is Open-Source? It is very simple, to en
       - [Remove Accounts](#remove-accounts)
       - [Launch Game](#launch-game)
       - [Generate Exchange Code](#generate-exchange-code)
-      - [FortniteDB Profile](#fortnitedb-profile)
+      - [STW News Profile](#stw-news-profile)
   - [🤝 Contributing](#-contributing)
 
 ## Installation
@@ -117,9 +117,9 @@ If you want, you can launch game using "Launch Game" button, this open Fortnite 
 
 Once the accounts have been added, you will be able to generate an Exchange Code for the selected account. From the same place to add account using the Exchange Code method.
 
-#### FortniteDB Profile
+#### STW News Profile
 
-You can access the FortniteDB profile of the selected account.
+You can access the [STW News](https://stw.news/) profile of the selected account.
 
 ## 🤝 Contributing
 
