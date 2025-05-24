@@ -5,6 +5,24 @@ import type {
 
 import { publicAccountService } from '../config/public-account'
 
+export function queryAccountsByIds({
+  accessToken,
+  ids,
+}: {
+  accessToken: string
+  ids: Array<string>
+}) {
+  const parsed = ids.map((id) => `accountId=${id}`).slice(0, 100)
+
+  return publicAccountService.get<
+    Array<LookupFindOneByDisplayNameResponse>
+  >(`?${parsed.join('&')}`, {
+    headers: {
+      Authorization: `bearer ${accessToken}`,
+    },
+  })
+}
+
 export function findUserByAccountId({
   accessToken,
   accountId,

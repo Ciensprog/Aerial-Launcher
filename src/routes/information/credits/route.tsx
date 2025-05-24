@@ -17,7 +17,7 @@ import {
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
 
-import { useActions } from './-hooks'
+import { useFnnyHandleActions } from './-hooks'
 
 import { whatIsThis } from '../../../lib/callbacks'
 import { cn } from '../../../lib/utils'
@@ -40,7 +40,7 @@ export function ComponentRoute() {
   const { t } = useTranslation(['general'])
 
   const { handleEricDejaDeJoder, handleFreshAttrs, handleSick } =
-    useActions()
+    useFnnyHandleActions()
 
   const openURL = (url: string) => (event: MouseEvent) => {
     event.preventDefault()

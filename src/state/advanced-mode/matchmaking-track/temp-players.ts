@@ -24,7 +24,16 @@ export const useMatchmakingRecentlyPlayersStore =
       if (addNewPlayer) {
         set({
           players: [...currentPlayers, player].toSorted((itemA, itemB) =>
-            localeCompareForSorting(itemA.displayName, itemB.displayName)
+            localeCompareForSorting(
+              itemA.displayName ??
+                itemA.externalAuths?.xbl?.externalDisplayName ??
+                itemA.externalAuths?.psn?.externalDisplayName ??
+                itemA.id,
+              itemB.displayName ??
+                itemB.externalAuths?.xbl?.externalDisplayName ??
+                itemB.externalAuths?.psn?.externalDisplayName ??
+                itemB.id
+            )
           ),
         })
 
@@ -41,7 +50,16 @@ export const useMatchmakingRecentlyPlayersStore =
                 : current.displayName,
           }))
           .toSorted((itemA, itemB) =>
-            localeCompareForSorting(itemA.displayName, itemB.displayName)
+            localeCompareForSorting(
+              itemA.displayName ??
+                itemA.externalAuths?.xbl?.externalDisplayName ??
+                itemA.externalAuths?.psn?.externalDisplayName ??
+                itemA.id,
+              itemB.displayName ??
+                itemB.externalAuths?.xbl?.externalDisplayName ??
+                itemB.externalAuths?.psn?.externalDisplayName ??
+                itemB.id
+            )
           ),
       })
     },

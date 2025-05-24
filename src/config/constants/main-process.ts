@@ -231,6 +231,21 @@ export enum ElectronAPIEventKeys {
   VBucksInformationResponseData = 'vbucks-information:response:data',
 
   /**
+   * Friends Management
+   */
+
+  GetFriendsSummary = 'friends:summary:request',
+  GetFriendsSummaryResponse = 'friends:summary:response',
+  BlockFriends = 'friends:block',
+  BlockFriendsResponse = 'friends:block:response',
+  UnblockFriends = 'friends:unblock',
+  UnblockFriendsResponse = 'friends:unblock:response',
+  AddFriends = 'friends:add',
+  AddFriendsResponse = 'friends:add:response',
+  RemoveFriends = 'friends:remove',
+  RemoveFriendsResponse = 'friends:remove:response',
+
+  /**
    * Redeem Codes
    */
 

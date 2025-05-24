@@ -3,6 +3,12 @@ import type {
   WorldInfoFileData,
 } from '../types/data/advanced-mode/world-info'
 import type {
+  EpicFriend,
+  FriendBlock,
+  FriendIncoming,
+  FriendOutgoing,
+} from '../types/services/friends'
+import type {
   AccountBasicInfo,
   AccountData,
   AccountDataList,
@@ -36,8 +42,10 @@ import { AlertsDone } from './core/alerts'
 // import { AntiCheatProvider } from './core/anti-cheat-provider'
 import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
+import { CustomProcess } from './core/custom-process'
 import { DevicesAuthManager } from './core/devices-auth'
 import { EULATracking } from './core/eula-tracking'
+import { FriendsManagement } from './core/friends'
 import { FortniteLauncher } from './core/launcher'
 import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
 import { MatchmakingTrack } from './core/matchmaking-track'
@@ -75,7 +83,6 @@ import {
 } from '../state/stw-operations/auto/llamas'
 
 import { Language } from '../locales/resources'
-import { CustomProcess } from './core/custom-process'
 
 dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
@@ -700,6 +707,64 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.VBucksInformationRequest,
       async (_, accounts: Array<AccountData>) => {
         await VBucksInformation.requestBulkInfo(accounts)
+      }
+    )
+
+    /**
+     * Friends Management
+     */
+
+    ipcMain.on(
+      ElectronAPIEventKeys.GetFriendsSummary,
+      async (_, account: AccountData) => {
+        await FriendsManagement.getSummary(account)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.BlockFriends,
+      async (
+        _,
+        account: AccountData,
+        friends: Array<EpicFriend | FriendIncoming | FriendOutgoing>,
+        origin?: 'incoming' | 'outgoing'
+      ) => {
+        await FriendsManagement.blockFriends(account, friends, origin)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.UnblockFriends,
+      async (
+        _,
+        account: AccountData,
+        unblocklist: 'full' | Array<FriendBlock>
+      ) => {
+        await FriendsManagement.unblock(account, unblocklist)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AddFriends,
+      async (
+        _,
+        account: AccountData,
+        friends: Array<EpicFriend>,
+        context?: 'incoming'
+      ) => {
+        await FriendsManagement.addFriends(account, friends, context)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.RemoveFriends,
+      async (
+        _,
+        account: AccountData,
+        friends: 'full' | Array<EpicFriend>,
+        context?: 'incoming' | 'outgoing'
+      ) => {
+        await FriendsManagement.removeFriends(account, friends, context)
       }
     )
 

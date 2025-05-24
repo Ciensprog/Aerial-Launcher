@@ -270,6 +270,23 @@ export function SidebarMenu({
                       </Link>
                     </li>
                   )}
+                  {getMenuOptionVisibility('friendsManagement') && (
+                    <li className="item">
+                      <Link
+                        to="/account-management/friends-management"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        {t(
+                          'account-management.options.friends-management'
+                        )}
+                      </Link>
+                    </li>
+                  )}
                   {getMenuOptionVisibility('redeemCodes') && (
                     <li className="item">
                       <Link

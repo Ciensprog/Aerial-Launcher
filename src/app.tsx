@@ -24,7 +24,8 @@ import { LoadGroups } from './bootstrap/components/load-groups'
 import { LoadSettings } from './bootstrap/components/load-settings'
 import { LoadTags } from './bootstrap/components/load-tags'
 
-import { Toaster } from './components/ui/sonner'
+import { SonnerToaster } from './components/ui/sonner'
+import { Toaster } from './components/ui/toaster'
 import { ThemeProvider } from './components/theme-provider'
 
 import 'dayjs/locale/es'
@@ -65,7 +66,8 @@ root.render(
         defaultNotFoundComponent={IndexComponent}
       />
 
-      <Toaster position="bottom-center" />
+      <SonnerToaster position="bottom-center" />
+      <Toaster />
     </ThemeProvider>
   </MantineProvider>
 )

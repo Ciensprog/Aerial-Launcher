@@ -23,14 +23,14 @@ export type MCPQueryProfileMainProfile = {
               lastInterval: string
               purchaseList: Record<string, number>
             }
-            daily_purchases: {
+            daily_purchases?: {
               lastInterval: string
-              purchaseList: Record<string, number>
+              purchaseList?: Record<string, number>
             }
-            in_app_purchases: {
+            in_app_purchases?: {
               receipts: Array<string>
               ignoredReceipts: Array<unknown>
-              fulfillmentCounts: Record<string, number>
+              fulfillmentCounts?: Record<string, number>
               refreshTimers: {
                 EpicPurchasingService: {
                   nextEntitlementRefresh: string
