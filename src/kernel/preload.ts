@@ -12,6 +12,7 @@ import * as automationsActions from './preload-actions/automation'
 import * as customizableMenuActions from './preload-actions/customizable-menu'
 import * as devicesAuthActions from './preload-actions/devices-auth'
 import * as eventActions from './preload-actions/events'
+import * as friendsActions from './preload-actions/friends'
 import * as generalActions from './preload-actions/general'
 import * as launcherActions from './preload-actions/launcher'
 import * as matchmakingActions from './preload-actions/matchmaking'
@@ -35,6 +36,7 @@ export const availableElectronAPIs = {
   ...autoPinUrnsActions,
   ...devicesAuthActions,
   ...eventActions,
+  ...friendsActions,
   ...generalActions,
   ...launcherActions,
   ...partyActions,

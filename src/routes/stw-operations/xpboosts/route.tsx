@@ -142,7 +142,7 @@ function Content() {
   } = useSearchUser()
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
-  const { showLink, handleXD, handleWhy } = useWhy({
+  const { showLink, handleLve, handleXD, handleWhy } = useWhy({
     inputSearchValue: inputSearchDisplayName,
   })
   const { recalculateTotal, teammateXPBoostsFiltered } = useFilterXPBoosts(
@@ -193,6 +193,7 @@ function Content() {
 
                         if (!inputSearchButtonIsDisabled) {
                           handleSearchUser()
+                          handleLve()
                           handleXD()
                           handleWhy()
                         }
