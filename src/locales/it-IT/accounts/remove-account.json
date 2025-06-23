@@ -1,0 +1,11 @@
+{
+  "form": {
+    "label": "Sei sicuro di voler rimuovere l'account <2>{{name}}</2>?",
+    "submit-button": "Sì, sono sicuro"
+  },
+  "notifications": {
+    "remove": {
+      "success": "L'account {{name}} è stato rimosso"
+    }
+  }
+}

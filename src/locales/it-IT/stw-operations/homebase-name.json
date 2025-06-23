@@ -1,0 +1,10 @@
+{
+  "description": "Aggiorna nome casabase (non più visibile in gioco) degli account selezionati.",
+  "form": {
+    "placeholder": "Imposta un nome casabase",
+    "submit-button": "Aggiorna Nome Casabase"
+  },
+  "notifications": {
+    "updated": "Nome casabase aggiornato"
+  }
+}

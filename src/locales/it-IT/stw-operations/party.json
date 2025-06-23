@@ -1,0 +1,60 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "Caccia Tutto Il Party"
+    },
+    "notifications": {
+      "success": "Cacciati {{total}} giocatore/i",
+      "nothing": "Nessun giocatore cacciato"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "Esci Dal Party"
+    }
+  },
+  "claim": {
+    "title": "Reclama ricompense dopo esser uscito",
+    "form": {
+      "submit-button": "Reclama Ricompense"
+    },
+    "notifications": {
+      "success": "Ricompense reclamate"
+    }
+  },
+  "friends": {
+    "note": "Se il giocatore invitato non è tuo amico, il launcher gli invierà automaticamente una richiesta di amicizia.",
+    "form": {
+      "select": {
+        "placeholder": "Seleziona amici",
+        "search": {
+          "placeholder": "Invita persone"
+        },
+        "empty": {
+          "placeholder": "Nessun amico",
+          "options": "Scrivi per aggiungerli alla lista"
+        }
+      },
+      "submit-button": "Invita"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} è stato aggiunto agli amici",
+        "default-error": "Si è verificato un errore nel tentativo di aggiungere {{name}}"
+      },
+      "remove": {
+        "success": "{{name}} è stato rimosso dalla lista",
+        "default-error": "Si è verificato un errore nel tentativo di rimuovere {{name}}"
+      },
+      "invite": {
+        "sent_one": "È stato inviato {{count}} invito",
+        "sent_other": "Sono stati inviati {{count}} inviti",
+        "error": "Si è verificato un errore nel tentativo di inviare gli inviti"
+      },
+      "request": {
+        "sent_one": "È stata inviata {{count}} richiesta di amicizia",
+        "sent_other": "Sono state inviate {{count}} richieste di amicizia"
+      }
+    }
+  }
+}

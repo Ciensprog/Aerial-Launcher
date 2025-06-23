@@ -1,0 +1,46 @@
+{
+  "description": "Gestisci gli incrementi di PE sugli account selezionati.",
+  "form": {
+    "label": "Quantità di Incrementi PE da inviare (limite di {{limit}})",
+    "input": {
+      "placeholder": "Esempio: 123"
+    },
+    "refetch": "Riporta Dati Incrementi",
+    "see-boosts": "Vedi Incrementi",
+    "send-boosts": "Invia Incrementi"
+  },
+  "top-search": {
+    "description": "Mostra informazioni base di un giocatore."
+  },
+  "sidebar": {
+    "title": "Quali Incrementi PE vuoi usare?",
+    "personal": {
+      "description": "Tutti questi account useranno Incrementi PE:",
+      "submit-button": "Consuma {{total}} Incrementi PE su ogni account"
+    },
+    "teammate": {
+      "note": "Alcuni incrementi non saranno inviati se il tuo ping non è stabile.",
+      "submit-button": "Invia <1>{{total}}</1> a: <3>{{name}}</3>"
+    },
+    "errors": {
+      "valid-amount": "Per favore inserisci un valore valido"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "Resoconto di {{total}} account"
+    },
+    "options": {
+      "description": "Incrementi PE di compagni da usare:",
+      "information": "{{current}}/{{total}} su un totale di {{amount}}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "Un totale di {{current}}/{{expected}} incrementi PE è stato consumato. Resoconto di {{totalAccounts}} account",
+      "personal_other": "Un totale di {{current}}/{{expected}} incrementi PE sono stati consumati. Resoconto di {{totalAccounts}} account",
+      "teammate_one": "Un totale di {{current}}/{{expected}} incrementi PE è stato inviato a {{name}}. Resoconto di {{totalAccounts}} account",
+      "teammate_other": "Un totale di {{current}}/{{expected}} incrementi PE sono stati inviati a {{name}}. Resoconto di {{totalAccounts}} account"
+    }
+  }
+}

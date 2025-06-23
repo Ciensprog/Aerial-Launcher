@@ -1,0 +1,9 @@
+{
+  "description": "Informazioni V-Bucks su ogni account selezionato.",
+  "form": {
+    "submit-button": "Mostra Informazioni"
+  },
+  "results": {
+    "title": "Resoconto V-Bucks Su {{total}} Account"
+  }
+}

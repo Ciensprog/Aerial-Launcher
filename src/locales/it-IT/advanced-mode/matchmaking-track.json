@@ -1,0 +1,25 @@
+{
+  "description": "Verifica che questo sia il giocatore che stai cercando e richiedi le informazioni del suo matchmaking.",
+  "note": "Percorso file di default:",
+  "form": {
+    "recently": {
+      "label": "Nota: Questi giocatori sono conservati temporaneamente"
+    },
+    "submit-button": "Crea File Matchmaking"
+  },
+  "results": {
+    "notes": "Note:",
+    "options": {
+      "public-stats": "Questo giocatore ha le \"Statistiche Di Gioco Pubbliche\" disabilitate, impossibile mostrare ulteriori informazioni.",
+      "continuation": "Ovviamente puoi lo stesso generare il file."
+    }
+  },
+  "notifications": {
+    "file": {
+      "updated": "Il file è stato aggiornato con successo"
+    },
+    "player": {
+      "not-playing": "Il giocatore specificato probabilmente non è in una missione"
+    }
+  }
+}

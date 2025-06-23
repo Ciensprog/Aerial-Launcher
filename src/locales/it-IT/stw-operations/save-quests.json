@@ -1,0 +1,9 @@
+{
+  "description": "Salva il progresso fatto nelle sfide degli account selezionati.",
+  "form": {
+    "submit-button": "Salva Sfide"
+  },
+  "notifications": {
+    "saved": "Il progresso è stato salvato"
+  }
+}

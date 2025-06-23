@@ -1,0 +1,18 @@
+{
+  "description": "Seleziona un account e gestisci le autorizzazioni per i dispositivi create. L'User Agent, la Creazione e l'Ultimo Accesso sono mostrati con informazioni su: Posizione, Indirizzo IP e la Data.",
+  "form": {
+    "submit-button": "Richiedi Autorizzazioni Dispositivi"
+  },
+  "results": {
+    "title": "Dispositivi Trovati: <1>{{total}}</1>",
+    "item": {
+      "created": "Creato",
+      "last-access": "Ultimo Accesso"
+    }
+  },
+  "notifications": {
+    "no-devices": "Nessun dispositivo trovato",
+    "success": "DeviceId {{deviceId}} rimosso con successo",
+    "error": "Si è verificato un errore nel tentativo di rimuovere deviceId: {{deviceId}}"
+  }
+}

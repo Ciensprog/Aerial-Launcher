@@ -1,0 +1,9 @@
+{
+  "notifications": {
+    "new-account": {
+      "success": "Nuovo account aggiunto: {{name}}",
+      "error": "Errore sconosciuto",
+      "launcher-auth-login": "Impossibile aggiungere l'account, per favore verifica che le credenziali siano corrette"
+    }
+  }
+}
