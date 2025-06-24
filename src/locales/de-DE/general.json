@@ -1,0 +1,168 @@
+{
+  "actions": {
+    "add": "Hinzufügen",
+    "change": "Ändern",
+    "create": "Erstellen",
+    "login": "Anmelden",
+    "revert": "Rückgängig",
+    "search": "Suchen",
+    "success": "Erfolgreich",
+    "update": "Aktualisieren",
+    "accepted": "Akzeptiert",
+    "verify": "Überprüfen"
+  },
+  "form": {
+    "credentials": {
+      "account-id": "Konto-ID",
+      "device-id": "Geräte-ID",
+      "secret": "Geheim",
+      "login": {
+        "label": "Code Einfügen",
+        "input": {
+          "placeholder": "Beispiel: {{code}}"
+        },
+        "get-code": "<0>Code Erhalten</0> <1 />"
+      }
+    },
+    "accounts": {
+      "placeholder": "In {{total}} Konten suchen",
+      "placeholder_private": "In deinen Konten suchen",
+      "search-empty": "Kein Konto gefunden",
+      "select": "Konto auswählen",
+      "selected": "Ausgewähltes Konto",
+      "no-available": "Keine Konten verfügbar",
+      "no-linked": "Keine verknüpften Konten",
+      "no-options": "Keine Konten",
+      "no-registered-accounts": "Noch keine Konten registriert"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Einige Konten auswählen",
+        "tags": "Einige Tags auswählen",
+        "bulk-note": "Bulk-Tag ausgewählt, alle Launcher-Konten werden verwendet."
+      }
+    },
+    "player": {
+      "search-empty": "Kein Spieler gefunden",
+      "recently": {
+        "empty-placeholder": "Keine kürzlich verwendeten Spieler",
+        "search-placeholder": "In {{total}} Spieler/n suchen",
+        "select-placeholder": "Wähle einen kürzlich verwendeten Spieler"
+      }
+    },
+    "search-account": {
+      "label": "Spieler nach Konto-ID oder Anzeigename suchen (epic, xbl oder psn)",
+      "input": {
+        "placeholder": "Beispiel: Muster"
+      }
+    }
+  },
+  "information": {
+    "account-id": "Konto-ID:",
+    "power-level": "Macht-Level:",
+    "commander-level": "Kommandanten-Level:",
+    "boosted-xp": "Verstärkte XP:",
+    "days-logged-in": "Tage eingeloggt:",
+    "collection-book-level": "Sammlungsbuch-Level:",
+    "personal-xp-boosts": "Persönliche XP Boosts:",
+    "teammate-xp-boosts": "Teammitglieder XP Boosts:",
+    "founder-status": "Gründer-Status:"
+  },
+  "version": {
+    "title": "Neue Version {{version}}",
+    "description": "Du kannst die neue Version (.exe Datei) hier herunterladen:"
+  },
+  "community-info": {
+    "message": "Tritt unserer <2>Discord Community<1/></2> bei, um mehr über kommende Updates zu erfahren!!!"
+  },
+  "founder": {
+    "non-founder": "Nicht-Gründer",
+    "founder": "Gründer",
+    "standard": "Standard Edition",
+    "deluxe": "Deluxe Edition",
+    "super-deluxe": "Super Deluxe Edition",
+    "limited": "Limited Edition",
+    "ultimate": "Ultimate Edition"
+  },
+  "launch-game": {
+    "button": "Spiel Starten",
+    "notifications": {
+      "success": "Das Spiel wurde mit dem Konto {{name}} gestartet",
+      "error": "Ein Fehler ist beim Starten des Spiels mit dem Konto {{name}} aufgetreten, versuche es später erneut"
+    }
+  },
+  "close-game": {
+    "button": "Spiel Schließen"
+  },
+  "separators": {
+    "or": "Oder"
+  },
+  "sort": {
+    "newest": "Nach Neueste sortiert"
+  },
+  "statuses": {
+    "error": "Fehler",
+    "loading": "Lädt",
+    "not-found": "Nicht Gefunden",
+    "owned": "Besitzt",
+    "claimed": "Beansprucht",
+    "used": "Verwendet"
+  },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ Ungültige Konto-ID"
+        },
+        "device-id": {
+          "invalid": "❌ Ungültige Geräte-ID"
+        },
+        "secret": {
+          "invalid": "❌ Ungültiges Geheimnis"
+        },
+        "code": {
+          "invalid": "❌ Ungültiger Code"
+        }
+      }
+    },
+    "screenshot": {
+      "success": "Screenshot erstellt und in Zwischenablage kopiert",
+      "error": "Screenshot konnte nicht erstellt werden, bitte versuche es später erneut"
+    }
+  },
+  "account-selected": "Ausgewähltes Konto: <2>{{name}}</2>",
+  "boosts": "Boost/s",
+  "credits": "Credits",
+  "current": "Aktuell",
+  "date": "Datum",
+  "first-claim": "Erstes Beanspruchen: {{date}}",
+  "go-to-current-alerts": "Zu Aktuellen Alarmen Gehen",
+  "go-to-top": "Nach Oben Gehen",
+  "history": "Verlauf",
+  "hide-information": "Informationen Verstecken",
+  "note": "Notiz",
+  "show-information": "Versteckte Informationen Anzeigen",
+  "ip-address": "IP-Adresse",
+  "is-running": "App läuft",
+  "is-not-running": "App läuft nicht",
+  "last-played": "Zuletzt Gespielt: {{date}}",
+  "location": "Standort",
+  "missions": "Missionen",
+  "no-item-found": "Kein Element gefunden",
+  "menu": {
+    "show": "Menü anzeigen",
+    "hide": "Menü ausblenden"
+  },
+  "no-options": "Keine Optionen",
+  "no-placeholder-select-options": "Optionen auswählen",
+  "placeholder": "Platzhalter",
+  "public-stats": "Hinweis: Dieser Benutzer hat \"Öffentliche Spielstatistiken\" deaktiviert, weitere Informationen können nicht angezeigt werden.",
+  "settings": "Einstellungen",
+  "summary": "Zusammenfassung",
+  "unknown-user": "Unbekannter Benutzer",
+  "unknown": "Unbekannt",
+  "update-information": "Informationen Aktualisieren",
+  "user-agent": "User Agent",
+  "generate-screenshot": "Screenshot Erstellen",
+  "under-translation": "(In Übersetzung)"
+} 

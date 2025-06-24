@@ -18,6 +18,7 @@ import enUS_stwOperations_XPBoosts from './en-US/stw-operations/xpboosts.json'
 import enUS_stwOperations_Llamas from './en-US/stw-operations/llamas.json'
 import enUS_stwOperations_Unlock from './en-US/stw-operations/unlock.json'
 import enUS_accountManagement_VBucksInformation from './en-US/account-management/vbucks-information.json'
+
 import enUS_accountManagement_EULA from './en-US/account-management/eula.json'
 import enUS_accountManagement_RedeemCodes from './en-US/account-management/redeem-codes.json'
 import enUS_accountManagement_DevicesAuth from './en-US/account-management/devices-auth.json'
@@ -39,20 +40,6 @@ const enUS = {
   zones: enUS_zones,
   'stw-operations': {
     'auto-kick': enUS_stwOperations_AutoKick,
-    'homebase-name': enUS_stwOperations_HomebaseName,
-    'save-quests': enUS_stwOperations_SaveQuests,
-    party: enUS_stwOperations_Party,
-    urns: enUS_stwOperations_Urns,
-    xpboosts: enUS_stwOperations_XPBoosts,
-    llamas: enUS_stwOperations_Llamas,
-    unlock: enUS_stwOperations_Unlock,
-  },
-  'account-management': {
-    'vbucks-information': enUS_accountManagement_VBucksInformation,
-    'redeem-codes': enUS_accountManagement_RedeemCodes,
-    'devices-auth': enUS_accountManagement_DevicesAuth,
-    'epic-settings': enUS_accountManagement_EpicSettings,
-    eula: enUS_accountManagement_EULA,
   },
   'advanced-mode': {
     'matchmaking-track': enUS_advancedMode_MatchmakingTrack,
@@ -84,7 +71,7 @@ import es419_stwOperations_Urns from './es-419/stw-operations/urns.json'
 import es419_stwOperations_XPBoosts from './es-419/stw-operations/xpboosts.json'
 import es419_stwOperations_Llamas from './es-419/stw-operations/llamas.json'
 import es419_stwOperations_Unlock from './es-419/stw-operations/unlock.json'
-import es419_accountManagement_VBucksInformation from './es-419/account-management/vbucks-information.json'
+import es419_accountManagement_VBucksInformation from './es-419/account-management/vbucks-information.json' 
 import es419_accountManagement_EULA from './es-419/account-management/eula.json'
 import es419_accountManagement_RedeemCodes from './es-419/account-management/redeem-codes.json'
 import es419_accountManagement_DevicesAuth from './es-419/account-management/devices-auth.json'
@@ -135,6 +122,73 @@ const es419 = {
 }
 
 /**
+ * @file de-DE
+ */
+import deDE_sidebar from './de-DE/sidebar.json'
+import deDE_general from './de-DE/general.json'
+import deDE_history from './de-DE/history.json'
+import deDE_settings from './de-DE/settings.json'
+import deDE_alerts from './de-DE/home.json'
+import deDE_zones from './de-DE/zones.json'
+import deDE_stwOperations_AutoKick from './de-DE/stw-operations/auto-kick.json'
+import deDE_stwOperations_HomebaseName from './de-DE/stw-operations/homebase-name.json'
+import deDE_stwOperations_SaveQuests from './de-DE/stw-operations/save-quests.json'
+import deDE_stwOperations_Party from './de-DE/stw-operations/party.json'
+import deDE_stwOperations_Urns from './de-DE/stw-operations/urns.json'
+import deDE_stwOperations_XPBoosts from './de-DE/stw-operations/xpboosts.json'
+import deDE_stwOperations_Llamas from './de-DE/stw-operations/llamas.json'
+import deDE_stwOperations_Unlock from './de-DE/stw-operations/unlock.json'
+import deDE_accountManagement_VBucksInformation from './de-DE/account-management/vbucks-information.json'
+import deDE_accountManagement_EULA from './de-DE/account-management/eula.json'
+import deDE_accountManagement_RedeemCodes from './de-DE/account-management/redeem-codes.json'
+import deDE_accountManagement_DevicesAuth from './de-DE/account-management/devices-auth.json'
+import deDE_accountManagement_EpicSettings from './de-DE/account-management/epic-settings.json'
+import deDE_advancedMode_MatchmakingTrack from './de-DE/advanced-mode/matchmaking-track.json'
+import deDE_advancedMode_WorldInfo from './de-DE/advanced-mode/world-info.json'
+import deDE_myAccounts_General from './de-DE/accounts/general.json'
+import deDE_myAccounts_AuthCode from './de-DE/accounts/auth-code.json'
+import deDE_myAccounts_ExchangeCode from './de-DE/accounts/exchange-code.json'
+import deDE_myAccounts_DeviceAuth from './de-DE/accounts/device-auth.json'
+import deDE_myAccounts_RemoveAccount from './de-DE/accounts/remove-account.json'
+
+const deDE = {
+  sidebar: deDE_sidebar,
+  general: deDE_general,
+  history: deDE_history,
+  settings: deDE_settings,
+  alerts: deDE_alerts,
+  zones: deDE_zones,
+  'stw-operations': {
+    'auto-kick': deDE_stwOperations_AutoKick,
+    'homebase-name': deDE_stwOperations_HomebaseName,
+    'save-quests': deDE_stwOperations_SaveQuests,
+    party: deDE_stwOperations_Party,
+    urns: deDE_stwOperations_Urns,
+    xpboosts: deDE_stwOperations_XPBoosts,
+    llamas: deDE_stwOperations_Llamas,
+    unlock: deDE_stwOperations_Unlock,
+  },
+  'account-management': {
+    'vbucks-information': deDE_accountManagement_VBucksInformation,
+    'redeem-codes': deDE_accountManagement_RedeemCodes,
+    'devices-auth': deDE_accountManagement_DevicesAuth,
+    'epic-settings': deDE_accountManagement_EpicSettings,
+    eula: deDE_accountManagement_EULA,
+  },
+  'advanced-mode': {
+    'matchmaking-track': deDE_advancedMode_MatchmakingTrack,
+    'world-info': deDE_advancedMode_WorldInfo,
+  },
+  accounts: {
+    general: deDE_myAccounts_General,
+    'auth-code': deDE_myAccounts_AuthCode,
+    'exchange-code': deDE_myAccounts_ExchangeCode,
+    'device-auth': deDE_myAccounts_DeviceAuth,
+    'remove-account': deDE_myAccounts_RemoveAccount,
+  },
+}
+
+/**
  * @file zh-CN
  */
 import zhCN_sidebar from './zh-CN/sidebar.json'
@@ -152,6 +206,7 @@ import zhCN_stwOperations_XPBoosts from './zh-CN/stw-operations/xpboosts.json'
 import zhCN_stwOperations_Llamas from './zh-CN/stw-operations/llamas.json'
 import zhCN_stwOperations_Unlock from './zh-CN/stw-operations/unlock.json'
 import zhCN_accountManagement_VBucksInformation from './zh-CN/account-management/vbucks-information.json'
+
 import zhCN_accountManagement_EULA from './zh-CN/account-management/eula.json'
 import zhCN_accountManagement_RedeemCodes from './zh-CN/account-management/redeem-codes.json'
 import zhCN_accountManagement_DevicesAuth from './zh-CN/account-management/devices-auth.json'
@@ -219,6 +274,7 @@ import ruRU_stwOperations_XPBoosts from './ru-RU/stw-operations/xpboosts.json'
 import ruRU_stwOperations_Llamas from './ru-RU/stw-operations/llamas.json'
 import ruRU_stwOperations_Unlock from './ru-RU/stw-operations/unlock.json'
 import ruRU_accountManagement_VBucksInformation from './ru-RU/account-management/vbucks-information.json'
+
 import ruRU_accountManagement_EULA from './ru-RU/account-management/eula.json'
 import ruRU_accountManagement_RedeemCodes from './ru-RU/account-management/redeem-codes.json'
 import ruRU_accountManagement_DevicesAuth from './ru-RU/account-management/devices-auth.json'
@@ -286,6 +342,7 @@ import ptBR_stwOperations_XPBoosts from './pt-BR/stw-operations/xpboosts.json'
 import ptBR_stwOperations_Llamas from './pt-BR/stw-operations/llamas.json'
 import ptBR_stwOperations_Unlock from './pt-BR/stw-operations/unlock.json'
 import ptBR_accountManagement_VBucksInformation from './pt-BR/account-management/vbucks-information.json'
+
 import ptBR_accountManagement_EULA from './pt-BR/account-management/eula.json'
 import ptBR_accountManagement_RedeemCodes from './pt-BR/account-management/redeem-codes.json'
 import ptBR_accountManagement_DevicesAuth from './pt-BR/account-management/devices-auth.json'
@@ -353,6 +410,7 @@ import plPL_stwOperations_XPBoosts from './pl-PL/stw-operations/xpboosts.json'
 import plPL_stwOperations_Llamas from './pl-PL/stw-operations/llamas.json'
 import plPL_stwOperations_Unlock from './pl-PL/stw-operations/unlock.json'
 import plPL_accountManagement_VBucksInformation from './pl-PL/account-management/vbucks-information.json'
+
 import plPL_accountManagement_EULA from './pl-PL/account-management/eula.json'
 import plPL_accountManagement_RedeemCodes from './pl-PL/account-management/redeem-codes.json'
 import plPL_accountManagement_DevicesAuth from './pl-PL/account-management/devices-auth.json'
@@ -409,6 +467,7 @@ const plPL = {
 export enum Language {
   English = 'en-US',
   Spanish = 'es-419',
+  German = 'de-DE',
   Chinese = 'zh-CN',
   Russian = 'ru-RU',
   Portuguese = 'pt-BR',
@@ -418,8 +477,9 @@ export enum Language {
 export const resources: Resource = {
   [Language.English]: enUS,
   [Language.Spanish]: es419,
+  [Language.German]: deDE,
   [Language.Chinese]: zhCN,
   [Language.Russian]: ruRU,
   [Language.Portuguese]: ptBR,
   [Language.Polish]: plPL,
-}
+} 

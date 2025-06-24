@@ -1,0 +1,9 @@
+{
+  "notifications": {
+    "new-account": {
+      "success": "Neues Konto hinzugefügt: {{name}}",
+      "error": "Unbekannter Fehler",
+      "launcher-auth-login": "Konto konnte nicht hinzugefügt werden, bitte überprüfe, ob die Anmeldedaten gültig sind"
+    }
+  }
+} 

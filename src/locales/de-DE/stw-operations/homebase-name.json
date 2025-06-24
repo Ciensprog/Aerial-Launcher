@@ -1,0 +1,10 @@
+{
+  "description": "Aktualisiere den Homebase-Namen (nicht mehr im Spiel sichtbar) der ausgewählten Konten.",
+  "form": {
+    "placeholder": "Homebase-Namen festlegen",
+    "submit-button": "Homebase-Namen Aktualisieren"
+  },
+  "notifications": {
+    "updated": "Homebase-Name aktualisiert"
+  }
+} 

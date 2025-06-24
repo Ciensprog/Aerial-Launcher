@@ -1,0 +1,8 @@
+{
+  "description": "Diese Funktion ist nützlich, wenn du Shield Defense Belohnungen wie Überlebenden-Squad-Plätze, Verteidiger, etc. freischalten möchtest, auch wenn sie noch nicht abgeschlossen wurden.",
+  "note": "Hinweis: Dies wird NICHT V-Bucks beanspruchen oder deine Sturmschild-Verteidigungen abschließen, du erhältst nur die oben genannten Belohnungen.",
+  "form": {
+    "submit-button": "Freischalten",
+    "clear-button": "Auswahl Löschen"
+  }
+} 

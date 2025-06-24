@@ -1,0 +1,9 @@
+{
+  "description": "Speichere den Quest-Fortschritt der ausgewählten Konten.",
+  "form": {
+    "submit-button": "Quests Speichern"
+  },
+  "notifications": {
+    "saved": "Quest-Fortschritt wurde gespeichert"
+  }
+} 

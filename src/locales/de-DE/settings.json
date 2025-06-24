@@ -1,0 +1,80 @@
+{
+  "app-settings": {
+    "title": "App-Einstellungen",
+    "form": {
+      "language": {
+        "label": "Sprache",
+        "input": {
+          "placeholder": "Sprache auswählen"
+        },
+        "dialog": {
+          "title": "Welche Sprache möchtest du verwenden?",
+          "notes": {
+            "1": "Diese Benachrichtigung wird nach der Auswahl nicht mehr angezeigt.",
+            "2": "Du kannst diese Auswahl auf der Einstellungsseite ändern."
+          },
+          "submit-button": "Auswahl Speichern"
+        }
+      },
+      "path": {
+        "label": "Benutzerdefinierter Pfad"
+      },
+      "user-agent": {
+        "label": "Benutzerdefinierter User Agent",
+        "note": "Wird nur angewendet, wenn Fortnite nicht installiert ist."
+      },
+      "custom-process": {
+        "label": "Benutzerdefinierter Prozess"
+      },
+      "claiming-rewards": {
+        "label": "Benutzerdefinierte Verzögerung für das Beanspruchen von Belohnungen",
+        "note": "Wert in Sekunden zwischen {{min}} und {{max}}. Standard ist: {{default}}.",
+        "input": {
+          "placeholder": "Beispiele: 0, 1, 1.5, 3, 4, 4.2 oder 5"
+        }
+      },
+      "mission-interval": {
+        "label": "Benutzerdefiniertes Intervall für die Überprüfung der aktuellen Mission",
+        "note1": "Bedeutet, dass alle {{value}} Sekunde/n überprüft wird, ob du dich in einer Mission befindest. Dies wird mit der Automatisierungsfunktion verwendet.",
+        "note2": "Wert in Sekunden zwischen {{min}} und {{max}}. Standard ist: {{default}}.",
+        "input": {
+          "placeholder": "Beispiele: 1, 3, 4 oder 5"
+        }
+      },
+      "tray": {
+        "label": "In Systemleiste ausblenden"
+      }
+    }
+  },
+  "custom-menu": {
+    "title": "Anpassbares Menü",
+    "description": "Du kannst die Sichtbarkeit der Menüabschnitte/Optionen anpassen."
+  },
+  "tags-management": {
+    "title": "Tag-Verwaltung",
+    "description": "Du kannst Tags erstellen, um Konten einfach zu gruppieren und Bulk-Operationen organisierter durchzuführen.",
+    "form": {
+      "input": {
+        "placeholder": "Tag-Namen eingeben"
+      }
+    },
+    "search": {
+      "input": {
+        "placeholder": "In {{total}} Tags suchen"
+      },
+      "empty": "Kein Tag gefunden"
+    }
+  },
+  "account-customization": {
+    "title": "Konto-Anpassung",
+    "description": "Manchmal benötigst du einen spezifischen Anzeigenamen zur Identifizierung eines Kontos. Wenn du möchtest, kannst du den aktuellen Anzeigenamen mit einem benutzerdefinierten Namen ändern.",
+    "note": "Hinweis: Dies gilt nur visuell für die Aerial-Konten."
+  },
+  "form": {
+    "submit": {
+      "status": {
+        "success": "Informationen aktualisiert"
+      }
+    }
+  }
+} 

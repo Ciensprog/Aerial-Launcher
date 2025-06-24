@@ -1,0 +1,46 @@
+{
+  "description": "Verwalte XP Boosts der ausgewählten Konten.",
+  "form": {
+    "label": "Anzahl der zu sendenden XP Boosts (begrenzt auf {{limit}})",
+    "input": {
+      "placeholder": "Beispiel: 123"
+    },
+    "refetch": "Boost-Daten Neu Laden",
+    "see-boosts": "Boosts Anzeigen",
+    "send-boosts": "Boosts Senden"
+  },
+  "top-search": {
+    "description": "Grundlegende Informationen über einen Spieler anzeigen."
+  },
+  "sidebar": {
+    "title": "Welche XP Boosts möchtest du verwenden?",
+    "personal": {
+      "description": "Alle diese Konten werden XP Boosts verwenden:",
+      "submit-button": "{{total}} XP Boost/s auf jedem Konto verbrauchen"
+    },
+    "teammate": {
+      "note": "Einige Boosts werden möglicherweise nicht gesendet, wenn dein Ping nicht stabil ist.",
+      "submit-button": "<1>{{total}}</1> senden an: <3>{{name}}</3>"
+    },
+    "errors": {
+      "valid-amount": "Bitte gib eine gültige Anzahl ein"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "Zusammenfassung von {{total}} Konto/s"
+    },
+    "options": {
+      "description": "Zu verwendende Teammitglieder XP Boosts:",
+      "information": "{{current}}/{{total}} von insgesamt {{amount}}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "Insgesamt {{current}}/{{expected}} XP Boost wurde verbraucht. Zusammenfassung von {{totalAccounts}} Konto/s",
+      "personal_other": "Insgesamt {{current}}/{{expected}} XP Boosts wurden verbraucht. Zusammenfassung von {{totalAccounts}} Konto/s",
+      "teammate_one": "Insgesamt {{current}}/{{expected}} XP Boost wurde an {{name}} gesendet. Zusammenfassung von {{totalAccounts}} Konto/s",
+      "teammate_other": "Insgesamt {{current}}/{{expected}} XP Boosts wurden an {{name}} gesendet. Zusammenfassung von {{totalAccounts}} Konto/s"
+    }
+  }
+} 

@@ -1,0 +1,20 @@
+{
+  "page": {
+    "title": "Exchange Code",
+    "description": "Konto mit Exchange Code hinzufügen"
+  },
+  "form": {
+    "exchange-code": {
+      "label": "Exchange Code",
+      "placeholder": "Exchange Code hier eingeben"
+    },
+    "submit": "Konto Hinzufügen"
+  },
+  "generate": {
+    "title": "Exchange Code Generieren",
+    "description": "Generiere einen Exchange Code für das ausgewählte Konto",
+    "button": "Code Generieren",
+    "success": "Exchange Code erfolgreich generiert",
+    "error": "Fehler beim Generieren des Exchange Codes"
+  }
+} 
