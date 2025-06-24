@@ -1,0 +1,14 @@
+{
+  "description1": "Auto-Kick hört auf die Ereignisse deiner ausgewählten Konten und führt den Kick-Prozess aus, wenn es erkennt, dass das Match beendet wurde.",
+  "description2": "Denke auch daran, dass Kicking intelligent ist. Es ist nicht nötig, zwei Auto-Kicks auf deinen Konten zu aktivieren, wenn sie in derselben Gruppe sind, beide deiner Konten werden gekickt/verlassen (und Belohnungen beanspruchen, wenn du Auto-Claim aktiv hattest), je nach Fall.",
+  "statuses": {
+    "listening": "Hörend",
+    "credential-error": "Anmeldedaten-Fehler",
+    "disconnected": "Getrennt"
+  },
+  "options": {
+    "kick": "Kick",
+    "claim": "Beanspruchen",
+    "transfer-mats": "Materialien übertragen"
+  }
+} 

@@ -1,0 +1,11 @@
+{
+  "form": {
+    "generate-button": "Link Generieren",
+    "open-button": "<0>Konto-Einstellungen Öffnen</0> <1 />"
+  },
+  "notifications": {
+    "clipboard": "Der Link wurde in die Zwischenablage kopiert",
+    "success": "Epic Games Einstellungslink wurde generiert",
+    "error": "Ein Fehler ist beim Verarbeiten der Anfrage aufgetreten"
+  }
+} 

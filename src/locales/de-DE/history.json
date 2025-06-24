@@ -1,0 +1,11 @@
+{
+  "history": {
+    "note": "Hinweis: Dies ist ein temporärer Verlauf.",
+    "empty": "Verlauf der Beanspruchten Belohnungen"
+  },
+  "summary": {
+    "note": "Hinweis: Diese Zusammenfassung basiert auf deinem temporären Verlauf.",
+    "empty": "Zusammenfassung des Verlaufs der Beanspruchten Belohnungen",
+    "all-accounts": "Zusammenfassung aller Konten"
+  }
+} 

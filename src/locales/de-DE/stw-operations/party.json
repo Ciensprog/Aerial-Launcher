@@ -1,0 +1,60 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "Ganze Gruppe Kicken"
+    },
+    "notifications": {
+      "success": "{{total}} Benutzer gekickt",
+      "nothing": "Kein Benutzer wurde gekickt"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "Gruppe Verlassen"
+    }
+  },
+  "claim": {
+    "title": "Belohnungen nach Verlassen der Mission beanspruchen",
+    "form": {
+      "submit-button": "Belohnungen Beanspruchen"
+    },
+    "notifications": {
+      "success": "Belohnungen beansprucht"
+    }
+  },
+  "friends": {
+    "note": "Wenn der eingeladene Spieler nicht dein Freund ist, wird der Launcher ihm automatisch eine Freundschaftsanfrage senden.",
+    "form": {
+      "select": {
+        "placeholder": "Freunde auswählen",
+        "search": {
+          "placeholder": "Personen einladen"
+        },
+        "empty": {
+          "placeholder": "Keine Freunde",
+          "options": "Tippen, um sie zur Liste hinzuzufügen"
+        }
+      },
+      "submit-button": "Einladen"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} wurde zu Freunden hinzugefügt",
+        "default-error": "Ein Fehler trat beim Hinzufügen von {{name}} auf"
+      },
+      "remove": {
+        "success": "{{name}} wurde von der Liste entfernt",
+        "default-error": "Ein Fehler trat beim Entfernen von {{name}} auf"
+      },
+      "invite": {
+        "sent_one": "{{count}} Einladung wurde gesendet",
+        "sent_other": "{{count}} Einladungen wurden gesendet",
+        "error": "Ein Fehler trat beim Senden der Einladungen auf"
+      },
+      "request": {
+        "sent_one": "{{count}} Freundschaftsanfrage wurde gesendet",
+        "sent_other": "{{count}} Freundschaftsanfragen wurden gesendet"
+      }
+    }
+  }
+} 

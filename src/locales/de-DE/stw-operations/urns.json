@@ -1,0 +1,8 @@
+{
+  "note": "Hinweis: Funktioniert nur während Dungeon-Saisons.",
+  "description": "Dieses Feature wird automatisch die \"Urn Your Keep\" Quest jedes Mal anpinnen, wenn es sie beansprucht (mit dem Launcher). So könnt ihr immer verfolgen, welche Urnen euch fehlen, und müsst sie nicht vor jedem Lauf manuell anpinnen.",
+  "options": {
+    "urns": "Urnen",
+    "mini-bosses": "Mini-Bosse"
+  }
+} 

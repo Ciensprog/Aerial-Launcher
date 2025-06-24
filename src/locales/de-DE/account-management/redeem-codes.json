@@ -1,0 +1,10 @@
+{
+  "description": "Codes für jedes ausgewählte Konto einlösen.",
+  "form": {
+    "input": {
+      "placeholder": "Codes zum Einlösen eingeben (verwende Zeilenumbrüche)."
+    },
+    "redeem-button": "Codes Einlösen",
+    "clear-button": "Formular Löschen"
+  }
+} 

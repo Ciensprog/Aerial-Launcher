@@ -1,0 +1,90 @@
+{
+  "heading": {
+    "title": "Gut zu wissen:",
+    "items": {
+      "1": "Klicke auf das Aerial-Logo (obere linke Ecke), um hierher zurückzukehren.",
+      "2": "Ziehe eine World Info Datei auf die Seite, um andere Missionen/Alarme zu laden."
+    }
+  },
+  "tabs": {
+    "home": "Startseite",
+    "overview": "Alarm-Übersicht",
+    "done": "Erledigte Alarme"
+  },
+  "sections": {
+    "vbucks": {
+      "title": "V-Bucks"
+    },
+    "twine-peaks": {
+      "title-endgame": "Twine Peaks ⚡160",
+      "mid": "Mitte"
+    },
+    "ventures": {
+      "title-endgame": "Ventures ⚡140"
+    },
+    "survivors": {
+      "title": "Legendäre/Mythische Überlebende",
+      "empty": "Keine Überlebenden zu retten"
+    },
+    "llamas": {
+      "title": "Upgrade Llama Token"
+    },
+    "uc-perk": {
+      "title": "Ungewöhnliche PERK-UP!"
+    }
+  },
+  "information": {
+    "missions": "{{total}} Mission/en",
+    "tile-index": "Kachel-Index:",
+    "alert-guid": "Missions-Alarm GUID:",
+    "mission-guid": "Missions GUID:",
+    "alert-rewards": "Alarm-Belohnungen:",
+    "base-rewards": "Basis-Belohnungen:",
+    "modifiers": "Modifikatoren:",
+    "first-claim": "Erstes Beanspruchen:",
+    "last-played": "Zuletzt Gespielt:",
+    "alerts-completed": "Alarme Abgeschlossen",
+    "rewards-summary": "Belohnungs-Zusammenfassung"
+  },
+  "pagination": {
+    "results": "Ergebnisse",
+    "actions": {
+      "previous": "Weniger Anzeigen",
+      "next": "Mehr Anzeigen"
+    }
+  },
+  "filters": {
+    "search": {
+      "input": {
+        "placeholder": "Suche: Missions/Alarm GUID, Kachel-Index oder Belohnungs-ID"
+      },
+      "submit-button": "Filter Anzeigen"
+    },
+    "sections": {
+      "zones": "Zonen Auswählen",
+      "types": "Missionstypen Auswählen",
+      "rarities": "Seltenheiten Auswählen",
+      "rewards": "Belohnungen Auswählen"
+    },
+    "actions": {
+      "back": "Zurück zu Alarmen",
+      "clear": "Auswahl Löschen"
+    }
+  },
+  "world-info": {
+    "dnd": {
+      "title": ".json Datei Ablegen"
+    },
+    "notifications": {
+      "error": "World Info Datei konnte nicht geladen werden, bitte überprüfe ob es die richtige Datei ist und keine fehlenden Daten hat"
+    }
+  },
+  "results": {
+    "empty": {
+      "alerts-done": "Gefundene Alarme stimmen nicht mit den heutigen Missionen überein",
+      "vbucks": "Heute keine V-Bucks",
+      "missions": "Keine verfügbaren Missionen",
+      "rewards": "Keine verfügbaren Belohnungen"
+    }
+  }
+} 

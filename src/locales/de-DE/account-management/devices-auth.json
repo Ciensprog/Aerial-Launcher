@@ -1,0 +1,18 @@
+{
+  "description": "Wähle ein Konto aus und verwalte deine erstellten Geräte-Authentifizierungen. Der User Agent, Erstellungszeit und letzter Zugriff werden mit folgenden Informationen angezeigt: Standort, IP-Adresse und Datum.",
+  "form": {
+    "submit-button": "Geräte Anfordern"
+  },
+  "results": {
+    "title": "Gefundene Geräte: <1>{{total}}</1>",
+    "item": {
+      "created": "Erstellt",
+      "last-access": "Letzter Zugriff"
+    }
+  },
+  "notifications": {
+    "no-devices": "Keine Geräte gefunden",
+    "success": "GeräteId {{deviceId}} wurde erfolgreich entfernt",
+    "error": "Ein Fehler ist beim Entfernen der GeräteId aufgetreten: {{deviceId}}"
+  }
+} 

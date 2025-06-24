@@ -1,0 +1,54 @@
+{
+  "stw-operations": {
+    "title": "STW Operationen",
+    "options": {
+      "auto-kick": "Auto-Kick",        
+      "party": "Gruppe",
+      "save-quests": "Quests Speichern",    
+      "homebase-name": "Homebase Name",
+      "xp-boosts": "XP Boosts",        
+      "auto-pin-urns": "Auto-Pin Urnen",
+      "auto-llamas": "Auto-Llamas",    
+      "unlock": "SSD Belohnungen Freischalten"   
+    },
+    "auto-kick-status": {
+      "issue": "Problem",
+      "active": "Aktiv"
+    }
+  },
+  "account-management": {
+    "title": "Konto-Verwaltung",
+    "options": {
+      "vbucks-information": "V-Bucks Informationen",
+      "redeem-codes": "Codes Einlösen",
+      "devices-auth": "Geräte-Authentifizierung",
+      "epic-settings": "Epic Games Einstellungen"
+    }
+  },
+  "advanced-mode": {
+    "title": "Erweiterte Modi",
+    "options": {
+      "matchmaking-track": "Matchmaking Tracker",
+      "world-info": "Welt-Informationen"
+    }
+  },
+  "accounts": {
+    "title": "Meine Konten",
+    "options": {
+      "show-total-accounts": "Gesamtanzahl der Konten anzeigen",
+      "auth": "Autorisierungscode",
+      "exchange": "Exchange Code",
+      "device": "Geräte-Authentifizierung",
+      "remove": "Konto Entfernen"
+    }
+  },
+  "links": {
+    "discord": "Discord Server",
+    "github": "Auf GitHub anzeigen",
+    "credits": "Credits"
+  },
+  "version": {
+    "release": "Version v{{version}}",
+    "all-releases": "Alle Versionen"
+  }
+} 

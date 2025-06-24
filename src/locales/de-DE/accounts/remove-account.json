@@ -1,0 +1,19 @@
+{
+  "page": {
+    "title": "Konto Entfernen",
+    "description": "Wähle ein Konto aus, um es zu entfernen"
+  },
+  "confirm": {
+    "title": "Konto Entfernen Bestätigen",
+    "message": "Bist du sicher, dass du das Konto {{name}} entfernen möchtest?",
+    "warning": "Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "form": {
+    "submit": "Konto Entfernen",
+    "cancel": "Abbrechen"
+  },
+  "notifications": {
+    "success": "Konto {{name}} wurde erfolgreich entfernt",
+    "error": "Fehler beim Entfernen des Kontos {{name}}"
+  }
+} 

@@ -1,0 +1,40 @@
+{
+  "form": {
+    "save": "Lokal Speichern",
+    "refetch": "Daten Neu Laden"
+  },
+  "search": {
+    "input": {
+      "placeholder": "In {{total}} Dateien suchen"
+    },
+    "include-data": "Datei-Daten einschließen",
+    "no-files": "Keine Dateien gefunden"
+  },
+  "file": {
+    "input": {
+      "placeholder": "Standardname: {{filename}}"
+    }
+  },
+  "notifications": {
+    "save": {
+      "success": "Die Datei wurde gespeichert",
+      "error": "Die Datei kann nicht gespeichert werden, bitte versuche es später erneut"
+    },
+    "delete": {
+      "success": "Die Datei \"{{filename}}\" wurde gelöscht",
+      "error": "Die Datei \"{{filename}}\" kann nicht gelöscht werden, bitte versuche es später erneut"
+    },
+    "export": {
+      "success": "Die Datei wurde exportiert",
+      "error": "Die Datei kann nicht exportiert werden, bitte versuche es später erneut"
+    },
+    "open": {
+      "success": "Die Datei \"{{filename}}\" wurde geöffnet",
+      "error": "Die Datei \"{{filename}}\" kann nicht geöffnet werden, bitte versuche es später erneut"
+    },
+    "rename": {
+      "success": "Die Datei wurde umbenannt",
+      "error": "Die Datei kann nicht umbenannt werden, bitte versuche es später erneut"
+    }
+  }
+} 

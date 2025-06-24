@@ -1,0 +1,25 @@
+{
+  "description": "Überprüfe, ob dies der Benutzer ist, den du suchst, und fordere seine Matchmaking-Informationen an.",
+  "note": "Standard-Dateipfad:",
+  "form": {
+    "recently": {
+      "label": "Hinweis: Diese Spieler werden temporär gespeichert"
+    },
+    "submit-button": "Matchmaking-Datei Erstellen"
+  },
+  "results": {
+    "notes": "Notizen:",
+    "options": {
+      "public-stats": "Dieser Benutzer hat \"Öffentliche Spielstatistiken\" deaktiviert, weitere Informationen können nicht angezeigt werden.",
+      "continuation": "Natürlich kannst du trotzdem die Datei generieren."
+    }
+  },
+  "notifications": {
+    "file": {
+      "updated": "Datei wurde erfolgreich aktualisiert"
+    },
+    "player": {
+      "not-playing": "Der angegebene Spieler ist wahrscheinlich nicht in einer Mission"
+    }
+  }
+} 

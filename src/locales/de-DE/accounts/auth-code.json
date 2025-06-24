@@ -1,0 +1,22 @@
+{
+  "page": {
+    "title": "Autorisierungscode",
+    "description": "Konto mit Autorisierungscode hinzufügen"
+  },
+  "form": {
+    "auth-code": {
+      "label": "Autorisierungscode",
+      "placeholder": "Autorisierungscode hier eingeben"
+    },
+    "submit": "Konto Hinzufügen"
+  },
+  "help": {
+    "title": "Wie erhalte ich einen Autorisierungscode?",
+    "steps": [
+      "Gehe zur Epic Games Website",
+      "Melde dich bei deinem Konto an",
+      "Navigiere zu Konto-Einstellungen",
+      "Kopiere den Autorisierungscode"
+    ]
+  }
+} 

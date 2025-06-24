@@ -1,0 +1,25 @@
+{
+  "page": {
+    "title": "Geräte-Authentifizierung",
+    "description": "Konto mit Geräte-Authentifizierung hinzufügen"
+  },
+  "form": {
+    "account-id": {
+      "label": "Konto-ID",
+      "placeholder": "Konto-ID hier eingeben"
+    },
+    "device-id": {
+      "label": "Geräte-ID",
+      "placeholder": "Geräte-ID hier eingeben"
+    },
+    "secret": {
+      "label": "Geheimnis",
+      "placeholder": "Geheimnis hier eingeben"
+    },
+    "submit": "Konto Hinzufügen"
+  },
+  "help": {
+    "title": "Wie erhalte ich Geräte-Authentifizierungsdaten?",
+    "description": "Geräte-Authentifizierungsdaten können über den Autorisierungscode-Prozess generiert werden."
+  }
+} 
