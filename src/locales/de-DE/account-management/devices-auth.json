@@ -1,23 +1,18 @@
 {
-  "page": {
-    "title": "Geräte-Authentifizierung",
-    "description": "Wähle ein Konto aus und verwalte deine erstellten Geräte-Authentifizierungen. Erstellungszeit und letzte Zugriffszeit werden mit folgenden Informationen angezeigt: Standort, IP-Adresse und Zugriffszeit"
+  "description": "Wähle ein Konto aus und verwalte deine erstellten Geräte-Authentifizierungen. Der User Agent, Erstellungszeit und letzter Zugriff werden mit folgenden Informationen angezeigt: Standort, IP-Adresse und Datum.",
+  "form": {
+    "submit-button": "Geräte Anfordern"
+  },
+  "results": {
+    "title": "Gefundene Geräte: <1>{{total}}</1>",
+    "item": {
+      "created": "Erstellt",
+      "last-access": "Letzter Zugriff"
+    }
   },
   "notifications": {
     "no-devices": "Keine Geräte gefunden",
-    "success": "Geräte-ID {{deviceId}} wurde erfolgreich entfernt",
-    "error": "Fehler beim Entfernen der Geräte-ID {{deviceId}}"
-  },
-  "form": {
-    "remove": {
-      "button": "Entfernen",
-      "confirm": "Möchtest du dieses Gerät wirklich entfernen?"
-    }
-  },
-  "device-info": {
-    "created": "Erstellt:",
-    "last-access": "Letzter Zugriff:",
-    "location": "Standort:",
-    "ip-address": "IP-Adresse:"
+    "success": "GeräteId {{deviceId}} wurde erfolgreich entfernt",
+    "error": "Ein Fehler ist beim Entfernen der GeräteId aufgetreten: {{deviceId}}"
   }
 } 

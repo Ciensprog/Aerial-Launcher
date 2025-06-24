@@ -1,9 +1,11 @@
 {
-  "page": {
-    "title": "Epic Games Einstellungen",
-    "description": "Vom ausgewählten Konto wirst du zu deinen Kontoeinstellungen auf der Epic Games Website weitergeleitet."
+  "form": {
+    "generate-button": "Link Generieren",
+    "open-button": "<0>Konto-Einstellungen Öffnen</0> <1 />"
   },
-  "button": {
-    "open-settings": "Einstellungen Öffnen"
+  "notifications": {
+    "clipboard": "Der Link wurde in die Zwischenablage kopiert",
+    "success": "Epic Games Einstellungslink wurde generiert",
+    "error": "Ein Fehler ist beim Verarbeiten der Anfrage aufgetreten"
   }
 } 

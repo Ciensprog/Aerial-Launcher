@@ -7,14 +7,5 @@
     "note": "Hinweis: Diese Zusammenfassung basiert auf deinem temporären Verlauf.",
     "empty": "Zusammenfassung des Verlaufs der Beanspruchten Belohnungen",
     "all-accounts": "Zusammenfassung aller Konten"
-  },
-  "page": {
-    "title": "Verlauf"
-  },
-  "empty": "Keine Verlaufsdaten verfügbar",
-  "search": {
-    "input": {
-      "placeholder": "Nach Verlauf suchen"
-    }
   }
 } 
