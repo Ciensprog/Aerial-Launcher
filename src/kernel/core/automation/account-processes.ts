@@ -161,30 +161,34 @@ export class AccountProcess {
         return
       }
 
-      if (automationAccount.actions.kick === true) {
-        this.clearMissionIntervalId()
+if (automationAccount.actions.kick || automationAccount.actions.claim) {
+  this.clearMissionIntervalId()
 
-        const accounts = AccountsManager.getAccounts()
+  const tasks: Promise<any>[] = []
 
-        await Party.kickPartyMembers(
-          currentAccount,
-          [...accounts.values()],
-          automationAccount.actions.claim ?? false,
-          {
-            useGlobalNotification: true,
-          }
-        )
+  if (automationAccount.actions.kick) {
+    const accounts = AccountsManager.getAccounts()
+    tasks.push(
+      Party.kickPartyMembers(
+        currentAccount,
+        [...accounts.values()],
+        automationAccount.actions.claim ?? false,
+        {
+          useGlobalNotification: true,
+        }
+      )
+    )
+  }
 
-        return
-      }
+  if (automationAccount.actions.claim) {
+    tasks.push(ClaimRewards.start([currentAccount], true))
+  }
 
-      if (automationAccount.actions.claim === true) {
-        this.clearMissionIntervalId()
+  await Promise.all(tasks)
 
-        await ClaimRewards.start([currentAccount], true)
+  return
+}
 
-        return
-      }
 
       if (automationAccount.actions.transferMats === true) {
         this.clearMissionIntervalId()
