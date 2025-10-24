@@ -23,6 +23,7 @@ export class AccountProcess {
     started: false,
   }
   private _startedTracking = false
+  private _lastRemoteStartedState: boolean | null = null
 
   private missionIntervalId: NodeJS.Timeout | null = null
   private missionTimeout: NodeJS.Timeout | null = null
@@ -100,17 +101,15 @@ export class AccountProcess {
 
       if (!currentAccount || !automationAccount) {
         this.clearMissionIntervalId()
-
+        this._lastRemoteStartedState = null
         return
       }
 
-      const accessToken = await Authentication.verifyAccessToken(
-        this.account
-      )
+      const accessToken = await Authentication.verifyAccessToken(this.account)
 
       if (!accessToken) {
         this.clearMissionIntervalId()
-
+        this._lastRemoteStartedState = null
         return
       }
 
@@ -118,117 +117,113 @@ export class AccountProcess {
         accessToken,
         accountId: this.account.accountId,
       })
-      const matchmacking: MatchmakingTrack | undefined = response.data?.[0]
+      const responseData = response.data
+      const matchmacking: MatchmakingTrack | undefined = responseData?.[0]
 
-      if (!matchmacking) {
-        const validPartyState =
-          this._matchmaking.partyState === PartyState.MATCHMAKING ||
-          this._matchmaking.partyState === PartyState.POST_MATCHMAKING
+      const isEmptyArray = Array.isArray(responseData) && responseData.length === 0
+      let remoteStarted: boolean | undefined = undefined
 
-        if (!validPartyState) {
+      if (isEmptyArray) {
+        remoteStarted = false
+      } else {
+        remoteStarted = matchmacking?.started
+      }
+
+      if (remoteStarted === undefined) {
+        return
+      }
+
+      const lastStateWasInMission = this._lastRemoteStartedState === true
+      const currentStateIsInLobby = remoteStarted === false
+
+      if (lastStateWasInMission && currentStateIsInLobby) {
+        if (automationAccount.actions.kick || automationAccount.actions.claim) {
           this.clearMissionIntervalId()
+          const tasks: Promise<any>[] = []
+
+          if (automationAccount.actions.kick) {
+            const accounts = AccountsManager.getAccounts()
+            tasks.push(
+              Party.kickPartyMembers(
+                currentAccount,
+                [...accounts.values()],
+                automationAccount.actions.claim ?? false,
+                {
+                  useGlobalNotification: true,
+                }
+              )
+            )
+          }
+
+          if (automationAccount.actions.claim) {
+            tasks.push(ClaimRewards.start([currentAccount], true))
+          }
+
+          await Promise.all(tasks)
+          this.preInit({ timeout: 1_000 })
+
+          this.setMatchmaking({
+            partyState: PartyState.MATCHMAKING,
+            started: false,
+          })
+
+          this._lastRemoteStartedState = remoteStarted
+          return
         }
-
-        return
       }
 
-      if (matchmacking.started === undefined) {
-        return
-      }
-
-      if (
-        this._matchmaking.partyState !== PartyState.POST_MATCHMAKING &&
-        matchmacking.started
-      ) {
+      if (remoteStarted !== this._matchmaking.started) {
         this.setMatchmaking({
-          partyState: PartyState.POST_MATCHMAKING,
+          started: remoteStarted,
+          partyState: remoteStarted ? PartyState.POST_MATCHMAKING : PartyState.MATCHMAKING,
         })
+      }
 
+      if (remoteStarted === undefined) {
         return
       }
 
-      if (
-        !(
-          this._matchmaking.partyState === PartyState.POST_MATCHMAKING &&
-          this._matchmaking.started &&
-          !matchmacking.started
-        )
-      ) {
-        this.setMatchmaking({
-          started: matchmacking.started,
-        })
+      this._lastRemoteStartedState = remoteStarted
 
-        return
-      }
-
-if (automationAccount.actions.kick || automationAccount.actions.claim) {
-  this.clearMissionIntervalId()
-
-  const tasks: Promise<any>[] = []
-
-  if (automationAccount.actions.kick) {
-    const accounts = AccountsManager.getAccounts()
-    tasks.push(
-      Party.kickPartyMembers(
-        currentAccount,
-        [...accounts.values()],
-        automationAccount.actions.claim ?? false,
-        {
-          useGlobalNotification: true,
+      if (!(automationAccount.actions.kick || automationAccount.actions.claim) && automationAccount.actions.transferMats === true) {
+        if (!remoteStarted) {
+          this.clearMissionIntervalId()
+          MCPStorageTransfer.buildingMaterials(currentAccount).catch(() => {})
         }
-      )
-    )
-  }
-
-  if (automationAccount.actions.claim) {
-    tasks.push(ClaimRewards.start([currentAccount], true))
-  }
-
-  await Promise.all(tasks)
-
-  return
-}
-
-
-      if (automationAccount.actions.transferMats === true) {
-        this.clearMissionIntervalId()
-
-        MCPStorageTransfer.buildingMaterials(currentAccount).catch(
-          () => {}
-        )
       }
     }, missionInterval * 1_000)
   }
 
   async checkMatchAtStartUp() {
     try {
-      const accessToken = await Authentication.verifyAccessToken(
-        this.account
-      )
+      const accessToken = await Authentication.verifyAccessToken(this.account)
 
       if (!accessToken) {
+        this._lastRemoteStartedState = null
         return
       }
 
-      const response = await findPlayer({
+      const responseData = await findPlayer({
         accessToken,
         accountId: this.account.accountId,
       })
-      const matchmacking: MatchmakingTrack | undefined = response.data?.[0]
+      const data = responseData.data
+      const matchmacking: MatchmakingTrack | undefined = data?.[0]
 
-      if (
-        !matchmacking ||
-        (matchmacking && matchmacking.started === undefined)
-      ) {
+      const isEmptyArray = Array.isArray(data) && data.length === 0
+      const remoteStarted: boolean | undefined = isEmptyArray ? false : matchmacking?.started
+
+      if (remoteStarted === undefined) {
+        this._lastRemoteStartedState = null
         return
       }
 
       this.setMatchmaking({
-        partyState: matchmacking.started
-          ? PartyState.POST_MATCHMAKING
-          : PartyState.MATCHMAKING,
-        started: matchmacking.started!,
+        partyState: remoteStarted ? PartyState.POST_MATCHMAKING : PartyState.MATCHMAKING,
+        started: remoteStarted,
       })
+
+      this._lastRemoteStartedState = remoteStarted
       this.initMissionInterval()
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -240,6 +235,7 @@ if (automationAccount.actions.kick || automationAccount.actions.claim) {
   clearMissionIntervalId() {
     this._startedTracking = false
     this.setMatchmaking(null)
+    this._lastRemoteStartedState = null
 
     if (this.missionIntervalId) {
       clearInterval(this.missionIntervalId)
