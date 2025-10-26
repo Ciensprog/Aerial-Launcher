@@ -1,0 +1,54 @@
+{
+  "stw-operations": {
+    "title": "Operazioni STW",
+    "options": {
+      "auto-kick": "Auto-caccia",
+      "party": "Party",
+      "save-quests": "Salva Sfide",
+      "homebase-name": "Nome Casabase",
+      "xp-boosts": "Incrementi PE",
+      "auto-pin-urns": "Auto-fissa Rovine",
+      "auto-llamas": "Auto-lama",
+      "unlock": "Sblocca Ricompense SSD"
+    },
+    "auto-kick-status": {
+      "issue": "Errore",
+      "active": "Attivo"
+    }
+  },
+  "account-management": {
+    "title": "Gestione Account",
+    "options": {
+      "vbucks-information": "Informazioni V-Bucks",
+      "redeem-codes": "Riscatta Codici",
+      "devices-auth": "Autorizzazione Dispositivi",
+      "epic-settings": "Impostazioni Epic Games"
+    }
+  },
+  "advanced-mode": {
+    "title": "Modalità Avanzata",
+    "options": {
+      "matchmaking-track": "Traccia Matchmaking",
+      "world-info": "World Info"
+    }
+  },
+  "accounts": {
+    "title": "I Miei Account",
+    "options": {
+      "show-total-accounts": "Mostra Account Totali",
+      "auth": "Codice Autorizzazione",
+      "exchange": "Codice Exchange",
+      "device": "Autorizzazione Dispositivi",
+      "remove": "Rimuovi Account"
+    }
+  },
+  "links": {
+    "discord": "Server Discord",
+    "github": "Vedi su GitHub",
+    "credits": "Crediti"
+  },
+  "version": {
+    "release": "Rilascio v{{version}}",
+    "all-releases": "Tutti I Rilasci"
+  }
+}

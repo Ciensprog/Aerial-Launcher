@@ -1,0 +1,17 @@
+{
+  "form": {
+    "generate-code": {
+      "input": {
+        "placeholder": "Il codice generato verrà mostrato qui"
+      },
+      "submit-button": "Genera Codice Exchange"
+    }
+  },
+  "notifications": {
+    "generate-code": {
+      "success": "Il codice exchange è stato generato e copiato negli appunti",
+      "error": "Si è verificato un errore nel tentativo di generare il tuo codice exchange, riprova più tardi"
+    },
+    "clipboard": "Il codice exchange è stato copiato negli appunti"
+  }
+}

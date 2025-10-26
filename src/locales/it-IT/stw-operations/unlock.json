@@ -1,0 +1,8 @@
+{
+  "description": "Questa funzione è utile se vuoi sbloccare le ricompense delle difese scudo-antitempesta come gli slot squadra dei superstiti, difensori, ecc. anche se non sono state ancora completate.",
+  "note": "Nota: Questo NON sbloccherà V-Bucks o completerà le vostre difese scudo-antitempesta, otterrete soltanto le ricompense elencate sopra.",
+  "form": {
+    "submit-button": "Sblocca",
+    "clear-button": "Svuota Selezione"
+  }
+}

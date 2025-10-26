@@ -1,0 +1,90 @@
+{
+  "heading": {
+    "title": "Buono a sapersi:",
+    "items": {
+      "1": "Clicca sul logo di Aerial (angolo in alto a sinistra) per tornare qui.",
+      "2": "Trascina e rilascia un file World Info sulla pagina per caricare altre missioni/alert."
+    }
+  },
+  "tabs": {
+    "home": "Casa",
+    "overview": "Panoramica Alert",
+    "done": "Alert Completati"
+  },
+  "sections": {
+    "vbucks": {
+      "title": "V-Bucks"
+    },
+    "twine-peaks": {
+      "title-endgame": "Montespago ⚡160",
+      "mid": "Medio"
+    },
+    "ventures": {
+      "title-endgame": "Venture ⚡140"
+    },
+    "survivors": {
+      "title": "Superstiti Legendari/Mitici",
+      "empty": "Nessun superstite da salvare"
+    },
+    "llamas": {
+      "title": "Aggiorna I Token Lama"
+    },
+    "uc-perk": {
+      "title": "PERK-UP Non Comune!"
+    }
+  },
+  "information": {
+    "missions": "{{total}} missione/i",
+    "tile-index": "Indice Area:",
+    "alert-guid": "Guid Alert Missione:",
+    "mission-guid": "Guid Missione:",
+    "alert-rewards": "Ricompense Alert:",
+    "base-rewards": "Ricompense Base:",
+    "modifiers": "Modificatori:",
+    "first-claim": "Prima Rivendicazione:",
+    "last-played": "Ultima Volta Giocato:",
+    "alerts-completed": "Alert Completati",
+    "rewards-summary": "Resoconto Ricompense"
+  },
+  "pagination": {
+    "results": "Risultati",
+    "actions": {
+      "previous": "Mostra Di Meno",
+      "next": "Mostra Di Più"
+    }
+  },
+  "filters": {
+    "search": {
+      "input": {
+        "placeholder": "Cerca: guid missione/alert, indice area o ID ricompensa"
+      },
+      "submit-button": "Mostra Filtri"
+    },
+    "sections": {
+      "zones": "Seleziona Zone",
+      "types": "Seleziona Tipi Missione",
+      "rarities": "Seleziona Rarità",
+      "rewards": "Seleziona Ricompense"
+    },
+    "actions": {
+      "back": "Torna Agli Alert",
+      "clear": "Svuota Selezioni"
+    }
+  },
+  "world-info": {
+    "dnd": {
+      "title": "Rilascia File .json"
+    },
+    "notifications": {
+      "error": "Impossibile caricare il file World Info, per favore controlla che sia il file corretto e non manchino dati"
+    }
+  },
+  "results": {
+    "empty": {
+      "alerts-done": "Gli alert trovati non combaciano con nessuna missione di oggi",
+      "vbucks": "Niente V-Bucks oggi",
+      "missions": "Nessuna missione disponibile",
+      "rewards": "Nessuna ricompensa disponibile"
+    }
+  }
+}

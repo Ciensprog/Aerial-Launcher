@@ -1,0 +1,14 @@
+{
+  "description1": "Auto-caccia ascolterà gli eventi sugli account selezionati e avvierà il processo di caccia quando riconosce la fine della missione.",
+  "description2": "Inoltre, ricorda che cacciare è intelligente. Non c'è bisogno di attivare due auto-caccia sui tuoi account se sono nello stesso party, entrambi verranno cacciati/usciranno (e reclameranno le ricompense se l'auto-claim è attivo), a dipendere dal caso.",
+  "statuses": {
+    "listening": "In Ascolto",
+    "credential-error": "Errore Credenziali",
+    "disconnected": "Disconnesso"
+  },
+  "options": {
+    "kick": "Caccia",
+    "claim": "Reclama",
+    "transfer-mats": "Trasferisci Materiali"
+  }
+}

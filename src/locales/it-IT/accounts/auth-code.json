@@ -1,0 +1,9 @@
+{
+  "guide": {
+    "title": "Come ottenere il codice:",
+    "steps": {
+      "1": "<0>Passo 1:</0> Devi accedere al tuo account Epic Games: <3>{{url}}</3>",
+      "2": "<0>Passo 2:</0> Clicca su <3>questo link</3> o nel codice sottostante (Ottieni Codice), questo aprirà una nuova pagina sul tuo browser con un documento json contenente il tuo codice di autorizzazione:"
+    }
+  }
+}

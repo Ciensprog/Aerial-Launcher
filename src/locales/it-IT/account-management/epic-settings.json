@@ -1,0 +1,11 @@
+{
+  "form": {
+    "generate-button": "Genera Link",
+    "open-button": "<0>Apri Impostazioni Account</0> <1 />"
+  },
+  "notifications": {
+    "clipboard": "Il link è stato copiato negli appunti",
+    "success": "Il link per le impostazioni di Epic Games è stato generato",
+    "error": "Si è verificato un errore nel tentativo di portare a termine la tua richiesta"
+  }
+}

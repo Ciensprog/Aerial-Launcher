@@ -1,0 +1,40 @@
+{
+  "form": {
+    "save": "Salva Localmente",
+    "refetch": "Riporta Dati"
+  },
+  "search": {
+    "input": {
+      "placeholder": "Cerca su {{total}} file"
+    },
+    "include-data": "Includi file dati",
+    "no-files": "Nessun file trovato"
+  },
+  "file": {
+    "input": {
+      "placeholder": "Nome di default: {{filename}}"
+    }
+  },
+  "notifications": {
+    "save": {
+      "success": "Il file è stato salvato",
+      "error": "Il file non può essere salvato, per favore riprova più tardi"
+    },
+    "delete": {
+      "success": "Il file \"{{filename}}\" è stato eliminato",
+      "error": "Il file \"{{filename}}\" non può essere eliminato, per favore riprova più tardi"
+    },
+    "export": {
+      "success": "Il file è stato esportato",
+      "error": "Il file non può essere esportato, per favore riprova più tardi"
+    },
+    "open": {
+      "success": "Il file \"{{filename}}\" è stato aperto",
+      "error": "Il file \"{{filename}}\" non può essere aperto, per favore riprova più tardi"
+    },
+    "rename": {
+      "success": "Il file è stato rinominato",
+      "error": "Il file non può essere rinominato, per favore riprova più tardi"
+    }
+  }
+}

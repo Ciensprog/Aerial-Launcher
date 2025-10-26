@@ -1,0 +1,164 @@
+{
+  "actions": {
+    "add": "Aggiungi",
+    "change": "Cambia",
+    "create": "Crea",
+    "login": "Login",
+    "revert": "Ripristina",
+    "search": "Cerca",
+    "success": "Successo",
+    "update": "Aggiorna",
+    "accepted": "Accettato",
+    "verify": "Verifica"
+  },
+  "form": {
+    "credentials": {
+      "account-id": "Account Id",
+      "device-id": "Device Id",
+      "secret": "Segreto",
+      "login": {
+        "label": "Incolla Il Tuo Codice",
+        "input": {
+          "placeholder": "Esempio: {{code}}"
+        },
+        "get-code": "<0>Ottieni Il Codice</0> <1 />"
+      }
+    },
+    "accounts": {
+      "placeholder": "Cerca su {{total}} account",
+      "placeholder_private": "Cerca sui tuoi account",
+      "search-empty": "Nessun account trovato",
+      "select": "Seleziona account",
+      "selected": "Account selezionato",
+      "no-available": "Nesssun account disponibile",
+      "no-linked": "Nessun account selezionato",
+      "no-options": "Nessun account",
+      "no-registered-accounts": "Nessun account registrato ancora"
+    },
+    "multi": {
+      "select": {
+        "accounts": "Seleziona alcuni account",
+        "tags": "Seleziona alcuni tag",
+        "bulk-note": "Bulk tag selezionati, tutti gli account del launcher verranno utilizzati."
+      }
+    },
+    "player": {
+      "search-empty": "Nessun giocatore trovato",
+      "recently": {
+        "empty-placeholder": "Nessun giocatore recente",
+        "search-placeholder": "Cerca su {{total}} giocatore/i",
+        "select-placeholder": "Seleziona un giocatore recente"
+      }
+    },
+    "search-account": {
+      "label": "Cerca giocatore tramite l'accountId o il nome mostrato (epic, xbl o psn)",
+      "input": {
+        "placeholder": "Esempio: Campione"
+      }
+    }
+  },
+  "information": {
+    "account-id": "Account Id:",
+    "power-level": "Potenza:",
+    "commander-level": "Livello Comandante:",
+    "boosted-xp": "PE Incrementati:",
+    "days-logged-in": "Giorni In Cui Hai Loggato:",
+    "collection-book-level": "Livello Registro Raccolta:",
+    "personal-xp-boosts": "Incrementi PE Personali:",
+    "teammate-xp-boosts": "Incrementi PE Della Squadra:",
+    "founder-status": "Stato Fondatore:"
+  },
+  "version": {
+    "title": "Nuova versione {{version}}",
+    "description": "Puoi scaricare la nuova versione (file .exe) da qui:"
+  },
+  "community-info": {
+    "message": "Unisciti alla nostra <2>Community Discord<1/></2> per saperne di più sulle novità dei prossimi aggiornamenti!!!"
+  },
+  "founder": {
+    "non-founder": "Non Founder",
+    "founder": "Founder",
+    "standard": "Edizione Standard",
+    "deluxe": "Edizione Deluxe",
+    "super-deluxe": "Edizione Super Deluxe",
+    "limited": "Edizione Limitata",
+    "ultimate": "Edizione Ultimate"
+  },
+  "launch-game": {
+    "button": "Avvia Gioco",
+    "notifications": {
+      "success": "Il gioco è stato avviato con l'account {{name}}",
+      "error": "Si è verificato un errore avviando il gioco con l'account {{name}}, riprova più tardi"
+    }
+  },
+  "close-game": {
+    "button": "Chiudi Gioco"
+  },
+  "separators": {
+    "or": "O"
+  },
+  "sort": {
+    "newest": "Filtrato dal più recente"
+  },
+  "statuses": {
+    "error": "Errore",
+    "loading": "Caricamento",
+    "not-found": "Non Trovato",
+    "owned": "Posseduto",
+    "claimed": "Ottenuto",
+    "used": "Utilizzato"
+  },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ accountId Invalido"
+        },
+        "device-id": {
+          "invalid": "❌ deviceId Invalido"
+        },
+        "secret": {
+          "invalid": "❌ secret Invalido"
+        },
+        "code": {
+          "invalid": "❌ code Invalido"
+        }
+      }
+    },
+    "screenshot": {
+      "success": "Screenshot creato e copiato negli appunti",
+      "error": "Impossibile creare lo screenshot, per favore riprova più tardi"
+    }
+  },
+  "account-selected": "Account Selezionato: <2>{{name}}</2>",
+  "boosts": "Incremento/i",
+  "credits": "Crediti",
+  "current": "Attuale",
+  "date": "Data",
+  "first-claim": "Prima Rivendicazione: {{date}}",
+  "go-to-current-alerts": "Vai Agli Alert Attuali",
+  "go-to-top": "Vai All'Inizio",
+  "history": "Cronologia",
+  "hide-information": "Nascondi Informazioni",
+  "note": "Nota",
+  "show-information": "Mostra Informazioni Nascoste",
+  "ip-address": "Indirizzo IP",
+  "is-running": "L'app è in esecuzione",
+  "is-not-running": "L'app non è in esecuzione",
+  "last-played": "Ultimo Accesso: {{date}}",
+  "location": "Posizione",
+  "missions": "Missioni",
+  "no-item-found": "Nessun item trovato",
+  "no-options": "Nessuna opzione",
+  "no-placeholder-select-options": "Seleziona opzioni",
+  "placeholder": "Segnaposto",
+  "public-stats": "Nota: Questo giocatore ha le \"Statistiche Di Gioco Pubbliche\" disabilitate, impossibile mostrare ulteriori informazioni.",
+  "settings": "Impostazioni",
+  "summary": "Resoconto",
+  "unknown-user": "Utente Sconosciuto",
+  "unknown": "Sconosciuto",
+  "update-information": "Aggiorna Informazioni",
+  "user-agent": "User Agent",
+  "generate-screenshot": "Crea Screenshot",
+  "under-translation": "(In Corso Di Traduzione)"
+}

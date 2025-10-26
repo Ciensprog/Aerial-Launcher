@@ -1,0 +1,10 @@
+{
+  "description": "Riscatta codici su ogni account selezionato.",
+  "form": {
+    "input": {
+      "placeholder": "Imposta codici da riscattare (usa linea nuova)."
+    },
+    "redeem-button": "Riscatta Codice",
+    "clear-button": "Svuota Documento"
+  }
+}
