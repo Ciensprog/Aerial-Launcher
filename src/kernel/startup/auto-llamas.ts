@@ -3,7 +3,11 @@ import type {
   AutoLlamasData,
   AutoLlamasRecord,
 } from '../../types/auto-llamas'
-import type { MCPQueryProfileProfileChangesPrerollData } from '../../types/services/mcp'
+import type {
+  MCPQueryProfileChanges,
+  MCPQueryProfileProfileChangesPrerollData,
+} from '../../types/services/mcp'
+import type { StorefrontCatalogResponse } from '../../types/services/storefront'
 import type { RewardsNotification } from '../../types/notifications'
 
 import { Collection } from '@discordjs/collection'
@@ -292,53 +296,33 @@ export class ProcessAutoLlamas {
             }
           }
 
-          // eslint-disable-next-line no-constant-condition
-          while (true) {
-            let success = true
+          const accountId = account.accountId
 
-            try {
-              const accessToken =
-                await Authentication.verifyAccessToken(account)
-
-              if (!accessToken) {
-                break
-              }
-
+          if (type === ProcessLlamaType.Survivor) {
+            // eslint-disable-next-line no-constant-condition
+            while (true) {
               try {
-                await populatePrerolledOffers({
+                const accessToken =
+                  await Authentication.verifyAccessToken(account)
+
+                if (!accessToken) {
+                  break
+                }
+
+                await ProcessAutoLlamas.populateOffers({
                   accessToken,
-                  accountId: account.accountId,
+                  accountId,
                 })
 
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              } catch (error) {
-                //
-              }
+                const { llamaTokens, profile, xRayTickets } =
+                  await ProcessAutoLlamas.getProfileData({
+                    accessToken,
+                    accountId,
+                  })
 
-              const queryProfile = await getQueryProfile({
-                accessToken,
-                accountId: account.accountId,
-              })
-              const profileChanges =
-                queryProfile.data.profileChanges[0] ?? null
+                let currencyTotal: number | null = null
+                let currencySubType = 'AccountResource:currency_xrayllama'
 
-              const xRayTickets =
-                Object.values(profileChanges?.profile.items).find(
-                  (item) =>
-                    (item.templateId as string) ===
-                    'AccountResource:currency_xrayllama'
-                )?.quantity ?? 0
-              const llamaTokens =
-                Object.values(profileChanges?.profile.items).find(
-                  (item) =>
-                    (item.templateId as string) ===
-                    'AccountResource:voucher_cardpack_bronze'
-                )?.quantity ?? 0
-
-              let currencyTotal: number | null = null
-              let currencySubType = 'AccountResource:currency_xrayllama'
-
-              if (type === ProcessLlamaType.Survivor) {
                 if (current.actions.survivors) {
                   if (current.actions['use-token']) {
                     if (llamaTokens > 0) {
@@ -354,215 +338,404 @@ export class ProcessAutoLlamas {
                     }
                   }
                 }
-              } else if (type === ProcessLlamaType.FreeUpgrade) {
-                if (current.actions['free-llamas']) {
-                  currencyTotal = 0
+
+                const currencyIsToken =
+                  currencySubType ===
+                  'AccountResource:voucher_cardpack_bronze'
+
+                if (currencyTotal === null) {
+                  break
                 }
-              }
 
-              const currencyIsToken =
-                currencySubType ===
-                'AccountResource:voucher_cardpack_bronze'
+                const cardPacks =
+                  await ProcessAutoLlamas.getCurrentCatalog({
+                    accessToken,
+                  })
 
-              if (currencyTotal === null) {
-                break
-              }
+                if (!cardPacks) {
+                  break
+                }
 
-              const catalog = await getCatalog({
-                accessToken,
-              })
-              const cardPacks = catalog.data.storefronts.find(
-                (item) => item.name === 'CardPackStorePreroll'
-              )
+                const llama = cardPacks.catalogEntries.find((item) => {
+                  return currencyIsToken
+                    ? item.devName === 'Always.UpgradePack.02'
+                    : item.devName === 'Always.UpgradePack.01'
+                })
 
-              if (!cardPacks) {
-                break
-              }
+                if (!llama) {
+                  break
+                }
 
-              const llama = cardPacks.catalogEntries.find((item) => {
-                if (type === ProcessLlamaType.Survivor) {
-                  if (currencyIsToken) {
-                    return item.devName === 'Always.UpgradePack.02'
+                const { maxPurchases } =
+                  await ProcessAutoLlamas.checkDailyLimit({
+                    accessToken,
+                    accountId,
+                    currencyIsToken,
+                    llama,
+                  })
+
+                if (maxPurchases) {
+                  break
+                }
+
+                const prerollData = Object.values(
+                  profile.items ?? {}
+                ).find(
+                  (item) =>
+                    isMCPQueryProfileChangesPrerollData(item) &&
+                    item.attributes.offerId === llama.offerId
+                ) as MCPQueryProfileProfileChangesPrerollData | undefined
+
+                if (!prerollData) {
+                  break
+                }
+
+                const canPurchase = prerollData.attributes.items.some(
+                  ({ itemType }) => {
+                    const newKey = itemType
+                      .replace(
+                        /_((very)?low|medium|(very)?high|extreme)$/gi,
+                        ''
+                      )
+                      .replace('AccountResource:', '')
+                      .replace('CardPack:zcp_', '')
+                    const survivor = getKey(newKey, survivorsJson)
+                    const mythicSurvivor = getKey(
+                      newKey,
+                      survivorsMythicLeadsJson
+                    )
+                    const isWorker = newKey.startsWith('Worker:')
+                    const rarity = parseRarity(newKey)
+
+                    return (
+                      survivor ||
+                      mythicSurvivor ||
+                      (isWorker &&
+                        [RarityType.Legendary, RarityType.Mythic].includes(
+                          rarity.rarity
+                        ))
+                    )
                   }
-
-                  return (
-                    item.devName === 'Always.UpgradePack.01' &&
-                    item.dailyLimit === 50 &&
-                    item.prices[0]?.regularPrice === 50 &&
-                    item.prices[0]?.finalPrice === 50
-                  )
-                }
-
-                return (
-                  (item.devName?.toLowerCase().includes('free') ||
-                    item.title?.toLowerCase().includes('free')) &&
-                  item.prices[0]?.regularPrice === 50 &&
-                  item.prices[0]?.finalPrice === 0
                 )
-              })
 
-              if (!llama) {
-                break
-              }
-
-              const mainProfile = await getQueryProfileMainProfile({
-                accessToken,
-                accountId: account.accountId,
-              })
-              const totalPurchases =
-                mainProfile.data.profileChanges[0]?.profile.stats
-                  .attributes.daily_purchases.purchaseList[
-                  llama.offerId
-                ] ?? 0
-              const dailyLimit =
-                currencyIsToken && llama.dailyLimit <= -1
-                  ? 10
-                  : llama.dailyLimit ?? 2
-
-              if (totalPurchases >= dailyLimit) {
-                break
-              }
-
-              const prerollData = Object.values(
-                profileChanges.profile.items ?? {}
-              ).find(
-                (item) =>
-                  isMCPQueryProfileChangesPrerollData(item) &&
-                  item.attributes.offerId === llama.offerId
-              ) as MCPQueryProfileProfileChangesPrerollData | undefined
-
-              if (!prerollData) {
-                break
-              }
-
-              const canPurchase =
-                type === ProcessLlamaType.FreeUpgrade
-                  ? true
-                  : prerollData.attributes.items.some(({ itemType }) => {
-                      const newKey = itemType
-                        .replace(
-                          /_((very)?low|medium|(very)?high|extreme)$/gi,
-                          ''
-                        )
-                        .replace('AccountResource:', '')
-                        .replace('CardPack:zcp_', '')
-                      const survivor = getKey(newKey, survivorsJson)
-                      const mythicSurvivor = getKey(
-                        newKey,
-                        survivorsMythicLeadsJson
-                      )
-                      const isWorker = newKey.startsWith('Worker:')
-                      const rarity = parseRarity(newKey)
-
-                      return (
-                        survivor ||
-                        mythicSurvivor ||
-                        (isWorker &&
-                          [
-                            RarityType.Legendary,
-                            RarityType.Mythic,
-                          ].includes(rarity.rarity))
-                      )
-                    })
-
-              if (!canPurchase) {
-                break
-              }
-
-              const response = await purchaseCatalogEntry({
-                accessToken,
-                currencySubType,
-                accountId: account.accountId,
-                offerId: llama.offerId,
-                expectedTotalPrice: currencyTotal,
-              })
-              const responseNotifications =
-                response.data.notifications ?? []
-
-              const notifications: Array<{
-                itemType: string
-                quantity: number
-              }> = []
-
-              responseNotifications?.forEach((notification) => {
-                if (notification.loot) {
-                  if (notification.loot.items) {
-                    notification.loot.items.forEach((loot) => {
-                      notifications.push({
-                        itemType: loot.itemType,
-                        quantity: loot.quantity,
-                      })
-                    })
-                  } else if (notification.loot.lootGranted) {
-                    notification.loot.lootGranted.items.forEach((loot) => {
-                      notifications.push({
-                        itemType: loot.itemType,
-                        quantity: loot.quantity,
-                      })
-                    })
-                  }
-                } else if (notification.lootGranted) {
-                  notification.lootGranted?.items.forEach((loot) => {
-                    notifications.push({
-                      itemType: loot.itemType,
-                      quantity: loot.quantity,
-                    })
-                  })
-                } else if (notification.lootResult) {
-                  notification.lootResult?.items.forEach((loot) => {
-                    notifications.push({
-                      itemType: loot.itemType,
-                      quantity: loot.quantity,
-                    })
-                  })
+                if (!canPurchase) {
+                  break
                 }
-              })
 
-              const rewards: RewardsNotification['rewards'] = {}
+                await ProcessAutoLlamas.buyAndNotify({
+                  accessToken,
+                  currencySubType,
+                  profile,
+                  accountId: account.accountId,
+                  expectedTotalPrice: currencyTotal,
+                  offerId: llama.offerId,
+                })
 
-              notifications.forEach(({ itemType, quantity }) => {
-                if (!itemType.toLowerCase().startsWith('accolades:')) {
-                  const newItemType =
-                    itemType === 'AccountResource:campaign_event_currency'
-                      ? profileChanges.profile.stats.attributes
-                          .event_currency?.templateId ?? itemType
-                      : itemType
-
-                  if (!rewards[newItemType]) {
-                    rewards[newItemType] = 0
-                  }
-
-                  rewards[newItemType] += quantity
-                }
-              })
-
-              const result: RewardsNotification = {
-                accolades: {
-                  totalMissionXPRedeemed: 0,
-                  totalQuestXPRedeemed: 0,
-                },
-                rewards,
-                createdAt: getDateWithDefaultFormat(),
-                id: crypto.randomUUID(),
-                accountId: account.accountId,
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              } catch (error) {
+                break
               }
-
-              MainWindow.instance.webContents.send(
-                ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification,
-                [result]
-              )
-
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            } catch (error) {
-              success = false
             }
 
-            if (!success) {
-              break
-            }
+            return
           }
+
+          try {
+            const accessToken =
+              await Authentication.verifyAccessToken(account)
+
+            if (!accessToken) {
+              return
+            }
+
+            await ProcessAutoLlamas.populateOffers({
+              accessToken,
+              accountId,
+            })
+
+            const { profile } = await ProcessAutoLlamas.getProfileData({
+              accessToken,
+              accountId,
+            })
+
+            const cardPacks = await ProcessAutoLlamas.getCurrentCatalog({
+              accessToken,
+            })
+
+            if (!cardPacks) {
+              return
+            }
+
+            const llamas = cardPacks.catalogEntries.filter((item) => {
+              return item.prices[0]?.finalPrice === 0
+            })
+
+            if (llamas.length <= 0) {
+              return
+            }
+
+            const availableLlamas: StorefrontCatalogResponse['storefronts'][number]['catalogEntries'] =
+              []
+
+            for (const llama of llamas) {
+              // const { dailyLimit, maxPurchases, totalPurchases } =
+              //   await ProcessAutoLlamas.checkDailyLimit({
+              //     accessToken,
+              //     accountId,
+              //     llama,
+              //     currencyIsToken: false,
+              //   })
+
+              // if (maxPurchases) {
+              //   continue
+              // }
+
+              // Array.from({ length: dailyLimit - totalPurchases }).forEach(
+              Array.from({
+                length: llama.dailyLimit <= -1 ? 30 : llama.dailyLimit,
+              }).forEach(() => {
+                availableLlamas.push(llama)
+              })
+            }
+
+            if (availableLlamas.length <= 0) {
+              return
+            }
+
+            availableLlamas.forEach((llama) => {
+              ProcessAutoLlamas.buyAndNotify({
+                accessToken,
+                profile,
+                accountId: account.accountId,
+                currencySubType: 'AccountResource:currency_xrayllama',
+                expectedTotalPrice: 0,
+                offerId: llama.offerId,
+              }).catch(() => {})
+            })
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (error) {
+            //
+          }
+
+          return
         }
       )
     })
+  }
+
+  static async populateOffers({
+    accessToken,
+    accountId,
+  }: {
+    accessToken: string
+    accountId: string
+  }) {
+    try {
+      await populatePrerolledOffers({
+        accessToken,
+        accountId,
+      })
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+  }
+
+  static async getProfileData({
+    accessToken,
+    accountId,
+  }: {
+    accessToken: string
+    accountId: string
+  }) {
+    const queryProfile = await getQueryProfile({
+      accessToken,
+      accountId,
+    })
+    const profileChanges = queryProfile.data.profileChanges[0] ?? null
+
+    const xRayTickets =
+      Object.values(profileChanges?.profile.items).find(
+        (item) =>
+          (item.templateId as string) ===
+          'AccountResource:currency_xrayllama'
+      )?.quantity ?? 0
+    const llamaTokens =
+      Object.values(profileChanges?.profile.items).find(
+        (item) =>
+          (item.templateId as string) ===
+          'AccountResource:voucher_cardpack_bronze'
+      )?.quantity ?? 0
+
+    return {
+      llamaTokens,
+      xRayTickets,
+      profile: queryProfile.data.profileChanges[0]?.profile,
+    }
+  }
+
+  static async getCurrentCatalog({
+    accessToken,
+  }: {
+    accessToken: string
+  }) {
+    const catalog = await getCatalog({
+      accessToken,
+    })
+    const cardPacks = catalog.data.storefronts.find(
+      (item) => item.name === 'CardPackStorePreroll'
+    )
+
+    return cardPacks
+  }
+
+  static async checkDailyLimit({
+    accessToken,
+    accountId,
+    currencyIsToken,
+    llama,
+  }: {
+    accessToken: string
+    accountId: string
+    currencyIsToken: boolean
+    llama: StorefrontCatalogResponse['storefronts'][number]['catalogEntries'][number]
+  }) {
+    try {
+      const mainProfile = await getQueryProfileMainProfile({
+        accessToken,
+        accountId,
+      })
+      const getDenyRequirement = llama.requirements?.find(
+        (item) => item.requirementType === 'DenyOnFulfillment'
+      )
+      const totalPurchases =
+        mainProfile.data.profileChanges[0]?.profile.stats.attributes
+          .daily_purchases?.purchaseList?.[llama.offerId] ??
+        mainProfile.data.profileChanges[0]?.profile.stats.attributes
+          .in_app_purchases?.fulfillmentCounts?.[
+          getDenyRequirement?.requiredId ?? -1
+        ] ??
+        0
+      const dailyLimit =
+        currencyIsToken && llama.dailyLimit <= -1
+          ? 30
+          : llama.dailyLimit ?? 30
+
+      return {
+        maxPurchases: totalPurchases >= dailyLimit,
+        totalPurchases,
+        dailyLimit,
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    return {
+      maxPurchases: false,
+      totalPurchases: 0,
+      dailyLimit: 0,
+    }
+  }
+
+  static async buyAndNotify({
+    accessToken,
+    accountId,
+    currencySubType,
+    expectedTotalPrice,
+    offerId,
+    profile,
+  }: {
+    accessToken: string
+    accountId: string
+    currencySubType?: string
+    offerId: string
+    expectedTotalPrice: number
+    profile: MCPQueryProfileChanges['profile']
+  }) {
+    const response = await purchaseCatalogEntry({
+      accessToken,
+      accountId,
+      currencySubType,
+      offerId,
+      expectedTotalPrice,
+    })
+    const responseNotifications = response.data.notifications ?? []
+
+    const notifications: Array<{
+      itemType: string
+      quantity: number
+    }> = []
+
+    responseNotifications?.forEach((notification) => {
+      if (notification.loot) {
+        if (notification.loot.items) {
+          notification.loot.items.forEach((loot) => {
+            notifications.push({
+              itemType: loot.itemType,
+              quantity: loot.quantity,
+            })
+          })
+        } else if (notification.loot.lootGranted) {
+          notification.loot.lootGranted.items.forEach((loot) => {
+            notifications.push({
+              itemType: loot.itemType,
+              quantity: loot.quantity,
+            })
+          })
+        }
+      } else if (notification.lootGranted) {
+        notification.lootGranted?.items.forEach((loot) => {
+          notifications.push({
+            itemType: loot.itemType,
+            quantity: loot.quantity,
+          })
+        })
+      } else if (notification.lootResult) {
+        notification.lootResult?.items.forEach((loot) => {
+          notifications.push({
+            itemType: loot.itemType,
+            quantity: loot.quantity,
+          })
+        })
+      }
+    })
+
+    const rewards: RewardsNotification['rewards'] = {}
+
+    notifications.forEach(({ itemType, quantity }) => {
+      if (!itemType.toLowerCase().startsWith('accolades:')) {
+        const newItemType =
+          itemType === 'AccountResource:campaign_event_currency'
+            ? profile.stats.attributes.event_currency?.templateId ??
+              itemType
+            : itemType
+
+        if (!rewards[newItemType]) {
+          rewards[newItemType] = 0
+        }
+
+        rewards[newItemType] += quantity
+      }
+    })
+
+    const result: RewardsNotification = {
+      accountId,
+      rewards,
+      accolades: {
+        totalMissionXPRedeemed: 0,
+        totalQuestXPRedeemed: 0,
+      },
+      createdAt: getDateWithDefaultFormat(),
+      id: crypto.randomUUID(),
+    }
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification,
+      [result]
+    )
   }
 }

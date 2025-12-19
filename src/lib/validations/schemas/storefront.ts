@@ -48,7 +48,18 @@ export const storefrontCatalogSchema = z.object({
           monthlyLimit: z.number(),
           refundable: z.boolean(),
           // appStoreId: z.array(z.string()),
-          // requirements: z.array(z.unknown()),
+          requirements: z
+            .array(
+              z.object({
+                requirementType: z.enum([
+                  'DenyOnFulfillment',
+                  'RequireFulfillment',
+                ]),
+                requiredId: z.string(),
+                minQuantity: z.number(),
+              })
+            )
+            .optional(),
           meta: z
             .object({
               PurchaseLimitingEventId: z.string(),
