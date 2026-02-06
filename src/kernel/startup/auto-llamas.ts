@@ -3,7 +3,10 @@ import type {
   AutoLlamasData,
   AutoLlamasRecord,
 } from '../../types/auto-llamas'
-import type { MCPQueryProfileProfileChangesPrerollData } from '../../types/services/mcp'
+import type {
+  MCPQueryProfileChanges,
+  MCPQueryProfileProfileChangesPrerollData,
+} from '../../types/services/mcp'
 import type { RewardsNotification } from '../../types/notifications'
 
 import { Collection } from '@discordjs/collection'
@@ -292,6 +295,15 @@ export class ProcessAutoLlamas {
             }
           }
 
+          if (type === ProcessLlamaType.FreeUpgrade) {
+            await ProcessAutoLlamas.processFreeLlamas({
+              account,
+              accessToken: initialAccessToken,
+            })
+
+            return
+          }
+
           // eslint-disable-next-line no-constant-condition
           while (true) {
             let success = true
@@ -322,14 +334,18 @@ export class ProcessAutoLlamas {
               const profileChanges =
                 queryProfile.data.profileChanges[0] ?? null
 
+              if (!profileChanges) {
+                break
+              }
+
               const xRayTickets =
-                Object.values(profileChanges?.profile.items).find(
+                Object.values(profileChanges.profile.items).find(
                   (item) =>
                     (item.templateId as string) ===
                     'AccountResource:currency_xrayllama'
                 )?.quantity ?? 0
               const llamaTokens =
-                Object.values(profileChanges?.profile.items).find(
+                Object.values(profileChanges.profile.items).find(
                   (item) =>
                     (item.templateId as string) ===
                     'AccountResource:voucher_cardpack_bronze'
@@ -354,10 +370,6 @@ export class ProcessAutoLlamas {
                     }
                   }
                 }
-              } else if (type === ProcessLlamaType.FreeUpgrade) {
-                if (current.actions['free-llamas']) {
-                  currencyTotal = 0
-                }
               }
 
               const currencyIsToken =
@@ -380,24 +392,15 @@ export class ProcessAutoLlamas {
               }
 
               const llama = cardPacks.catalogEntries.find((item) => {
-                if (type === ProcessLlamaType.Survivor) {
-                  if (currencyIsToken) {
-                    return item.devName === 'Always.UpgradePack.02'
-                  }
-
-                  return (
-                    item.devName === 'Always.UpgradePack.01' &&
-                    item.dailyLimit === 50 &&
-                    item.prices[0]?.regularPrice === 50 &&
-                    item.prices[0]?.finalPrice === 50
-                  )
+                if (currencyIsToken) {
+                  return item.devName === 'Always.UpgradePack.02'
                 }
 
                 return (
-                  (item.devName?.toLowerCase().includes('free') ||
-                    item.title?.toLowerCase().includes('free')) &&
+                  item.devName === 'Always.UpgradePack.01' &&
+                  item.dailyLimit === 50 &&
                   item.prices[0]?.regularPrice === 50 &&
-                  item.prices[0]?.finalPrice === 0
+                  item.prices[0]?.finalPrice === 50
                 )
               })
 
@@ -435,35 +438,33 @@ export class ProcessAutoLlamas {
                 break
               }
 
-              const canPurchase =
-                type === ProcessLlamaType.FreeUpgrade
-                  ? true
-                  : prerollData.attributes.items.some(({ itemType }) => {
-                      const newKey = itemType
-                        .replace(
-                          /_((very)?low|medium|(very)?high|extreme)$/gi,
-                          ''
-                        )
-                        .replace('AccountResource:', '')
-                        .replace('CardPack:zcp_', '')
-                      const survivor = getKey(newKey, survivorsJson)
-                      const mythicSurvivor = getKey(
-                        newKey,
-                        survivorsMythicLeadsJson
-                      )
-                      const isWorker = newKey.startsWith('Worker:')
-                      const rarity = parseRarity(newKey)
+              const canPurchase = prerollData.attributes.items.some(
+                ({ itemType }) => {
+                  const newKey = itemType
+                    .replace(
+                      /_((very)?low|medium|(very)?high|extreme)$/gi,
+                      ''
+                    )
+                    .replace('AccountResource:', '')
+                    .replace('CardPack:zcp_', '')
+                  const survivor = getKey(newKey, survivorsJson)
+                  const mythicSurvivor = getKey(
+                    newKey,
+                    survivorsMythicLeadsJson
+                  )
+                  const isWorker = newKey.startsWith('Worker:')
+                  const rarity = parseRarity(newKey)
 
-                      return (
-                        survivor ||
-                        mythicSurvivor ||
-                        (isWorker &&
-                          [
-                            RarityType.Legendary,
-                            RarityType.Mythic,
-                          ].includes(rarity.rarity))
-                      )
-                    })
+                  return (
+                    survivor ||
+                    mythicSurvivor ||
+                    (isWorker &&
+                      [RarityType.Legendary, RarityType.Mythic].includes(
+                        rarity.rarity
+                      ))
+                  )
+                }
+              )
 
               if (!canPurchase) {
                 break
@@ -476,81 +477,11 @@ export class ProcessAutoLlamas {
                 offerId: llama.offerId,
                 expectedTotalPrice: currencyTotal,
               })
-              const responseNotifications =
-                response.data.notifications ?? []
-
-              const notifications: Array<{
-                itemType: string
-                quantity: number
-              }> = []
-
-              responseNotifications?.forEach((notification) => {
-                if (notification.loot) {
-                  if (notification.loot.items) {
-                    notification.loot.items.forEach((loot) => {
-                      notifications.push({
-                        itemType: loot.itemType,
-                        quantity: loot.quantity,
-                      })
-                    })
-                  } else if (notification.loot.lootGranted) {
-                    notification.loot.lootGranted.items.forEach((loot) => {
-                      notifications.push({
-                        itemType: loot.itemType,
-                        quantity: loot.quantity,
-                      })
-                    })
-                  }
-                } else if (notification.lootGranted) {
-                  notification.lootGranted?.items.forEach((loot) => {
-                    notifications.push({
-                      itemType: loot.itemType,
-                      quantity: loot.quantity,
-                    })
-                  })
-                } else if (notification.lootResult) {
-                  notification.lootResult?.items.forEach((loot) => {
-                    notifications.push({
-                      itemType: loot.itemType,
-                      quantity: loot.quantity,
-                    })
-                  })
-                }
-              })
-
-              const rewards: RewardsNotification['rewards'] = {}
-
-              notifications.forEach(({ itemType, quantity }) => {
-                if (!itemType.toLowerCase().startsWith('accolades:')) {
-                  const newItemType =
-                    itemType === 'AccountResource:campaign_event_currency'
-                      ? profileChanges.profile.stats.attributes
-                          .event_currency?.templateId ?? itemType
-                      : itemType
-
-                  if (!rewards[newItemType]) {
-                    rewards[newItemType] = 0
-                  }
-
-                  rewards[newItemType] += quantity
-                }
-              })
-
-              const result: RewardsNotification = {
-                accolades: {
-                  totalMissionXPRedeemed: 0,
-                  totalQuestXPRedeemed: 0,
-                },
-                rewards,
-                createdAt: getDateWithDefaultFormat(),
-                id: crypto.randomUUID(),
+              sendRewardsNotification({
                 accountId: account.accountId,
-              }
-
-              MainWindow.instance.webContents.send(
-                ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification,
-                [result]
-              )
+                profileChanges,
+                notifications: response.data.notifications ?? [],
+              })
 
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
@@ -565,4 +496,203 @@ export class ProcessAutoLlamas {
       )
     })
   }
+
+  private static async processFreeLlamas({
+    account,
+    accessToken,
+  }: {
+    account: AccountDataList[number]
+    accessToken: string
+  }) {
+    const queryProfile = await getQueryProfile({
+      accessToken,
+      accountId: account.accountId,
+    })
+    const profileChanges = queryProfile.data.profileChanges?.[0] ?? null
+
+    if (!profileChanges) {
+      return
+    }
+
+    const catalog = await getCatalog({ accessToken })
+    const cardPacks = catalog.data.storefronts.find(
+      (item) => item.name === 'CardPackStorePreroll'
+    )
+
+    if (!cardPacks) {
+      return
+    }
+
+    const freeLlamas = cardPacks.catalogEntries.filter(isFreeLlamaOffer)
+
+    if (freeLlamas.length <= 0) {
+      return
+    }
+
+    const mainProfile = await getQueryProfileMainProfile({
+      accessToken,
+      accountId: account.accountId,
+    })
+    const purchaseList =
+      mainProfile.data.profileChanges?.[0]?.profile.stats.attributes
+        .daily_purchases.purchaseList ?? {}
+    const purchaseTotals = { ...purchaseList }
+
+    for (const llama of freeLlamas) {
+      const limit = llama.dailyLimit ?? 1
+      const maxAttempts = limit <= 0 ? 1 : limit
+      let attemptsLeft =
+        maxAttempts - (purchaseTotals[llama.offerId] ?? 0)
+
+      if (attemptsLeft <= 0) {
+        continue
+      }
+
+      while (attemptsLeft > 0) {
+        try {
+          await populatePrerolledOffers({
+            accessToken,
+            accountId: account.accountId,
+          })
+        } catch {
+          //
+        }
+
+        try {
+          const response = await purchaseCatalogEntry({
+            accessToken,
+            accountId: account.accountId,
+            offerId: llama.offerId,
+            expectedTotalPrice: 0,
+          })
+
+          sendRewardsNotification({
+            accountId: account.accountId,
+            profileChanges,
+            notifications: response.data.notifications ?? [],
+          })
+
+          purchaseTotals[llama.offerId] =
+            (purchaseTotals[llama.offerId] ?? 0) + 1
+          attemptsLeft -= 1
+        } catch {
+          break
+        }
+      }
+    }
+  }
+}
+
+type PurchaseCatalogEntry = Awaited<
+  ReturnType<typeof getCatalog>
+>['data']['storefronts'][number]['catalogEntries'][number]
+
+function isFreeLlamaOffer(item: PurchaseCatalogEntry) {
+  const devName = item.devName?.toLowerCase?.() ?? ''
+  const price = item.prices?.[0]
+
+  if (!price) {
+    return false
+  }
+
+  if (devName.includes('always')) {
+    return false
+  }
+
+  return price.finalPrice === 0
+}
+
+function sendRewardsNotification({
+  accountId,
+  profileChanges,
+  notifications,
+}: {
+  accountId: string
+  profileChanges: MCPQueryProfileChanges
+  notifications: Array<{
+    loot?: {
+      items?: Array<{ itemType: string; quantity: number }>
+      lootGranted?: { items: Array<{ itemType: string; quantity: number }> }
+    }
+    lootGranted?: { items: Array<{ itemType: string; quantity: number }> }
+    lootResult?: { items: Array<{ itemType: string; quantity: number }> }
+  }>
+}) {
+  const items: Array<{ itemType: string; quantity: number }> = []
+
+  notifications.forEach((notification) => {
+    if (notification.loot) {
+      if (notification.loot.items) {
+        notification.loot.items.forEach((loot) => {
+          items.push({
+            itemType: loot.itemType,
+            quantity: loot.quantity,
+          })
+        })
+      } else if (notification.loot.lootGranted) {
+        notification.loot.lootGranted.items.forEach((loot) => {
+          items.push({
+            itemType: loot.itemType,
+            quantity: loot.quantity,
+          })
+        })
+      }
+    } else if (notification.lootGranted) {
+      notification.lootGranted?.items.forEach((loot) => {
+        items.push({
+          itemType: loot.itemType,
+          quantity: loot.quantity,
+        })
+      })
+    } else if (notification.lootResult) {
+      notification.lootResult?.items.forEach((loot) => {
+        items.push({
+          itemType: loot.itemType,
+          quantity: loot.quantity,
+        })
+      })
+    }
+  })
+
+  if (items.length <= 0) {
+    return
+  }
+
+  const rewards: RewardsNotification['rewards'] = {}
+
+  items.forEach(({ itemType, quantity }) => {
+    if (!itemType.toLowerCase().startsWith('accolades:')) {
+      const newItemType =
+        itemType === 'AccountResource:campaign_event_currency'
+          ? profileChanges.profile.stats.attributes.event_currency
+              ?.templateId ?? itemType
+          : itemType
+
+      if (!rewards[newItemType]) {
+        rewards[newItemType] = 0
+      }
+
+      rewards[newItemType] += quantity
+    }
+  })
+
+  if (Object.keys(rewards).length <= 0) {
+    return
+  }
+
+  const result: RewardsNotification = {
+    accolades: {
+      totalMissionXPRedeemed: 0,
+      totalQuestXPRedeemed: 0,
+    },
+    rewards,
+    createdAt: getDateWithDefaultFormat(),
+    id: crypto.randomUUID(),
+    accountId,
+  }
+
+  MainWindow.instance.webContents.send(
+    ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification,
+    [result]
+  )
 }
