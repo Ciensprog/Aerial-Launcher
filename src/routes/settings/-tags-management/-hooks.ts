@@ -12,6 +12,10 @@ import {
   useGetHomebaseNameData,
 } from '../../../hooks/stw-operations/homebase-name'
 import {
+  useGetDailyQuestsActions,
+  useGetDailyQuestsData,
+} from '../../../hooks/stw-operations/daily-quests'
+import {
   useGetSaveQuestsActions,
   useGetSaveQuestsData,
 } from '../../../hooks/stw-operations/save-quests'
@@ -124,6 +128,9 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
   const saveQuestsData = useGetSaveQuestsData()
   const { rawSaveQuestsUpdateTags } = useGetSaveQuestsActions()
 
+  const dailyQuestsData = useGetDailyQuestsData()
+  const { rawDailyQuestsUpdateTags } = useGetDailyQuestsActions()
+
   const homebaseNameData = useGetHomebaseNameData()
   const { rawHomebaseNameUpdateTags } = useGetHomebaseNameActions()
 
@@ -198,6 +205,11 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
         currentTag === rawData.name ? newData.name : currentTag
       )
     )
+    rawDailyQuestsUpdateTags(
+      dailyQuestsData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
     rawHomebaseNameUpdateTags(
       homebaseNameData.selectedTags.map((currentTag) =>
         currentTag === rawData.name ? newData.name : currentTag
@@ -233,6 +245,11 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
 
     rawSaveQuestsUpdateTags(
       saveQuestsData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawDailyQuestsUpdateTags(
+      dailyQuestsData.selectedTags.filter(
         (currentTag) => currentTag !== tagName
       )
     )
