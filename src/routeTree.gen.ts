@@ -17,6 +17,7 @@ import { Route as StwOperationsXpboostsRouteImport } from './routes/stw-operatio
 import { Route as StwOperationsUrnsRouteImport } from './routes/stw-operations/urns/route'
 import { Route as StwOperationsUnlockRouteImport } from './routes/stw-operations/unlock/route'
 import { Route as StwOperationsSaveQuestsRouteImport } from './routes/stw-operations/save-quests/route'
+import { Route as StwOperationsDailyQuestsRouteImport } from './routes/stw-operations/daily-quests/route'
 import { Route as StwOperationsPartyRouteImport } from './routes/stw-operations/party/route'
 import { Route as StwOperationsHomebaseNameRouteImport } from './routes/stw-operations/homebase-name/route'
 import { Route as StwOperationsAutomationRouteImport } from './routes/stw-operations/automation/route'
@@ -64,6 +65,12 @@ const StwOperationsUnlockRouteRoute = StwOperationsUnlockRouteImport.update({
 const StwOperationsSaveQuestsRouteRoute =
   StwOperationsSaveQuestsRouteImport.update({
     path: '/stw-operations/save-quests',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const StwOperationsDailyQuestsRouteRoute =
+  StwOperationsDailyQuestsRouteImport.update({
+    path: '/stw-operations/daily-quests',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -213,6 +220,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StwOperationsPartyRouteImport
       parentRoute: typeof rootRoute
     }
+    '/stw-operations/daily-quests': {
+      preLoaderRoute: typeof StwOperationsDailyQuestsRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/stw-operations/save-quests': {
       preLoaderRoute: typeof StwOperationsSaveQuestsRouteImport
       parentRoute: typeof rootRoute
@@ -254,6 +265,7 @@ export const routeTree = rootRoute.addChildren([
   StwOperationsAutomationRouteRoute,
   StwOperationsHomebaseNameRouteRoute,
   StwOperationsPartyRouteRoute,
+  StwOperationsDailyQuestsRouteRoute,
   StwOperationsSaveQuestsRouteRoute,
   StwOperationsUnlockRouteRoute,
   StwOperationsUrnsRouteRoute,

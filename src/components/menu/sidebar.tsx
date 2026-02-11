@@ -161,6 +161,21 @@ export function SidebarMenu({
                       </Link>
                     </li>
                   )}
+                  {getMenuOptionVisibility('dailyQuests') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/daily-quests"
+                        className={currentClassNameHover}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        {t('stw-operations.options.daily-quests')}
+                      </Link>
+                    </li>
+                  )}
                   {getMenuOptionVisibility('homebaseName') && (
                     <li className="item">
                       <Link
