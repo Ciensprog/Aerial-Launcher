@@ -140,6 +140,17 @@ export type MCPClaimQuestRewardResponse = {
   notifications?: MCPCommonNotification
 }
 
+export type MCPFortRerollDailyQuestResponse = {
+  profileRevision: number
+  profileId: ProfileId
+  profileChangesBaseRevision: number
+  profileCommandRevision: number
+  serverTime: string
+  responseVersion: number
+  profileChanges: MCPCommonProfileChanges
+  notifications?: MCPCommonNotification
+}
+
 export type MCPClaimMissionAlertRewardsResponse = {
   profileRevision: number
   profileId: ProfileId

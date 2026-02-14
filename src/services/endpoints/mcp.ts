@@ -2,6 +2,7 @@ import type {
   MCPClaimDifficultyIncreaseRewardsResponse,
   MCPClaimMissionAlertRewardsResponse,
   MCPClaimQuestRewardResponse,
+  MCPFortRerollDailyQuestResponse,
   MCPOpenCardPackBatchPayload,
   MCPOpenCardPackBatchResponse,
   MCPRecordCampaignMatchEndedResponse,
@@ -279,6 +280,32 @@ export function setClaimQuestReward({
     {
       questId,
       selectedRewardIndex: 0,
+    },
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+      params: {
+        profileId: 'campaign',
+        rvn: -1,
+      },
+    }
+  )
+}
+
+export function setFortRerollDailyQuest({
+  accessToken,
+  accountId,
+  questId,
+}: {
+  accessToken: string
+  accountId: string
+  questId: string
+}) {
+  return baseGameService.post<MCPFortRerollDailyQuestResponse>(
+    `/profile/${accountId}/client/FortRerollDailyQuest`,
+    {
+      questId,
     },
     {
       headers: {

@@ -28,6 +28,7 @@ export const customizableMenuSettingsRelations: Record<
     'autoKick',
     'party',
     'saveQuests',
+    'dailyQuests',
     'homebaseName',
     'xpBoosts',
     'autoPinUrns',

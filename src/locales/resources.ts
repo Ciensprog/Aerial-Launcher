@@ -12,6 +12,7 @@ import enUS_zones from './en-US/zones.json'
 import enUS_stwOperations_AutoKick from './en-US/stw-operations/auto-kick.json'
 import enUS_stwOperations_HomebaseName from './en-US/stw-operations/homebase-name.json'
 import enUS_stwOperations_SaveQuests from './en-US/stw-operations/save-quests.json'
+import enUS_stwOperations_DailyQuests from './en-US/stw-operations/daily-quests.json'
 import enUS_stwOperations_Party from './en-US/stw-operations/party.json'
 import enUS_stwOperations_Urns from './en-US/stw-operations/urns.json'
 import enUS_stwOperations_XPBoosts from './en-US/stw-operations/xpboosts.json'
@@ -41,6 +42,7 @@ const enUS = {
     'auto-kick': enUS_stwOperations_AutoKick,
     'homebase-name': enUS_stwOperations_HomebaseName,
     'save-quests': enUS_stwOperations_SaveQuests,
+    'daily-quests': enUS_stwOperations_DailyQuests,
     party: enUS_stwOperations_Party,
     urns: enUS_stwOperations_Urns,
     xpboosts: enUS_stwOperations_XPBoosts,
@@ -79,6 +81,7 @@ import es419_zones from './es-419/zones.json'
 import es419_stwOperations_AutoKick from './es-419/stw-operations/auto-kick.json'
 import es419_stwOperations_HomebaseName from './es-419/stw-operations/homebase-name.json'
 import es419_stwOperations_SaveQuests from './es-419/stw-operations/save-quests.json'
+import es419_stwOperations_DailyQuests from './es-419/stw-operations/daily-quests.json'
 import es419_stwOperations_Party from './es-419/stw-operations/party.json'
 import es419_stwOperations_Urns from './es-419/stw-operations/urns.json'
 import es419_stwOperations_XPBoosts from './es-419/stw-operations/xpboosts.json'
@@ -108,6 +111,7 @@ const es419 = {
     'auto-kick': es419_stwOperations_AutoKick,
     'homebase-name': es419_stwOperations_HomebaseName,
     'save-quests': es419_stwOperations_SaveQuests,
+    'daily-quests': es419_stwOperations_DailyQuests,
     party: es419_stwOperations_Party,
     urns: es419_stwOperations_Urns,
     xpboosts: es419_stwOperations_XPBoosts,
@@ -146,6 +150,7 @@ import zhCN_zones from './zh-CN/zones.json'
 import zhCN_stwOperations_AutoKick from './zh-CN/stw-operations/auto-kick.json'
 import zhCN_stwOperations_HomebaseName from './zh-CN/stw-operations/homebase-name.json'
 import zhCN_stwOperations_SaveQuests from './zh-CN/stw-operations/save-quests.json'
+import zhCN_stwOperations_DailyQuests from './zh-CN/stw-operations/daily-quests.json'
 import zhCN_stwOperations_Party from './zh-CN/stw-operations/party.json'
 import zhCN_stwOperations_Urns from './zh-CN/stw-operations/urns.json'
 import zhCN_stwOperations_XPBoosts from './zh-CN/stw-operations/xpboosts.json'
@@ -175,6 +180,7 @@ const zhCN = {
     'auto-kick': zhCN_stwOperations_AutoKick,
     'homebase-name': zhCN_stwOperations_HomebaseName,
     'save-quests': zhCN_stwOperations_SaveQuests,
+    'daily-quests': zhCN_stwOperations_DailyQuests,
     party: zhCN_stwOperations_Party,
     urns: zhCN_stwOperations_Urns,
     xpboosts: zhCN_stwOperations_XPBoosts,
@@ -213,6 +219,7 @@ import ruRU_zones from './ru-RU/zones.json'
 import ruRU_stwOperations_AutoKick from './ru-RU/stw-operations/auto-kick.json'
 import ruRU_stwOperations_HomebaseName from './ru-RU/stw-operations/homebase-name.json'
 import ruRU_stwOperations_SaveQuests from './ru-RU/stw-operations/save-quests.json'
+import ruRU_stwOperations_DailyQuests from './ru-RU/stw-operations/daily-quests.json'
 import ruRU_stwOperations_Party from './ru-RU/stw-operations/party.json'
 import ruRU_stwOperations_Urns from './ru-RU/stw-operations/urns.json'
 import ruRU_stwOperations_XPBoosts from './ru-RU/stw-operations/xpboosts.json'
@@ -242,6 +249,7 @@ const ruRU = {
     'auto-kick': ruRU_stwOperations_AutoKick,
     'homebase-name': ruRU_stwOperations_HomebaseName,
     'save-quests': ruRU_stwOperations_SaveQuests,
+    'daily-quests': ruRU_stwOperations_DailyQuests,
     party: ruRU_stwOperations_Party,
     urns: ruRU_stwOperations_Urns,
     xpboosts: ruRU_stwOperations_XPBoosts,
@@ -280,6 +288,7 @@ import ptBR_zones from './pt-BR/zones.json'
 import ptBR_stwOperations_AutoKick from './pt-BR/stw-operations/auto-kick.json'
 import ptBR_stwOperations_HomebaseName from './pt-BR/stw-operations/homebase-name.json'
 import ptBR_stwOperations_SaveQuests from './pt-BR/stw-operations/save-quests.json'
+import ptBR_stwOperations_DailyQuests from './pt-BR/stw-operations/daily-quests.json'
 import ptBR_stwOperations_Party from './pt-BR/stw-operations/party.json'
 import ptBR_stwOperations_Urns from './pt-BR/stw-operations/urns.json'
 import ptBR_stwOperations_XPBoosts from './pt-BR/stw-operations/xpboosts.json'
@@ -309,6 +318,7 @@ const ptBR = {
     'auto-kick': ptBR_stwOperations_AutoKick,
     'homebase-name': ptBR_stwOperations_HomebaseName,
     'save-quests': ptBR_stwOperations_SaveQuests,
+    'daily-quests': ptBR_stwOperations_DailyQuests,
     party: ptBR_stwOperations_Party,
     urns: ptBR_stwOperations_Urns,
     xpboosts: ptBR_stwOperations_XPBoosts,
@@ -347,6 +357,7 @@ import plPL_zones from './pl-PL/zones.json'
 import plPL_stwOperations_AutoKick from './pl-PL/stw-operations/auto-kick.json'
 import plPL_stwOperations_HomebaseName from './pl-PL/stw-operations/homebase-name.json'
 import plPL_stwOperations_SaveQuests from './pl-PL/stw-operations/save-quests.json'
+import plPL_stwOperations_DailyQuests from './pl-PL/stw-operations/daily-quests.json'
 import plPL_stwOperations_Party from './pl-PL/stw-operations/party.json'
 import plPL_stwOperations_Urns from './pl-PL/stw-operations/urns.json'
 import plPL_stwOperations_XPBoosts from './pl-PL/stw-operations/xpboosts.json'
@@ -376,6 +387,7 @@ const plPL = {
     'auto-kick': plPL_stwOperations_AutoKick,
     'homebase-name': plPL_stwOperations_HomebaseName,
     'save-quests': plPL_stwOperations_SaveQuests,
+    'daily-quests': plPL_stwOperations_DailyQuests,
     party: plPL_stwOperations_Party,
     urns: plPL_stwOperations_Urns,
     xpboosts: plPL_stwOperations_XPBoosts,

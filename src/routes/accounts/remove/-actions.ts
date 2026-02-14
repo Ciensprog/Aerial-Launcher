@@ -17,6 +17,7 @@ import {
 import { useGetGroups } from '../../../hooks/groups'
 
 import { useHomebaseNameStore } from '../../../state/stw-operations/homebase-name'
+import { useDailyQuestsStore } from '../../../state/stw-operations/daily-quests'
 import {
   useClaimRewardsSelectorStore,
   useKickAllPartySelectorStore,
@@ -41,6 +42,12 @@ function useClearForms() {
       updateAccounts: state.updateAccounts,
     }))
   )
+  const dailyQuestsForm = useDailyQuestsStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      updateAccounts: state.updateAccounts,
+    }))
+  )
   const xpBoostsForm = useXPBoostsFormStore(
     useShallow((state) => ({
       accounts: state.accounts,
@@ -48,7 +55,7 @@ function useClearForms() {
     }))
   )
 
-  return [homebaseNameForm, saveQuestsForm, xpBoostsForm]
+  return [homebaseNameForm, saveQuestsForm, dailyQuestsForm, xpBoostsForm]
 }
 
 function useClearPartySelectors() {

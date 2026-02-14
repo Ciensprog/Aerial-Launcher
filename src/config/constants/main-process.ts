@@ -113,6 +113,11 @@ export enum ElectronAPIEventKeys {
   SetSaveQuests = 'save-quests:set',
   SaveQuestsNotification = 'save-quests:notification',
 
+  DailyQuestsRequest = 'daily-quests:request',
+  DailyQuestsNotification = 'daily-quests:notification',
+  DailyQuestReroll = 'daily-quests:reroll',
+  DailyQuestRerollNotification = 'daily-quests:reroll:notification',
+
   SetHombaseName = 'homebase-name:set',
   HomebaseNameNotification = 'homebase-name:notification',
 

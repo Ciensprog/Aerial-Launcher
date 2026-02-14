@@ -39,7 +39,11 @@ import { ClaimRewards } from './core/claim-rewards'
 import { DevicesAuthManager } from './core/devices-auth'
 import { EULATracking } from './core/eula-tracking'
 import { FortniteLauncher } from './core/launcher'
-import { MCPClientQuestLogin, MCPHomebaseName } from './core/mcp'
+import {
+  MCPClientQuestLogin,
+  MCPDailyQuests,
+  MCPHomebaseName,
+} from './core/mcp'
 import { MatchmakingTrack } from './core/matchmaking-track'
 import { Manifest } from './core/manifest'
 import { Party } from './core/party'
@@ -372,6 +376,20 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.SetSaveQuests,
       async (_, accounts: Array<AccountData>) => {
         await MCPClientQuestLogin.save(accounts)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.DailyQuestsRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await MCPDailyQuests.request(accounts)
+      }
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.DailyQuestReroll,
+      async (_, account: AccountData, questId: string) => {
+        await MCPDailyQuests.reroll(account, questId)
       }
     )
 

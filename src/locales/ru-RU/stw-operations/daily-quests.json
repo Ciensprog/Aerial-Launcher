@@ -1,0 +1,21 @@
+{
+  "description": "Fetch daily quests and manage rerolls for the selected accounts.",
+  "form": {
+    "submit-button": "Load Daily Quests",
+    "replace-button": "Replace"
+  },
+  "list": {
+    "description": "Active daily quests for the selected accounts.",
+    "empty": "No data loaded yet.",
+    "no-quests": "No active daily quests found.",
+    "rerolls": "Rerolls: {{count}}",
+    "state": "State: {{state}}"
+  },
+  "progress": {
+    "empty": "Progress data not available."
+  },
+  "notifications": {
+    "rerolled": "Daily quest has been replaced.",
+    "failed": "Failed to replace daily quest."
+  }
+}

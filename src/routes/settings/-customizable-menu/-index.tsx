@@ -107,6 +107,19 @@ function STWOperationsSection() {
         <div className="item">
           <Label
             className="title"
+            htmlFor="daily-quests"
+          >
+            {t('stw-operations.options.daily-quests')}
+          </Label>
+          <Switch
+            id="daily-quests"
+            checked={getMenuOptionVisibility('dailyQuests')}
+            onCheckedChange={updateMenuOption('dailyQuests')}
+          />
+        </div>
+        <div className="item">
+          <Label
+            className="title"
             htmlFor="homebase-name"
           >
             {t('stw-operations.options.homebase-name')}
