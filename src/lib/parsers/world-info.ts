@@ -21,7 +21,7 @@ import {
 } from '../../config/constants/fortnite/world-info'
 
 import { isEvoMat } from '../validations/resources'
-import { assets, imgWorld } from '../repository'
+import { assets } from '../repository'
 import { parseModifier, parseResource } from './resources'
 
 const enableTmpModifiers = false
@@ -90,7 +90,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
 
         theater.regions?.forEach((region) => {
           const validRegion = !['mission', 'outpost'].includes(
-            region.uniqueId.toLowerCase()
+            region.uniqueId.toLowerCase(),
           )
 
           if (!validRegion) {
@@ -141,10 +141,10 @@ export function worlInfoParser(data: WorldInfoData | null) {
             ([zone, tileIndices]) => {
               if (tileIndices.includes(currentMission.tileIndex)) {
                 rawWorldInfo[mission.theaterId].missions[zone].push(
-                  currentMission
+                  currentMission,
                 )
               }
-            }
+            },
           )
         })
       })
@@ -161,10 +161,10 @@ export function worlInfoParser(data: WorldInfoData | null) {
             ([zone, tileIndices]) => {
               if (tileIndices.includes(currentAlert.tileIndex)) {
                 rawWorldInfo[alert.theaterId].alerts[zone].push(
-                  currentAlert
+                  currentAlert,
                 )
               }
-            }
+            },
           )
         })
       })
@@ -188,14 +188,14 @@ export function worlInfoParser(data: WorldInfoData | null) {
             // }
 
             const currentAlert = rawWorldInfo[theaterId].alerts[zone].find(
-              (alert) => mission.tileIndex === alert.tileIndex
+              (alert) => mission.tileIndex === alert.tileIndex,
             )
             const alert = currentAlert ?? null
             const zoneLetter =
               zoneLetters[theaterId] ?? WorldLetter.Ventures
             const zoneIconUrl =
               zoneLetter === WorldLetter.Ventures
-                ? assets('images/ventures.png')
+                ? assets('ventures')
                 : undefined
 
             const modifiers =
@@ -203,7 +203,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
                 if (enableTmpModifiers) {
                   const checkCurrentModifier = modifiersAvailable.some(
                     (existingModifier) =>
-                      modifier.itemType.includes(existingModifier)
+                      modifier.itemType.includes(existingModifier),
                   )
 
                   if (!checkCurrentModifier) {
@@ -247,7 +247,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
               .reduce(
                 (accumulator, current) => {
                   const itemIndex = accumulator.findIndex(
-                    (item) => item.itemType === current.itemType
+                    (item) => item.itemType === current.itemType,
                   )
 
                   if (itemIndex >= 0) {
@@ -258,7 +258,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
 
                   return accumulator
                 },
-                [] as typeof alert.missionAlertRewards.items
+                [] as typeof alert.missionAlertRewards.items,
               )
               .map((item) => {
                 const parsedResource = parseResource({
@@ -276,7 +276,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
                   item.itemType.includes('floor_ward')
                 ) {
                   filters.push(
-                    `AlterationTG.Trap.${parsedResource.rarity.toUpperCase()}`
+                    `AlterationTG.Trap.${parsedResource.rarity.toUpperCase()}`,
                   )
                 }
 
@@ -293,7 +293,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
               .reduce(
                 (accumulator, current) => {
                   const itemIndex = accumulator.findIndex(
-                    (item) => item.itemType === current.itemType
+                    (item) => item.itemType === current.itemType,
                   )
 
                   if (itemIndex >= 0) {
@@ -304,7 +304,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
 
                   return accumulator
                 },
-                [] as typeof mission.missionRewards.items
+                [] as typeof mission.missionRewards.items,
               )
               .map((item) => {
                 const parsedResource = parseResource({
@@ -398,7 +398,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
                 missionBPowerLevel - missionAPowerLevel
 
               return comparePowerLevel || isGroup || hasAlert
-            })
+            }),
           )
         })
       })
@@ -417,7 +417,7 @@ export function worlInfoParser(data: WorldInfoData | null) {
             const orderB = tmpOrderB ?? -1
 
             return orderA - orderB
-          })
+          }),
       )
 
       if (enableTmpModifiers) {
@@ -452,7 +452,7 @@ export function zoneParser({
 } {
   const generator = `${missionGenerator}`.trim()
   const current = Object.entries(zonesCategories).find(([, patterns]) =>
-    patterns.some((pattern) => generator.includes(pattern))
+    patterns.some((pattern) => generator.includes(pattern)),
   )
 
   if (current) {
@@ -470,15 +470,15 @@ export function zoneParser({
       // imageUrl:
       //   isGroup &&
       //   zonesGroups.includes(key as keyof typeof zonesCategories)
-      //     ? imgWorld(`${key}-group.png`)
-      //     : imgWorld(`${key}.png`),
+      //     ? assets(`${key}-group`)
+      //     : assets(`${key}`),
       imageUrl:
         theaterId === World.Stonewood && key === 'ets'
-          ? imgWorld('rescue.png')
+          ? assets('rescue')
           : isGroup &&
               zonesGroups.includes(key as keyof typeof zonesCategories)
-            ? imgWorld(`${key}-group.png`)
-            : imgWorld(`${key}.png`),
+            ? assets(`${key}-group`)
+            : assets(`${key}`),
       theme: 'unknown',
       type: newKey as keyof typeof zonesCategories | 'unknown',
     }
@@ -487,7 +487,7 @@ export function zoneParser({
   return {
     generator,
     isGroup: false,
-    imageUrl: imgWorld('question.png'),
+    imageUrl: assets('question'),
     theme: 'unknown',
     type: 'unknown',
   }

@@ -21,7 +21,7 @@ import { useGetGroups } from '../../../hooks/groups'
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
 import { sortRewardsSummary } from '../../../lib/parsers/resources'
 import { toDate } from '../../../lib/dates'
-import { imgResources, imgWorld } from '../../../lib/repository'
+import { assets } from '../../../lib/repository'
 import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useFormData() {
@@ -74,13 +74,13 @@ export function useFormData() {
   const customFilter: ComboboxProps['customFilter'] = (
     _value,
     search,
-    keywords
+    keywords,
   ) => {
     const _search = search.toLowerCase().trim()
     const _keys =
       keywords &&
       keywords.some((keyword) =>
-        keyword.toLowerCase().trim().includes(_search)
+        keyword.toLowerCase().trim().includes(_search),
       )
 
     return _keys ? 1 : 0
@@ -157,14 +157,14 @@ export function usePlayerData() {
               const currentAlert = myAlerts.find(
                 (item) =>
                   item.missionAlertId ===
-                  mission.raw.alert?.missionAlertGuid
+                  mission.raw.alert?.missionAlertGuid,
               )
 
               if (currentAlert) {
                 accumulator.set(mission.raw.mission.missionGuid, {
                   ...mission,
                   redemptionDateUtc: toDate(
-                    currentAlert.redemptionDateUtc
+                    currentAlert.redemptionDateUtc,
                   ),
                 })
 
@@ -188,19 +188,14 @@ export function usePlayerData() {
 
                     if (!tmpRewards[itemPrefix]) {
                       const images: Record<string, string> = {
-                        Defender: imgResources(
-                          'voucher_generic_defender.png'
-                        ),
-                        Hero: imgResources('voucher_generic_hero.png'),
-                        Schematic: imgResources(
-                          'voucher_generic_schematic_r.png'
-                        ),
-                        Worker: imgResources('voucher_generic_worker.png'),
+                        Defender: assets('voucher_generic_defender'),
+                        Hero: assets('voucher_generic_hero'),
+                        Schematic: assets('voucher_generic_schematic_r'),
+                        Worker: assets('voucher_generic_worker'),
                       }
 
                       tmpRewards[itemPrefix] = {
-                        imageUrl:
-                          images[itemPrefix] ?? imgWorld('question.png'),
+                        imageUrl: images[itemPrefix] ?? assets('question'),
                         quantity: 0,
                       }
                     }
@@ -219,12 +214,12 @@ export function usePlayerData() {
           WorldInfoMission & {
             redemptionDateUtc: Date
           }
-        >()
+        >(),
       )
       .toSorted(
         (itemA, itemB) =>
           itemB.redemptionDateUtc.valueOf() -
-          itemA.redemptionDateUtc.valueOf()
+          itemA.redemptionDateUtc.valueOf(),
       )
     const rewards = sortRewardsSummary(tmpRewards)
 

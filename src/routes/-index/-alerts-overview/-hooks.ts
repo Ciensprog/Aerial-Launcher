@@ -15,7 +15,7 @@ import { useAlertsOverviewFiltersData } from '../../../hooks/alerts/filters'
 import { useAlertsOverviewPaginationData } from '../../../hooks/alerts/overview'
 
 import { sortRewardsSummary } from '../../../lib/parsers/resources'
-import { imgResources, imgWorld } from '../../../lib/repository'
+import { assets } from '../../../lib/repository'
 
 function isVentureZone(theaterId: string) {
   const keys = Object.keys(worldNameByTheaterId)
@@ -68,7 +68,7 @@ export function useAlertsOverviewData() {
                 ]
 
               return missionTypeKeys.some((key) =>
-                mission.raw.mission.missionGenerator.includes(key)
+                mission.raw.mission.missionGenerator.includes(key),
               )
             })
           }
@@ -93,7 +93,7 @@ export function useAlertsOverviewData() {
                   filterKey.includes('Schematic')
                   ? ratityValidation
                   : false
-              })
+              }),
             )
           }
 
@@ -191,16 +191,14 @@ export function useAlertsOverviewData() {
 
               if (!accumulator[itemPrefix]) {
                 const images: Record<string, string> = {
-                  Defender: imgResources('voucher_generic_defender.png'),
-                  Hero: imgResources('voucher_generic_hero.png'),
-                  Schematic: imgResources(
-                    'voucher_generic_schematic_r.png'
-                  ),
-                  Worker: imgResources('voucher_generic_worker.png'),
+                  Defender: assets('voucher_generic_defender'),
+                  Hero: assets('voucher_generic_hero'),
+                  Schematic: assets('voucher_generic_schematic_r'),
+                  Worker: assets('voucher_generic_worker'),
                 }
 
                 accumulator[itemPrefix] = {
-                  imageUrl: images[itemPrefix] ?? imgWorld('question.png'),
+                  imageUrl: images[itemPrefix] ?? assets('question'),
                   quantity: 0,
                 }
               }
@@ -219,12 +217,12 @@ export function useAlertsOverviewData() {
         imageUrl: string
         quantity: number
       }
-    >
+    >,
   )
   const alertRewards = sortRewardsSummary(tmpAlertRewards)
 
   const onChangeInputSearch: ChangeEventHandler<HTMLInputElement> = (
-    event
+    event,
   ) => {
     changeInputSearch(event.currentTarget.value.replace(/\s+/g, ' '))
   }

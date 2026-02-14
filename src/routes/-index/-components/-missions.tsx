@@ -19,7 +19,7 @@ import { Button } from '../../../components/ui/button'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 import { toast } from '../../../lib/notifications'
-import { imgRarities, imgWorld } from '../../../lib/repository'
+import { assets } from '../../../lib/repository'
 import { cn } from '../../../lib/utils'
 
 export function MissionsContainer({
@@ -38,7 +38,7 @@ export function MissionsContainer({
         '[&_.img-modifier]:flex-shrink-0 [&_.img-modifier]:size-6',
         '[&_.img-alert]:flex-shrink-0 [&_.img-alert]:size-4',
         '[&_.power]:border [&_.power]:flex-shrink-0 [&_.power]:pl-0.5 [&_.power]:pr-2 [&_.power]:py-1 [&_.power]:rounded [&_.power]:text-xs',
-        className
+        className,
       )}
       type="multiple"
     >
@@ -81,7 +81,7 @@ export function MissionItem({
               <span
                 className={cn(
                   'border border-opacity-40 flex flex-shrink-0 font-bold items-center justify-center relative rounded size-5 text-xs uppercase',
-                  'border-[color:var(--zone-color)] text-[color:var(--zone-color)]'
+                  'border-[color:var(--zone-color)] text-[color:var(--zone-color)]',
                 )}
                 style={
                   {
@@ -142,7 +142,7 @@ export function MissionItem({
                       key={reward.itemId}
                     >
                       <img
-                        src={imgWorld('alert.png')}
+                        src={assets('alert')}
                         className="img-alert"
                       />
                       <div className="flex gap-1 items-center">
@@ -286,7 +286,7 @@ export function SchematicRarity({
       <span className="flex flex-shrink-0 items-center text-center text-muted-foreground">
         {!preview && '('}
         <img
-          src={imgRarities(`${reward.rarity}.png`)}
+          src={assets(reward.rarity)}
           className={cn('img-rarity', {
             'img-small': preview,
           })}

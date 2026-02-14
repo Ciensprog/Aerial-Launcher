@@ -11,7 +11,7 @@ import { useHomeData } from './-hooks'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 import { isLegendaryOrMythicSurvivor } from '../../../lib/validations/resources'
-import { imgResources } from '../../../lib/repository'
+import { assets } from '../../../lib/repository'
 
 export function HomeAlerts() {
   const {
@@ -43,22 +43,22 @@ export function HomeAlerts() {
     <>
       <ul className="gap-2 grid grid-cols-4">
         <PreviewItem
-          imageUrl={imgResources('currency_mtxswap.png')}
+          imageUrl={assets('currency_mtxswap')}
           quantity={vbucksTotal}
           title="Total V-Bucks"
         />
         <PreviewItem
-          imageUrl={imgResources('voucher_generic_worker_sr.png')}
+          imageUrl={assets('voucher_generic_worker_sr')}
           quantity={survivorsTotal}
           title="Survivors"
         />
         <PreviewItem
-          imageUrl={imgResources('voucher_cardpack_bronze.png')}
+          imageUrl={assets('voucher_cardpack_bronze')}
           quantity={upgradeLlamasTotal}
           title="Upgrade Llamas"
         />
         <PreviewItem
-          imageUrl={imgResources('reagent_alteration_upgrade_uc.png')}
+          imageUrl={assets('reagent_alteration_upgrade_uc')}
           quantity={uncommonPerksTotal}
           title="Uncommon PERK-UP!"
         />

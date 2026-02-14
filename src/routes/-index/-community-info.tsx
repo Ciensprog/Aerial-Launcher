@@ -3,6 +3,8 @@ import type { MouseEventHandler, ReactNode } from 'react'
 
 // import { ExternalLinkIcon } from '@radix-ui/react-icons'
 
+import { images } from '../../images'
+
 import { whatIsThis } from '../../lib/callbacks'
 import { cn } from '../../lib/utils'
 
@@ -13,7 +15,7 @@ const information: Array<{
 }> = [
   {
     url: 'https://ko-fi.com/ciensprog',
-    imageUrl: 'https://stwcdn.com/ko-fi.webp',
+    imageUrl: images['ko-fi'],
   },
   {
     url: 'https://discord.gg/byKYEJBFrt',
@@ -37,12 +39,12 @@ const information: Array<{
   {
     url: 'https://stw.news/',
     text: 'STW News',
-    imageUrl: 'https://stwcdn.com/aerial-stwnews.webp',
+    imageUrl: images['aerial-stwnews'],
   },
   {
     url: 'https://discord.gg/XbGSTuXZdy',
     text: 'ML Corp',
-    imageUrl: 'https://stwcdn.com/aerial-ml-corp.webp',
+    imageUrl: images['aerial-ml-corp'],
   },
 ]
 

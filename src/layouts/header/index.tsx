@@ -2,6 +2,8 @@ import { Link } from '@tanstack/react-router'
 import { History, Menu, Minus, Rocket, Settings, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
+import imageAerialStwNews from '../../../assets/images/aerial-stwnews.webp'
+
 import { Button } from '../../components/ui/button'
 import {
   Sheet,
@@ -87,7 +89,7 @@ export function Header() {
                     'leading-4 not-draggable-region px-2 py-1',
                     {
                       'w-[7.5rem]': !isMinWith,
-                    }
+                    },
                   )}
                   size={isMinWith ? 'icon' : 'default'}
                   variant={
@@ -123,7 +125,7 @@ export function Header() {
                     'leading-4 not-draggable-region px-2 py-1',
                     {
                       'w-[7.5rem]': !isMinWith,
-                    }
+                    },
                   )}
                   size={isMinWith ? 'icon' : 'default'}
                   variant={
@@ -174,7 +176,7 @@ export function Header() {
             onClick={handleOpenSTWNewsProfile}
           >
             <img
-              src="https://stwcdn.com/aerial-stwnews.webp"
+              src={imageAerialStwNews}
               className="w-8"
             />
             <span className="sr-only">go to stw news profile</span>

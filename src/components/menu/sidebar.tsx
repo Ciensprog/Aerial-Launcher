@@ -8,6 +8,8 @@ import { forwardRef } from 'react'
 
 import packageJson from '../../../package.json'
 
+import { images } from '../../images'
+
 import {
   repositoryReleasesURL,
   repositoryURL,
@@ -60,23 +62,23 @@ export function SidebarMenu({
   const gotToPage: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault()
     window.electronAPI.openExternalURL(
-      (event.currentTarget as unknown as HTMLAnchorElement).href
+      (event.currentTarget as unknown as HTMLAnchorElement).href,
     )
   }
   const goToDiscordServerURL: MouseEventHandler<HTMLButtonElement> = (
-    event
+    event,
   ) => {
     event.preventDefault()
     window.electronAPI.openExternalURL(supportDiscordServerURL)
   }
   const goToRepositoryURL: MouseEventHandler<HTMLButtonElement> = (
-    event
+    event,
   ) => {
     event.preventDefault()
     window.electronAPI.openExternalURL(repositoryURL)
   }
   const goToReleasesURL: MouseEventHandler<HTMLAnchorElement> = (
-    event
+    event,
   ) => {
     event.preventDefault()
     window.electronAPI.openExternalURL(repositoryReleasesURL)
@@ -92,7 +94,7 @@ export function SidebarMenu({
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',
-                  '[&_.item>a]:flex'
+                  '[&_.item>a]:flex',
                 )}
               >
                 <ul className="list-disc ml-5">
@@ -115,15 +117,15 @@ export function SidebarMenu({
                                 'border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
                                 status === AutomationStatusType.ISSUE
                                   ? 'border-yellow-600 text-yellow-600'
-                                  : 'border-green-600 text-green-600'
+                                  : 'border-green-600 text-green-600',
                               )}
                             >
                               {status === AutomationStatusType.ISSUE
                                 ? t(
-                                    'stw-operations.auto-kick-status.issue'
+                                    'stw-operations.auto-kick-status.issue',
                                   )
                                 : t(
-                                    'stw-operations.auto-kick-status.active'
+                                    'stw-operations.auto-kick-status.active',
                                   )}
                             </span>
                           )}
@@ -249,7 +251,7 @@ export function SidebarMenu({
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',
-                  '[&_.item>a]:flex'
+                  '[&_.item>a]:flex',
                 )}
               >
                 <ul className="list-disc ml-5">
@@ -265,7 +267,7 @@ export function SidebarMenu({
                         onAuxClick={whatIsThis()}
                       >
                         {t(
-                          'account-management.options.vbucks-information'
+                          'account-management.options.vbucks-information',
                         )}
                       </Link>
                     </li>
@@ -362,7 +364,7 @@ export function SidebarMenu({
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',
-                  '[&_.item>a]:flex'
+                  '[&_.item>a]:flex',
                 )}
               >
                 <ul className="list-disc ml-5">
@@ -426,7 +428,7 @@ export function SidebarMenu({
               <div
                 className={cn(
                   'pl-3 py-2 text-muted-foreground',
-                  '[&_.item>a]:flex'
+                  '[&_.item>a]:flex',
                 )}
               >
                 <ul className="list-disc ml-5">
@@ -514,7 +516,7 @@ export function SidebarMenu({
               className={cn(
                 'flex items-center gap-3 justify-center px-3 py-2 rounded-lg transition-all w-full',
                 'text-muted-foreground',
-                'hover:bg-muted hover:text-primary'
+                'hover:bg-muted hover:text-primary',
               )}
               size="sm"
               variant="ghost"
@@ -524,7 +526,7 @@ export function SidebarMenu({
             >
               <a href="https://ko-fi.com/ciensprog">
                 <img
-                  src="https://stwcdn.com/ko-fi.webp"
+                  src={images['ko-fi']}
                   className="flex-shrink-0 h-5"
                   alt="icon"
                 />
@@ -534,7 +536,7 @@ export function SidebarMenu({
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
                 'text-muted-foreground',
-                'hover:bg-muted hover:text-primary'
+                'hover:bg-muted hover:text-primary',
               )}
               size="sm"
               variant="ghost"
@@ -544,7 +546,7 @@ export function SidebarMenu({
             >
               <a href="https://stw.news/">
                 <img
-                  src="https://stwcdn.com/aerial-stwnews.webp"
+                  src={images['aerial-stwnews']}
                   className="flex-shrink-0 -ml-0.5 size-5"
                   alt="icon"
                 />
@@ -555,7 +557,7 @@ export function SidebarMenu({
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
                 'text-muted-foreground',
-                'hover:bg-muted hover:text-primary'
+                'hover:bg-muted hover:text-primary',
               )}
               size="sm"
               variant="ghost"
@@ -565,7 +567,7 @@ export function SidebarMenu({
             >
               <a href="https://discord.gg/XbGSTuXZdy">
                 <img
-                  src="https://stwcdn.com/aerial-ml-corp.webp"
+                  src={images['aerial-ml-corp']}
                   className="flex-shrink-0 -ml-0.5 size-5"
                   alt="icon"
                 />
@@ -576,7 +578,7 @@ export function SidebarMenu({
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
                 'text-muted-foreground',
-                'hover:bg-muted hover:text-primary'
+                'hover:bg-muted hover:text-primary',
               )}
               size="sm"
               variant="ghost"
@@ -605,7 +607,7 @@ export function SidebarMenu({
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
                 'text-muted-foreground',
-                'hover:bg-muted hover:text-primary'
+                'hover:bg-muted hover:text-primary',
               )}
               size="sm"
               variant="ghost"
@@ -622,7 +624,7 @@ export function SidebarMenu({
               className={cn(
                 'flex items-center gap-3 justify-start px-3 py-2 rounded-lg transition-all w-full',
                 'text-muted-foreground',
-                'hover:bg-muted hover:text-primary'
+                'hover:bg-muted hover:text-primary',
               )}
               size="sm"
               variant="ghost"
@@ -667,7 +669,7 @@ const Title = forwardRef<
       className={cn(
         'flex flex-wrap items-center px-3 py-2 rounded-lg',
         'text-muted-foreground',
-        className
+        className,
       )}
       {...props}
     >

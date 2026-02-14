@@ -149,14 +149,14 @@ function Content() {
     {
       data,
       amountToSend: amountToSendParsedToNumber,
-    }
+    },
   )
   const [$updateInput, $updateButton] = useInputPaddingButton()
 
   const userBoosts = extractXPBoosts(
     searchedUser?.success && searchedUser?.data
       ? searchedUser.data.profileChanges
-      : undefined
+      : undefined,
   )
 
   const handleOpenExternalFNDBProfileUrl =
@@ -203,7 +203,7 @@ function Content() {
                           'form.search-account.input.placeholder',
                           {
                             ns: 'general',
-                          }
+                          },
                         )}
                         className="pr-[var(--pr-button-width)] pl-3 py-1"
                         value={inputSearchDisplayName}
@@ -249,11 +249,11 @@ function Content() {
                       <div>
                         <a
                           href={stwNewsProfileURL(
-                            searchedUser.data.lookup.id
+                            searchedUser.data.lookup.id,
                           )}
                           className="inline-flex gap-2 items-center hover:opacity-75"
                           onClick={handleOpenExternalFNDBProfileUrl(
-                            searchedUser.data.lookup.id
+                            searchedUser.data.lookup.id,
                           )}
                           onAuxClick={whatIsThis()}
                         >
@@ -296,7 +296,7 @@ function Content() {
                               }
                               commanderLevel={
                                 extractCommanderLevel(
-                                  searchedUser.data.profileChanges
+                                  searchedUser.data.profileChanges,
                                 ).total
                               }
                               daysLoggedIn={
@@ -399,7 +399,7 @@ function Content() {
                       placeholder={t('form.accounts.placeholder', {
                         ns: 'general',
                         context: !getMenuOptionVisibility(
-                          'showTotalAccounts'
+                          'showTotalAccounts',
                         )
                           ? 'private'
                           : undefined,
@@ -485,7 +485,7 @@ function SendBoostsSheet({
   const userBoosts = extractXPBoosts(
     searchedUser?.success && searchedUser?.data
       ? searchedUser.data.profileChanges
-      : undefined
+      : undefined,
   )
 
   return (
@@ -650,11 +650,11 @@ function SendBoostsSheet({
                       <div>
                         <a
                           href={stwNewsProfileURL(
-                            searchedUser.data.lookup.id
+                            searchedUser.data.lookup.id,
                           )}
                           className="inline-flex gap-2 items-center hover:opacity-75"
                           onClick={handleOpenExternalFNDBProfileUrl(
-                            searchedUser.data.lookup.id
+                            searchedUser.data.lookup.id,
                           )}
                           onAuxClick={whatIsThis()}
                         >
@@ -699,7 +699,7 @@ function SendBoostsSheet({
                               }
                               commanderLevel={
                                 extractCommanderLevel(
-                                  searchedUser.data.profileChanges
+                                  searchedUser.data.profileChanges,
                                 ).total
                               }
                               daysLoggedIn={
@@ -839,7 +839,7 @@ function BoostSummaryItem({
     <div className="border rounded min-w-36">
       <figure className="bg-muted-foreground/5 flex flex-col items-center py-2">
         <img
-          src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}.png`}
+          src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}`}
           className="size-14"
         />
       </figure>
@@ -887,7 +887,7 @@ function AccountInformation({
           'bg-muted-foreground/5 flex items-center min-h-8 px-0.5 py-0.5 text-center text-muted-foreground text-xs',
           {
             'bg-muted-foreground/0': isDisabled,
-          }
+          },
         )}
       >
         <span
@@ -904,7 +904,7 @@ function AccountInformation({
                 'action px-0 size-8 data-[state=on]:hover:bg-muted/60',
                 {
                   'data-[state=on]:bg-muted/20': isDisabled,
-                }
+                },
               )}
               defaultPressed={isDisabled}
               onPressedChange={handleChangeAvailability}
@@ -936,7 +936,7 @@ function AccountInformation({
             'border-t pt-2 px-3 text-muted-foreground text-xs',
             {
               'opacity-40': isDisabled,
-            }
+            },
           )}
         >
           {t('xpboosts.results.options.description')}
@@ -982,7 +982,7 @@ function AccountSummaryItem({
     <div className="flex items-center py-1 last:border-l">
       <figure className="flex-shrink-0 px-2">
         <img
-          src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}.png`}
+          src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}`}
           className="size-5"
         />
       </figure>
@@ -1007,7 +1007,7 @@ export function ExternalAuthTypeImage({
       <img
         src={`${repositoryAssetsURL}/images/logos/${
           externalAuthType ?? 'epicgames'
-        }.png`}
+        }`}
         className="size-5"
       />
     </figure>
@@ -1058,7 +1058,7 @@ export function SearchedUserData({
 
   const extractedBoostedXP = extractBoostedXP(boostedXP)
   const individualBoosts = Math.round(
-    extractedBoostedXP / individualLimitBoostedXP
+    extractedBoostedXP / individualLimitBoostedXP,
   )
 
   return (

@@ -18,21 +18,11 @@ import {
   trapsJson,
 } from '../../config/constants/resources'
 
-import {
-  imgCurrency,
-  imgIngredients,
-  imgModifiers,
-  imgRarities,
-  imgResources,
-  imgSurvivors,
-  imgSurvivorsMythicLeads,
-  imgTraps,
-  imgWorld,
-} from '../repository'
+import { assets } from '../repository'
 
 export function getKey<Data = unknown>(
   key: string,
-  resource: Record<string, Data>
+  resource: Record<string, Data>,
 ) {
   return Object.entries(resource).find(([id]) => key.includes(id))
 }
@@ -40,12 +30,12 @@ export function getKey<Data = unknown>(
 export function parseModifier(key: string) {
   const data: ParseModifierData = {
     id: key,
-    imageUrl: imgWorld('question.png'),
+    imageUrl: assets('question'),
   }
   const newKey = `${key}`.replace('GameplayModifier:', '')
 
   if (modifiersAvailable.includes(newKey as WorldModifier)) {
-    data.imageUrl = imgModifiers(`${newKey}.png`)
+    data.imageUrl = assets(newKey)
   }
 
   return data
@@ -68,7 +58,7 @@ export function parseResource({
   const data: ParseResourceData = {
     key,
     quantity,
-    imgUrl: imgRarities(`${rarity.rarity}.png`),
+    imgUrl: assets(rarity.rarity),
     itemType: key,
     name: rarity.type,
     rarity: rarity.rarity,
@@ -79,20 +69,20 @@ export function parseResource({
 
   if (resource) {
     const resourceId = resource[0]
-    const isEventCurrency =
-      (newKey !== 'eventcurrency_scaling' &&
-        newKey !== 'eventcurrency_founders' &&
-        newKey.startsWith('eventcurrency_')) ||
-      newKey === 'campaign_event_currency'
-    const typeFn = isEventCurrency ? imgCurrency : imgResources
-    const isUnknownTickets = [
-      'campaign_event_currency',
-      'eventcurrency_spring',
-      'eventcurrency_summer',
-    ]
-    const extension = isUnknownTickets.includes(resourceId) ? 'gif' : 'png'
+    // const isEventCurrency =
+    //   (newKey !== 'eventcurrency_scaling' &&
+    //     newKey !== 'eventcurrency_founders' &&
+    //     newKey.startsWith('eventcurrency_')) ||
+    //   newKey === 'campaign_event_currency'
+    // const typeFn = isEventCurrency ? assets : imgResources
+    // const isUnknownTickets = [
+    //   'campaign_event_currency',
+    //   'eventcurrency_spring',
+    //   'eventcurrency_summer',
+    // ]
+    // const extension = isUnknownTickets.includes(resourceId) ? 'gif' : 'png'
 
-    data.imgUrl = typeFn(`${resourceId}.${extension}`)
+    data.imgUrl = assets(resourceId)
     data.name = resource[1].name
     data.type = 'resource'
 
@@ -104,7 +94,7 @@ export function parseResource({
   if (ingredient) {
     const [ingredientId, ingredientData] = ingredient
 
-    data.imgUrl = imgIngredients(`${ingredientId}.png`)
+    data.imgUrl = assets(ingredientId)
     data.name = ingredientData.name
     data.type = 'ingredient'
 
@@ -119,12 +109,12 @@ export function parseResource({
     if (mythicSurvivor) {
       const [survivorId] = mythicSurvivor
 
-      data.imgUrl = imgSurvivorsMythicLeads(`${survivorId}.png`)
+      data.imgUrl = assets(survivorId)
       data.name = `${rarities[RarityType.Mythic]} Lead`
     } else if (survivor) {
       const [survivorId, survivorData] = survivor
 
-      data.imgUrl = imgSurvivors(`${survivorId}.png`)
+      data.imgUrl = assets(survivorId)
       data.name = survivorData.name
         ? survivorData.name
         : `${rarities[rarity.rarity]} Survivor`
@@ -141,8 +131,8 @@ export function parseResource({
           ? convertRarity[rarity.rarity as keyof typeof convertRarity]
           : rarity.rarity
 
-      data.imgUrl = imgResources(
-        `voucher_generic_${isLeader ? 'manager' : 'worker'}_${newRarity}.png`
+      data.imgUrl = assets(
+        `voucher_generic_${isLeader ? 'manager' : 'worker'}_${newRarity}`,
       )
       data.itemType = key.replace(`_${rarity.rarity}_`, `_${newRarity}_`)
       data.name = `${rarities[newRarity as RarityType]} ${
@@ -159,7 +149,7 @@ export function parseResource({
   const isHero = newKey.startsWith('Hero:')
 
   if (isHero) {
-    data.imgUrl = imgResources(`voucher_generic_hero_${rarity.rarity}.png`)
+    data.imgUrl = assets(`voucher_generic_hero_${rarity.rarity}`)
     data.name = `${rarities[rarity.rarity]} Hero`
     data.type = 'hero'
 
@@ -169,9 +159,7 @@ export function parseResource({
   const isDefender = newKey.startsWith('Defender:')
 
   if (isDefender) {
-    data.imgUrl = imgResources(
-      `voucher_generic_defender_${rarity.rarity}.png`
-    )
+    data.imgUrl = assets(`voucher_generic_defender_${rarity.rarity}`)
     data.name = `${rarities[rarity.rarity]} Defender`
     data.type = 'defender'
 
@@ -185,13 +173,11 @@ export function parseResource({
     if (trap) {
       const [trapId, trapData] = trap
 
-      data.imgUrl = imgTraps(`${trapId}.png`)
+      data.imgUrl = assets(trapId)
       data.name = `${rarities[rarity.rarity]} ${trapData.name}`
       data.type = 'trap'
     } else {
-      data.imgUrl = imgResources(
-        `voucher_generic_schematic_${rarity.rarity}.png`
-      )
+      data.imgUrl = assets(`voucher_generic_schematic_${rarity.rarity}`)
       data.name = `${rarities[rarity.rarity]} Schematic`
     }
 
@@ -284,12 +270,12 @@ export function sortRewardsSummary(rewards: RewardsSummary) {
       const isMtxB = itemB[0].includes('currency_mtxswap') ? 1 : 0
 
       const isUpgradeLlamaTokenA = itemA[0].includes(
-        'voucher_cardpack_bronze'
+        'voucher_cardpack_bronze',
       )
         ? 1
         : 0
       const isUpgradeLlamaTokenB = itemB[0].includes(
-        'voucher_cardpack_bronze'
+        'voucher_cardpack_bronze',
       )
         ? 1
         : 0
@@ -304,83 +290,83 @@ export function sortRewardsSummary(rewards: RewardsSummary) {
       const isEvoSSB = itemB[0].includes('reagent_c_t04') ? 1 : 0
 
       const isLegendaryPerkUpA = itemA[0].includes(
-        'reagent_alteration_upgrade_sr'
+        'reagent_alteration_upgrade_sr',
       )
         ? 1
         : 0
       const isLegendaryPerkUpB = itemB[0].includes(
-        'reagent_alteration_upgrade_sr'
+        'reagent_alteration_upgrade_sr',
       )
         ? 1
         : 0
       const isEpicPerkUpA = itemA[0].includes(
-        'reagent_alteration_upgrade_vr'
+        'reagent_alteration_upgrade_vr',
       )
         ? 1
         : 0
       const isEpicPerkUpB = itemB[0].includes(
-        'reagent_alteration_upgrade_vr'
+        'reagent_alteration_upgrade_vr',
       )
         ? 1
         : 0
       const isRarePerkUpA = itemA[0].includes(
-        'reagent_alteration_upgrade_r'
+        'reagent_alteration_upgrade_r',
       )
         ? 1
         : 0
       const isRarePerkUpB = itemB[0].includes(
-        'reagent_alteration_upgrade_r'
+        'reagent_alteration_upgrade_r',
       )
         ? 1
         : 0
       const isUncommonPerkUpA = itemA[0].includes(
-        'reagent_alteration_upgrade_uc'
+        'reagent_alteration_upgrade_uc',
       )
         ? 1
         : 0
       const isUncommonPerkUpB = itemB[0].includes(
-        'reagent_alteration_upgrade_uc'
+        'reagent_alteration_upgrade_uc',
       )
         ? 1
         : 0
 
       const isElementFirePerkUpA = itemA[0].includes(
-        'reagent_alteration_ele_fire'
+        'reagent_alteration_ele_fire',
       )
         ? 1
         : 0
       const isElementFirePerkUpB = itemB[0].includes(
-        'reagent_alteration_ele_fire'
+        'reagent_alteration_ele_fire',
       )
         ? 1
         : 0
       const isElementNaturePerkUpA = itemA[0].includes(
-        'reagent_alteration_ele_nature'
+        'reagent_alteration_ele_nature',
       )
         ? 1
         : 0
       const isElementNaturePerkUpB = itemB[0].includes(
-        'reagent_alteration_ele_nature'
+        'reagent_alteration_ele_nature',
       )
         ? 1
         : 0
       const isElementWaterPerkUpA = itemA[0].includes(
-        'reagent_alteration_ele_water'
+        'reagent_alteration_ele_water',
       )
         ? 1
         : 0
       const isElementWaterPerkUpB = itemB[0].includes(
-        'reagent_alteration_ele_water'
+        'reagent_alteration_ele_water',
       )
         ? 1
         : 0
       const isGenericPerkUpA = itemA[0].includes(
-        'reagent_alteration_generic'
+        'reagent_alteration_generic',
       )
         ? 1
         : 0
       const isGenericPerkUpB = itemB[0].includes(
-        'reagent_alteration_generic'
+        'reagent_alteration_generic',
       )
         ? 1
         : 0
@@ -427,6 +413,6 @@ export function sortRewardsSummary(rewards: RewardsSummary) {
           imageUrl: string
           quantity: number
         }
-      >
+      >,
     )
 }

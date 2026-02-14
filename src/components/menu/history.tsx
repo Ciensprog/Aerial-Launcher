@@ -3,8 +3,6 @@ import type { RewardsNotification } from '../../types/notifications'
 import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { repositoryAssetsURL } from '../../config/about/links'
-
 import {
   Accordion,
   AccordionContent,
@@ -24,6 +22,7 @@ import { useGetAccounts } from '../../hooks/accounts'
 import { numberWithCommaSeparator } from '../../lib/parsers/numbers'
 import { parseResource } from '../../lib/parsers/resources'
 import { getShortDateFormat } from '../../lib/dates'
+import { assets } from '../../lib/repository'
 import { parseCustomDisplayName } from '../../lib/utils'
 
 enum HistoryTabs {
@@ -219,7 +218,7 @@ function RewardSection({ data }: { data: RewardsNotification }) {
 function RewardItems({ rewards }: Pick<RewardsNotification, 'rewards'>) {
   const rawItems = Object.entries(rewards)
   const items = rawItems.map(([key, quantity]) =>
-    parseResource({ key, quantity })
+    parseResource({ key, quantity }),
   )
 
   return items.map((item) => (
@@ -245,14 +244,14 @@ function AccoladesItem({
     <li>
       <figure className="flex gap-1 items-center">
         <img
-          src={`${repositoryAssetsURL}/images/brxp.png`}
+          src={assets('brxp')}
           className="size-6"
           alt="Accolades"
         />
         <figcaption className="break-all">
           {numberWithCommaSeparator(
             accolades.totalMissionXPRedeemed +
-              accolades.totalQuestXPRedeemed
+              accolades.totalQuestXPRedeemed,
           )}{' '}
           &times; Accolades
         </figcaption>

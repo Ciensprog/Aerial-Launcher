@@ -5,12 +5,7 @@ import {
 } from '../../../config/constants/fortnite/world-info'
 import { RarityType } from '../../../config/constants/resources'
 
-import {
-  assets,
-  imgRarities,
-  imgResources,
-  imgWorld,
-} from '../../../lib/repository'
+import { assets } from '../../../lib/repository'
 
 type FilterOption<Value extends string | undefined = undefined> = {
   color?: string
@@ -41,7 +36,7 @@ export const zoneOptions: Array<FilterOption<World | 'ventures'>> = [
     value: World.TwinePeaks,
   },
   {
-    icon: assets('images/ventures.png'),
+    icon: assets('ventures'),
     label: 'Ventures',
     value: 'ventures',
   },
@@ -51,82 +46,82 @@ export const missionTypeOptions: Array<
   FilterOption<keyof typeof zonesCategories>
 > = [
   {
-    icon: imgWorld('atlas.png'),
+    icon: assets('atlas'),
     label: 'Atlas',
     value: 'atlas',
   },
   {
-    icon: imgWorld('atlas-c2.png'),
+    icon: assets('atlas-c2'),
     label: 'Atlas',
     value: 'atlas-c2',
   },
   {
-    icon: imgWorld('atlas-c3.png'),
+    icon: assets('atlas-c3'),
     label: 'Atlas',
     value: 'atlas-c3',
   },
   {
-    icon: imgWorld('atlas-c4.png'),
+    icon: assets('atlas-c4'),
     label: 'Atlas',
     value: 'atlas-c4',
   },
   {
-    icon: imgWorld('dtb.png'),
+    icon: assets('dtb'),
     label: 'Deliver The Bomb',
     value: 'dtb',
   },
   {
-    icon: imgWorld('dte.png'),
+    icon: assets('dte'),
     label: 'Destroy The Encampments',
     value: 'dte',
   },
   {
-    icon: imgWorld('eac.png'),
+    icon: assets('eac'),
     label: 'Eliminate And Collect',
     value: 'eac',
   },
   {
-    icon: imgWorld('ets.png'),
+    icon: assets('ets'),
     label: 'Evacuate The Shelter',
     value: 'ets',
   },
   {
-    icon: imgWorld('radar.png'),
+    icon: assets('radar'),
     label: 'Build The Radar Grid',
     value: 'radar',
   },
   {
-    icon: imgWorld('refuel.png'),
+    icon: assets('refuel'),
     label: 'Refuel The Homebase',
     value: 'refuel',
   },
   {
-    icon: imgWorld('rescue.png'),
+    icon: assets('rescue'),
     label: 'Rescue The Survivors',
     value: 'rescue',
   },
   {
-    icon: imgWorld('resupply.png'),
+    icon: assets('resupply'),
     label: 'Resupply',
     value: 'resupply',
   },
   {
-    icon: imgWorld('rtd.png'),
+    icon: assets('rtd'),
     label: 'Retrieve The Data',
     value: 'rtd',
   },
   {
-    icon: imgWorld('rtl.png'),
+    icon: assets('rtl'),
     label: 'Ride The Lightning',
     value: 'rtl',
   },
   {
-    icon: imgWorld('rts.png'),
+    icon: assets('rts'),
     label: 'Repair The Shelter',
     value: 'rts',
   },
   {
-    icon: imgWorld('htm.png'),
+    icon: assets('htm'),
     label: 'Hunt The Titan',
     value: 'htm',
   },
@@ -134,27 +129,27 @@ export const missionTypeOptions: Array<
 
 export const rarityOptions: Array<FilterOption<RarityType>> = [
   {
-    icon: imgRarities(`${RarityType.Common}.png`),
+    icon: assets(RarityType.Common),
     label: 'Common',
     value: RarityType.Common,
   },
   {
-    icon: imgRarities(`${RarityType.Uncommon}.png`),
+    icon: assets(RarityType.Uncommon),
     label: 'Uncommon',
     value: RarityType.Uncommon,
   },
   {
-    icon: imgRarities(`${RarityType.Rare}.png`),
+    icon: assets(RarityType.Rare),
     label: 'Rare',
     value: RarityType.Rare,
   },
   {
-    icon: imgRarities(`${RarityType.Epic}.png`),
+    icon: assets(RarityType.Epic),
     label: 'Epic',
     value: RarityType.Epic,
   },
   {
-    icon: imgRarities(`${RarityType.Legendary}.png`),
+    icon: assets(RarityType.Legendary),
     label: 'Legendary',
     value: RarityType.Legendary,
   },
@@ -162,127 +157,127 @@ export const rarityOptions: Array<FilterOption<RarityType>> = [
 
 export const rewardOptions: Array<FilterOption> = [
   {
-    icon: imgResources('currency_mtxswap.png'),
+    icon: assets('currency_mtxswap'),
     label: 'V-Bucks',
     value: 'currency_mtxswap',
   },
   {
-    icon: imgResources('voucher_generic_worker.png'),
+    icon: assets('voucher_generic_worker'),
     label: 'Survivors',
     value: 'Worker',
   },
   {
-    icon: imgResources('voucher_generic_manager.png'),
+    icon: assets('voucher_generic_manager'),
     label: 'Lead Survivors',
     value: 'Manager',
   },
   {
-    icon: imgResources('voucher_generic_defender.png'),
+    icon: assets('voucher_generic_defender'),
     label: 'Defenders',
     value: 'Defender',
   },
   {
-    icon: imgResources('voucher_generic_hero.png'),
+    icon: assets('voucher_generic_hero'),
     label: 'Heroes',
     value: 'Hero',
   },
   {
-    icon: imgResources('voucher_generic_ranged.png'),
+    icon: assets('voucher_generic_ranged'),
     label: 'Ranged Weapons',
     value: 'Ranged',
   },
   {
-    icon: imgResources('voucher_generic_melee.png'),
+    icon: assets('voucher_generic_melee'),
     label: 'Melee Weapons',
     value: 'Melee',
   },
   {
-    icon: imgResources('voucher_generic_trap.png'),
+    icon: assets('voucher_generic_trap'),
     label: 'Traps',
     value: 'Trap',
   },
   {
-    icon: imgResources('voucher_cardpack_bronze.png'),
+    icon: assets('voucher_cardpack_bronze'),
     label: 'Upgrade Llama',
     value: 'voucher_cardpack_bronze',
   },
   {
-    icon: imgResources('voucher_basicpack.png'),
+    icon: assets('voucher_basicpack'),
     label: 'Mini Llama',
     value: 'voucher_basicpack',
   },
   {
-    icon: imgResources('reagent_c_t01.png'),
+    icon: assets('reagent_c_t01'),
     label: 'Pure Drop Of Rain',
     value: 'reagent_c_t01',
   },
   {
-    icon: imgResources('reagent_c_t02.png'),
+    icon: assets('reagent_c_t02'),
     label: 'Lightning In A Bottle',
     value: 'reagent_c_t02',
   },
   {
-    icon: imgResources('reagent_c_t03.png'),
+    icon: assets('reagent_c_t03'),
     label: 'Eye Of The Storm',
     value: 'reagent_c_t03',
   },
   {
-    icon: imgResources('reagent_c_t04.png'),
+    icon: assets('reagent_c_t04'),
     label: 'Storm Shard',
     value: 'reagent_c_t04',
   },
   {
-    icon: imgResources('heroxp.png'),
+    icon: assets('heroxp'),
     label: 'Hero XP',
     value: 'heroxp',
   },
   {
-    icon: imgResources('schematicxp.png'),
+    icon: assets('schematicxp'),
     label: 'Schematic XP',
     value: 'schematicxp',
   },
   {
-    icon: imgResources('personnelxp.png'),
+    icon: assets('personnelxp'),
     label: 'Survivor XP',
     value: 'personnelxp',
   },
   {
-    icon: imgResources('reagent_alteration_upgrade_sr.png'),
+    icon: assets('reagent_alteration_upgrade_sr'),
     label: 'Legendary Perk Up',
     value: 'reagent_alteration_upgrade_sr',
   },
   {
-    icon: imgResources('reagent_alteration_upgrade_vr.png'),
+    icon: assets('reagent_alteration_upgrade_vr'),
     label: 'Epic Perk Up',
     value: 'reagent_alteration_upgrade_vr',
   },
   {
-    icon: imgResources('reagent_alteration_upgrade_r.png'),
+    icon: assets('reagent_alteration_upgrade_r'),
     label: 'Rare Perk Up',
     value: 'reagent_alteration_upgrade_r',
   },
   {
-    icon: imgResources('reagent_alteration_upgrade_uc.png'),
+    icon: assets('reagent_alteration_upgrade_uc'),
     label: 'Uncommon Perk Up',
     value: 'reagent_alteration_upgrade_uc',
   },
   {
-    icon: imgResources('reagent_alteration_ele_fire.png'),
+    icon: assets('reagent_alteration_ele_fire'),
     label: 'FIRE-UP!',
     value: 'reagent_alteration_ele_fire',
   },
   {
-    icon: imgResources('reagent_alteration_ele_nature.png'),
+    icon: assets('reagent_alteration_ele_nature'),
     label: 'AMP-UP!',
     value: 'reagent_alteration_ele_nature',
   },
   {
-    icon: imgResources('reagent_alteration_ele_water.png'),
+    icon: assets('reagent_alteration_ele_water'),
     label: 'FROST-UP!',
     value: 'reagent_alteration_ele_water',
   },
   {
-    icon: imgResources('reagent_alteration_generic.png'),
+    icon: assets('reagent_alteration_generic'),
     label: 'RE-PERK!',
     value: 'reagent_alteration_generic',
   },
