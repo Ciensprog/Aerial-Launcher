@@ -1,21 +1,61 @@
 {
-  "description": "Fetch daily quests and manage rerolls for the selected accounts.",
+  "description": "Pobieraj codzienne zadania i zarządzaj przerzuceniami dla wybranych kont.",
   "form": {
-    "submit-button": "Load Daily Quests",
-    "replace-button": "Replace"
+    "submit-button": "Wczytaj Codzienne Zadania",
+    "replace-button": "Zastąp"
   },
   "list": {
-    "description": "Active daily quests for the selected accounts.",
-    "empty": "No data loaded yet.",
-    "no-quests": "No active daily quests found.",
-    "rerolls": "Rerolls: {{count}}",
-    "state": "State: {{state}}"
+    "description": "Aktywne codzienne zadania dla wybranych kont.",
+    "empty": "Brak danych.",
+    "no-quests": "Nie znaleziono aktywnych codziennych zadań.",
+    "rerolls": "Przerzuty: {{count}}",
+    "state": "Stan: {{state}}"
   },
   "progress": {
-    "empty": "Progress data not available."
+    "empty": "Dane postępu niedostępne."
   },
   "notifications": {
-    "rerolled": "Daily quest has been replaced.",
-    "failed": "Failed to replace daily quest."
+    "rerolled": "Codzienne zadanie zostało zastąpione.",
+    "failed": "Nie udało się zastąpić codziennego zadania."
+  },
+  "quests": {
+    "daily_destroyarcademachines": "Demolka dnia (automaty do gier)",
+    "daily_destroybears": "Demolka dnia (pluszowe misie)",
+    "daily_destroyfiretrucks": "Dzienne przedmioty do zniszczenia (wozy strażackie)",
+    "daily_destroygnomes": "Demolka dnia (gnomy ogrodowe)",
+    "daily_destroypropanetanks": "Demolka dnia (butle z gazem)",
+    "daily_destroyseesaws": "Demolka dnia (huśtawki w parku)",
+    "daily_destroyserverracks": "Demolka dnia (szafy serwerowe)",
+    "daily_destroytransformers": "Dzienne przedmioty do zniszczenia (transformatory)",
+    "daily_destroytvs": "Demolka dnia (telewizory)",
+    "daily_discovery_industriallocations": "Codzienny zwiad - budowy przemysłowe",
+    "daily_discovery_rurallocations": "Codzienny zwiad - wieś ",
+    "daily_discovery_shelters": "Codzienny zwiad - schrony",
+    "daily_discovery_suburbanlocations": "Codzienny zwiad - przedmieścia",
+    "daily_discovery_urbanlocations": "Codzienny zwiad - miasta",
+    "daily_explorezones": "Grupa badawcza",
+    "daily_high_priority": "Wszyscy razem",
+    "daily_huskextermination_anyhero": "Eksterminacja pustaków (dowolny bohater)",
+    "daily_huskextermination_constructor": "Tępienie pustaków (Budowniczy)",
+    "daily_huskextermination_melee": "Tępienie pustaków (broń biała)",
+    "daily_huskextermination_ninja": "Tępienie pustaków (Ninja)",
+    "daily_huskextermination_outlander": "Tępienie pustaków (Rubieżnik)",
+    "daily_huskextermination_ranged_assault": "Tępienie pustaków (karabin szturmowy)",
+    "daily_huskextermination_ranged_pistol": "Tępienie pustaków (pistolet)",
+    "daily_huskextermination_ranged_shotgun": "Tępienie pustaków (strzelba)",
+    "daily_huskextermination_ranged_smg": "Tępienie pustaków (pistolet maszynowy)",
+    "daily_huskextermination_ranged_sniper": "Tępienie pustaków (karabin snajperski)",
+    "daily_huskextermination_soldier": "Tępienie pustaków (Żołnierz)",
+    "daily_huskextermination_trap": "Tępienie pustaków (pułapki)",
+    "daily_mission_buildradar": "Zbuduj wieżę radarową",
+    "daily_mission_specialist_anyhero_1": "Specjalista od misji (dowolny bohater)",
+    "daily_mission_specialist_anyhero_2": "Weteran od misji (dowolny bohater)",
+    "daily_mission_specialist_constructor": "Specjalista w misji (Budowniczy)",
+    "daily_mission_specialist_ninja": "Specjalista w misji (Ninja)",
+    "daily_mission_specialist_outlander": "Specjalista w misji (Rubieżnik)",
+    "daily_mission_specialist_soldier": "Specjalista w misji (Żołnierz)",
+    "daily_partyof50": "Grupa 25 osób",
+    "daily_safes": "Jak w banku",
+    "daily_treasurechests": "Stracone skarby"
   }
 }

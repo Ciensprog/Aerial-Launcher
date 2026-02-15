@@ -1,21 +1,61 @@
 {
-  "description": "Fetch daily quests and manage rerolls for the selected accounts.",
+  "description": "获取所选账户的每日任务并管理重Roll。",
   "form": {
-    "submit-button": "Load Daily Quests",
-    "replace-button": "Replace"
+    "submit-button": "加载每日任务",
+    "replace-button": "替换"
   },
   "list": {
-    "description": "Active daily quests for the selected accounts.",
-    "empty": "No data loaded yet.",
-    "no-quests": "No active daily quests found.",
-    "rerolls": "Rerolls: {{count}}",
-    "state": "State: {{state}}"
+    "description": "所选账户的活跃每日任务。",
+    "empty": "尚未加载数据。",
+    "no-quests": "未找到活跃的每日任务。",
+    "rerolls": "重Roll次数: {{count}}",
+    "state": "状态: {{state}}"
   },
   "progress": {
-    "empty": "Progress data not available."
+    "empty": "进度数据不可用。"
   },
   "notifications": {
-    "rerolled": "Daily quest has been replaced.",
-    "failed": "Failed to replace daily quest."
+    "rerolled": "每日任务已替换。",
+    "failed": "替换每日任务失败。"
+  },
+  "quests": {
+    "daily_destroyarcademachines": "每日摧毁(街机)",
+    "daily_destroybears": "每日摧毁(泰迪熊)",
+    "daily_destroyfiretrucks": "每日摧毁(消防车)",
+    "daily_destroygnomes": "每日摧毁(花园地精)",
+    "daily_destroypropanetanks": "每日摧毁(丙烷罐)",
+    "daily_destroyseesaws": "每日摧毁(公园跷跷板)",
+    "daily_destroyserverracks": "每日摧毁(服务器机架)",
+    "daily_destroytransformers": "每日摧毁(电力变压器)",
+    "daily_destroytvs": "每日摧毁(电视)",
+    "daily_discovery_industriallocations": "日常侦查工业建筑",
+    "daily_discovery_rurallocations": "日常侦查农村 ",
+    "daily_discovery_shelters": "日常侦查避难所",
+    "daily_discovery_suburbanlocations": "日常侦查郊区",
+    "daily_discovery_urbanlocations": "日常侦查城市",
+    "daily_explorezones": "探险队",
+    "daily_high_priority": "同心协力",
+    "daily_huskextermination_anyhero": "毒尸怪灭绝(任意英雄)",
+    "daily_huskextermination_constructor": "毒尸怪灭绝(建筑师)",
+    "daily_huskextermination_melee": "毒尸怪灭绝(近战)",
+    "daily_huskextermination_ninja": "毒尸怪灭绝(忍者)",
+    "daily_huskextermination_outlander": "毒尸怪灭绝(漂泊者)",
+    "daily_huskextermination_ranged_assault": "毒尸怪灭绝(突击步枪)",
+    "daily_huskextermination_ranged_pistol": "毒尸怪灭绝(手枪)",
+    "daily_huskextermination_ranged_shotgun": "毒尸怪灭绝(霰弹枪)",
+    "daily_huskextermination_ranged_smg": "毒尸终结者（冲锋枪）",
+    "daily_huskextermination_ranged_sniper": "毒尸怪灭绝(狙击枪)",
+    "daily_huskextermination_soldier": "毒尸怪灭绝(士兵)",
+    "daily_huskextermination_trap": "毒尸怪灭绝(陷阱)",
+    "daily_mission_buildradar": "建造雷达塔",
+    "daily_mission_specialist_anyhero_1": "任务专家（任意英雄）",
+    "daily_mission_specialist_anyhero_2": "任务老兵（任意英雄）",
+    "daily_mission_specialist_constructor": "任务专家(建筑师)",
+    "daily_mission_specialist_ninja": "任务专家(忍者)",
+    "daily_mission_specialist_outlander": "任务专家(漂泊者)",
+    "daily_mission_specialist_soldier": "任务专家(士兵)",
+    "daily_partyof50": "25人队伍",
+    "daily_safes": "小心行事",
+    "daily_treasurechests": "失落的宝藏"
   }
 }

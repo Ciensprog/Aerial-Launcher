@@ -1,21 +1,61 @@
 {
-  "description": "Fetch daily quests and manage rerolls for the selected accounts.",
+  "description": "Buscar missões diárias e gerenciar novas tentativas para as contas selecionadas.",
   "form": {
-    "submit-button": "Load Daily Quests",
-    "replace-button": "Replace"
+    "submit-button": "Carregar Missões Diárias",
+    "replace-button": "Substituir"
   },
   "list": {
-    "description": "Active daily quests for the selected accounts.",
-    "empty": "No data loaded yet.",
-    "no-quests": "No active daily quests found.",
-    "rerolls": "Rerolls: {{count}}",
-    "state": "State: {{state}}"
+    "description": "Missões diárias ativas para as contas selecionadas.",
+    "empty": "Nenhum dado carregado ainda.",
+    "no-quests": "Nenhuma missão diária ativa encontrada.",
+    "rerolls": "Novas tentativas: {{count}}",
+    "state": "Estado: {{state}}"
   },
   "progress": {
-    "empty": "Progress data not available."
+    "empty": "Dados de progresso indisponíveis."
   },
   "notifications": {
-    "rerolled": "Daily quest has been replaced.",
-    "failed": "Failed to replace daily quest."
+    "rerolled": "A missão diária foi substituída.",
+    "failed": "Falha ao substituir a missão diária."
+  },
+  "quests": {
+    "daily_destroyarcademachines": "Destruição Diária (Máquinas de Fliperama)",
+    "daily_destroybears": "Destruição Diária (Ursos de Pelúcia)",
+    "daily_destroyfiretrucks": "Destruição Diária (Carros de Bombeiro)",
+    "daily_destroygnomes": "Destruição Diária (Gnomos de Jardim)",
+    "daily_destroypropanetanks": "Destruição Diária (Tanques de Propano)",
+    "daily_destroyseesaws": "Destruição Diária (Gangorras de Parque)",
+    "daily_destroyserverracks": "Destruição Diária (Armários de Servidor)",
+    "daily_destroytransformers": "Destruição Diária (Transformadores)",
+    "daily_destroytvs": "Destruição Diária (TVs)",
+    "daily_discovery_industriallocations": "Vigilância Diária de Construção Industrial",
+    "daily_discovery_rurallocations": "Vigilância Diária Rural ",
+    "daily_discovery_shelters": "Vigilância Diária de Abrigos",
+    "daily_discovery_suburbanlocations": "Vigilância Diária de Subúrbio",
+    "daily_discovery_urbanlocations": "Vigilância Diária de Cidades",
+    "daily_explorezones": "Grupo de Exploração",
+    "daily_high_priority": "Todos Juntos Agora",
+    "daily_huskextermination_anyhero": "Extermínio de Carcaças (Qualquer Herói)",
+    "daily_huskextermination_constructor": "Extermínio de Carcaças (Construtor)",
+    "daily_huskextermination_melee": "Extermínio de Carcaças (Corpo a Corpo)",
+    "daily_huskextermination_ninja": "Extermínio de Carcaças (Ninja)",
+    "daily_huskextermination_outlander": "Extermínio de Carcaças (Forasteiro)",
+    "daily_huskextermination_ranged_assault": "Extermínio de Carcaças (Rifle de Assalto)",
+    "daily_huskextermination_ranged_pistol": "Extermínio de Carcaças (Pistola)",
+    "daily_huskextermination_ranged_shotgun": "Extermínio de Carcaças (Espingarda)",
+    "daily_huskextermination_ranged_smg": "Extermínio de Carcaças (SMG)",
+    "daily_huskextermination_ranged_sniper": "Extermínio de Carcaças (Rifle de Precisão)",
+    "daily_huskextermination_soldier": "Extermínio de Carcaças (Soldado)",
+    "daily_huskextermination_trap": "Extermínio de Carcaças (Armadilha)",
+    "daily_mission_buildradar": "Construa a Torre de Radar",
+    "daily_mission_specialist_anyhero_1": "Especialista em Missões (Qualquer Herói)",
+    "daily_mission_specialist_anyhero_2": "Veterano em Missões (Qualquer Herói)",
+    "daily_mission_specialist_constructor": "Especialista de Missão (Construtor)",
+    "daily_mission_specialist_ninja": "Especialista de Missão (Ninja)",
+    "daily_mission_specialist_outlander": "Especialista em Missão (Forasteiro)",
+    "daily_mission_specialist_soldier": "Especialista de Missão (Soldado)",
+    "daily_partyof50": "Grupo de 25",
+    "daily_safes": "Fanático por Cofres",
+    "daily_treasurechests": "Tesouros Perdidos"
   }
 }

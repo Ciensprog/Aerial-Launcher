@@ -9,7 +9,8 @@ export type DailyQuest = {
   templateId: string
   name: string
   state: string
-  progress: Array<DailyQuestProgress>
+  // progress: Array<DailyQuestProgress>
+  progress: number
 }
 
 export type DailyQuestsAccountData = {

@@ -1,21 +1,61 @@
 {
-  "description": "Fetch daily quests and manage rerolls for the selected accounts.",
+  "description": "Получайте ежедневные задания и управляйте перебросами для выбранных аккаунтов.",
   "form": {
-    "submit-button": "Load Daily Quests",
-    "replace-button": "Replace"
+    "submit-button": "Загрузить ежедневные задания",
+    "replace-button": "Заменить"
   },
   "list": {
-    "description": "Active daily quests for the selected accounts.",
-    "empty": "No data loaded yet.",
-    "no-quests": "No active daily quests found.",
-    "rerolls": "Rerolls: {{count}}",
-    "state": "State: {{state}}"
+    "description": "Активные ежедневные задания для выбранных аккаунтов.",
+    "empty": "Данные еще не загружены.",
+    "no-quests": "Активных ежедневных заданий не найдено.",
+    "rerolls": "Перебросы: {{count}}",
+    "state": "Статус: {{state}}"
   },
   "progress": {
-    "empty": "Progress data not available."
+    "empty": "Данные о прогрессе недоступны."
   },
   "notifications": {
-    "rerolled": "Daily quest has been replaced.",
-    "failed": "Failed to replace daily quest."
+    "rerolled": "Ежедневное задание было заменено.",
+    "failed": "Не удалось заменить ежедневное задание."
+  },
+  "quests": {
+    "daily_destroyarcademachines": "Ежедневный погром (игровые автоматы)",
+    "daily_destroybears": "Ежедневный погром (плюшевые медведи)",
+    "daily_destroyfiretrucks": "Ежедневный погром (пожарные машины)",
+    "daily_destroygnomes": "Ежедневный погром (садовые гномы)",
+    "daily_destroypropanetanks": "Ежедневный погром (баллоны с пропаном)",
+    "daily_destroyseesaws": "Ежедневный погром (парковые качели)",
+    "daily_destroyserverracks": "Ежедневный погром (серверные стойки)",
+    "daily_destroytransformers": "Ежедневный погром (трансформаторы)",
+    "daily_destroytvs": "Ежедневный погром (телевизоры)",
+    "daily_discovery_industriallocations": "Ежедневная разведка: промышленные стройки",
+    "daily_discovery_rurallocations": "Ежедневная разведка: сельская местность ",
+    "daily_discovery_shelters": "Ежедневная разведка: убежища",
+    "daily_discovery_suburbanlocations": "Ежедневная разведка: пригород",
+    "daily_discovery_urbanlocations": "Ежедневная разведка: города",
+    "daily_explorezones": "Исследовательский отряд",
+    "daily_high_priority": "А теперь все вместе!",
+    "daily_huskextermination_anyhero": "Истребление мозгляков (любой герой)",
+    "daily_huskextermination_constructor": "Истребление мозгляков (конструктор)",
+    "daily_huskextermination_melee": "Истребление мозгляков (холодное оружие)",
+    "daily_huskextermination_ninja": "Истребление мозгляков (ниндзя)",
+    "daily_huskextermination_outlander": "Истребление мозгляков (путешественник)",
+    "daily_huskextermination_ranged_assault": "Истребление мозгляков (автомат)",
+    "daily_huskextermination_ranged_pistol": "Истребление мозгляков (пистолет)",
+    "daily_huskextermination_ranged_shotgun": "Истребление мозгляков (дробовик)",
+    "daily_huskextermination_ranged_smg": "Истребление мозгляков (пистолет-пулемёт)",
+    "daily_huskextermination_ranged_sniper": "Истребление мозгляков (снайперская винтовка)",
+    "daily_huskextermination_soldier": "Истребление мозгляков (солдат)",
+    "daily_huskextermination_trap": "Истребление мозгляков (ловушки)",
+    "daily_mission_buildradar": "Постройте радарную вышку",
+    "daily_mission_specialist_anyhero_1": "Миссия выполнима (любой герой)",
+    "daily_mission_specialist_anyhero_2": "Любая миссия выполнима (любой герой)",
+    "daily_mission_specialist_constructor": "Миссия выполнима (конструктор)",
+    "daily_mission_specialist_ninja": "Миссия выполнима (ниндзя)",
+    "daily_mission_specialist_outlander": "Миссия выполнима (путешественник)",
+    "daily_mission_specialist_soldier": "Миссия выполнима (солдат)",
+    "daily_partyof50": "25 друзей командира",
+    "daily_safes": "Надёжное место",
+    "daily_treasurechests": "Потерянные сокровища"
   }
 }

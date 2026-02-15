@@ -1,21 +1,61 @@
 {
-  "description": "Fetch daily quests and manage rerolls for the selected accounts.",
+  "description": "Recupera le missioni giornaliere e gestisci i reroll per gli account selezionati.",
   "form": {
-    "submit-button": "Load Daily Quests",
-    "replace-button": "Replace"
+    "submit-button": "Carica Missioni Giornaliere",
+    "replace-button": "Sostituisci"
   },
   "list": {
-    "description": "Active daily quests for the selected accounts.",
-    "empty": "No data loaded yet.",
-    "no-quests": "No active daily quests found.",
-    "rerolls": "Rerolls: {{count}}",
-    "state": "State: {{state}}"
+    "description": "Missioni giornaliere attive per gli account selezionati.",
+    "empty": "Nessun dato ancora caricato.",
+    "no-quests": "Nessuna missione giornaliera attiva trovata.",
+    "rerolls": "Reroll: {{count}}",
+    "state": "Stato: {{state}}"
   },
   "progress": {
-    "empty": "Progress data not available."
+    "empty": "Dati di avanzamento non disponibili."
   },
   "notifications": {
-    "rerolled": "Daily quest has been replaced.",
-    "failed": "Failed to replace daily quest."
+    "rerolled": "La missione giornaliera è stata sostituita.",
+    "failed": "Sostituzione della missione giornaliera fallita."
+  },
+  "quests": {
+    "daily_destroyarcademachines": "Distruzione quotidiana (postazioni arcade)",
+    "daily_destroybears": "Distruzione quotidiana (orsacchiotti)",
+    "daily_destroyfiretrucks": "Distruzione quotidiana (camion dei pompieri)",
+    "daily_destroygnomes": "Distruzione quotidiana (gnomi da giardino)",
+    "daily_destroypropanetanks": "Distruzione quotidiana (taniche di propano)",
+    "daily_destroyseesaws": "Distruzione quotidiana (altalene da parco)",
+    "daily_destroyserverracks": "Distruzione quotidiana (rack di server)",
+    "daily_destroytransformers": "Distruzione quotidiana (trasformatori)",
+    "daily_destroytvs": "Distruzione quotidiana (TV)",
+    "daily_discovery_industriallocations": "Ricognizione giornaliera: costruzioni industriali",
+    "daily_discovery_rurallocations": "Ricognizione giornaliera: rurale ",
+    "daily_discovery_shelters": "Ricognizione giornaliera: rifugi",
+    "daily_discovery_suburbanlocations": "Ricognizione giornaliera: periferia",
+    "daily_discovery_urbanlocations": "Ricognizione giornaliera: città",
+    "daily_explorezones": "Gruppo di esplorazione",
+    "daily_high_priority": "Tutti insieme appassionatamente",
+    "daily_huskextermination_anyhero": "Sterminio di Abietti (qualsiasi eroe)",
+    "daily_huskextermination_constructor": "Sterminio di Abietti (Costruttore)",
+    "daily_huskextermination_melee": "Sterminio di Abietti (Mischia)",
+    "daily_huskextermination_ninja": "Sterminio di Abietti (Ninja)",
+    "daily_huskextermination_outlander": "Sterminio di Abietti (Straniero)",
+    "daily_huskextermination_ranged_assault": "Sterminio di Abietti (Fucile d'assalto)",
+    "daily_huskextermination_ranged_pistol": "Sterminio di Abietti (Pistola)",
+    "daily_huskextermination_ranged_shotgun": "Sterminio di Abietti (fucile pesante)",
+    "daily_huskextermination_ranged_smg": "Sterminio di Abietti (mitraglietta)",
+    "daily_huskextermination_ranged_sniper": "Sterminio di Abietti (Fucile di precisione)",
+    "daily_huskextermination_soldier": "Sterminio di Abietti (Soldato)",
+    "daily_huskextermination_trap": "Sterminio di Abietti (Trappola)",
+    "daily_mission_buildradar": "Costruisci la torre radar",
+    "daily_mission_specialist_anyhero_1": "Specialista di missione (qualsiasi eroe)",
+    "daily_mission_specialist_anyhero_2": "Veterano della missione (qualsiasi eroe)",
+    "daily_mission_specialist_constructor": "Specialista di missione (Costruttore)",
+    "daily_mission_specialist_ninja": "Specialista di missione (Ninja)",
+    "daily_mission_specialist_outlander": "Specialista di missione (Straniero)",
+    "daily_mission_specialist_soldier": "Specialista di missione (Soldato)",
+    "daily_partyof50": "Quella sporca venticinquina",
+    "daily_safes": "Senza correre rischi",
+    "daily_treasurechests": "Tesori perduti"
   }
 }

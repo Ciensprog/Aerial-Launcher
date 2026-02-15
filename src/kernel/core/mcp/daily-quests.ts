@@ -1,7 +1,6 @@
 import type { AccountData } from '../../../types/accounts'
 import type {
   DailyQuest,
-  DailyQuestProgress,
   DailyQuestRerollResponse,
   DailyQuestsAccountData,
 } from '../../../types/daily-quests'
@@ -27,7 +26,7 @@ export class MCPDailyQuests {
       const responses = await Promise.allSettled(
         accounts.map(async (account) => {
           return MCPDailyQuests.requestAccount(account)
-        })
+        }),
       )
 
       const data = responses
@@ -36,7 +35,7 @@ export class MCPDailyQuests {
 
       MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.DailyQuestsNotification,
-        data
+        data,
       )
 
       return
@@ -48,7 +47,7 @@ export class MCPDailyQuests {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.DailyQuestsNotification,
-      []
+      [],
     )
   }
 
@@ -65,7 +64,7 @@ export class MCPDailyQuests {
       if (!accessToken) {
         MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.DailyQuestRerollNotification,
-          response
+          response,
         )
 
         return
@@ -87,7 +86,7 @@ export class MCPDailyQuests {
       if (!profile) {
         MainWindow.instance.webContents.send(
           ElectronAPIEventKeys.DailyQuestRerollNotification,
-          response
+          response,
         )
 
         return
@@ -111,12 +110,12 @@ export class MCPDailyQuests {
           success: true,
           errorMessage: null,
           data,
-        } as DailyQuestRerollResponse
+        } as DailyQuestRerollResponse,
       )
 
       return
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error?.response?.data?.errorMessage) {
         response.errorMessage =
@@ -126,12 +125,12 @@ export class MCPDailyQuests {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.DailyQuestRerollNotification,
-      response
+      response,
     )
   }
 
   private static async requestAccount(
-    account: AccountData
+    account: AccountData,
   ): Promise<DailyQuestsAccountData> {
     const result: DailyQuestsAccountData = {
       accountId: account.accountId,
@@ -171,7 +170,7 @@ export class MCPDailyQuests {
 
       return result
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       result.available = false
       result.errorMessage =
@@ -183,7 +182,7 @@ export class MCPDailyQuests {
 }
 
 function parseDailyQuests(
-  profile: MCPQueryProfileChanges['profile']
+  profile: MCPQueryProfileChanges['profile'],
 ): Array<DailyQuest> {
   const items = Object.entries(profile?.items ?? {})
   const quests: Array<DailyQuest> = []
@@ -221,18 +220,18 @@ function parseDailyQuests(
 }
 
 function parseDailyQuestProgress(
-  attributes: Record<string, unknown>
-): Array<DailyQuestProgress> {
+  attributes: Record<string, unknown>,
+): number {
   return Object.entries(attributes)
     .filter(
       ([key, value]) =>
-        key.startsWith('completion_') && typeof value === 'number'
+        key.startsWith('completion_') && typeof value === 'number',
     )
-    .map(([key, value]) => ({
-      key,
-      label: formatObjectiveLabel(key),
-      value: value as number,
-    }))
+    .reduce((accumulator, [, value]) => {
+      accumulator += value as number
+
+      return accumulator
+    }, 0)
 }
 
 function formatQuestName(templateId: string) {
@@ -249,18 +248,18 @@ function formatQuestName(templateId: string) {
   return toTitleCase(cleaned)
 }
 
-function formatObjectiveLabel(value: string) {
-  const cleaned = value
-    .replace(/^completion_/i, '')
-    .replace(/_/g, ' ')
-    .trim()
+// function formatObjectiveLabel(value: string) {
+//   const cleaned = value
+//     .replace(/^completion_/i, '')
+//     .replace(/_/g, ' ')
+//     .trim()
 
-  if (!cleaned) {
-    return value
-  }
+//   if (!cleaned) {
+//     return value
+//   }
 
-  return toTitleCase(cleaned)
-}
+//   return toTitleCase(cleaned)
+// }
 
 function toTitleCase(value: string) {
   return value

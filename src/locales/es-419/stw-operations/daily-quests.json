@@ -1,21 +1,61 @@
 {
-  "description": "Fetch daily quests and manage rerolls for the selected accounts.",
+  "description": "Obtén misiones diarias y administra las repeticiones de las cuentas seleccionadas.",
   "form": {
-    "submit-button": "Load Daily Quests",
-    "replace-button": "Replace"
+    "submit-button": "Cargar Misiones Diarias",
+    "replace-button": "Reemplazar"
   },
   "list": {
-    "description": "Active daily quests for the selected accounts.",
-    "empty": "No data loaded yet.",
-    "no-quests": "No active daily quests found.",
-    "rerolls": "Rerolls: {{count}}",
-    "state": "State: {{state}}"
+    "description": "Misiones diarias activas para las cuentas seleccionadas.",
+    "empty": "Aún no se han cargado datos.",
+    "no-quests": "No se encontraron misiones diarias activas.",
+    "rerolls": "Repeticiones: {{count}}",
+    "state": "Estado: {{state}}"
   },
   "progress": {
-    "empty": "Progress data not available."
+    "empty": "Datos de progreso no disponibles."
   },
   "notifications": {
-    "rerolled": "Daily quest has been replaced.",
-    "failed": "Failed to replace daily quest."
+    "rerolled": "Se ha reemplazado la misión diaria.",
+    "failed": "No se pudo reemplazar la misión diaria."
+  },
+  "quests": {
+    "daily_destroyarcademachines": "Destrucción diaria (máquinas de videojuegos)",
+    "daily_destroybears": "Destrucción diaria (ositos de peluche)",
+    "daily_destroyfiretrucks": "Destrucción diaria (camiones de bomberos)",
+    "daily_destroygnomes": "Destrucción diaria (gnomos de jardín)",
+    "daily_destroypropanetanks": "Destrucción diaria (tanques de propano)",
+    "daily_destroyseesaws": "Destrucción diaria (sube y baja)",
+    "daily_destroyserverracks": "Destrucción diaria (estantes de servidores)",
+    "daily_destroytransformers": "Destrucción diaria (transformadores)",
+    "daily_destroytvs": "Destrucción diaria (televisores)",
+    "daily_discovery_industriallocations": "Exploración de construcción industrial diaria",
+    "daily_discovery_rurallocations": "Exploración rural diaria ",
+    "daily_discovery_shelters": "Exploración de refugios diaria",
+    "daily_discovery_suburbanlocations": "Exploración de suburbios diaria",
+    "daily_discovery_urbanlocations": "Exploración de ciudades diaria",
+    "daily_explorezones": "Equipo de exploración",
+    "daily_high_priority": "Ahora todos juntos",
+    "daily_huskextermination_anyhero": "Exterminación de descerebrados (cualquier héroe)",
+    "daily_huskextermination_constructor": "Exterminación de descerebrados (constructor)",
+    "daily_huskextermination_melee": "Exterminación de descerebrados (arma cuerpo a cuerpo)",
+    "daily_huskextermination_ninja": "Exterminación de descerebrados (ninja)",
+    "daily_huskextermination_outlander": "Exterminación de descerebrados (forastero)",
+    "daily_huskextermination_ranged_assault": "Exterminación de descerebrados (rifle de asalto)",
+    "daily_huskextermination_ranged_pistol": "Exterminación de descerebrados (pistola)",
+    "daily_huskextermination_ranged_shotgun": "Exterminación de descerebrados (escopeta)",
+    "daily_huskextermination_ranged_smg": "Exterminación de descerebrados (subfusil)",
+    "daily_huskextermination_ranged_sniper": "Exterminación de descerebrados (rifle de francotirador)",
+    "daily_huskextermination_soldier": "Exterminación de descerebrados (soldado)",
+    "daily_huskextermination_trap": "Exterminación de descerebrados (trampa)",
+    "daily_mission_buildradar": "Construye la torre de radar",
+    "daily_mission_specialist_anyhero_1": "Especialista de misión (cualquier héroe)",
+    "daily_mission_specialist_anyhero_2": "Veterano de misión (cualquier héroe)",
+    "daily_mission_specialist_constructor": "Especialista de misión (constructor)",
+    "daily_mission_specialist_ninja": "Especialista de misión (ninja)",
+    "daily_mission_specialist_outlander": "Especialista de misión (forastero)",
+    "daily_mission_specialist_soldier": "Especialista de misión (soldado)",
+    "daily_partyof50": "Grupo de 25",
+    "daily_safes": "Sin riesgos",
+    "daily_treasurechests": "Tesoros perdidos"
   }
 }
