@@ -19,21 +19,25 @@ export class LookupManager {
     | {
         data: null
         success: false
+        errorCode: number | string | null
         errorMessage: number | string | null
       }
     | {
         data: XPBoostsSearchUserData['lookup']
         success: true
+        errorCode: number | string | null
         errorMessage: number | string | null
       }
   > {
     const defaultResponse: {
       data: null
       success: false
+      errorCode: number | string | null
       errorMessage: number | string | null
     } = {
       data: null,
       success: false,
+      errorCode: null,
       errorMessage: null,
     }
 
@@ -54,6 +58,7 @@ export class LookupManager {
           if (response.data) {
             return {
               data: response.data,
+              errorCode: null,
               errorMessage: null,
               success: true,
             } as const
@@ -73,6 +78,7 @@ export class LookupManager {
       if (response.data) {
         return {
           data: response.data,
+          errorCode: null,
           errorMessage: null,
           success: true,
         } as const
@@ -114,6 +120,7 @@ export class LookupManager {
                       current.externalAuths[externalAuthType]
                         ?.externalDisplayName ?? current.displayName,
                   },
+                  errorCode: null,
                   errorMessage: null,
                   success: true,
                 } as const
@@ -126,6 +133,8 @@ export class LookupManager {
           //
         }
 
+        defaultResponse.errorCode =
+          response.errorCode?.split('.')?.at(-1) ?? 'UNKNOWN'
         defaultResponse.errorMessage = response.errorMessage
       }
     }

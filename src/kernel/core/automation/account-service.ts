@@ -8,6 +8,7 @@ import type {
   ServiceEventMemberKicked,
   ServiceEventMemberLeft,
   ServiceEventMemberStateUpdated,
+  ServiceEventPartyInvite,
   ServiceEventPartyUpdated,
 } from '../../../types/events'
 
@@ -44,7 +45,7 @@ export class AccountService {
       server: serverUrl,
       transports: {
         websocket: `wss://xmpp-service-${serverUrl}`,
-        bosh: true,
+        bosh: false,
       },
       credentials: {
         host: serverUrl,
@@ -65,6 +66,41 @@ export class AccountService {
 
   get accountId() {
     return this._accountId
+  }
+
+  get JID() {
+    return this.connection.jid
+  }
+
+  sendPresence(status: string, joininfodata: Record<string, unknown>) {
+    return this.connection.sendPresence({
+      status: JSON.stringify({
+        Status: status || 'Playing Battle Royale',
+        bIsPlaying: false,
+        bIsJoinable: true,
+        bHasVoiceSupport: false,
+        SessionId: '',
+        ProductName: 'Fortnite',
+        Properties: {
+          'party.joininfodata.286331153_j': joininfodata,
+          FortBasicInfo_j: {
+            homeBaseRating: 0,
+          },
+          FortLFG_I: '0',
+          FortPartySize_i: 1,
+          FortSubGame_i: 1,
+          InUnjoinableMatch_b: false,
+          FortGameplayStats_j: {
+            state: '',
+            playlist: 'None',
+            numKills: 0,
+            bFellToDeath: false,
+          },
+        },
+      }),
+      to: undefined,
+      show: 'away',
+    })
   }
 
   destroy() {
@@ -110,17 +146,17 @@ export class AccountService {
    */
 
   onMemberConnected(
-    callback: (value: ServiceEventMemberConnected) => void
+    callback: (value: ServiceEventMemberConnected) => void,
   ) {
     this.checkOrRegisterEvent(EventNotification.MEMBER_CONNECTED, callback)
   }
 
   onMemberDisconnected(
-    callback: (value: ServiceEventMemberDisconnected) => void
+    callback: (value: ServiceEventMemberDisconnected) => void,
   ) {
     this.checkOrRegisterEvent(
       EventNotification.MEMBER_DISCONNECTED,
-      callback
+      callback,
     )
   }
 
@@ -141,16 +177,20 @@ export class AccountService {
   }
 
   onMemberStateUpdated(
-    callback: (value: ServiceEventMemberStateUpdated) => void
+    callback: (value: ServiceEventMemberStateUpdated) => void,
   ) {
     this.checkOrRegisterEvent(
       EventNotification.MEMBER_STATE_UPDATED,
-      callback
+      callback,
     )
   }
 
   onPartyUpdated(callback: (value: ServiceEventPartyUpdated) => void) {
     this.checkOrRegisterEvent(EventNotification.PARTY_UPDATED, callback)
+  }
+
+  onPartyInvite(callback: (value: ServiceEventPartyInvite) => void) {
+    this.checkOrRegisterEvent(EventNotification.PING, callback)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -167,7 +207,7 @@ export class AccountService {
     CallbackFunction extends (...args: Array<any>) => void,
   >(
     eventName: EventNotification | ServiceEvent,
-    callback: CallbackFunction
+    callback: CallbackFunction,
   ) {
     if (this._activeEvents.includes(eventName)) {
       return
@@ -176,7 +216,7 @@ export class AccountService {
     this._activeEvents.push(eventName)
     this._event.on(
       eventName,
-      typeof callback === 'function' ? callback : () => {}
+      typeof callback === 'function' ? callback : () => {},
     )
   }
 
@@ -222,55 +262,61 @@ export class AccountService {
           case EventNotification.MEMBER_CONNECTED:
             this.emit<ServiceEventMemberConnected>(
               EventNotification.MEMBER_CONNECTED,
-              body
+              body,
             )
             break
           case EventNotification.MEMBER_DISCONNECTED:
             this.emit<ServiceEventMemberDisconnected>(
               EventNotification.MEMBER_DISCONNECTED,
-              body
+              body,
             )
             break
           case EventNotification.MEMBER_EXPIRED:
             this.emit<ServiceEventMemberExpired>(
               EventNotification.MEMBER_EXPIRED,
-              body
+              body,
             )
             break
           case EventNotification.MEMBER_JOINED:
             this.emit<ServiceEventMemberJoined>(
               EventNotification.MEMBER_JOINED,
-              body
+              body,
             )
             break
           case EventNotification.MEMBER_KICKED:
             this.emit<ServiceEventMemberKicked>(
               EventNotification.MEMBER_KICKED,
-              body
+              body,
             )
             break
           case EventNotification.MEMBER_LEFT:
             this.emit<ServiceEventMemberLeft>(
               EventNotification.MEMBER_LEFT,
-              body
+              body,
             )
             break
           case EventNotification.MEMBER_STATE_UPDATED:
             this.emit<ServiceEventMemberStateUpdated>(
               EventNotification.MEMBER_STATE_UPDATED,
-              body
+              body,
             )
             break
           case EventNotification.PARTY_UPDATED:
             this.emit<ServiceEventPartyUpdated>(
               EventNotification.PARTY_UPDATED,
-              body
+              body,
+            )
+            break
+          case EventNotification.PING:
+            this.emit<ServiceEventPartyInvite>(
+              EventNotification.PING,
+              body,
             )
             break
           case EventNotification.INTERACTION_NOTIFICATION:
             this.emit<ServiceEventInteractionNotification>(
               EventNotification.INTERACTION_NOTIFICATION,
-              body
+              body,
             )
             break
         }

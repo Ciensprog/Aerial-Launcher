@@ -15,6 +15,7 @@ import type { AutomationServiceActionConfig } from '../types/automation'
 import type { GroupRecord } from '../types/groups'
 import type { CustomizableMenuSettings, Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
+import type { TaxiServiceServiceActionConfig } from '../types/taxi-service'
 import type {
   XPBoostsConsumePersonalData,
   XPBoostsConsumeTeammateData,
@@ -72,6 +73,7 @@ import {
 } from './startup/settings'
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
+import { TaxiService } from './startup/taxi-service'
 
 import {
   AutoLlamasAccountAddParams,
@@ -132,8 +134,8 @@ const gotTheLock = app.requestSingleInstanceLock()
       await mainWindow.loadFile(
         path.join(
           __dirname,
-          `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`
-        )
+          `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`,
+        ),
       )
     }
 
@@ -174,7 +176,7 @@ const gotTheLock = app.requestSingleInstanceLock()
     ipcMain.on(ElectronAPIEventKeys.GetMatchmakingTrackPath, async () => {
       MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.GetMatchmakingTrackPathNotification,
-        DataDirectory.matchmakingFilePath
+        DataDirectory.matchmakingFilePath,
       )
     })
 
@@ -190,7 +192,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.AppLanguageUpdate,
       async (_, language: Language) => {
         await AppLanguage.update(language)
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
@@ -209,7 +211,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.CustomizableMenuSettingsRequest,
       async () => {
         await CustomizableMenuSettingsManager.load()
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.RequestTags, async () => {
@@ -224,14 +226,14 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.UpdateSettings,
       async (_, settings: Settings) => {
         await SettingsManager.update(settings)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.AccountsOrderingSync,
       async (_, accounts: AccountDataRecord) => {
         await AccountsManager.reorder(accounts)
-      }
+      },
     )
 
     ipcMain.on(
@@ -239,24 +241,24 @@ const gotTheLock = app.requestSingleInstanceLock()
       async (
         _,
         key: keyof CustomizableMenuSettings,
-        visibility: boolean
+        visibility: boolean,
       ) => {
         await CustomizableMenuSettingsManager.update(key, visibility)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.UpdateTags,
       async (_, tags: TagRecord) => {
         await TagsManager.update(tags)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.UpdateGroups,
       async (_, groups: GroupRecord) => {
         await GroupsManager.update(groups)
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.CustomProcessKill, () => {
@@ -295,7 +297,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.OnRemoveAccount,
       async (_, accountId: string) => {
         await AccountsManager.remove(accountId)
-      }
+      },
     )
 
     /**
@@ -322,35 +324,35 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.CreateAuthWithExchange,
       async (_, code: string) => {
         await Authentication.exchange(code)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.CreateAuthWithAuthorization,
       async (_, code: string) => {
         await Authentication.authorization(code)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.CreateAuthWithDevice,
       async (_, data: AuthenticationByDeviceProperties) => {
         await Authentication.device(data)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.OpenEpicGamesSettings,
       async (_, account: AccountData) => {
         await Authentication.openEpicGamesSettings(account)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.GenerateExchangeCode,
       async (_, account: AccountData) => {
         await Authentication.generateExchangeCode(account)
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.RequestNewVersionStatus, async () => {
@@ -365,7 +367,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.LauncherStart,
       async (_, account: AccountData) => {
         await FortniteLauncher.start(account)
-      }
+      },
     )
 
     /**
@@ -376,49 +378,49 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.SetSaveQuests,
       async (_, accounts: Array<AccountData>) => {
         await MCPClientQuestLogin.save(accounts)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.DailyQuestsRequest,
       async (_, accounts: Array<AccountData>) => {
         await MCPDailyQuests.request(accounts)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.DailyQuestReroll,
       async (_, account: AccountData, questId: string) => {
         await MCPDailyQuests.reroll(account, questId)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.SetHombaseName,
       async (_, accounts: Array<AccountData>, homebaseName: string) => {
         await MCPHomebaseName.update(accounts, homebaseName)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.XPBoostsAccountProfileRequest,
       async (_, accounts: Array<AccountData>) => {
         await XPBoostsManager.requestAccounts(accounts)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.XPBoostsConsumePersonal,
       async (_, data: XPBoostsConsumePersonalData) => {
         await XPBoostsManager.consumePersonal(data)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.XPBoostsConsumeTeammate,
       async (_, data: XPBoostsConsumeTeammateData) => {
         await XPBoostsManager.consumeTeammate(data)
-      }
+      },
     )
 
     ipcMain.on(
@@ -426,23 +428,23 @@ const gotTheLock = app.requestSingleInstanceLock()
       async (_, config: XPBoostsSearchUserConfig) => {
         await XPBoostsManager.searchUser(
           ElectronAPIEventKeys.XPBoostsSearchUserNotification,
-          config
+          config,
         )
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.XPBoostsGeneralSearchUser,
       async (_, config: XPBoostsSearchUserConfig) => {
         await XPBoostsManager.generalSearchUser(config)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.UnlockRequest,
       async (_, accounts: Array<AccountData>) => {
         await Unlock.start(accounts)
-      }
+      },
     )
 
     /**
@@ -453,7 +455,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.PartyClaimAction,
       async (_, selectedAccount: Array<AccountData>) => {
         await ClaimRewards.start(selectedAccount)
-      }
+      },
     )
 
     ipcMain.on(
@@ -462,7 +464,7 @@ const gotTheLock = app.requestSingleInstanceLock()
         _,
         selectedAccount: AccountData,
         accounts: AccountDataList,
-        claimState: boolean
+        claimState: boolean,
       ) => {
         await Party.kickPartyMembers(
           selectedAccount,
@@ -470,9 +472,9 @@ const gotTheLock = app.requestSingleInstanceLock()
           claimState,
           {
             force: true,
-          }
+          },
         )
-      }
+      },
     )
 
     ipcMain.on(
@@ -481,10 +483,10 @@ const gotTheLock = app.requestSingleInstanceLock()
         _,
         selectedAccounts: AccountList,
         accounts: AccountDataList,
-        claimState: boolean
+        claimState: boolean,
       ) => {
         await Party.leaveParty(selectedAccounts, accounts, claimState)
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.PartyLoadFriends, async () => {
@@ -495,14 +497,14 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.PartyAddNewFriendAction,
       async (_, account: AccountData, displayName: string) => {
         await Party.addNewFriend(account, displayName)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.PartyInviteAction,
       async (_, account: AccountData, accountIds: Array<string>) => {
         await Party.invite(account, accountIds)
-      }
+      },
     )
 
     ipcMain.on(
@@ -512,10 +514,10 @@ const gotTheLock = app.requestSingleInstanceLock()
         data: {
           accountId: string
           displayName: string
-        }
+        },
       ) => {
         await Party.removeFriend(data)
-      }
+      },
     )
 
     /**
@@ -526,7 +528,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.HomeFetchPlayerRequest,
       async (_, config: AlertsDoneSearchPlayerConfig) => {
         await AlertsDone.fetchPlayerData(config)
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.HomeWorldInfoRequest, async () => {
@@ -541,7 +543,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.WorldInfoSaveFile,
       async (_, data: SaveWorldInfoData) => {
         await WorldInfoManager.saveFile(data)
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFiles, async () => {
@@ -552,35 +554,35 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.WorldInfoDeleteFile,
       async (_, data: WorldInfoFileData) => {
         await WorldInfoManager.deleteFile(data)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.WorldInfoExportFile,
       async (_, data: WorldInfoFileData) => {
         await WorldInfoManager.exportWorldInfoFile(data)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.WorldInfoOpenFile,
       async (_, data: WorldInfoFileData) => {
         await WorldInfoManager.openWorldInfoFile(data)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.WorldInfoRenameFile,
       async (_, data: WorldInfoFileData, newFilename: string) => {
         await WorldInfoManager.renameFile(data, newFilename)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.MatchmakingTrackSaveFile,
       async (_, account: AccountData, accountId: string) => {
         await MatchmakingTrack.saveFile(account, accountId)
-      }
+      },
     )
 
     /**
@@ -591,14 +593,14 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.AutomationServiceRequestData,
       async () => {
         await Automation.load()
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.AutomationServiceStart,
       async (_, accountId: string) => {
         await Automation.addAccount(accountId)
-      }
+      },
     )
 
     // ipcMain.on(
@@ -612,7 +614,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.AutomationServiceRemove,
       async (_, accountId: string) => {
         await Automation.removeAccount(accountId)
-      }
+      },
     )
 
     ipcMain.on(
@@ -620,10 +622,60 @@ const gotTheLock = app.requestSingleInstanceLock()
       async (
         _,
         accountId: string,
-        config: AutomationServiceActionConfig
+        config: AutomationServiceActionConfig,
       ) => {
         await Automation.updateAction(accountId, config)
-      }
+      },
+    )
+
+    /**
+     * Taxi Service
+     */
+
+    ipcMain.on(
+      ElectronAPIEventKeys.TaxiServiceServiceAddAccounts,
+      async (_, origin: Array<string>, destination: Array<string>) => {
+        await TaxiService.sendRequests(origin, destination)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.TaxiServiceServiceRequestData,
+      async () => {
+        await TaxiService.load()
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.TaxiServiceServiceStart,
+      async (_, accountId: string) => {
+        await TaxiService.addAccount(accountId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.TaxiServiceServiceReload,
+      async (_, ids: Array<string>) => {
+        await TaxiService.reload(ids)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.TaxiServiceServiceRemove,
+      async (_, accountId: string) => {
+        await TaxiService.removeAccount(accountId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.TaxiServiceServiceActionUpdate,
+      async (
+        _,
+        accountId: string,
+        config: TaxiServiceServiceActionConfig,
+      ) => {
+        await TaxiService.updateAction(accountId, config)
+      },
     )
 
     /**
@@ -638,7 +690,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.UrnsServiceAdd,
       async (_, accountId: string) => {
         await AutoPinUrns.addAccount(accountId)
-      }
+      },
     )
 
     ipcMain.on(
@@ -647,17 +699,17 @@ const gotTheLock = app.requestSingleInstanceLock()
         _,
         accountId: string,
         type: 'mini-bosses' | 'urns',
-        value: boolean
+        value: boolean,
       ) => {
         await AutoPinUrns.updateAccount(accountId, type, value)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.UrnsServiceRemove,
       async (_, accountId: string) => {
         await AutoPinUrns.removeAccount(accountId)
-      }
+      },
     )
 
     /**
@@ -682,28 +734,28 @@ const gotTheLock = app.requestSingleInstanceLock()
           }),
           type: ProcessLlamaType.Survivor,
         })
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.AutoLlamasAccountAdd,
       async (_, accounts: AutoLlamasAccountAddParams) => {
         await AutoLlamas.addAccount(accounts)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.AutoLlamasAccountUpdate,
       async (_, data: AutoLlamasAccountUpdateParams) => {
         await AutoLlamas.updateAccounts(data)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.AutoLlamasAccountRemove,
       async (_, data: Array<string> | null) => {
         await AutoLlamas.removeAccounts(data)
-      }
+      },
     )
 
     ipcMain.on(ElectronAPIEventKeys.AutoLlamasAccountCheck, async () => {
@@ -718,7 +770,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.VBucksInformationRequest,
       async (_, accounts: Array<AccountData>) => {
         await VBucksInformation.requestBulkInfo(accounts)
-      }
+      },
     )
 
     /**
@@ -729,7 +781,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.RedeemCodesRedeem,
       async (_, accounts: Array<AccountData>, codes: Array<string>) => {
         await RedeemCodes.redeem(accounts, codes)
-      }
+      },
     )
 
     /**
@@ -741,30 +793,30 @@ const gotTheLock = app.requestSingleInstanceLock()
       async (_, account: AccountBasicInfo) => {
         await AccountsManager.add(account)
         MainWindow.instance.webContents.send(
-          ElectronAPIEventKeys.ResponseUpdateAccountBasicInfo
+          ElectronAPIEventKeys.ResponseUpdateAccountBasicInfo,
         )
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.DevicesAuthRequestData,
       async (_, account: AccountData) => {
         await DevicesAuthManager.load(account)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.DevicesAuthRemove,
       async (_, account: AccountData, deviceId: string) => {
         await DevicesAuthManager.remove(account, deviceId)
-      }
+      },
     )
 
     ipcMain.on(
       ElectronAPIEventKeys.EULAVerificationRequest,
       async (_, accountIds: Array<string>) => {
         await EULATracking.verify(accountIds)
-      }
+      },
     )
 
     /**
@@ -788,7 +840,7 @@ const gotTheLock = app.requestSingleInstanceLock()
       () => {
         WorldInfoManager.requestForHome().catch(() => {})
         WorldInfoManager.requestForAdvanceSection().catch(() => {})
-      }
+      },
     )
 
     schedule.scheduleJob(
@@ -811,7 +863,7 @@ const gotTheLock = app.requestSingleInstanceLock()
           }),
           type: ProcessLlamaType.FreeUpgrade,
         })
-      }
+      },
     )
 
     schedule.scheduleJob(
@@ -834,7 +886,7 @@ const gotTheLock = app.requestSingleInstanceLock()
           }),
           type: ProcessLlamaType.Survivor,
         })
-      }
+      },
     )
   })
 

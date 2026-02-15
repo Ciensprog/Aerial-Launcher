@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "Uruchom ponownie wszystkie taksówki",
+      "remove-all": "Usuń wszystkie taksówki"
+    },
+    "search": {
+      "input": {
+        "placeholder": "Np: sample;jan;joanna lub sample"
+      },
+      "send": "Wyślij zaproszenie do znajomych"
+    },
+    "show-notifications": "Pokaż powiadomienia"
+  },
+  "card": {
+    "power-level": "Wsteczny/140",
+    "deny-requests": "Odrzuć zaproszenia znajomych",
+    "status": {
+      "active": "Status aktywny",
+      "busy": "Status zajęty"
+    }
+  },
+  "notifications": {
+    "clear-logs": "Wyczyść logi",
+    "party-member-joined": "<0>{{me}}</0> dołączył do grupy {{total}} <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> zaprosił do <3>{{me}}</3> <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> dodany do <3>{{me}}</3>",
+    "friend-request-send": "<0>{{me}}</0> wysłał {{initial}}<4 />{{total}} zaproszeń do znajomych",
+    "friend-request-send-with-errors": "<0>{{name}}</0> z błędem <3>{{error}}</3>"
+  }
+}

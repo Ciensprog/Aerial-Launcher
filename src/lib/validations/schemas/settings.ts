@@ -20,6 +20,7 @@ export const appLanguageSchema = z.object({
       Language.Russian,
       Language.Portuguese,
       Language.Polish,
+      Language.Italian,
     ])
     .default(Language.English),
 })
@@ -50,6 +51,7 @@ export const customizableMenuSettingsSchema = z
   .object({
     stwOperations: z.boolean().default(true),
     autoKick: z.boolean().default(true),
+    taxiService: z.boolean().default(true),
     party: z.boolean().default(true),
     saveQuests: z.boolean().default(true),
     dailyQuests: z.boolean().default(true),
@@ -93,8 +95,8 @@ function createRangeValidation(config: {
       try {
         newValue = Number(
           (Number.isNaN(+value) ? config.defaultValue : +value).toFixed(
-            config.decimals ?? 1
-          )
+            config.decimals ?? 1,
+          ),
         )
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

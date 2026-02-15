@@ -21,6 +21,7 @@ import * as redeemCodesActions from './preload-actions/redeem-codes'
 import * as requestActions from './preload-actions/requests'
 import * as scheduleActions from './preload-actions/schedules'
 import * as settingsActions from './preload-actions/settings'
+import * as taxiservicesActions from './preload-actions/taxi-service'
 import * as vbucksInformationActions from './preload-actions/vbucks-information'
 import * as xpBoostsActions from './preload-actions/xpboosts'
 import * as worldInfoActions from './preload-actions/world-info'
@@ -44,6 +45,7 @@ export const availableElectronAPIs = {
   ...requestActions,
   ...scheduleActions,
   ...settingsActions,
+  ...taxiservicesActions,
   ...vbucksInformationActions,
   ...xpBoostsActions,
   ...worldInfoActions,

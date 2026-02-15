@@ -49,7 +49,7 @@ export class AccountProcess {
     config: Partial<{
       partyState: PartyState | null
       started: boolean
-    }> | null
+    }> | null,
   ) {
     if (config === null) {
       this._matchmaking.partyState = null
@@ -74,7 +74,7 @@ export class AccountProcess {
   preInit(
     config?: Partial<{
       timeout: number
-    }>
+    }>,
   ) {
     if (this.missionTimeout) {
       clearTimeout(this.missionTimeout)
@@ -105,7 +105,9 @@ export class AccountProcess {
         return
       }
 
-      const accessToken = await Authentication.verifyAccessToken(this.account)
+      const accessToken = await Authentication.verifyAccessToken(
+        this.account,
+      )
 
       if (!accessToken) {
         this.clearMissionIntervalId()
@@ -120,7 +122,8 @@ export class AccountProcess {
       const responseData = response.data
       const matchmacking: MatchmakingTrack | undefined = responseData?.[0]
 
-      const isEmptyArray = Array.isArray(responseData) && responseData.length === 0
+      const isEmptyArray =
+        Array.isArray(responseData) && responseData.length === 0
       let remoteStarted: boolean | undefined = undefined
 
       if (isEmptyArray) {
@@ -137,8 +140,12 @@ export class AccountProcess {
       const currentStateIsInLobby = remoteStarted === false
 
       if (lastStateWasInMission && currentStateIsInLobby) {
-        if (automationAccount.actions.kick || automationAccount.actions.claim) {
+        if (
+          automationAccount.actions.kick ||
+          automationAccount.actions.claim
+        ) {
           this.clearMissionIntervalId()
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const tasks: Promise<any>[] = []
 
           if (automationAccount.actions.kick) {
@@ -150,8 +157,8 @@ export class AccountProcess {
                 automationAccount.actions.claim ?? false,
                 {
                   useGlobalNotification: true,
-                }
-              )
+                },
+              ),
             )
           }
 
@@ -175,7 +182,9 @@ export class AccountProcess {
       if (remoteStarted !== this._matchmaking.started) {
         this.setMatchmaking({
           started: remoteStarted,
-          partyState: remoteStarted ? PartyState.POST_MATCHMAKING : PartyState.MATCHMAKING,
+          partyState: remoteStarted
+            ? PartyState.POST_MATCHMAKING
+            : PartyState.MATCHMAKING,
         })
       }
 
@@ -185,10 +194,17 @@ export class AccountProcess {
 
       this._lastRemoteStartedState = remoteStarted
 
-      if (!(automationAccount.actions.kick || automationAccount.actions.claim) && automationAccount.actions.transferMats === true) {
+      if (
+        !(
+          automationAccount.actions.kick || automationAccount.actions.claim
+        ) &&
+        automationAccount.actions.transferMats === true
+      ) {
         if (!remoteStarted) {
           this.clearMissionIntervalId()
-          MCPStorageTransfer.buildingMaterials(currentAccount).catch(() => {})
+          MCPStorageTransfer.buildingMaterials(currentAccount).catch(
+            () => {},
+          )
         }
       }
     }, missionInterval * 1_000)
@@ -196,7 +212,9 @@ export class AccountProcess {
 
   async checkMatchAtStartUp() {
     try {
-      const accessToken = await Authentication.verifyAccessToken(this.account)
+      const accessToken = await Authentication.verifyAccessToken(
+        this.account,
+      )
 
       if (!accessToken) {
         this._lastRemoteStartedState = null
@@ -211,7 +229,9 @@ export class AccountProcess {
       const matchmacking: MatchmakingTrack | undefined = data?.[0]
 
       const isEmptyArray = Array.isArray(data) && data.length === 0
-      const remoteStarted: boolean | undefined = isEmptyArray ? false : matchmacking?.started
+      const remoteStarted: boolean | undefined = isEmptyArray
+        ? false
+        : matchmacking?.started
 
       if (remoteStarted === undefined) {
         this._lastRemoteStartedState = null
@@ -219,7 +239,9 @@ export class AccountProcess {
       }
 
       this.setMatchmaking({
-        partyState: remoteStarted ? PartyState.POST_MATCHMAKING : PartyState.MATCHMAKING,
+        partyState: remoteStarted
+          ? PartyState.POST_MATCHMAKING
+          : PartyState.MATCHMAKING,
         started: remoteStarted,
       })
 

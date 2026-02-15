@@ -30,4 +30,8 @@ export const availableLanguages: Array<{
     id: Language.Polish,
     title: 'Polski',
   },
+  {
+    id: Language.Italian,
+    title: 'Italian',
+  },
 ]

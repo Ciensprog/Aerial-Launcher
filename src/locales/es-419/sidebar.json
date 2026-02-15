@@ -3,6 +3,7 @@
     "title": "Operaciones STW",
     "options": {
       "auto-kick": "Auto-expulsar",
+      "taxi-service": "Servicio de Taxi",
       "party": "Grupo",
       "save-quests": "Guardar Progreso (Misiones)",
       "daily-quests": "Misiones Diarias",

@@ -109,6 +109,16 @@ export type ServiceEventMemberStateUpdated = {
   updated_at: string
 }
 
+export type ServiceEventPartyInvite = {
+  type: EventNotification.PING
+  sent: string
+  ns: StringUnion<'Fortnite'>
+  pinger_id: string
+  pinger_dn: string
+  expires: string
+  meta: { 'urn:epic:invite:platformdata_s': string }
+}
+
 export type ServiceEventPartyUpdated = {
   type: EventNotification.PARTY_UPDATED
   sent: string

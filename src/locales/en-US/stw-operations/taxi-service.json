@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "Restart All Taxis",
+      "remove-all": "Remove All Taxis"
+    },
+    "search": {
+      "input": {
+        "placeholder": "Ex: sample;john;Jane or sample"
+      },
+      "send": "Send Friend Request"
+    },
+    "show-notifications": "Show Notifications"
+  },
+  "card": {
+    "power-level": "Reverse/140",
+    "deny-requests": "Deny Friends Requests",
+    "status": {
+      "active": "Active Status",
+      "busy": "Busy Status"
+    }
+  },
+  "notifications": {
+    "clear-logs": "Clear Logs",
+    "party-member-joined": "<0>{{me}}</0> joined a party of {{total}} <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> invited to <3>{{me}}</3> <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> added to <3>{{me}}</3>",
+    "friend-request-send": "<0>{{me}}</0> sent {{initial}}<4 />{{total}} friend requests",
+    "friend-request-send-with-errors": "<0>{{name}}</0> with error <3>{{error}}</3>"
+  }
+}

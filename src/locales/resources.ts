@@ -10,6 +10,7 @@ import enUS_settings from './en-US/settings.json'
 import enUS_alerts from './en-US/home.json'
 import enUS_zones from './en-US/zones.json'
 import enUS_stwOperations_AutoKick from './en-US/stw-operations/auto-kick.json'
+import enUS_stwOperations_TaxiService from './en-US/stw-operations/taxi-service.json'
 import enUS_stwOperations_HomebaseName from './en-US/stw-operations/homebase-name.json'
 import enUS_stwOperations_SaveQuests from './en-US/stw-operations/save-quests.json'
 import enUS_stwOperations_DailyQuests from './en-US/stw-operations/daily-quests.json'
@@ -40,6 +41,7 @@ const enUS = {
   zones: enUS_zones,
   'stw-operations': {
     'auto-kick': enUS_stwOperations_AutoKick,
+    'taxi-service': enUS_stwOperations_TaxiService,
     'homebase-name': enUS_stwOperations_HomebaseName,
     'save-quests': enUS_stwOperations_SaveQuests,
     'daily-quests': enUS_stwOperations_DailyQuests,
@@ -79,6 +81,7 @@ import es419_settings from './es-419/settings.json'
 import es419_alerts from './es-419/home.json'
 import es419_zones from './es-419/zones.json'
 import es419_stwOperations_AutoKick from './es-419/stw-operations/auto-kick.json'
+import es419_stwOperations_TaxiService from './es-419/stw-operations/taxi-service.json'
 import es419_stwOperations_HomebaseName from './es-419/stw-operations/homebase-name.json'
 import es419_stwOperations_SaveQuests from './es-419/stw-operations/save-quests.json'
 import es419_stwOperations_DailyQuests from './es-419/stw-operations/daily-quests.json'
@@ -109,6 +112,7 @@ const es419 = {
   zones: es419_zones,
   'stw-operations': {
     'auto-kick': es419_stwOperations_AutoKick,
+    'taxi-service': es419_stwOperations_TaxiService,
     'homebase-name': es419_stwOperations_HomebaseName,
     'save-quests': es419_stwOperations_SaveQuests,
     'daily-quests': es419_stwOperations_DailyQuests,
@@ -148,6 +152,7 @@ import zhCN_settings from './zh-CN/settings.json'
 import zhCN_alerts from './zh-CN/home.json'
 import zhCN_zones from './zh-CN/zones.json'
 import zhCN_stwOperations_AutoKick from './zh-CN/stw-operations/auto-kick.json'
+import zhCN_stwOperations_TaxiService from './zh-CN/stw-operations/taxi-service.json'
 import zhCN_stwOperations_HomebaseName from './zh-CN/stw-operations/homebase-name.json'
 import zhCN_stwOperations_SaveQuests from './zh-CN/stw-operations/save-quests.json'
 import zhCN_stwOperations_DailyQuests from './zh-CN/stw-operations/daily-quests.json'
@@ -178,6 +183,7 @@ const zhCN = {
   zones: zhCN_zones,
   'stw-operations': {
     'auto-kick': zhCN_stwOperations_AutoKick,
+    'taxi-service': zhCN_stwOperations_TaxiService,
     'homebase-name': zhCN_stwOperations_HomebaseName,
     'save-quests': zhCN_stwOperations_SaveQuests,
     'daily-quests': zhCN_stwOperations_DailyQuests,
@@ -217,6 +223,7 @@ import ruRU_settings from './ru-RU/settings.json'
 import ruRU_alerts from './ru-RU/home.json'
 import ruRU_zones from './ru-RU/zones.json'
 import ruRU_stwOperations_AutoKick from './ru-RU/stw-operations/auto-kick.json'
+import ruRU_stwOperations_TaxiService from './ru-RU/stw-operations/taxi-service.json'
 import ruRU_stwOperations_HomebaseName from './ru-RU/stw-operations/homebase-name.json'
 import ruRU_stwOperations_SaveQuests from './ru-RU/stw-operations/save-quests.json'
 import ruRU_stwOperations_DailyQuests from './ru-RU/stw-operations/daily-quests.json'
@@ -247,6 +254,7 @@ const ruRU = {
   zones: ruRU_zones,
   'stw-operations': {
     'auto-kick': ruRU_stwOperations_AutoKick,
+    'taxi-service': ruRU_stwOperations_TaxiService,
     'homebase-name': ruRU_stwOperations_HomebaseName,
     'save-quests': ruRU_stwOperations_SaveQuests,
     'daily-quests': ruRU_stwOperations_DailyQuests,
@@ -286,6 +294,7 @@ import ptBR_settings from './pt-BR/settings.json'
 import ptBR_alerts from './pt-BR/home.json'
 import ptBR_zones from './pt-BR/zones.json'
 import ptBR_stwOperations_AutoKick from './pt-BR/stw-operations/auto-kick.json'
+import ptBR_stwOperations_TaxiService from './pt-BR/stw-operations/taxi-service.json'
 import ptBR_stwOperations_HomebaseName from './pt-BR/stw-operations/homebase-name.json'
 import ptBR_stwOperations_SaveQuests from './pt-BR/stw-operations/save-quests.json'
 import ptBR_stwOperations_DailyQuests from './pt-BR/stw-operations/daily-quests.json'
@@ -316,6 +325,7 @@ const ptBR = {
   zones: ptBR_zones,
   'stw-operations': {
     'auto-kick': ptBR_stwOperations_AutoKick,
+    'taxi-service': ptBR_stwOperations_TaxiService,
     'homebase-name': ptBR_stwOperations_HomebaseName,
     'save-quests': ptBR_stwOperations_SaveQuests,
     'daily-quests': ptBR_stwOperations_DailyQuests,
@@ -355,6 +365,7 @@ import plPL_settings from './pl-PL/settings.json'
 import plPL_alerts from './pl-PL/home.json'
 import plPL_zones from './pl-PL/zones.json'
 import plPL_stwOperations_AutoKick from './pl-PL/stw-operations/auto-kick.json'
+import plPL_stwOperations_TaxiService from './pl-PL/stw-operations/taxi-service.json'
 import plPL_stwOperations_HomebaseName from './pl-PL/stw-operations/homebase-name.json'
 import plPL_stwOperations_SaveQuests from './pl-PL/stw-operations/save-quests.json'
 import plPL_stwOperations_DailyQuests from './pl-PL/stw-operations/daily-quests.json'
@@ -385,6 +396,7 @@ const plPL = {
   zones: plPL_zones,
   'stw-operations': {
     'auto-kick': plPL_stwOperations_AutoKick,
+    'taxi-service': plPL_stwOperations_TaxiService,
     'homebase-name': plPL_stwOperations_HomebaseName,
     'save-quests': plPL_stwOperations_SaveQuests,
     'daily-quests': plPL_stwOperations_DailyQuests,
@@ -415,6 +427,77 @@ const plPL = {
 }
 
 /**
+ * @file it-IT
+ */
+import itIT_sidebar from './it-IT/sidebar.json'
+import itIT_general from './it-IT/general.json'
+import itIT_history from './it-IT/history.json'
+import itIT_settings from './it-IT/settings.json'
+import itIT_alerts from './it-IT/home.json'
+import itIT_zones from './it-IT/zones.json'
+import itIT_stwOperations_AutoKick from './it-IT/stw-operations/auto-kick.json'
+import itIT_stwOperations_TaxiService from './it-IT/stw-operations/taxi-service.json'
+import itIT_stwOperations_HomebaseName from './it-IT/stw-operations/homebase-name.json'
+import itIT_stwOperations_SaveQuests from './it-IT/stw-operations/save-quests.json'
+import itIT_stwOperations_DailyQuests from './it-IT/stw-operations/daily-quests.json'
+import itIT_stwOperations_Party from './it-IT/stw-operations/party.json'
+import itIT_stwOperations_Urns from './it-IT/stw-operations/urns.json'
+import itIT_stwOperations_XPBoosts from './it-IT/stw-operations/xpboosts.json'
+import itIT_stwOperations_Llamas from './it-IT/stw-operations/llamas.json'
+import itIT_stwOperations_Unlock from './it-IT/stw-operations/unlock.json'
+import itIT_accountManagement_VBucksInformation from './it-IT/account-management/vbucks-information.json'
+import itIT_accountManagement_EULA from './it-IT/account-management/eula.json'
+import itIT_accountManagement_RedeemCodes from './it-IT/account-management/redeem-codes.json'
+import itIT_accountManagement_DevicesAuth from './it-IT/account-management/devices-auth.json'
+import itIT_accountManagement_EpicSettings from './it-IT/account-management/epic-settings.json'
+import itIT_advancedMode_MatchmakingTrack from './it-IT/advanced-mode/matchmaking-track.json'
+import itIT_advancedMode_WorldInfo from './it-IT/advanced-mode/world-info.json'
+import itIT_myAccounts_General from './it-IT/accounts/general.json'
+import itIT_myAccounts_AuthCode from './it-IT/accounts/auth-code.json'
+import itIT_myAccounts_ExchangeCode from './it-IT/accounts/exchange-code.json'
+import itIT_myAccounts_DeviceAuth from './it-IT/accounts/device-auth.json'
+import itIT_myAccounts_RemoveAccount from './it-IT/accounts/remove-account.json'
+
+const itIT = {
+  sidebar: itIT_sidebar,
+  general: itIT_general,
+  history: itIT_history,
+  settings: itIT_settings,
+  alerts: itIT_alerts,
+  zones: itIT_zones,
+  'stw-operations': {
+    'auto-kick': itIT_stwOperations_AutoKick,
+    'taxi-service': itIT_stwOperations_TaxiService,
+    'homebase-name': itIT_stwOperations_HomebaseName,
+    'save-quests': itIT_stwOperations_SaveQuests,
+    'daily-quests': itIT_stwOperations_DailyQuests,
+    party: itIT_stwOperations_Party,
+    urns: itIT_stwOperations_Urns,
+    xpboosts: itIT_stwOperations_XPBoosts,
+    llamas: itIT_stwOperations_Llamas,
+    unlock: itIT_stwOperations_Unlock,
+  },
+  'account-management': {
+    'vbucks-information': itIT_accountManagement_VBucksInformation,
+    'redeem-codes': itIT_accountManagement_RedeemCodes,
+    'devices-auth': itIT_accountManagement_DevicesAuth,
+    'epic-settings': itIT_accountManagement_EpicSettings,
+    eula: itIT_accountManagement_EULA,
+  },
+  'advanced-mode': {
+    'matchmaking-track': itIT_advancedMode_MatchmakingTrack,
+    'world-info': itIT_advancedMode_WorldInfo,
+  },
+  accounts: {
+    general: itIT_myAccounts_General,
+    'auth-code': itIT_myAccounts_AuthCode,
+    'exchange-code': itIT_myAccounts_ExchangeCode,
+    'device-auth': itIT_myAccounts_DeviceAuth,
+    'remove-account': itIT_myAccounts_RemoveAccount,
+  },
+}
+
+/**
  * Export resources
  */
 
@@ -425,6 +508,7 @@ export enum Language {
   Russian = 'ru-RU',
   Portuguese = 'pt-BR',
   Polish = 'pl-PL',
+  Italian = 'it-IT',
 }
 
 export const resources: Resource = {
@@ -434,4 +518,5 @@ export const resources: Resource = {
   [Language.Russian]: ruRU,
   [Language.Portuguese]: ptBR,
   [Language.Polish]: plPL,
+  [Language.Italian]: itIT,
 }

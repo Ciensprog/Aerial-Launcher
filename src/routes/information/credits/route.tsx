@@ -64,7 +64,7 @@ export function ComponentRoute() {
             className={cn(
               'flex flex-col max-w-md mb-5',
               '[&_.list]:space-y-5 [&_.list]:w-full',
-              '[&_.link]:gap-1 [&_.link]:inline-flex [&_.link]:items-center [&_.link]:text-muted-foreground [&_.link:hover]:text-muted-foreground/80'
+              '[&_.link]:gap-1 [&_.link]:inline-flex [&_.link]:items-center [&_.link]:text-muted-foreground [&_.link:hover]:text-muted-foreground/80',
             )}
           >
             <h2 className="mb-5 text-3xl">Credits</h2>
@@ -150,16 +150,18 @@ export function ComponentRoute() {
               </li>
             </ul>
             <h2 className="mb-5 mt-5 text-3xl">Translations</h2>
-            <ul className="list">
-              <li className="item">
-                <div>
-                  Thank you for dedicating part of your time to translate
-                  Aerial to different languages 💖
-                </div>
-              </li>
+            <p>
+              Thank you for dedicating part of your time to translate
+              Aerial to different languages 💖
+            </p>
+            <ul className="flex flex-col gap-1- mt-2">
               <li className="flex gap-2">
                 <span className="text-muted-foreground">SayaGoodBye</span>•
                 <div>Chinese (Simplified)</div>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-muted-foreground">stxfano</span>•
+                <div>Italian</div>
               </li>
             </ul>
           </div>

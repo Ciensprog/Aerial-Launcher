@@ -4,8 +4,10 @@ import { useShallow } from 'zustand/react/shallow'
 import { AutomationStatusType } from '../../config/constants/automation'
 
 import { useClaimedRewards } from '../../hooks/stw-operations/claimed-rewards'
+import { useTaxiServiceNotifications } from '../../hooks/stw-operations/taxi-service'
 
 import { useAutomationStore } from '../../state/stw-operations/automation'
+import { useTaxiServiceStore } from '../../state/stw-operations/taxi-service'
 
 import { toast } from '../../lib/notifications'
 
@@ -18,8 +20,21 @@ export function LoadAutomation() {
         addOrUpdateAccount: state.addOrUpdateAccount,
         refreshAccounts: state.refreshAccounts,
         removeAllAccounts: state.removeAllAccounts,
-      }))
+      })),
     )
+  const {
+    addOrUpdateAccount: tsAddOrUpdateAccount,
+    refreshAccounts: tsRefreshAccounts,
+    removeAllAccounts: tsRemoveAllAccounts,
+  } = useTaxiServiceStore(
+    useShallow((state) => ({
+      addOrUpdateAccount: state.addOrUpdateAccount,
+      refreshAccounts: state.refreshAccounts,
+      removeAllAccounts: state.removeAllAccounts,
+    })),
+  )
+  const { updateData: updateNotificationsData } =
+    useTaxiServiceNotifications()
 
   useEffect(() => {
     const listener = window.electronAPI.notificationAutomationServiceData(
@@ -47,13 +62,43 @@ export function LoadAutomation() {
             },
           })
         })
-      }
+      },
     )
+    const tsListener =
+      window.electronAPI.notificationTaxiServiceServiceData(
+        async (response, onlyRefresh) => {
+          const items = Object.values(response)
+
+          if (items.length <= 0) {
+            tsRemoveAllAccounts()
+
+            return
+          }
+
+          if (onlyRefresh) {
+            tsRefreshAccounts(response)
+
+            return
+          }
+
+          Object.values(response).forEach((account) => {
+            tsAddOrUpdateAccount(account.accountId, {
+              actions: account.actions,
+              status: AutomationStatusType.LOADING,
+              submittings: {
+                connecting: true,
+              },
+            })
+          })
+        },
+      )
 
     window.electronAPI.automationServiceRequestData()
+    window.electronAPI.taxiServiceServiceRequestData()
 
     return () => {
       listener.removeListener()
+      tsListener.removeListener()
     }
   }, [])
 
@@ -67,11 +112,24 @@ export function LoadAutomation() {
             removing: false,
           },
         })
-      }
+      },
     )
+    const tslistener =
+      window.electronAPI.notificationTaxiServiceServiceStart(
+        async (response, refresh) => {
+          tsAddOrUpdateAccount(response.accountId, {
+            status: response.status,
+            submittings: {
+              connecting: refresh ?? false,
+              removing: false,
+            },
+          })
+        },
+      )
 
     return () => {
       listener.removeListener()
+      tslistener.removeListener()
     }
   }, [])
 
@@ -80,7 +138,7 @@ export function LoadAutomation() {
       window.electronAPI.notificationGlobalSyncClaimedRewards(
         async (notifications) => {
           updateData(notifications)
-        }
+        },
       )
 
     return () => {
@@ -92,7 +150,7 @@ export function LoadAutomation() {
     const listener = window.electronAPI.notificationGlobalClaimedRewards(
       async () => {
         toast('Automation: claimed rewards')
-      }
+      },
     )
 
     return () => {
@@ -106,9 +164,21 @@ export function LoadAutomation() {
         toast(
           total === 0
             ? 'Automation: no user has been kicked'
-            : `Automation: kicked ${total} user${total > 1 ? 's' : ''}`
+            : `Automation: kicked ${total} user${total > 1 ? 's' : ''}`,
         )
-      }
+      },
+    )
+
+    return () => {
+      listener.removeListener()
+    }
+  }, [])
+
+  useEffect(() => {
+    const listener = window.electronAPI.taxiServiceServiceNotifications(
+      async (notification) => {
+        updateNotificationsData([notification])
+      },
     )
 
     return () => {

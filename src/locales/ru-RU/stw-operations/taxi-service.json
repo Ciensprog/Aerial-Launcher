@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "Перезапустить все такси",
+      "remove-all": "Удалить все такси"
+    },
+    "search": {
+      "input": {
+        "placeholder": "Например: sample;иван;анна или sample"
+      },
+      "send": "Отправить заявку в друзья"
+    },
+    "show-notifications": "Показать уведомления"
+  },
+  "card": {
+    "power-level": "Задний ход/140",
+    "deny-requests": "Отклонить заявки в друзья",
+    "status": {
+      "active": "Активный статус",
+      "busy": "Статус занят"
+    }
+  },
+  "notifications": {
+    "clear-logs": "Очистить журнал",
+    "party-member-joined": "<0>{{me}}</0> присоединился к группе из {{total}} <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> пригласил <3>{{me}}</3> <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> добавлен к <3>{{me}}</3>",
+    "friend-request-send": "<0>{{me}}</0> отправил {{initial}}<4 />{{total}} заявок в друзья",
+    "friend-request-send-with-errors": "<0>{{name}}</0> с ошибкой <3>{{error}}</3>"
+  }
+}

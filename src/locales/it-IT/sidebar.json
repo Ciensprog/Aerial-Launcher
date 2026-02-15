@@ -3,6 +3,7 @@
     "title": "Operazioni STW",
     "options": {
       "auto-kick": "Auto-caccia",
+      "taxi-service": "Servizio Taxi",
       "party": "Party",
       "save-quests": "Salva Sfide",
       "daily-quests": "Missioni Giornaliere",

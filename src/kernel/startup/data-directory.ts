@@ -10,6 +10,7 @@ import type {
   Settings,
 } from '../../types/settings'
 import type { TagRecord } from '../../types/tags'
+import type { TaxiServiceAccountFileDataList } from '../../types/taxi-service'
 import type { AutoPinUrnDataList } from '../../types/urns'
 
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
@@ -32,6 +33,7 @@ import {
   settingsSchema,
 } from '../../lib/validations/schemas/settings'
 import { tagsSchema } from '../../lib/validations/schemas/tags'
+import { taxiServiceFileSchema } from '../../lib/validations/schemas/taxi-service'
 
 export class DataDirectory {
   private static devPrefix = 'dev-'
@@ -42,12 +44,12 @@ export class DataDirectory {
 
   private static dataDirectoryPath = path.join(
     `${process.env.APPDATA}`,
-    'aerial-launcher-data'
+    'aerial-launcher-data',
   )
 
   private static worldInfoDirectoryPath = path.join(
     DataDirectory.dataDirectoryPath,
-    'world-info'
+    'world-info',
   )
 
   /**
@@ -57,19 +59,19 @@ export class DataDirectory {
   private static accountsFilePath = MAIN_WINDOW_VITE_DEV_SERVER_URL
     ? path.join(
         DataDirectory.dataDirectoryPath,
-        `${DataDirectory.devPrefix}accounts.json`
+        `${DataDirectory.devPrefix}accounts.json`,
       )
     : path.join(DataDirectory.dataDirectoryPath, 'accounts.json')
   private static accountsDefaultData: AccountList = []
 
   private static appLanguageFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'i18n.json'
+    'i18n.json',
   )
 
   private static settingsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'settings.json'
+    'settings.json',
   )
   private static settingsDefaultData: Settings = {
     claimingRewards: `${defaultClaimingRewardsDelay}`,
@@ -82,62 +84,69 @@ export class DataDirectory {
 
   private static devSettingsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'dev-settings.json'
+    'dev-settings.json',
   )
   private static devSettingsDefaultData: DevSettings = {}
 
   private static customizableMenuSettingsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'customizable-menu.json'
+    'customizable-menu.json',
   )
   private static customizableMenuSettingsDefaultData: CustomizableMenuSettings =
     {}
 
   private static tagsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'tags.json'
+    'tags.json',
   )
   private static tagsDefaultData: TagRecord = {}
 
   private static groupsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'groups.json'
+    'groups.json',
   )
   private static groupsDefaultData: GroupRecord = {}
 
   private static friendsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'friends.json'
+    'friends.json',
   )
   private static friendsDefaultData: FriendRecord = {}
 
   static matchmakingFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'matchmaking.json'
+    'matchmaking.json',
   )
   private static matchmakingDefaultData: Array<unknown> = []
 
   static automationFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'automation.json'
+    'automation.json',
   )
   private static automationDefaultData: AutomationAccountFileDataList = {}
 
+  static taxiServiceFilePath = path.join(
+    DataDirectory.dataDirectoryPath,
+    'taxi-service.json',
+  )
+  private static taxiServiceDefaultData: TaxiServiceAccountFileDataList =
+    {}
+
   static urnsFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'urns.json'
+    'urns.json',
   )
   private static urnsDefaultData: AutoPinUrnDataList = {}
 
   static autoLlamasFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'auto-llamas.json'
+    'auto-llamas.json',
   )
   private static autoLlamasDefaultData: AutoLlamasRecord = {}
 
   static miniBossesFilePath = path.join(
     DataDirectory.dataDirectoryPath,
-    'mini-bosses.json'
+    'mini-bosses.json',
   )
   private static miniBossesDefaultData: AutoPinUrnDataList = {}
 
@@ -187,6 +196,7 @@ export class DataDirectory {
     await DataDirectory.getOrCreateFriendsJsonFile()
     await DataDirectory.getOrCreateMatchmakingJsonFile()
     await DataDirectory.getOrCreateAutomationJsonFile()
+    await DataDirectory.getOrCreateTaxiServiceJsonFile()
     await DataDirectory.getOrCreateUrnsJsonFile()
     await DataDirectory.getOrCreateAutoLlamasJsonFile()
     await DataDirectory.getOrCreateMiniBossesJsonFile()
@@ -296,7 +306,7 @@ export class DataDirectory {
 
     try {
       const list = customizableMenuSettingsSchema.safeParse(
-        JSON.parse(result)
+        JSON.parse(result),
       )
       const customizableMenu = list.success
         ? list.data
@@ -427,6 +437,30 @@ export class DataDirectory {
   }
 
   /**
+   * Get data from taxi-service.json
+   */
+  static async getTaxiServiceFile(): Promise<{
+    taxiService: TaxiServiceAccountFileDataList
+  }> {
+    const result = await DataDirectory.getOrCreateTaxiServiceJsonFile()
+
+    try {
+      const list = taxiServiceFileSchema.safeParse(JSON.parse(result))
+      const taxiService = list.success
+        ? list.data
+        : DataDirectory.taxiServiceDefaultData
+
+      return { taxiService }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    return { taxiService: DataDirectory.taxiServiceDefaultData }
+  }
+
+  /**
    * Get data from urns.json
    */
   static async getUrnsFile(): Promise<{
@@ -502,7 +536,7 @@ export class DataDirectory {
   static async updateAccountsFile(data: AccountList) {
     await DataDirectory.updateJsonFile(
       DataDirectory.accountsFilePath,
-      data
+      data,
     )
   }
 
@@ -512,7 +546,7 @@ export class DataDirectory {
   static async updateSettingsFile(data: Settings) {
     await DataDirectory.updateJsonFile(
       DataDirectory.settingsFilePath,
-      data
+      data,
     )
   }
 
@@ -520,11 +554,11 @@ export class DataDirectory {
    * Update settings.json
    */
   static async updateCustomizableMenuSettingsFile(
-    data: CustomizableMenuSettings
+    data: CustomizableMenuSettings,
   ) {
     await DataDirectory.updateJsonFile(
       DataDirectory.customizableMenuSettingsFilePath,
-      data
+      data,
     )
   }
 
@@ -555,7 +589,7 @@ export class DataDirectory {
   static async updateMatchmakingFile(data: Array<unknown>) {
     await DataDirectory.updateJsonFile(
       DataDirectory.matchmakingFilePath,
-      data
+      data,
     )
   }
 
@@ -565,7 +599,19 @@ export class DataDirectory {
   static async updateAutomationFile(data: AutomationAccountFileDataList) {
     await DataDirectory.updateJsonFile(
       DataDirectory.automationFilePath,
-      data
+      data,
+    )
+  }
+
+  /**
+   * Update taxi-service.json
+   */
+  static async updateTaxiServiceFile(
+    data: TaxiServiceAccountFileDataList,
+  ) {
+    await DataDirectory.updateJsonFile(
+      DataDirectory.taxiServiceFilePath,
+      data,
     )
   }
 
@@ -582,7 +628,7 @@ export class DataDirectory {
   static async updateAutoLlamasFile(data: AutoLlamasRecord) {
     await DataDirectory.updateJsonFile(
       DataDirectory.autoLlamasFilePath,
-      data
+      data,
     )
   }
 
@@ -592,7 +638,7 @@ export class DataDirectory {
   static async updateMiniBossesFile(data: AutoPinUrnDataList) {
     await DataDirectory.updateJsonFile(
       DataDirectory.miniBossesFilePath,
-      data
+      data,
     )
   }
 
@@ -644,7 +690,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -661,7 +707,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -678,7 +724,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -695,7 +741,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -712,7 +758,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -729,7 +775,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -746,7 +792,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -763,7 +809,24 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
+    )
+  }
+
+  /**
+   * Creating taxi-service.json
+   */
+  private static async getOrCreateTaxiServiceJsonFile() {
+    const initialData = DataDirectory.taxiServiceDefaultData
+
+    return await DataDirectory.getOrCreateJsonFile(
+      DataDirectory.taxiServiceFilePath,
+      {
+        defaults: {
+          rawString: JSON.stringify(initialData),
+          value: initialData,
+        },
+      },
     )
   }
 
@@ -780,7 +843,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -797,7 +860,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -814,7 +877,7 @@ export class DataDirectory {
           rawString: JSON.stringify(initialData),
           value: initialData,
         },
-      }
+      },
     )
   }
 
@@ -828,7 +891,7 @@ export class DataDirectory {
         rawString: string
         value: unknown
       }
-    }
+    },
   ) {
     const checkFile = () =>
       readFile(currentPath, {
@@ -846,7 +909,7 @@ export class DataDirectory {
         JSON.stringify(config.defaults.value, null, 2),
         {
           encoding: 'utf8',
-        }
+        },
       )
       result = await checkFile()
     }
@@ -859,7 +922,7 @@ export class DataDirectory {
    */
   private static async updateJsonFile<Data>(
     currentPath: string,
-    data: Data
+    data: Data,
   ) {
     if (!data) {
       return

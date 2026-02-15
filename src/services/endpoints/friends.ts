@@ -17,7 +17,7 @@ export function getFriend({
       headers: {
         Authorization: `bearer ${accessToken}`,
       },
-    }
+    },
   )
 }
 
@@ -37,6 +37,22 @@ export function addFriend({
       headers: {
         Authorization: `bearer ${accessToken}`,
       },
-    }
+    },
   )
+}
+
+export function removeFriend({
+  accessToken,
+  accountId,
+  friendId,
+}: {
+  accessToken: string
+  accountId: string
+  friendId: string
+}) {
+  return friendsService.delete(`/${accountId}/friends/${friendId}`, {
+    headers: {
+      Authorization: `bearer ${accessToken}`,
+    },
+  })
 }

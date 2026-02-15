@@ -8,7 +8,7 @@ export type CustomizableMenuSettingsState = {
 
   syncMenuOptions: (data: CustomizableMenuSettings) => void
   updateMenuOption: (
-    key: keyof CustomizableMenuSettings
+    key: keyof CustomizableMenuSettings,
   ) => (visibility: boolean) => void
 }
 
@@ -26,6 +26,7 @@ export const customizableMenuSettingsRelations: Record<
 > = {
   stwOperations: [
     'autoKick',
+    'taxiService',
     'party',
     'saveQuests',
     'dailyQuests',
@@ -66,5 +67,5 @@ export const useCustomizableMenuSettingsStore =
           window.electronAPI.customizableMenuDataUpdate(key, visibility)
         })
       },
-    }))
+    })),
   )

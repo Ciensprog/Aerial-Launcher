@@ -30,7 +30,7 @@ export function CustomizableMenu() {
           '[&_.category:not(:last-child)]:border-b [&_.category:not(:last-child)]:pb-4',
           '[&_.list]:gap-x-6 [&_.list]:gap-y-1 [&_.list]:grid [&_.list]:grid-cols-2',
           '[&_.title]:flex-1 [&_.title]:cursor-pointer [&_.title]:leading-4',
-          '[&_.item]:flex [&_.item]:items-center [&_.item]:justify-between [&_.item.main]:mb-2'
+          '[&_.item]:flex [&_.item]:items-center [&_.item]:justify-between [&_.item.main]:mb-2',
         )}
       >
         <STWOperationsSection />
@@ -76,6 +76,19 @@ function STWOperationsSection() {
             id="auto-kick"
             checked={getMenuOptionVisibility('autoKick')}
             onCheckedChange={updateMenuOption('autoKick')}
+          />
+        </div>
+        <div className="item">
+          <Label
+            className="title"
+            htmlFor="taxi-service"
+          >
+            Taxi Service
+          </Label>
+          <Switch
+            id="taxi-service"
+            checked={getMenuOptionVisibility('taxiService')}
+            onCheckedChange={updateMenuOption('taxiService')}
           />
         </div>
         <div className="item">

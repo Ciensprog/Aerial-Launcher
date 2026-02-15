@@ -3,6 +3,7 @@
     "title": "STW Operations",
     "options": {
       "auto-kick": "Auto-kick",
+      "taxi-service": "Taxi Service",
       "party": "Party",
       "save-quests": "Save Quests",
       "daily-quests": "Daily Quests",

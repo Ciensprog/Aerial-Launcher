@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "Reiniciar todos os táxis",
+      "remove-all": "Remover todos os táxis"
+    },
+    "search": {
+      "input": {
+        "placeholder": "Ex: sample;joão;maria ou sample"
+      },
+      "send": "Enviar solicitação de amizade"
+    },
+    "show-notifications": "Mostrar notificações"
+  },
+  "card": {
+    "power-level": "Ré/140",
+    "deny-requests": "Recusar solicitações de amizade",
+    "status": {
+      "active": "Status ativo",
+      "busy": "Status ocupado"
+    }
+  },
+  "notifications": {
+    "clear-logs": "Limpar logs",
+    "party-member-joined": "<0>{{me}}</0> entrou em um grupo de {{total}} <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> convidou <3>{{me}}</3> <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> adicionado a <3>{{me}}</3>",
+    "friend-request-send": "<0>{{me}}</0> enviou {{initial}}<4 />{{total}} solicitações de amizade",
+    "friend-request-send-with-errors": "<0>{{name}}</0> com erro <3>{{error}}</3>"
+  }
+}

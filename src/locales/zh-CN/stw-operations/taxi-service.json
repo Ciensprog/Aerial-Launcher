@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "重启所有出租车",
+      "remove-all": "移除所有出租车"
+    },
+    "search": {
+      "input": {
+        "placeholder": "例如：sample;张三;李四 或 sample"
+      },
+      "send": "发送好友请求"
+    },
+    "show-notifications": "显示通知"
+  },
+  "card": {
+    "power-level": "倒车/140",
+    "deny-requests": "拒绝好友请求",
+    "status": {
+      "active": "在线状态",
+      "busy": "忙碌状态"
+    }
+  },
+  "notifications": {
+    "clear-logs": "清除日志",
+    "party-member-joined": "<0>{{me}}</0> 加入了 {{total}} 人的队伍 <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> 邀请了 <3>{{me}}</3> <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> 添加到了 <3>{{me}}</3>",
+    "friend-request-send": "<0>{{me}}</0> 发送了 {{initial}}<4 />{{total}} 个好友请求",
+    "friend-request-send-with-errors": "<0>{{name}}</0> 出现错误 <3>{{error}}</3>"
+  }
+}

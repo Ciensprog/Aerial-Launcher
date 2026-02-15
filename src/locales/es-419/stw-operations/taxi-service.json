@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "Reiniciar Todos los Taxis",
+      "remove-all": "Remover Todos los Taxis"
+    },
+    "search": {
+      "input": {
+        "placeholder": "Ej: sample;john;Jane o sample"
+      },
+      "send": "Enviar Petición de Amistad"
+    },
+    "show-notifications": "Mostrar Notificaciones"
+  },
+  "card": {
+    "power-level": "Reversa/140",
+    "deny-requests": "Rechazar Peticiones de Amistad",
+    "status": {
+      "active": "Estado Activo",
+      "busy": "Estado Ocupado"
+    }
+  },
+  "notifications": {
+    "clear-logs": "Limpiar logs",
+    "party-member-joined": "<0>{{me}}</0> se unió a un grupo de {{total}} <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> invitó a <3>{{me}}</3> <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> añadió a <3>{{me}}</3>",
+    "friend-request-send": "<0>{{me}}</0> envió {{initial}}<4 />{{total}} peticiones de amistad",
+    "friend-request-send-with-errors": "<0>{{name}}</0> con error <3>{{error}}</3>"
+  }
+}

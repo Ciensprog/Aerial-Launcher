@@ -204,6 +204,25 @@ export enum ElectronAPIEventKeys {
   AutomationServiceActionUpdateNotification = 'automation:service:action:update:notification',
 
   /**
+   * Taxi Service
+   */
+
+  TaxiServiceServiceRequestData = 'taxi-service:service:request:data',
+  TaxiServiceServiceAddAccounts = 'taxi-service:service:add',
+  // TaxiServiceServiceAddAccountsNotification = 'taxi-service:service:add:notification',
+  TaxiServiceServiceResponseData = 'taxi-service:service:response:data',
+  TaxiServiceServiceStart = 'taxi-service:service:start',
+  TaxiServiceServiceStartNotification = 'taxi-service:service:start:notification',
+  TaxiServiceServiceReload = 'taxi-service:service:reload',
+  TaxiServiceServiceReloadNotification = 'taxi-service:service:reload:notification',
+  TaxiServiceServiceRemove = 'taxi-service:service:remove',
+  TaxiServiceServiceRemoveNotification = 'taxi-service:service:remove:notification',
+  TaxiServiceServiceActionUpdate = 'taxi-service:service:action:update',
+  TaxiServiceServiceActionUpdateNotification = 'taxi-service:service:action:update:notification',
+
+  TaxiServiceServiceNotifications = 'taxi-service:service:notifications',
+
+  /**
    * Urns
    */
 

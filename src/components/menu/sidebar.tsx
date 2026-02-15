@@ -28,6 +28,7 @@ import { Separator } from '../ui/separator'
 // } from '../ui/tooltip'
 
 import { useGetAutomationDataStatus } from '../../hooks/stw-operations/automation'
+import { useGetTaxiServiceDataStatus } from '../../hooks/stw-operations/taxi-service'
 import { useCustomizableMenuSettingsVisibility } from '../../hooks/settings'
 
 import { useAccountListStore } from '../../state/accounts/list'
@@ -49,6 +50,7 @@ export function SidebarMenu({
 
   const accounts = useAccountListStore((state) => state.accounts)
   const { status } = useGetAutomationDataStatus()
+  const { status: tsStatus } = useGetTaxiServiceDataStatus()
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
 
@@ -121,6 +123,41 @@ export function SidebarMenu({
                               )}
                             >
                               {status === AutomationStatusType.ISSUE
+                                ? t(
+                                    'stw-operations.auto-kick-status.issue',
+                                  )
+                                : t(
+                                    'stw-operations.auto-kick-status.active',
+                                  )}
+                            </span>
+                          )}
+                        </span>
+                      </Link>
+                    </li>
+                  )}
+                  {getMenuOptionVisibility('taxiService') && (
+                    <li className="item">
+                      <Link
+                        to="/stw-operations/taxi-service"
+                        className={cn(currentClassNameHover)}
+                        activeProps={{
+                          className: cn(activeClassName),
+                        }}
+                        onClick={goToPage}
+                        onAuxClick={whatIsThis()}
+                      >
+                        <span className="flex flex-wrap gap-x-2 gap-y-0.5 items-center">
+                          {t('stw-operations.options.taxi-service')}
+                          {tsStatus !== null && (
+                            <span
+                              className={cn(
+                                'border flex font-bold items-center leading-none px-2 rounded text-[0.65rem] uppercase',
+                                tsStatus === AutomationStatusType.ISSUE
+                                  ? 'border-yellow-600 text-yellow-600'
+                                  : 'border-green-600 text-green-600',
+                              )}
+                            >
+                              {tsStatus === AutomationStatusType.ISSUE
                                 ? t(
                                     'stw-operations.auto-kick-status.issue',
                                   )

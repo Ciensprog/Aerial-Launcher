@@ -3,6 +3,7 @@
     "title": "STW 操作",
     "options": {
       "auto-kick": "自动踢出",
+      "taxi-service": "出租车服务",
       "party": "队伍",
       "save-quests": "保存任务",
       "daily-quests": "每日任务",

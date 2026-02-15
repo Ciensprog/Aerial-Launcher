@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "Riavvia tutti i taxi",
+      "remove-all": "Rimuovi tutti i taxi"
+    },
+    "search": {
+      "input": {
+        "placeholder": "Es: sample;giovanni;maria o sample"
+      },
+      "send": "Invia richiesta amico"
+    },
+    "show-notifications": "Mostra notifiche"
+  },
+  "card": {
+    "power-level": "Retromarcia/140",
+    "deny-requests": "Nega richieste amici",
+    "status": {
+      "active": "Stato attivo",
+      "busy": "Stato occupato"
+    }
+  },
+  "notifications": {
+    "clear-logs": "Cancella log",
+    "party-member-joined": "<0>{{me}}</0> si è unito a un gruppo di {{total}} <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> ha invitato <3>{{me}}</3> <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> aggiunto a <3>{{me}}</3>",
+    "friend-request-send": "<0>{{me}}</0> ha inviato {{initial}}<4 />{{total}} richieste amico",
+    "friend-request-send-with-errors": "<0>{{name}}</0> con errore <3>{{error}}</3>"
+  }
+}

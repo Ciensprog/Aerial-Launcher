@@ -6,6 +6,7 @@ export enum EventNotification {
   MEMBER_KICKED = 'com.epicgames.social.party.notification.v0.MEMBER_KICKED',
   MEMBER_LEFT = 'com.epicgames.social.party.notification.v0.MEMBER_LEFT',
   MEMBER_STATE_UPDATED = 'com.epicgames.social.party.notification.v0.MEMBER_STATE_UPDATED',
+  PING = 'com.epicgames.social.party.notification.v0.PING',
 
   PARTY_UPDATED = 'com.epicgames.social.party.notification.v0.PARTY_UPDATED',
 
