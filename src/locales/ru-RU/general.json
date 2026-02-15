@@ -60,7 +60,7 @@
   "information": {
     "account-id": "Account Id:",
     "power-level": "Уровень Мощи:",
-    "commander-level": "Уровень Коммандира:",
+    "commander-level": "Уровень Командира:",
     "boosted-xp": "Буст XP:",
     "days-logged-in": "Дней В Сети:",
     "collection-book-level": "Уровень Книги Коллекций:",
@@ -92,7 +92,7 @@
     }
   },
   "close-game": {
-    "button": "Близкая игра"
+    "button": "Закрыть игру"
   },
   "separators": {
     "or": "Или"
@@ -131,7 +131,7 @@
     }
   },
   "account-selected": "Аккаунт выбран: <2>{{name}}</2>",
-  "boosts": "Бусты",
+  "boosts": "Усилителей",
   "credits": "Авторы",
   "current": "Текущий",
   "date": "Дата",
@@ -147,7 +147,7 @@
   "is-not-running": "Приложение не запущено",
   "last-played": "Последний Раз Играл: {{date}}",
   "location": "Локация",
-  "missions": "Миссиия",
+  "missions": "Миссии",
   "no-item-found": "Ничего не найдено",
   "no-options": "Нет вариантов",
   "no-placeholder-select-options": "Выберите параметры",
