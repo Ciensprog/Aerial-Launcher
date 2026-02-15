@@ -6,6 +6,10 @@
     "credential-error": "Ошибка данных",
     "disconnected": "Отсоединение"
   },
+  "actions": {
+    "restart-all": "Перезапустить все",
+    "remove-all": "Удалить все"
+  },
   "options": {
     "kick": "Выгнать",
     "claim": "Собрать",

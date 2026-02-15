@@ -7,6 +7,10 @@
     "credential-error": "凭据错误",
     "disconnected": "已断开连接"
   },
+  "actions": {
+    "restart-all": "全部重启",
+    "remove-all": "全部移除"
+  },
   "options": {
     "kick": "踢出",
     "claim": "领取",

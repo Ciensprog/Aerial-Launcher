@@ -125,13 +125,21 @@ export function useAutomationData() {
     window.electronAPI.automationServiceRemove(accountId)
   }
 
-  // const handleReloadAccount = (accountId: string) => () => {
-  //   updateAccountSubmitting('connecting', {
-  //     accountId,
-  //     value: true,
-  //   })
-  //   window.electronAPI.automationServiceReload(accountId)
-  // }
+  const handleRemoveAll = () => {
+    accounts.forEach(({ accountId }) => handleRemoveAccount(accountId)())
+  }
+
+  const handleReloadAccount = (accountId: string) => () => {
+    updateAccountSubmitting('connecting', {
+      accountId,
+      value: true,
+    })
+    window.electronAPI.automationServiceReload(accountId)
+  }
+
+  const handleReloadAll = () => {
+    accounts.forEach(({ accountId }) => handleReloadAccount(accountId)())
+  }
 
   const handleUpdateClaimAction =
     (type: keyof AutomationAccountData['actions'], accountId: string) =>
@@ -153,8 +161,10 @@ export function useAutomationData() {
     selectedAccounts,
 
     customFilter,
-    // handleReloadAccount,
+    handleReloadAccount,
+    handleReloadAll,
     handleRemoveAccount,
+    handleRemoveAll,
     handleUpdateClaimAction,
     onSelectItem,
   }

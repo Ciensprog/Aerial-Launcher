@@ -49,7 +49,7 @@ export class Automation {
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.AutomationServiceResponseData,
       automation,
-      false
+      false,
     )
   }
 
@@ -87,7 +87,7 @@ export class Automation {
 
   static async updateAction(
     accountId: string,
-    config: AutomationServiceActionConfig
+    config: AutomationServiceActionConfig,
   ) {
     Automation.updateAccountData(accountId, {
       actions: {
@@ -126,7 +126,7 @@ export class Automation {
         {
           accountId: data.accountId,
           status,
-        } as AutomationServiceStatusResponse
+        } as AutomationServiceStatusResponse,
       )
     }
 
@@ -156,7 +156,7 @@ export class Automation {
 
             if (accountProcess.matchmaking.partyState === null) {
               const automationAccount = Automation.getAccountById(
-                account.accountId
+                account.accountId,
               )
               const actions = automationAccount
                 ? Object.values(automationAccount.actions)
@@ -197,7 +197,7 @@ export class Automation {
 
             if (member.account_id === accountService.accountId) {
               const automationAccount = Automation.getAccountById(
-                data.accountId
+                data.accountId,
               )
 
               if (automationAccount) {
@@ -233,7 +233,7 @@ export class Automation {
                 accountProcess.matchmaking.started === true
               ) {
                 const automationAccount = Automation.getAccountById(
-                  accountService.accountId
+                  accountService.accountId,
                 )
 
                 if (automationAccount?.actions.claim === true) {
@@ -268,11 +268,11 @@ export class Automation {
 
           Automation._services.set(
             accountService.accountId,
-            accountService
+            accountService,
           )
           Automation._processes.set(
             accountProcess.accountId,
-            accountProcess
+            accountProcess,
           )
 
           return
@@ -285,20 +285,23 @@ export class Automation {
       })
   }
 
-  // static async reload(accountId: string) {
-  //   const current = Automation._accounts.get(accountId)
+  static async reload(accountId: string) {
+    const current = Automation._accounts.get(accountId)
 
-  //   if (!current) {
-  //     await Automation.refreshData(accountId)
+    if (!current) {
+      return
+    }
 
-  //     return
-  //   }
+    Automation.getProcessByAccountId(accountId)?.clearMissionIntervalId()
+    Automation.getServiceByAccountId(accountId)?.destroy()
+    Automation._services.delete(accountId)
+    Automation._processes.delete(accountId)
 
-  //   await Automation.start(current, true)
-  // }
+    Automation.start(current)
+  }
 
   static getAccountById(
-    accountId: string
+    accountId: string,
   ): AutomationAccountServerData | undefined {
     return Automation._accounts.get(accountId)
   }
@@ -309,7 +312,7 @@ export class Automation {
 
   static getProcessByAccountId(accountId: string) {
     return Automation._processes.find(
-      (accountProcess) => accountProcess.accountId === accountId
+      (accountProcess) => accountProcess.accountId === accountId,
     )
   }
 
@@ -319,13 +322,13 @@ export class Automation {
 
   static getServiceByAccountId(accountId: string) {
     return Automation._services.find(
-      (accountService) => accountService.accountId === accountId
+      (accountService) => accountService.accountId === accountId,
     )
   }
 
   private static async refreshData(
     accountId: string,
-    removeAccount?: boolean
+    removeAccount?: boolean,
   ) {
     const automation = Automation._accounts
       .filter((account) => account.accountId !== accountId)
@@ -338,7 +341,7 @@ export class Automation {
 
           return accumulator
         },
-        {} as Parameters<AutomationState['refreshAccounts']>[0]
+        {} as Parameters<AutomationState['refreshAccounts']>[0],
       )
 
     if (removeAccount) {
@@ -352,7 +355,7 @@ export class Automation {
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.AutomationServiceResponseData,
       automation,
-      true
+      true,
     )
   }
 
@@ -361,7 +364,7 @@ export class Automation {
     data: Partial<{
       actions: Partial<AutomationAccountData['actions']>
       status: Partial<AutomationAccountData['status']>
-    }>
+    }>,
   ) {
     const automationAccount = Automation.getAccountById(accountId)
     const accountProcess = Automation.getProcessByAccountId(accountId)

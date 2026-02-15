@@ -6,6 +6,10 @@
     "credential-error": "Credential Error",
     "disconnected": "Disconnected"
   },
+  "actions": {
+    "restart-all": "Restart All",
+    "remove-all": "Remove All"
+  },
   "options": {
     "kick": "Kick",
     "claim": "Claim",

@@ -6,6 +6,10 @@
     "credential-error": "Błąd logowania",
     "disconnected": "Rozłączony"
   },
+  "actions": {
+    "restart-all": "Uruchom ponownie wszystkie",
+    "remove-all": "Usuń wszystkie"
+  },
   "options": {
     "kick": "Wyrzuć",
     "claim": "Odbierz",

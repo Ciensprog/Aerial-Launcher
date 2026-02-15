@@ -18,9 +18,9 @@ export function automationServiceStart(accountId: string) {
   ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceStart, accountId)
 }
 
-// export function automationServiceReload(accountId: string) {
-//   ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceReload, accountId)
-// }
+export function automationServiceReload(accountId: string) {
+  ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceReload, accountId)
+}
 
 export function automationServiceRemove(accountId: string) {
   ipcRenderer.send(ElectronAPIEventKeys.AutomationServiceRemove, accountId)
@@ -28,38 +28,38 @@ export function automationServiceRemove(accountId: string) {
 
 export function automationServiceUpdateAction(
   accountId: string,
-  config: AutomationServiceActionConfig
+  config: AutomationServiceActionConfig,
 ) {
   ipcRenderer.send(
     ElectronAPIEventKeys.AutomationServiceActionUpdate,
     accountId,
-    config
+    config,
   )
 }
 
 export function notificationAutomationServiceData(
   callback: (
     value: Parameters<AutomationState['refreshAccounts']>[0],
-    onlyUpdate: boolean
-  ) => Promise<void>
+    onlyUpdate: boolean,
+  ) => Promise<void>,
 ) {
   const customCallback = (
     _: IpcRendererEvent,
     value: Parameters<AutomationState['refreshAccounts']>[0],
-    onlyUpdate: boolean
+    onlyUpdate: boolean,
   ) => {
     callback(value, onlyUpdate).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.AutomationServiceResponseData,
-    customCallback
+    customCallback,
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.AutomationServiceResponseData,
-        customCallback
+        customCallback,
       ),
   }
 }
@@ -67,26 +67,26 @@ export function notificationAutomationServiceData(
 export function notificationAutomationServiceStart(
   callback: (
     value: AutomationServiceStatusResponse,
-    refresh?: boolean
-  ) => Promise<void>
+    refresh?: boolean,
+  ) => Promise<void>,
 ) {
   const customCallback = (
     _: IpcRendererEvent,
     value: AutomationServiceStatusResponse,
-    refresh?: boolean
+    refresh?: boolean,
   ) => {
     callback(value, refresh).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.AutomationServiceStartNotification,
-    customCallback
+    customCallback,
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.AutomationServiceStartNotification,
-        customCallback
+        customCallback,
       ),
   }
 }
@@ -115,21 +115,21 @@ export function notificationAutomationServiceStart(
 // }
 
 export function notificationAutomationServiceRemove(
-  callback: (value: string) => Promise<void>
+  callback: (value: string) => Promise<void>,
 ) {
   const customCallback = (_: IpcRendererEvent, value: string) => {
     callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.AutomationServiceRemoveNotification,
-    customCallback
+    customCallback,
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.AutomationServiceRemoveNotification,
-        customCallback
+        customCallback,
       ),
   }
 }

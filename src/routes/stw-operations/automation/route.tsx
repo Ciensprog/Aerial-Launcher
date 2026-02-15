@@ -79,7 +79,7 @@ function StatusItem({
             status === AutomationStatusType.DISCONNECTED,
           'before:bg-red-400': status === AutomationStatusType.ERROR,
           // 'before:bg-yellow-600': status === AutomationStatusType.ISSUE,
-        }
+        },
       )}
     >
       {title}
@@ -97,8 +97,10 @@ export function Content() {
     selectedAccounts,
 
     customFilter,
-    // handleReloadAccount,
+    handleReloadAccount,
+    handleReloadAll,
     handleRemoveAccount,
+    handleRemoveAll,
     handleUpdateClaimAction,
     onSelectItem,
   } = useAutomationData()
@@ -141,7 +143,7 @@ export function Content() {
             </CardHeader>
             <CardContent className="grid gap-4 pt-6">
               <div className="grid gap-4">
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <Combobox
                     className="max-w-full"
                     emptyPlaceholder={t('form.accounts.no-options', {
@@ -156,7 +158,7 @@ export function Content() {
                     placeholderSearch={t('form.accounts.placeholder', {
                       ns: 'general',
                       context: !getMenuOptionVisibility(
-                        'showTotalAccounts'
+                        'showTotalAccounts',
                       )
                         ? 'private'
                         : undefined,
@@ -174,6 +176,24 @@ export function Content() {
                     hideInputSearchWhenOnlyOneOptionIsAvailable
                     hideSelectorOnSelectItem
                   />
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={handleReloadAll}
+                      disabled={accounts.length <= 0}
+                    >
+                      {t('stw-operations:auto-kick.actions.restart-all')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={handleRemoveAll}
+                      disabled={accounts.length <= 0}
+                    >
+                      {t('stw-operations:auto-kick.actions.remove-all')}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -217,12 +237,28 @@ export function Content() {
                           'before:bg-red-400': isError,
                           // 'before:bg-yellow-600':
                           //   current.status === AutomationStatusType.ISSUE,
-                        }
+                        },
                       )}
                     >
                       {parseCustomDisplayName(account)}
                     </span>
                     <div className="ml-auto">
+                      <Button
+                        type="button"
+                        size="icon"
+                        className="px-0 size-8"
+                        variant="ghost"
+                        onClick={
+                          !isLoading
+                            ? handleReloadAccount(account.accountId)
+                            : undefined
+                        }
+                        disabled={disabledActions}
+                      >
+                        <UpdateIcon
+                          className={cn(isLoading && 'animate-spin')}
+                        />
+                      </Button>
                       <Button
                         type="button"
                         size="icon"
@@ -255,7 +291,7 @@ export function Content() {
                           !isLoading
                             ? handleUpdateClaimAction(
                                 'kick',
-                                account.accountId
+                                account.accountId,
                               )
                             : undefined
                         }
@@ -270,7 +306,7 @@ export function Content() {
                           !isLoading
                             ? handleUpdateClaimAction(
                                 'claim',
-                                account.accountId
+                                account.accountId,
                               )
                             : undefined
                         }
@@ -285,7 +321,7 @@ export function Content() {
                           !isLoading
                             ? handleUpdateClaimAction(
                                 'transferMats',
-                                account.accountId
+                                account.accountId,
                               )
                             : undefined
                         }

@@ -603,12 +603,12 @@ const gotTheLock = app.requestSingleInstanceLock()
       },
     )
 
-    // ipcMain.on(
-    //   ElectronAPIEventKeys.AutomationServiceReload,
-    //   async (_, accountId: string) => {
-    //     await Automation.reload(accountId)
-    //   }
-    // )
+    ipcMain.on(
+      ElectronAPIEventKeys.AutomationServiceReload,
+      async (_, accountId: string) => {
+        await Automation.reload(accountId)
+      },
+    )
 
     ipcMain.on(
       ElectronAPIEventKeys.AutomationServiceRemove,

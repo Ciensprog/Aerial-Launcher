@@ -6,6 +6,10 @@
     "credential-error": "Erro de Credenciais",
     "disconnected": "Desconectado"
   },
+  "actions": {
+    "restart-all": "Reiniciar todos",
+    "remove-all": "Remover todos"
+  },
   "options": {
     "kick": "Expulsar",
     "claim": "Coletar",
