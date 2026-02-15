@@ -33,12 +33,39 @@ export function CustomizableMenu() {
           '[&_.item]:flex [&_.item]:items-center [&_.item]:justify-between [&_.item.main]:mb-2',
         )}
       >
+        <CurrentAlertsSection />
         <STWOperationsSection />
         <AccountManagementSection />
         <AdvancedModeSection />
         <MyAccountsSection />
       </CardContent>
     </Card>
+  )
+}
+
+function CurrentAlertsSection() {
+  // const { t } = useTranslation(['sidebar'])
+
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
+  const { updateMenuOption } = useCustomizableMenuSettingsActions()
+
+  return (
+    <div className="category">
+      <div className="item main">
+        <Label
+          className="title text-lg"
+          htmlFor="current-alerts"
+        >
+          Current Alerts
+        </Label>
+        <Switch
+          id="current-alerts"
+          checked={getMenuOptionVisibility('currentAlerts')}
+          onCheckedChange={updateMenuOption('currentAlerts')}
+        />
+      </div>
+    </div>
   )
 }
 

@@ -90,6 +90,21 @@ export function SidebarMenu({
     <ScrollArea className="h-full max-h-[calc(100vh-var(--header-height))]">
       <div className="flex-1 pb-6">
         <nav className="grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2">
+          {getMenuOptionVisibility('currentAlerts') && (
+            <Link
+              to="/"
+              className={cn(
+                'pl-3 py-2 text-muted-foreground',
+                currentClassNameHover,
+              )}
+              activeProps={{
+                className: cn(activeClassName),
+              }}
+            >
+              {t('general:go-to-current-alerts')}
+            </Link>
+          )}
+
           {getMenuOptionVisibility('stwOperations', true) && (
             <>
               <Title className="pb-0">{t('stw-operations.title')}</Title>

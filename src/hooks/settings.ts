@@ -32,7 +32,7 @@ export function useCustomizableMenuSettingsVisibility() {
 
         if (childItems !== undefined) {
           const childValidations = childItems.map(
-            (item) => data[item] ?? true
+            (item) => data[item] ?? true,
           )
 
           return childValidations.includes(true) && keyValidation
@@ -41,7 +41,7 @@ export function useCustomizableMenuSettingsVisibility() {
 
       return keyValidation
     },
-    [data]
+    [data],
   )
 
   return {
@@ -51,7 +51,7 @@ export function useCustomizableMenuSettingsVisibility() {
 
 export function useCustomizableMenuSettingsActions() {
   const updateMenuOption = useCustomizableMenuSettingsStore(
-    (state) => state.updateMenuOption
+    (state) => state.updateMenuOption,
   )
 
   return {
@@ -61,7 +61,7 @@ export function useCustomizableMenuSettingsActions() {
 
 export function useCustomProcessStatus() {
   const customProcessIsRunning = useSettingsStore(
-    (state) => state.customProcessIsRunning
+    (state) => state.customProcessIsRunning,
   )
 
   return {

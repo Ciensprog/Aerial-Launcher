@@ -49,6 +49,8 @@ export const devSettingsSchema = z
 
 export const customizableMenuSettingsSchema = z
   .object({
+    currentAlerts: z.boolean().default(true),
+
     stwOperations: z.boolean().default(true),
     autoKick: z.boolean().default(true),
     taxiService: z.boolean().default(true),
