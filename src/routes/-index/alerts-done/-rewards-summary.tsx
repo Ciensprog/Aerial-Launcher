@@ -66,7 +66,10 @@ export function RewardsSummary() {
               : undefined
           }
         >
-          <CommonMissionsSection missions={missions} />
+          <CommonMissionsSection
+            missions={missions}
+            hideCompletedCheck
+          />
         </EmptySection>
       </section>
     </>

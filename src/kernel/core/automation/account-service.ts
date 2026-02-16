@@ -229,6 +229,14 @@ export class AccountService {
       this.emit(ServiceEvent.DISCONNECTED)
     })
 
+    this.connection.on('auth:failed', () => {
+      this.emit(ServiceEvent.DISCONNECTED)
+    })
+
+    this.connection.on('stream:error', () => {
+      this.emit(ServiceEvent.DISCONNECTED)
+    })
+
     this.connection.on('connected', () => {
       this.emit(ServiceEvent.CONNECTED)
     })

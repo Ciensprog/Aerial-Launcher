@@ -22,6 +22,8 @@ import { DataDirectory } from './data-directory'
 
 import { AutomationState } from '../../state/stw-operations/automation'
 
+const maxRetries = 3
+
 export class Automation {
   private static _accounts: Collection<
     string,
@@ -30,6 +32,8 @@ export class Automation {
   private static _processes: Collection<string, AccountProcess> =
     new Collection()
   private static _services: Collection<string, AccountService> =
+    new Collection()
+  private static _retryCounters: Collection<string, number> =
     new Collection()
 
   static async load() {
@@ -146,8 +150,49 @@ export class Automation {
             account,
           })
 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const reAuth = (error: any) => {
+            const restartErrors = [
+              'disconnect',
+              'invalid_refresh_token',
+              'party_not_found',
+            ].some((code) => error?.code?.toLowerCase().includes(code))
+
+            if (restartErrors) {
+              if (error?.code === 'disconnect') {
+                if (
+                  (Automation._retryCounters.get(account.accountId) ?? 0) <
+                  maxRetries
+                ) {
+                  console.log('RELOAD_1')
+                  Automation.reload(account.accountId)
+                } else {
+                  Automation._retryCounters.delete(account.accountId)
+                }
+              } else {
+                console.log('RELOAD_2')
+                Automation.reload(account.accountId)
+              }
+            }
+          }
+          const disconnect = () => {
+            setNewStatus(AutomationStatusType.DISCONNECTED)
+
+            if (!Automation._retryCounters.has(account.accountId)) {
+              Automation._retryCounters.set(account.accountId, 0)
+            }
+
+            Automation._retryCounters.set(
+              account.accountId,
+              (Automation._retryCounters.get(account.accountId) ?? 0) + 1,
+            )
+
+            reAuth({ code: 'disconnect' })
+          }
+
           const initTimeout = setTimeout(() => {
             setNewStatus(AutomationStatusType.ERROR)
+            disconnect()
           }, 10_000) // 10 seconds
 
           accountService.onceSessionStarted(() => {
@@ -169,7 +214,7 @@ export class Automation {
           })
 
           accountService.onDisconnected(() => {
-            setNewStatus(AutomationStatusType.DISCONNECTED)
+            disconnect()
           })
           accountService.onMemberDisconnected((member) => {
             if (!member.ns || member.ns?.toLowerCase() !== 'fortnite') {
@@ -177,7 +222,7 @@ export class Automation {
             }
 
             if (member.account_id === accountService.accountId) {
-              setNewStatus(AutomationStatusType.DISCONNECTED)
+              disconnect()
             }
           })
           accountService.onMemberExpired((member) => {
@@ -186,7 +231,7 @@ export class Automation {
             }
 
             if (member.account_id === accountService.accountId) {
-              setNewStatus(AutomationStatusType.DISCONNECTED)
+              disconnect()
             }
           })
 

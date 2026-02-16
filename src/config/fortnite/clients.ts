@@ -15,6 +15,12 @@ export const fortniteAndroidGameClient = clientCredentialSchema.parse({
   auth: 'M2Y2OWU1NmM3NjQ5NDkyYzhjYzI5ZjFhZjA4YThhMTI6YjUxZWU5Y2IxMjIzNGY1MGE2OWVmYTY3ZWY1MzgxMmU=',
 })
 
+export const fortnitePCGameClient = clientCredentialSchema.parse({
+  clientId: 'ec684b8c687f479fadea3cb2ad83f5c6',
+  secret: 'e1f31c211f28413186262d37a13fc84d',
+  auth: 'ZWM2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI4NDEzMTg2MjYyZDM3YTEzZmM4NGQ=',
+})
+
 export const launcherAppClient2 = clientCredentialSchema.parse({
   clientId: '34a02cf8f4414e29b15921876da36f9a',
   secret: 'daafbccc737745039dffe53d94fc76cf',

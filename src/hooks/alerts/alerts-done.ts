@@ -18,7 +18,7 @@ export function useAlertsDoneForm() {
 
       changeInputSearch: state.changeInputSearch,
       updateSearchIsSubmitting: state.updateSearchIsSubmitting,
-    }))
+    })),
   )
 
   return {
@@ -31,7 +31,7 @@ export function useAlertsDoneForm() {
 
 export function useAlertsDoneLoader() {
   const updateSearchIsSubmitting = useAlertsDoneFormStore(
-    (state) => state.updateSearchIsSubmitting
+    (state) => state.updateSearchIsSubmitting,
   )
 
   return {
@@ -52,5 +52,54 @@ export function useAlertsDoneDataActions() {
 
   return {
     updateData,
+  }
+}
+
+export function useAlertsDoneMarkedActions({
+  accountId,
+  missionGuid,
+}: {
+  accountId: string | null | undefined
+  missionGuid: string
+}) {
+  const { marked, syncMarked } = useAlertsDonePlayerStore(
+    useShallow((state) => ({
+      marked: state.marked,
+      syncMarked: state.syncMarked,
+    })),
+  )
+
+  const isCompleted = accountId
+    ? marked[accountId]?.[missionGuid] ?? false
+    : false
+
+  const toggleCompleted = () => {
+    if (!accountId) {
+      return
+    }
+
+    syncMarked(accountId, {
+      [missionGuid]: !isCompleted,
+    })
+  }
+
+  return {
+    isCompleted,
+    toggleCompleted,
+  }
+}
+
+export function useAlertsDoneMarkedSync() {
+  const syncMarked = useAlertsDonePlayerStore((state) => state.syncMarked)
+
+  const syncCompletedAlerts = (
+    accountId: string,
+    data: Record<string, boolean> | null,
+  ) => {
+    syncMarked(accountId, data)
+  }
+
+  return {
+    syncCompletedAlerts,
   }
 }

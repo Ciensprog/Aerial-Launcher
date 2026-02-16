@@ -16,9 +16,11 @@ import { cn } from '../../../lib/utils'
 
 export function CommonMissionsSection({
   currentPageTotalResults,
+  hideCompletedCheck,
   missions,
 }: {
   currentPageTotalResults?: number
+  hideCompletedCheck?: boolean
   missions: Collection<string, WorldInfoMission>
 }) {
   const { t } = useTranslation(['alerts'])
@@ -34,6 +36,7 @@ export function CommonMissionsSection({
         <MissionItem
           data={mission}
           key={missionId}
+          hideCompletedCheck={hideCompletedCheck}
         >
           <>
             {mission.ui.alert.rewards.length > 0 && (
@@ -54,7 +57,7 @@ export function CommonMissionsSection({
                           'flex flex-shrink-0 items-center rounded',
                           {
                             'border px-1': reward.type === 'trap',
-                          }
+                          },
                         )}
                         key={reward.itemId}
                       >
@@ -74,7 +77,7 @@ export function CommonMissionsSection({
                   (reward) =>
                     !reward.itemId.includes('eventscaling') ||
                     reward.itemId.includes('campaign_event_currency') ||
-                    reward.itemId.includes('phoenixxp')
+                    reward.itemId.includes('phoenixxp'),
                 ).length > 0 && '•'}
               </>
             )}
@@ -91,7 +94,7 @@ export function CommonMissionsSection({
                       {
                         'gap mx-0.5 px-1 py-0.5 outline outline-[#ff6868]/50 outline-2':
                           reward.isBad,
-                      }
+                      },
                     )}
                     key={reward.itemId}
                   >

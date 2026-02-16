@@ -7,10 +7,14 @@ import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 import { useCallback, useEffect, useRef } from 'react'
 
-import { useWorldInfoActions } from '../../hooks/advanced-mode/world-info'
+import {
+  useWorldInfo,
+  useWorldInfoActions,
+} from '../../hooks/advanced-mode/world-info'
 import {
   useAlertsDoneDataActions,
   useAlertsDoneLoader,
+  useAlertsDoneMarkedSync,
 } from '../../hooks/alerts/alerts-done'
 import { useAlertsOverviewPaginationInit } from '../../hooks/alerts/overview'
 
@@ -31,7 +35,7 @@ export function useAlertItemCounter({
     const alert = mission.ui.alert.rewards.find(
       (reward) =>
         validationFn?.(reward.itemId) ??
-        (key !== undefined ? reward.itemId.includes(key) : false)
+        (key !== undefined ? reward.itemId.includes(key) : false),
     )
 
     accumulator += alert?.quantity ?? 0
@@ -49,12 +53,12 @@ export function useIntersectingElement({ deps }: { deps?: unknown }) {
         ([entry]) => {
           entry.target.classList.toggle(
             'is-sticky',
-            entry.intersectionRatio < 1
+            entry.intersectionRatio < 1,
           )
         },
         {
           threshold: [1],
-        }
+        },
       )
 
       if ($element.current) {
@@ -65,28 +69,59 @@ export function useIntersectingElement({ deps }: { deps?: unknown }) {
         observer.disconnect()
       }
     },
-    deps !== undefined ? [deps] : []
+    deps !== undefined ? [deps] : [],
   )
 
   return $element
 }
 
 export function useFetchPlayerDataSync() {
+  const { data } = useWorldInfo()
   const { updateSearchIsSubmitting } = useAlertsDoneLoader()
   const { updateData } = useAlertsDoneDataActions()
+  const { syncCompletedAlerts } = useAlertsDoneMarkedSync()
 
   useEffect(() => {
     const listener = window.electronAPI.fetchPlayerDataNotification(
       async (response) => {
+        if (response.data) {
+          const toSync =
+            response.data.profileChanges?.profile.stats.attributes.mission_alert_redemption_record?.claimData?.reduce(
+              (accumulator, current) => {
+                let currentMissionGuid: string | undefined
+
+                data.forEach((missions) => {
+                  missions.forEach((mission) => {
+                    if (
+                      mission.raw.alert?.missionAlertGuid ===
+                      current.missionAlertId
+                    ) {
+                      currentMissionGuid = mission.raw.mission.missionGuid
+                    }
+                  })
+                })
+
+                if (currentMissionGuid) {
+                  accumulator[currentMissionGuid] = true
+                }
+
+                return accumulator
+              },
+              {} as Record<string, boolean>,
+            ) ?? {}
+
+          syncCompletedAlerts(response.data.lookup.id, toSync)
+        }
+
         updateData(response)
         updateSearchIsSubmitting(false)
-      }
+      },
     )
 
     return () => {
       listener.removeListener()
     }
-  }, [])
+  }, [data])
 }
 
 export function useDropzoneConfig() {
@@ -109,7 +144,7 @@ export function useDropzoneConfig() {
               type: 'application/json',
             })
             const result = worldInfoSchema.parse(
-              JSON.parse(await blob.text())
+              JSON.parse(await blob.text()),
             ) as WorldInfoData
             const { worldInfo } = worlInfoParser(result)
 
@@ -124,7 +159,7 @@ export function useDropzoneConfig() {
           }
         }
       },
-      [i18n.language]
+      [i18n.language],
     )
   const { getRootProps, isDragActive, isDragAccept, isDragReject } =
     useDropzone({
