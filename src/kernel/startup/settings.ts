@@ -6,20 +6,62 @@ import type {
 } from '../../types/settings'
 
 import { writeFile } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { app } from 'electron'
 
+// import { defaultMissionInterval } from '../../config/constants/automation'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+// import { defaultClaimingRewardsDelay } from '../../config/constants/mcp'
 import {
   availableLanguages,
   defaultAppLanguage,
 } from '../../config/constants/settings'
+// import { defaultFortniteGameProcess } from '../../config/fortnite/app'
+import { launcherAppClient2 } from '../../config/fortnite/clients'
 
 import { CustomProcess } from '../core/custom-process'
 import { MainWindow } from './windows/main'
 import { DataDirectory } from './data-directory'
 import { SystemTray } from './system-tray'
 
+import { launcherAvailablePlatforms } from '../../services/config/launcher'
+import { getLauncherAssetForCatalogItem } from '../../services/endpoints/launcher'
+import { getLightswitchStatus } from '../../services/endpoints/lightswitch'
+import {
+  createAccessTokenUsingClientCredentials,
+  killSession,
+} from '../../services/endpoints/oauth'
+
 import { Language } from '../../locales/resources'
+
+export type GameContext = {
+  namespaceId: 'fn'
+}
+
+export type DetectGameResult = {
+  appVersion: string | null
+  name: string
+  path: string
+}
+
+const defaultGamePath = {
+  fn: {
+    appVersion: '++Fortnite+Release-38.00-CL-47722112-Windows',
+    name: 'Fortnite',
+    base: 'C:\\Program Files\\Epic Games\\Fortnite',
+    extra: 'FortniteGame\\Binaries\\Win64',
+  },
+}
+// const fnGameData = detectGameData({ namespaceId: 'fn' })
+// const defaultSettingsData: Settings = {
+//   claimingRewards: `${defaultClaimingRewardsDelay}`,
+//   customProcess: defaultFortniteGameProcess,
+//   missionInterval: `${defaultMissionInterval}`,
+//   path: fnGameData.path,
+//   systemTray: false,
+//   userAgent: `${fnGameData.name}/${fnGameData.appVersion ?? defaultGamePath.fn.appVersion}`,
+// }
 
 export class SettingsManager {
   static async load() {
@@ -27,7 +69,7 @@ export class SettingsManager {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnLoadSettings,
-      settings
+      settings,
     )
 
     CustomProcess.setName(settings.customProcess)
@@ -82,8 +124,66 @@ export class SettingsManager {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnLoadSettings,
-      settings
+      settings,
     )
+  }
+
+  static async detectGamePath(config: GameContext) {
+    const data = detectGameData(config)
+    let appVersion = defaultGamePath.fn.appVersion
+    let name = defaultGamePath.fn.name
+
+    if (data.appVersion === null) {
+      let token: string | null = null
+
+      try {
+        const result = await createAccessTokenUsingClientCredentials({
+          authorization: launcherAppClient2.auth,
+        })
+
+        token = result.data.access_token
+
+        const status = await getLightswitchStatus('Fortnite', {
+          headers: {
+            Authorization: `bearer ${result.data.access_token}`,
+          },
+        })
+        const asset = await getLauncherAssetForCatalogItem(
+          {
+            appName: status.data.launcherInfoDTO?.appName ?? 'Fortnite',
+            catalogItemId:
+              status.data.launcherInfoDTO?.catalogItemId ??
+              '4fe75bbc5a674f4f9b356b5c90567da5',
+            platform: launcherAvailablePlatforms.Windows,
+            label: 'Live',
+          },
+          {
+            headers: {
+              Authorization: `bearer ${result.data.access_token}`,
+            },
+          },
+        )
+
+        appVersion = asset.data.buildVersion
+        name = asset.data.appName
+      } catch (error) {
+        //
+      }
+
+      if (token !== null) {
+        killSession(token, {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        }).catch(() => {})
+      }
+    }
+
+    return {
+      ...data,
+      appVersion,
+      name,
+    }
   }
 }
 
@@ -93,7 +193,7 @@ export class DevSettingsManager {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.DevSettingsResponse,
-      data.devSettings
+      data.devSettings,
     )
   }
 }
@@ -105,7 +205,7 @@ export class CustomizableMenuSettingsManager {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.CustomizableMenuSettingsResponse,
-      customizableMenuSettings
+      customizableMenuSettings,
     )
   }
 
@@ -118,7 +218,7 @@ export class CustomizableMenuSettingsManager {
 
   static async update(
     key: keyof CustomizableMenuSettings,
-    visibility: boolean
+    visibility: boolean,
   ) {
     const customizableMenuSettings =
       await CustomizableMenuSettingsManager.getData()
@@ -131,7 +231,7 @@ export class CustomizableMenuSettingsManager {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.CustomizableMenuSettingsResponse,
-      newData
+      newData,
     )
   }
 }
@@ -144,7 +244,7 @@ export class AppLanguage {
 
         return accumulator
       },
-      {} as Record<string, Language>
+      {} as Record<string, Language>,
     )
     const currentLocale = app.getLocale()
     const locale = currentLocale.toLowerCase().startsWith('es')
@@ -164,7 +264,7 @@ export class AppLanguage {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.AppLanguageNotification,
-      response
+      response,
     )
   }
 
@@ -179,12 +279,54 @@ export class AppLanguage {
         JSON.stringify(data, null, 2),
         {
           encoding: 'utf8',
-        }
+        },
       )
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       //
     }
+  }
+}
+
+function detectGameData({ namespaceId }: GameContext): DetectGameResult {
+  try {
+    const file = JSON.parse(
+      readFileSync(
+        path.join(
+          process.env.PROGRAMDATA ?? '',
+          'Epic',
+          'UnrealEngineLauncher',
+          'LauncherInstalled.dat',
+        ),
+        {
+          encoding: 'utf8',
+        },
+      ),
+    )
+    const installationList = file?.InstallationList ?? []
+    const game = installationList?.find(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (item: any) => item.NamespaceId === namespaceId,
+    )
+
+    const basePath =
+      game?.InstallLocation ?? 'C:\\Program Files\\Epic Games'
+    const extraPath = defaultGamePath[namespaceId]?.extra ?? ''
+    const currentPath = path.join(basePath, extraPath)
+
+    return {
+      appVersion: game?.AppVersion ?? null,
+      name: defaultGamePath[namespaceId]?.name ?? 'Epic',
+      path: currentPath,
+    }
+  } catch (error) {
+    //
+  }
+
+  return {
+    appVersion: null,
+    name: defaultGamePath.fn.name,
+    path: path.join(defaultGamePath.fn.base, defaultGamePath.fn.extra),
   }
 }

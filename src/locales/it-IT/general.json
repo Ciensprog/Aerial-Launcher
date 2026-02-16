@@ -9,7 +9,8 @@
     "success": "Successo",
     "update": "Aggiorna",
     "accepted": "Accettato",
-    "verify": "Verifica"
+    "verify": "Verifica",
+    "detect": "Rileva"
   },
   "form": {
     "credentials": {

@@ -22,26 +22,38 @@ export function changeAppLanguage(language: Language) {
 }
 
 export function appLanguageNotification(
-  callback: (value: LanguageResponse) => Promise<void>
+  callback: (value: LanguageResponse) => Promise<void>,
 ) {
   const customCallback = (
     _: IpcRendererEvent,
-    value: LanguageResponse
+    value: LanguageResponse,
   ) => {
     callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.AppLanguageNotification,
-    customCallback
+    customCallback,
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.AppLanguageNotification,
-        customCallback
+        customCallback,
       ),
   }
+}
+
+/**
+ * Settings
+ */
+
+export function detectGamePath(): Promise<{
+  appVersion: string
+  name: string
+  path: string
+}> {
+  return ipcRenderer.invoke(ElectronAPIEventKeys.SettingsDetectPath)
 }
 
 /**
@@ -57,21 +69,21 @@ export function requestTags() {
 }
 
 export function responseTags(
-  callback: (value: TagRecord) => Promise<void>
+  callback: (value: TagRecord) => Promise<void>,
 ) {
   const customCallback = (_: IpcRendererEvent, value: TagRecord) => {
     callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.OnLoadTags,
-    customCallback
+    customCallback,
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.OnLoadTags,
-        customCallback
+        customCallback,
       ),
   }
 }
@@ -82,14 +94,14 @@ export function notificationCreationTags(callback: () => Promise<void>) {
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.NotificationCreationTag,
-    customCallback
+    customCallback,
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.NotificationCreationTag,
-        customCallback
+        customCallback,
       ),
   }
 }
@@ -107,21 +119,21 @@ export function updateGroups(groups: GroupRecord) {
 }
 
 export function responseGroups(
-  callback: (value: GroupRecord) => Promise<void>
+  callback: (value: GroupRecord) => Promise<void>,
 ) {
   const customCallback = (_: IpcRendererEvent, value: GroupRecord) => {
     callback(value).catch(() => {})
   }
   const rendererInstance = ipcRenderer.on(
     ElectronAPIEventKeys.OnLoadGroups,
-    customCallback
+    customCallback,
   )
 
   return {
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.OnLoadGroups,
-        customCallback
+        customCallback,
       ),
   }
 }

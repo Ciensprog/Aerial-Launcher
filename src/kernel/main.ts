@@ -229,6 +229,12 @@ const gotTheLock = app.requestSingleInstanceLock()
       },
     )
 
+    ipcMain.handle(ElectronAPIEventKeys.SettingsDetectPath, () => {
+      return SettingsManager.detectGamePath({
+        namespaceId: 'fn',
+      })
+    })
+
     ipcMain.on(
       ElectronAPIEventKeys.AccountsOrderingSync,
       async (_, accounts: AccountDataRecord) => {

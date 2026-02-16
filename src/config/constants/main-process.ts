@@ -15,6 +15,8 @@ export enum ElectronAPIEventKeys {
   AppLanguageNotification = 'settings:language:notification',
   AppLanguageUpdate = 'settings:language:update',
 
+  SettingsDetectPath = 'settings:detect:path',
+
   RequestSettings = 'request:settings',
   OnLoadSettings = 'on:load:settings',
   UpdateSettings = 'settings:update',

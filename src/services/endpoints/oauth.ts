@@ -20,7 +20,7 @@ export function getAccessTokenUsingAuthorizationCode(code: string) {
 
 export function getAccessTokenUsingExchangeCode(
   exchange_code: string,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ) {
   return oauthService.post<ExchangeCodeResponse>(
     '/token',
@@ -28,7 +28,7 @@ export function getAccessTokenUsingExchangeCode(
       grant_type: 'exchange_code',
       exchange_code,
     },
-    config
+    config,
   )
 }
 
@@ -42,7 +42,7 @@ export function getAccessTokenUsingDeviceAuth(
     deviceId: string
     secret: string
   },
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ) {
   return oauthService.post<AuthorizationCodeResponse>(
     '/token',
@@ -52,7 +52,7 @@ export function getAccessTokenUsingDeviceAuth(
       account_id: accountId,
       device_id: deviceId,
     },
-    config
+    config,
   )
 }
 
@@ -78,7 +78,7 @@ export function createAccessTokenUsingClientCredentials({
       headers: {
         Authorization: `basic ${authorization}`,
       },
-    }
+    },
   )
 }
 
@@ -96,13 +96,13 @@ export function createDeviceAuthCredentials({
       headers: {
         Authorization: `bearer ${accessToken}`,
       },
-    }
+    },
   )
 }
 
 export function oauthVerify(
   accessToken: string,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ) {
   return oauthService.get<
     Omit<VerifyAccessTokenResponse, 'access_token'> & {
@@ -115,4 +115,8 @@ export function oauthVerify(
       Authorization: `bearer ${accessToken}`,
     },
   })
+}
+
+export function killSession(token: string, config?: AxiosRequestConfig) {
+  return oauthService.delete(`/sessions/kill/${token}`, config)
 }

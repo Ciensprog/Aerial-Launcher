@@ -27,7 +27,7 @@ export function useSetupForm() {
       path: state.path,
       systemTray: state.systemTray,
       userAgent: state.userAgent,
-    }))
+    })),
   )
   const form = useForm<z.infer<typeof settingsSchema>>({
     resolver: zodResolver(settingsSchema),
@@ -41,6 +41,20 @@ export function useSetupForm() {
     },
   })
 
+  const onDetectPath = async () => {
+    const result = await window.electronAPI.detectGamePath()
+
+    form.setValue('path', result.path, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    })
+    onSubmit({
+      ...form.getValues(),
+      path: result.path,
+    })
+  }
+
   const onSubmit = (values: z.infer<typeof settingsSchema>) => {
     window.electronAPI.updateSettings({
       ...values,
@@ -51,6 +65,7 @@ export function useSetupForm() {
 
   return {
     form,
+    onDetectPath,
     onSubmit,
   }
 }

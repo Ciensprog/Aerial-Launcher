@@ -21,12 +21,14 @@ import {
 import { Input } from '../../../components/ui/input'
 import { Switch } from '../../../components/ui/switch'
 
+import { useInputPaddingButton } from '../../../hooks/ui/inputs'
 import { useSetupForm } from '../-hooks'
 
 export function AppSettingsBaseForm() {
   const { t } = useTranslation(['settings', 'general'])
 
-  const { form, onSubmit } = useSetupForm()
+  const { form, onDetectPath, onSubmit } = useSetupForm()
+  const [$detectPathInput, $detectPathButton] = useInputPaddingButton()
 
   return (
     <Form {...form}>
@@ -42,7 +44,23 @@ export function AppSettingsBaseForm() {
               <FormItem>
                 <FormLabel>{t('app-settings.form.path.label')}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <div className="flex items-center relative rounded-md">
+                    <Input
+                      {...field}
+                      className="pr-[var(--pr-button-width)]"
+                      id="path"
+                      ref={$detectPathInput}
+                    />
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="absolute h-7 px-2 right-1 w-auto"
+                      onClick={onDetectPath}
+                      ref={$detectPathButton}
+                    >
+                      {t('general:actions.detect')}
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,12 +118,12 @@ export function AppSettingsBaseForm() {
                   <Input
                     {...field}
                     placeholder={t(
-                      'app-settings.form.claiming-rewards.input.placeholder'
+                      'app-settings.form.claiming-rewards.input.placeholder',
                     )}
                     onChange={(event) => {
                       const newValue = event.target.value.replace(
                         /[^0-9.]+/gi,
-                        ''
+                        '',
                       )
 
                       form.setValue('claimingRewards', newValue)
@@ -143,12 +161,12 @@ export function AppSettingsBaseForm() {
                   <Input
                     {...field}
                     placeholder={t(
-                      'app-settings.form.mission-interval.input.placeholder'
+                      'app-settings.form.mission-interval.input.placeholder',
                     )}
                     onChange={(event) => {
                       const newValue = event.target.value.replace(
                         /[^0-9]+/gi,
-                        ''
+                        '',
                       )
 
                       form.setValue('missionInterval', newValue)
