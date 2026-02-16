@@ -40,7 +40,7 @@ export function useData() {
         if (devices.length <= 0) {
           toast(t('no-devices'))
         }
-      }
+      },
     )
 
     return () => {
@@ -71,10 +71,10 @@ export function useData() {
 
         toast(
           status
-            ? t('success', { deviceIdText })
-            : t('error', { deviceIdText })
+            ? t('success', { deviceId: deviceIdText })
+            : t('error', { deviceId: deviceIdText }),
         )
-      }
+      },
     )
 
     return () => {

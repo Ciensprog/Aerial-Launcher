@@ -32,15 +32,38 @@ export function getAccessTokenUsingExchangeCode(
   )
 }
 
+export function createAccessTokenUsingExchange(
+  {
+    exchange_code,
+    token_type,
+  }: {
+    exchange_code: string
+    token_type?: string
+  },
+  config?: AxiosRequestConfig,
+) {
+  return oauthService.post<AuthorizationCodeResponse>(
+    '/token',
+    {
+      grant_type: 'exchange_code',
+      exchange_code,
+      token_type,
+    },
+    config,
+  )
+}
+
 export function getAccessTokenUsingDeviceAuth(
   {
     accountId,
     deviceId,
     secret,
+    token_type,
   }: {
     accountId: string
     deviceId: string
     secret: string
+    token_type?: string
   },
   config?: AxiosRequestConfig,
 ) {
@@ -51,6 +74,7 @@ export function getAccessTokenUsingDeviceAuth(
       grant_type: 'device_auth',
       account_id: accountId,
       device_id: deviceId,
+      token_type,
     },
     config,
   )
@@ -62,6 +86,10 @@ export function getExchangeCodeUsingAccessToken(accessToken: string) {
       Authorization: `bearer ${accessToken}`,
     },
   })
+}
+
+export function getExchangeCode(config: AxiosRequestConfig) {
+  return oauthService.get<CreateExchangeCodeResponse>('/exchange', config)
 }
 
 export function createAccessTokenUsingClientCredentials({

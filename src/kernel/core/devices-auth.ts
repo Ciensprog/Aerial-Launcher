@@ -3,6 +3,7 @@ import type { AccountData } from '../../types/accounts'
 
 import { bots } from '../../config/constants/bots'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
+import { fortnitePCGameClient } from '../../config/fortnite/clients'
 
 import { MainWindow } from '../startup/windows/main'
 import { AccountsManager } from '../startup/accounts'
@@ -12,6 +13,11 @@ import {
   getDevicesAuth,
   removeDeviceAuth,
 } from '../../services/endpoints/account'
+import {
+  createAccessTokenUsingExchange,
+  getAccessTokenUsingDeviceAuth,
+  getExchangeCode,
+} from '../../services/endpoints/oauth'
 
 import { toDate } from '../../lib/dates'
 
@@ -21,22 +27,57 @@ export class DevicesAuthManager {
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.DevicesAuthResponseData,
-      devices
+      devices,
     )
   }
 
   static async getList(
-    account: AccountData
+    account: AccountData,
   ): Promise<Array<DeviceAuthInfoWithStates>> {
     try {
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const deviceAccessToken = await getAccessTokenUsingDeviceAuth({
+        accountId: account.accountId,
+        deviceId: account.deviceId,
+        secret: account.secret,
+        token_type: 'eg1',
+      })
 
-      if (!accessToken) {
+      if (!deviceAccessToken.data.access_token) {
+        return []
+      }
+
+      const exchangeCode = await getExchangeCode({
+        headers: {
+          Authorization: `bearer ${deviceAccessToken.data.access_token}`,
+        },
+        params: {
+          consumingClientId: fortnitePCGameClient.clientId,
+        },
+      })
+
+      if (!exchangeCode.data.code) {
+        return []
+      }
+
+      const exchangeToken = await createAccessTokenUsingExchange(
+        {
+          exchange_code: exchangeCode.data.code,
+          token_type: 'eg1',
+        },
+        {
+          headers: {
+            Authorization: `basic ${fortnitePCGameClient.auth}`,
+            'X-Epic-Device-ID': '5df240e94544c30f50b9c0839f8903ae',
+          },
+        },
+      )
+
+      if (!exchangeToken.data.access_token) {
         return []
       }
 
       const response = await getDevicesAuth({
-        accessToken,
+        accessToken: exchangeToken.data.access_token,
         accountId: account.accountId,
       })
       const data = response.data ?? []
@@ -48,10 +89,10 @@ export class DevicesAuthManager {
         }))
         .toSorted((itemA, itemB) => {
           const currentAccountA = AccountsManager.getAccountById(
-            itemA.accountId
+            itemA.accountId,
           )
           const currentAccountB = AccountsManager.getAccountById(
-            itemB.accountId
+            itemB.accountId,
           )
 
           const deviceA =
@@ -74,12 +115,12 @@ export class DevicesAuthManager {
           // Additional filters: Bots
 
           const deviceBotA = bots.find(
-            (bot) => bot.server === itemA.created.ipAddress
+            (bot) => bot.server === itemA.created.ipAddress,
           )
             ? 1
             : 0
           const deviceBotB = bots.find(
-            (bot) => bot.server === itemB.created.ipAddress
+            (bot) => bot.server === itemB.created.ipAddress,
           )
             ? 1
             : 0
@@ -117,7 +158,7 @@ export class DevicesAuthManager {
           ElectronAPIEventKeys.DevicesAuthRemoveNotification,
           account,
           deviceId,
-          true
+          true,
         )
 
         return
@@ -132,7 +173,7 @@ export class DevicesAuthManager {
       ElectronAPIEventKeys.DevicesAuthRemoveNotification,
       account,
       deviceId,
-      false
+      false,
     )
   }
 }
