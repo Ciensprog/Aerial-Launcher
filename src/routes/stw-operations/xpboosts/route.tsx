@@ -14,7 +14,6 @@ import { UpdateIcon } from '@radix-ui/react-icons'
 import { ExternalLink, Info, Send, Trash2, Undo2, X } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 
-import { repositoryAssetsURL } from '../../../config/about/links'
 import {
   individualLimitBoostedXP,
   maxAmountLimitedTo,
@@ -76,6 +75,7 @@ import {
   extractCommanderLevel,
 } from '../../../lib/parsers/query-profile'
 import { whatIsThis } from '../../../lib/callbacks'
+import { assets } from '../../../lib/repository'
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
 
 export const Route = createRoute({
@@ -518,9 +518,7 @@ function SendBoostsSheet({
                   grayscale: xpBoostType,
                 })}
               >
-                <img
-                  src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
-                />
+                <img src={assets('smallxpboost_gift')} />
               </figure>
               <Switch
                 checked={xpBoostType}
@@ -532,9 +530,7 @@ function SendBoostsSheet({
                   grayscale: !xpBoostType,
                 })}
               >
-                <img
-                  src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
-                />
+                <img src={assets('smallxpboost')} />
               </figure>
             </div>
           </div>
@@ -839,7 +835,7 @@ function BoostSummaryItem({
     <div className="border rounded min-w-36">
       <figure className="bg-muted-foreground/5 flex flex-col items-center py-2">
         <img
-          src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}`}
+          src={assets(`smallxpboost${isPersonal ? '' : '_gift'}`)}
           className="size-14"
         />
       </figure>
@@ -949,7 +945,7 @@ function AccountInformation({
           <div className="flex items-center py-1">
             <figure className="flex-shrink-0 px-2">
               <img
-                src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
+                src={assets('smallxpboost_gift')}
                 className="size-5"
               />
             </figure>
@@ -982,7 +978,7 @@ function AccountSummaryItem({
     <div className="flex items-center py-1 last:border-l">
       <figure className="flex-shrink-0 px-2">
         <img
-          src={`${repositoryAssetsURL}/images/resources/smallxpboost${isPersonal ? '' : '_gift'}`}
+          src={assets(`smallxpboost${isPersonal ? '' : '_gift'}`)}
           className="size-5"
         />
       </figure>
@@ -1005,9 +1001,7 @@ export function ExternalAuthTypeImage({
   return (
     <figure>
       <img
-        src={`${repositoryAssetsURL}/images/logos/${
-          externalAuthType ?? 'epicgames'
-        }`}
+        src={assets(externalAuthType ?? 'epicgames')}
         className="size-5"
       />
     </figure>
@@ -1101,7 +1095,7 @@ export function SearchedUserData({
               <>
                 <figure className="size-5">
                   <img
-                    src={`${repositoryAssetsURL}/images/resources/smallxpboost.png`}
+                    src={assets('smallxpboost')}
                     className="size-[18px]"
                   />
                 </figure>
@@ -1115,7 +1109,7 @@ export function SearchedUserData({
               <>
                 <figure className="size-5">
                   <img
-                    src={`${repositoryAssetsURL}/images/resources/smallxpboost_gift.png`}
+                    src={assets('smallxpboost_gift')}
                     className="size-[18px]"
                   />
                 </figure>
@@ -1131,7 +1125,7 @@ export function SearchedUserData({
           <>
             <figure className="size-5">
               <img
-                src={`${repositoryAssetsURL}/images/eventcurrency_founders.png`}
+                src={assets('eventcurrency_founders')}
                 className="size-[18px]"
               />
             </figure>

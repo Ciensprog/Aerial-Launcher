@@ -1,8 +1,7 @@
 import { useLongPress } from '@uidotdev/usehooks'
 
-import { repositoryAssetsURL } from '../../../config/about/links'
-
 import { toast } from '../../../lib/notifications'
+import { assets } from '../../../lib/repository'
 
 export function useActions() {
   const handleFreshAttrs = useLongPress(
@@ -20,19 +19,19 @@ export function useActions() {
             padding: 0,
           },
           unstyled: true,
-        }
+        },
       )
     },
     {
       threshold: 500,
-    }
+    },
   )
 
   const handleEricDejaDeJoder = () => {
     toast(
       <figure>
         <img
-          src={`${repositoryAssetsURL}/images/random/donald-duck-angry.gif`}
+          src={assets('donald-duck-angry')}
           className="h-60 object-contain rounded w-80"
           alt="Eric deja de joder"
         />
@@ -45,7 +44,7 @@ export function useActions() {
           padding: 0,
         },
         unstyled: true,
-      }
+      },
     )
   }
   const handleSick = () => {
@@ -62,7 +61,7 @@ export function useActions() {
           padding: 0,
         },
         unstyled: true,
-      }
+      },
     )
   }
 

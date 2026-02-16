@@ -3,8 +3,6 @@ import { UpdateIcon } from '@radix-ui/react-icons'
 import { useTranslation } from 'react-i18next'
 import Masonry from 'react-responsive-masonry'
 
-import { repositoryAssetsURL } from '../../../config/about/links'
-
 import { Route as RootRoute } from '../../__root'
 
 import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
@@ -31,9 +29,10 @@ import { VBucksInformationData } from '../../../state/management/vbucks-informat
 import { useParseAccountInfo, useVBucksInformationData } from './-hooks'
 
 import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
+import { assets } from '../../../lib/repository'
 import { parseCustomDisplayName } from '../../../lib/utils'
 
-const vbucksImageUrl = `${repositoryAssetsURL}/images/resources/currency_mtxswap.png`
+const vbucksImageUrl = assets('currency_mtxswap')
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
