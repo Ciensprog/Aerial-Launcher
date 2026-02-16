@@ -118,6 +118,29 @@ export function ComponentRoute() {
                   development.
                 </div>
               </li>
+              <li className="item">
+                <div>
+                  <span className="text-muted-foreground">
+                    MyNameIsPako
+                  </span>{' '}
+                  and{' '}
+                  <span className="text-muted-foreground">Espiroaka</span>
+                </div>
+                <div>
+                  Both helped me to test some things, fix some features and
+                  share some assets, also they have a great community{' '}
+                  <a
+                    href="https://discord.gg/vphWQWFNf9"
+                    className="link font-bold italic text-muted-foreground underline"
+                    onClick={openURL('https://discord.gg/vphWQWFNf9')}
+                    onAuxClick={whatIsThis()}
+                  >
+                    Mia <ExternalLink className="h-3 w-3" />
+                  </a>{' '}
+                  a dedicated Discord bot for Fortnite with many cool
+                  features.
+                </div>
+              </li>
             </ul>
             <h2 className="mb-5 mt-5 text-3xl">Greetings</h2>
             <ul className="list">
