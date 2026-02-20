@@ -10,17 +10,26 @@ import { Collection } from '@discordjs/collection'
 
 import { AutomationStatusType } from '../../config/constants/automation'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
-import { PartyState } from '../../config/fortnite/events'
 
-import { AccountProcess } from '../core/automation/account-processes'
 import { AccountService } from '../core/automation/account-service'
+import { MCPStorageTransfer } from '../core/mcp/storage-transfer'
 import { Authentication } from '../core/authentication'
 import { ClaimRewards } from '../core/claim-rewards'
+import { Party } from '../core/party'
 import { MainWindow } from './windows/main'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
+import { SettingsManager } from './settings'
 
 import { AutomationState } from '../../state/stw-operations/automation'
+
+import { getQueryProfile } from '../../services/endpoints/mcp'
+import { fetchParty } from '../../services/endpoints/party'
+
+import {
+  isMCPQueryProfileChangesCardPack,
+  isMCPQueryProfileChangesQuest,
+} from '../../lib/check-objects'
 
 const maxRetries = 3
 
@@ -29,12 +38,13 @@ export class Automation {
     string,
     AutomationAccountServerData
   > = new Collection()
-  private static _processes: Collection<string, AccountProcess> =
-    new Collection()
   private static _services: Collection<string, AccountService> =
     new Collection()
   private static _retryCounters: Collection<string, number> =
     new Collection()
+
+  private static _activeChecks: Record<string, NodeJS.Timeout | null> = {}
+  private static _missionActive: Record<string, boolean> = {}
 
   static async load() {
     const { automation } = await DataDirectory.getAutomationFile()
@@ -83,7 +93,7 @@ export class Automation {
     Automation.updateAccountData(accountId, {
       status: AutomationStatusType.LOADING,
     })
-    Automation.getProcessByAccountId(accountId)?.clearMissionIntervalId()
+    // Automation.getProcessByAccountId(accountId)?.clearMissionIntervalId()
     Automation.getServiceByAccountId(accountId)?.destroy()
 
     await Automation.refreshData(accountId, true)
@@ -141,10 +151,6 @@ export class Automation {
     Authentication.verifyAccessToken(account)
       .then((accessToken) => {
         if (accessToken) {
-          const accountProcess = new AccountProcess({
-            accessToken,
-            account,
-          })
           const accountService = new AccountService({
             accessToken,
             account,
@@ -164,13 +170,12 @@ export class Automation {
                   (Automation._retryCounters.get(account.accountId) ?? 0) <
                   maxRetries
                 ) {
-                  console.log('RELOAD_1')
                   Automation.reload(account.accountId)
                 } else {
+                  this.clearActiveChecks([account.accountId])
                   Automation._retryCounters.delete(account.accountId)
                 }
               } else {
-                console.log('RELOAD_2')
                 Automation.reload(account.accountId)
               }
             }
@@ -195,21 +200,25 @@ export class Automation {
             disconnect()
           }, 10_000) // 10 seconds
 
-          accountService.onceSessionStarted(() => {
+          accountService.onceSessionStarted(async () => {
             setNewStatus(AutomationStatusType.LISTENING)
             clearTimeout(initTimeout)
 
-            if (accountProcess.matchmaking.partyState === null) {
-              const automationAccount = Automation.getAccountById(
-                account.accountId,
-              )
-              const actions = automationAccount
-                ? Object.values(automationAccount.actions)
-                : []
+            try {
+              const response = await fetchParty({
+                accessToken,
+                accountId: account.accountId,
+              })
+              const party = response.data.current?.[0]
 
-              if (actions.includes(true)) {
-                accountProcess.checkMatchAtStartUp()
+              if (party) {
+                this.checkJoiningExistingSession({
+                  accountId: account.accountId,
+                  meta: party.meta,
+                })
               }
+            } catch (error) {
+              //
             }
           })
 
@@ -235,89 +244,62 @@ export class Automation {
             }
           })
 
+          accountService.onPartyUpdated(async (value) => {
+            try {
+              this.checkJoiningExistingSession({
+                accountId: account.accountId,
+                meta: value.party_state_updated,
+              })
+            } catch (errro) {
+              //
+            }
+          })
+
           accountService.onMemberJoined((member) => {
             if (!member.ns || member.ns?.toLowerCase() !== 'fortnite') {
               return
             }
 
             if (member.account_id === accountService.accountId) {
-              const automationAccount = Automation.getAccountById(
-                data.accountId,
-              )
+              setTimeout(async () => {
+                try {
+                  const account = AccountsManager.getAccountById(
+                    accountService.accountId,
+                  )
 
-              if (automationAccount) {
-                const wasItDisconnected =
-                  automationAccount.status ===
-                  AutomationStatusType.DISCONNECTED
+                  if (!account) {
+                    return
+                  }
 
-                if (wasItDisconnected) {
-                  setNewStatus(AutomationStatusType.LISTENING)
-                }
+                  const accessToken =
+                    await Authentication.verifyAccessToken(account)
 
-                if (
-                  automationAccount.status ===
-                  AutomationStatusType.LISTENING
-                ) {
-                  accountProcess.preInit({
-                    timeout: 20_000, // 20 seconds
+                  if (!accessToken) {
+                    return
+                  }
+
+                  const response = await fetchParty({
+                    accessToken,
+                    accountId: account.accountId,
                   })
+                  const party = response.data.current?.[0]
+
+                  if (party) {
+                    this.checkJoiningExistingSession({
+                      accountId: account.accountId,
+                      meta: party.meta,
+                    })
+                  }
+                } catch (error) {
+                  //
                 }
-              }
-            }
-          })
-
-          accountService.onMemberKicked(async (member) => {
-            if (!member.ns || member.ns?.toLowerCase() !== 'fortnite') {
-              return
-            }
-
-            if (member.account_id === accountService.accountId) {
-              if (
-                accountProcess.matchmaking.partyState ===
-                  PartyState.POST_MATCHMAKING &&
-                accountProcess.matchmaking.started === true
-              ) {
-                const automationAccount = Automation.getAccountById(
-                  accountService.accountId,
-                )
-
-                if (automationAccount?.actions.claim === true) {
-                  await ClaimRewards.start([account], true)
-                }
-              }
-            }
-          })
-
-          accountService.onPartyUpdated((party) => {
-            if (party.ns?.toLowerCase() !== 'fortnite') {
-              return
-            }
-
-            const partyState = party.party_state_updated[
-              'Default:PartyState_s'
-            ] as PartyState | undefined
-
-            if (partyState !== undefined) {
-              accountProcess.setMatchmaking({
-                partyState: partyState,
-              })
-
-              if (
-                accountProcess.matchmaking.partyState ===
-                PartyState.POST_MATCHMAKING
-              ) {
-                accountProcess.preInit()
-              }
+              }, 8000)
             }
           })
 
           Automation._services.set(
             accountService.accountId,
             accountService,
-          )
-          Automation._processes.set(
-            accountProcess.accountId,
-            accountProcess,
           )
 
           return
@@ -337,10 +319,9 @@ export class Automation {
       return
     }
 
-    Automation.getProcessByAccountId(accountId)?.clearMissionIntervalId()
     Automation.getServiceByAccountId(accountId)?.destroy()
     Automation._services.delete(accountId)
-    Automation._processes.delete(accountId)
+    this.clearActiveChecks([current.accountId])
 
     Automation.start(current)
   }
@@ -351,16 +332,6 @@ export class Automation {
     return Automation._accounts.get(accountId)
   }
 
-  static getProcesses() {
-    return Automation._processes.clone()
-  }
-
-  static getProcessByAccountId(accountId: string) {
-    return Automation._processes.find(
-      (accountProcess) => accountProcess.accountId === accountId,
-    )
-  }
-
   static getServices() {
     return Automation._services.clone()
   }
@@ -369,6 +340,224 @@ export class Automation {
     return Automation._services.find(
       (accountService) => accountService.accountId === accountId,
     )
+  }
+
+  static async checkJoiningExistingSession({
+    accountId,
+    meta,
+  }: {
+    accountId: string
+    meta: Partial<Record<string, string>>
+  }) {
+    try {
+      const automationAccount = Automation.getAccountById(accountId)
+
+      if (!automationAccount) {
+        return
+      }
+
+      if (
+        !automationAccount.actions.kick &&
+        !automationAccount.actions.claim &&
+        !automationAccount.actions.transferMats
+      ) {
+        return
+      }
+
+      const defaultCampaignInfo = JSON.parse(
+        meta['Default:CampaignInfo_j'] ?? '{}',
+      )
+      const campaignInfo = defaultCampaignInfo?.CampaignInfo
+
+      if (campaignInfo) {
+        if (campaignInfo.matchmakingState === 'JoiningExistingSession') {
+          if (Automation._missionActive[accountId]) {
+            return
+          }
+
+          if (Automation._missionActive[accountId] === undefined) {
+            Automation._missionActive[accountId] = false
+          }
+
+          const settings = await SettingsManager.getData()
+          const missionInterval = Number(settings.missionInterval)
+
+          Automation._missionActive[accountId] = true
+          Automation._activeChecks[accountId] = setInterval(async () => {
+            try {
+              const account = AccountsManager.getAccountById(accountId)
+
+              if (!account) {
+                this.clearActiveChecks([accountId])
+
+                return
+              }
+
+              const accessToken =
+                await Authentication.verifyAccessToken(account)
+
+              if (!accessToken) {
+                this.clearActiveChecks([accountId])
+
+                return
+              }
+
+              const response = await getQueryProfile({
+                accessToken,
+                accountId,
+              })
+              const profileChanges =
+                response.data.profileChanges[0] ?? null
+
+              const pendingMissionAlertRewardsTotal =
+                profileChanges?.profile.stats.attributes
+                  .mission_alert_redemption_record
+                  ?.pendingMissionAlertRewards?.items.length ?? 0
+              const pendingDifficultyIncreaseRewardsTotal =
+                profileChanges?.profile.stats.attributes
+                  .difficulty_increase_rewards_record?.pendingRewards
+                  .length ?? 0
+
+              const items = Object.entries(
+                profileChanges?.profile?.items ?? {},
+              )
+              const pendingRewards = items
+                .filter(
+                  ([, itemValue]) =>
+                    (isMCPQueryProfileChangesCardPack(itemValue) &&
+                      (itemValue.attributes.match_statistics ||
+                        itemValue.attributes.pack_source ===
+                          'ItemCache')) ||
+                    (isMCPQueryProfileChangesQuest(itemValue) &&
+                      itemValue.attributes.quest_state === 'Completed'),
+                )
+                .map(([itemKey]) => itemKey)
+
+              if (
+                pendingMissionAlertRewardsTotal > 0 ||
+                pendingDifficultyIncreaseRewardsTotal > 0 ||
+                pendingRewards.length > 0
+              ) {
+                const automationAccount =
+                  Automation.getAccountById(accountId)
+
+                if (!automationAccount) {
+                  this.clearActiveChecks([accountId])
+
+                  return
+                }
+
+                if (
+                  automationAccount.actions.kick ||
+                  automationAccount.actions.claim
+                ) {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const tasks: Array<Promise<any>> = []
+
+                  if (automationAccount.actions.kick) {
+                    const accounts = AccountsManager.getAccounts()
+
+                    tasks.push(
+                      Party.kickPartyMembers(
+                        account,
+                        [...accounts.values()],
+                        automationAccount.actions.claim ?? false,
+                        {
+                          useGlobalNotification: true,
+                        },
+                      ),
+                    )
+                  }
+
+                  if (automationAccount.actions.claim) {
+                    tasks.push(ClaimRewards.start([account], true))
+                  }
+
+                  await Promise.allSettled(tasks)
+                  this.clearActiveChecks([accountId])
+                } else if (automationAccount.actions.transferMats) {
+                  this.clearActiveChecks([accountId])
+                  MCPStorageTransfer.buildingMaterials(account).catch(
+                    () => {},
+                  )
+                }
+              }
+            } catch (error) {
+              //
+            }
+          }, missionInterval * 1_000)
+        } else if (Automation._missionActive[accountId]) {
+          const removeCheck = async () => {
+            try {
+              const account = AccountsManager.getAccountById(accountId)
+
+              if (!account) {
+                return true
+              }
+
+              const accessToken =
+                await Authentication.verifyAccessToken(account)
+
+              if (!accessToken) {
+                return true
+              }
+
+              const response = await fetchParty({
+                accessToken,
+                accountId: account.accountId,
+              })
+              const party = response.data.current?.[0]
+
+              if (party) {
+                const defaultCampaignInfo = JSON.parse(
+                  meta['Default:CampaignInfo_j'] ?? '{}',
+                )
+                const campaignInfo = defaultCampaignInfo?.CampaignInfo
+
+                if (
+                  campaignInfo &&
+                  campaignInfo.matchmakingState ===
+                    'JoiningExistingSession'
+                ) {
+                  return false
+                }
+              }
+            } catch (error) {
+              //
+            }
+
+            return true
+          }
+
+          const remove = await removeCheck()
+
+          if (remove) {
+            Automation._missionActive[accountId] = false
+
+            this.clearActiveChecks([accountId])
+          }
+        }
+      }
+    } catch (error) {
+      //
+    }
+  }
+
+  static clearActiveChecks(accountIds: Array<string> | null) {
+    const ids =
+      accountIds === null
+        ? Object.keys(Automation._activeChecks)
+        : accountIds
+
+    ids.forEach((accountId) => {
+      if (
+        Automation._activeChecks[accountId] !== undefined &&
+        Automation._activeChecks[accountId] !== null
+      ) {
+        clearInterval(Automation._activeChecks[accountId])
+        Automation._activeChecks[accountId] = null
+      }
+    })
   }
 
   private static async refreshData(
@@ -391,7 +580,7 @@ export class Automation {
 
     if (removeAccount) {
       Automation._accounts.delete(accountId)
-      Automation._processes.delete(accountId)
+      // Automation._processes.delete(accountId)
       Automation._services.delete(accountId)
     }
 
@@ -412,7 +601,6 @@ export class Automation {
     }>,
   ) {
     const automationAccount = Automation.getAccountById(accountId)
-    const accountProcess = Automation.getProcessByAccountId(accountId)
 
     if (automationAccount) {
       const actionsNewValueClaim =
@@ -423,20 +611,50 @@ export class Automation {
         data.actions?.transferMats ??
         automationAccount.actions.transferMats
 
-      if (accountProcess && data.actions) {
+      if (data.actions) {
         if (
           (!automationAccount.actions.claim && actionsNewValueClaim) ||
           (!automationAccount.actions.kick && actionsNewValueKick) ||
           (!automationAccount.actions.transferMats &&
             actionsNewValueTransferMats)
         ) {
-          if (!accountProcess.startedTracking) {
-            accountProcess.setStartedTracking(true)
-            accountProcess.checkMatchAtStartUp()
+          if (typeof Automation._activeChecks[accountId] !== 'number') {
+            const check = async () => {
+              try {
+                const account = AccountsManager.getAccountById(accountId)
+
+                if (!account) {
+                  return
+                }
+
+                const accessToken =
+                  await Authentication.verifyAccessToken(account)
+
+                if (!accessToken) {
+                  return
+                }
+
+                const response = await fetchParty({
+                  accessToken,
+                  accountId,
+                })
+                const party = response.data.current?.[0]
+
+                if (party) {
+                  this.checkJoiningExistingSession({
+                    accountId,
+                    meta: party.meta,
+                  })
+                }
+              } catch (error) {
+                //
+              }
+            }
+
+            check()
           }
         } else if (!actionsNewValueClaim && !actionsNewValueKick) {
-          accountProcess.setStartedTracking(false)
-          accountProcess.clearMissionIntervalId()
+          this.clearActiveChecks([accountId])
         }
       }
 
