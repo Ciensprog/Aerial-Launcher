@@ -1,4 +1,5 @@
 {
+  "note": "Nota: si estás apilando las recompensas de cofres es posible que esta funcionalidad no funcione correctamente.",
   "description1": "Auto-kick estará a la espera de eventos en las cuentas seleccionadas and ejecutará el proceso de expulsión cuando detecte que la partida ha finalizado.",
   "description2": "También, recuerda que la expulsión es inteligente. No hay necesidad de habilitar dos auto-kick en tus cuentas si están en el mismo grupo, ambas cuentas serán expulsadas (y reclamarán la recompensa si tenías activado el auto-claim) dependiendo del caso.",
   "statuses": {

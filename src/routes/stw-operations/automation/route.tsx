@@ -116,6 +116,9 @@ export function Content() {
             id="selector-card"
           >
             <CardHeader className="border-b">
+              <CardDescription className="bg-[rgb(223_161_42_/_10%)] border-[rgb(223_161_42_/_10%)] border border-l-8 font-bold mb-3 pl-3 py-1 rounded">
+                {t('auto-kick.note')}
+              </CardDescription>
               <CardDescription>
                 {t('auto-kick.description1')}
               </CardDescription>

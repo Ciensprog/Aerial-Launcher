@@ -1,4 +1,5 @@
 {
+  "note": "Observação: se você estiver acumulando recompensas de baús, provavelmente este recurso não funcionará corretamente.",
   "description1": "Auto-expulsar ouvirá os eventos nas contas selecionadas e iniciará o processo de expulsão quando detectar que a partida terminou.",
   "description2": "Além disso, lembre-se de que a expulsão é inteligente. Não há necessidade de ativar dois auto-expulsar em suas contas se elas estiverem no mesmo grupo, ambas as contas serão expulsas/sairão (e coletará as recompensas se você tiver o auto-coletar ativo), dependendo do caso.",
   "statuses": {
