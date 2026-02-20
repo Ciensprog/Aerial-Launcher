@@ -580,7 +580,6 @@ export class Automation {
 
     if (removeAccount) {
       Automation._accounts.delete(accountId)
-      // Automation._processes.delete(accountId)
       Automation._services.delete(accountId)
     }
 

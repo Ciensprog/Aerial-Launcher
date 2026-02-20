@@ -21,9 +21,7 @@ export class MainWindow {
   static cleanup() {
     MainWindow.instance.removeAllListeners()
 
-    Automation.getProcesses().forEach((accountProcess) => {
-      accountProcess.clearMissionIntervalId()
-    })
+    Automation.clearActiveChecks(null)
     Automation.getServices().forEach((accountService) => {
       accountService.destroy()
     })
