@@ -894,6 +894,44 @@ const gotTheLock = app.requestSingleInstanceLock()
         })
       },
     )
+
+    /**
+     * Auto Daily Quests (ClientQuestLogin)
+     */
+
+    const runAutoDailyQuests = async () => {
+      const settings = await SettingsManager.getData()
+
+      if (!settings.autoDailyQuests) {
+        return
+      }
+
+      const accounts = AccountsManager.getAccounts()
+
+      if (accounts.size > 0) {
+        MCPClientQuestLogin.save([...accounts.values()])
+      }
+    }
+
+    schedule.scheduleJob(
+      {
+        /**
+         * Runs: every reset at time: 00:01:00 AM
+         * Hour: 0 AM (midnight)
+         * Minute: 1
+         * Second: 0
+         */
+        rule: '0 1 0 * * *',
+        /**
+         * Time zone
+         */
+        tz: 'UTC',
+      },
+      runAutoDailyQuests
+    )
+
+    // Startup trigger: run once after accounts have loaded
+    setTimeout(runAutoDailyQuests, 30_000)
   })
 
   // Quit when all windows are closed, except on macOS. There, it's common

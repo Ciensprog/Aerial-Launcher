@@ -27,6 +27,8 @@ const links = {
   LeleDerGrasshalmi:
     'https://github.com/LeleDerGrasshalmi/FortniteEndpointsDocumentation',
   HyperionCSharp: 'https://github.com/HyperionCSharp/EpicGamesAPIDocs',
+  SaseQ: 'https://github.com/SaseQ',
+  PRO100KatYT: 'https://github.com/PRO100KatYT',
   eric_guest1: '',
 }
 
@@ -139,6 +141,29 @@ export function ComponentRoute() {
                   </a>{' '}
                   a dedicated Discord bot for Fortnite with many cool
                   features.
+                </div>
+              </li>
+              <li className="item">
+                <a
+                  href={links.SaseQ}
+                  className="link"
+                  onClick={openURL(links.SaseQ)}
+                  onAuxClick={whatIsThis()}
+                >
+                  SaseQ <ExternalLink className="h-3 w-3" />
+                </a>{' '}
+                and{' '}
+                <a
+                  href={links.PRO100KatYT}
+                  className="link"
+                  onClick={openURL(links.PRO100KatYT)}
+                  onAuxClick={whatIsThis()}
+                >
+                  PRO100KatYT <ExternalLink className="h-3 w-3" />
+                </a>
+                <div>
+                  Daily quests were implemented by SaseQ using research
+                  done by PRO100KatYT.
                 </div>
               </li>
             </ul>

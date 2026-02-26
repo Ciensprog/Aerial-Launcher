@@ -1,6 +1,7 @@
 {
   "description": "Save quests progression of the selected accounts.",
   "form": {
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)",
     "submit-button": "Save Quests"
   },
   "notifications": {
