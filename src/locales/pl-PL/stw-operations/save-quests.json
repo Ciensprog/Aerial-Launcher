@@ -1,6 +1,7 @@
 {
   "description": "Zapisz progres zadań na wybranch kontach.",
   "form": {
+    "auto-daily-quests": "Auto Daily Quests (po starcie & resecie)",
     "submit-button": "Zapisz progres"
   },
   "notifications": {

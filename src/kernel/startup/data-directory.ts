@@ -74,6 +74,7 @@ export class DataDirectory {
     'settings.json',
   )
   private static settingsDefaultData: Settings = {
+    autoDailyQuests: true,
     claimingRewards: `${defaultClaimingRewardsDelay}`,
     customProcess: 'FortniteClient-Win64-Shipping.exe',
     missionInterval: `${defaultMissionInterval}`,

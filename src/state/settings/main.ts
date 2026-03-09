@@ -18,6 +18,7 @@ export type DevSettingsState = {
 
 export const useSettingsStore = create<SettingsState>()(
   immer((set) => ({
+    autoDailyQuests: true,
     claimingRewards: '',
     customProcess: '',
     missionInterval: '',
@@ -31,6 +32,10 @@ export const useSettingsStore = create<SettingsState>()(
       const newData: Partial<
         Record<keyof Settings, boolean | number | string>
       > = {}
+
+      if (settings.autoDailyQuests !== undefined) {
+        newData.autoDailyQuests = settings.autoDailyQuests
+      }
 
       if (settings.claimingRewards !== undefined) {
         newData.claimingRewards = settings.claimingRewards

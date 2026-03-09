@@ -26,6 +26,8 @@ import { Switch } from '../../../components/ui/switch'
 import { useClaimedRewardsNotifications } from '../party/-hooks'
 import { useData } from './-hooks'
 
+import { useSettingsStore } from '../../../state/settings/main'
+
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/save-quests',
@@ -120,6 +122,12 @@ function Content() {
           <Card className="flex flex-col flex-shrink-0 justify-center w-full">
             <CardContent className="block pt-6 space-y-4">
               <div className="flex items-center justify-between">
+                <span className="pr-5">
+                  {t('save-quests.form.auto-daily-quests')}
+                </span>
+                <AutoDailyQuestsSwitch />
+              </div>
+              <div className="flex items-center justify-between">
                 <span className="pr-5">{t('party.claim.title')}</span>
                 <Switch
                   onCheckedChange={changeClaimState}
@@ -146,5 +154,32 @@ function Content() {
         </div>
       </div>
     </div>
+  )
+}
+
+function AutoDailyQuestsSwitch() {
+  const settings = useSettingsStore()
+  const autoDailyQuests = settings.autoDailyQuests
+
+  const handleChange = (checked: boolean) => {
+    const updated = {
+      autoDailyQuests: checked,
+      claimingRewards: settings.claimingRewards,
+      customProcess: settings.customProcess,
+      missionInterval: settings.missionInterval,
+      path: settings.path,
+      systemTray: settings.systemTray,
+      userAgent: settings.userAgent,
+    }
+
+    settings.updateSettings(updated)
+    window.electronAPI.updateSettings(updated)
+  }
+
+  return (
+    <Switch
+      onCheckedChange={handleChange}
+      checked={autoDailyQuests}
+    />
   )
 }

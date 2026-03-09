@@ -82,6 +82,9 @@ export class SettingsManager {
     const defaultSettingsData = DataDirectory.getSettingsDefaultData()
     const result = await DataDirectory.getSettingsFile()
     const settings: Required<Settings> = {
+      autoDailyQuests:
+        result.settings.autoDailyQuests ??
+        defaultSettingsData.autoDailyQuests,
       claimingRewards:
         result.settings.claimingRewards ??
         defaultSettingsData.claimingRewards,

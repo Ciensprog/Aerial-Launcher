@@ -26,6 +26,7 @@ export const appLanguageSchema = z.object({
 })
 
 export const settingsSchema = z.object({
+  autoDailyQuests: z.boolean().default(true),
   claimingRewards: createRangeValidation({
     defaultValue: defaultClaimingRewardsDelay,
     range: claimingRewardsDelayRange,
