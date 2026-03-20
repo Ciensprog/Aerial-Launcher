@@ -29,7 +29,7 @@ import { getDateWithDefaultFormat } from '../../lib/dates'
 export class ClaimRewards {
   static async start(
     accounts: AccountDataList,
-    useGlobalNotification?: boolean
+    useGlobalNotification?: boolean,
   ) {
     ClaimRewards.core(accounts).then((response) => {
       if (response) {
@@ -37,14 +37,14 @@ export class ClaimRewards {
           useGlobalNotification
             ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
             : ElectronAPIEventKeys.ClaimRewardsClientNotification,
-          response
+          response,
         )
       }
 
       MainWindow.instance.webContents.send(
         useGlobalNotification
           ? ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
-          : ElectronAPIEventKeys.PartyClaimActionNotification
+          : ElectronAPIEventKeys.PartyClaimActionNotification,
       )
     })
   }
@@ -67,10 +67,10 @@ export class ClaimRewards {
       const response = await Promise.allSettled(
         accounts.map(async (account) => {
           const automationAccount = Automation.getAccountById(
-            account.accountId
+            account.accountId,
           )
           const accountToTransfer = AccountsManager.getAccountById(
-            account.accountId
+            account.accountId,
           )
 
           if (
@@ -79,7 +79,7 @@ export class ClaimRewards {
             automationAccount.actions.transferMats === true
           ) {
             MCPStorageTransfer.buildingMaterials(accountToTransfer).catch(
-              () => {}
+              () => {},
             )
           }
 
@@ -121,17 +121,18 @@ export class ClaimRewards {
 
           if (pendingMissionAlertRewardsTotal > 0) {
             rewardsToClaim.push(
-              MCPClaimRewards.claimMissionAlertRewards(account)
+              MCPClaimRewards.claimMissionAlertRewards(account),
             )
           }
 
           if (pendingDifficultyIncreaseRewardsTotal > 0) {
             rewardsToClaim.push(
-              MCPClaimRewards.claimDifficultyIncreaseRewards(account)
+              MCPClaimRewards.claimDifficultyIncreaseRewards(account),
             )
           }
 
           const claimsResponse = await Promise.allSettled(rewardsToClaim)
+
           const accoladesResponse =
             await MCPClaimRewards.redeemSTWAccoladeTokens(account)
 
@@ -145,11 +146,11 @@ export class ClaimRewards {
               claimResponse.value.forEach((item) => {
                 const hasAutoPinMiniBosses = AutoPinUrns.findById(
                   account.accountId,
-                  'mini-bosses'
+                  'mini-bosses',
                 )
                 const hasAutoPinUrns = AutoPinUrns.findById(
                   account.accountId,
-                  'urns'
+                  'urns',
                 )
 
                 if (
@@ -159,12 +160,12 @@ export class ClaimRewards {
                   const pinMiniBosses = item.notifications?.find(
                     (notification) =>
                       notification.questId ===
-                      QuestEventRepeatable.ExorcismByElimination
+                      QuestEventRepeatable.ExorcismByElimination,
                   )
                   const pinUrns = item.notifications?.find(
                     (notification) =>
                       notification.questId ===
-                      QuestEventRepeatable.UrnYourKeep
+                      QuestEventRepeatable.UrnYourKeep,
                   )
 
                   if (pinMiniBosses || pinUrns) {
@@ -185,7 +186,7 @@ export class ClaimRewards {
                                   .client_settings?.pinnedQuestInstances ??
                                 []
                               const newItems = Object.entries(
-                                newProfileChanges.profile.items ?? []
+                                newProfileChanges.profile.items ?? [],
                               )
                                 .filter(([, itemValue]) => {
                                   return (
@@ -233,7 +234,7 @@ export class ClaimRewards {
                             itemType: loot.itemType,
                             quantity: loot.quantity,
                           })
-                        }
+                        },
                       )
                     }
                   } else if (notification.lootGranted) {
@@ -268,7 +269,7 @@ export class ClaimRewards {
             {
               totalMissionXPRedeemed: 0,
               totalQuestXPRedeemed: 0,
-            }
+            },
           ) ?? {
             totalMissionXPRedeemed: 0,
             totalQuestXPRedeemed: 0,
@@ -301,14 +302,14 @@ export class ClaimRewards {
           }
 
           return result
-        })
+        }),
       )
 
       const records = response.map((item) =>
-        item.status === 'fulfilled' ? item.value : null
+        item.status === 'fulfilled' ? item.value : null,
       )
       const newNotifications = records.filter(
-        (item) => item !== null && Object.keys(item.rewards).length > 0
+        (item) => item !== null && Object.keys(item.rewards).length > 0,
       ) as Array<RewardsNotification>
 
       return newNotifications.length > 0 ? newNotifications : null

@@ -146,6 +146,7 @@ import eventcurrency_scaling from '../assets/images/resources/eventcurrency_scal
 import eventscaling from '../assets/images/resources/eventscaling.png'
 import heroxp from '../assets/images/resources/heroxp.png'
 import metalitemdata from '../assets/images/resources/metalitemdata.png'
+import peoplexp from '../assets/images/resources/peoplexp.png'
 import personnelxp from '../assets/images/resources/personnelxp.png'
 import phoenixxp from '../assets/images/resources/phoenixxp.png'
 import phoenixxp_reward from '../assets/images/resources/phoenixxp_reward.png'
@@ -170,6 +171,7 @@ import reagent_promotion_heroes from '../assets/images/resources/reagent_promoti
 import reagent_promotion_survivors from '../assets/images/resources/reagent_promotion_survivors.png'
 import reagent_promotion_traps from '../assets/images/resources/reagent_promotion_traps.png'
 import reagent_promotion_weapons from '../assets/images/resources/reagent_promotion_weapons.png'
+import reagent_schematic from '../assets/images/resources/reagent_schematic.png'
 import reagent_traps from '../assets/images/resources/reagent_traps.png'
 import reagent_weapons from '../assets/images/resources/reagent_weapons.png'
 import schematicxp from '../assets/images/resources/schematicxp.png'
@@ -484,6 +486,7 @@ export const images: Record<string, string> = {
   eventscaling: eventscaling,
   heroxp: heroxp,
   metalitemdata: metalitemdata,
+  peoplexp: peoplexp,
   personnelxp: personnelxp,
   phoenixxp: phoenixxp,
   phoenixxp_reward: phoenixxp_reward,
@@ -508,6 +511,7 @@ export const images: Record<string, string> = {
   reagent_promotion_survivors: reagent_promotion_survivors,
   reagent_promotion_traps: reagent_promotion_traps,
   reagent_promotion_weapons: reagent_promotion_weapons,
+  reagent_schematic: reagent_schematic,
   reagent_traps: reagent_traps,
   reagent_weapons: reagent_weapons,
   schematicxp: schematicxp,

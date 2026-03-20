@@ -719,7 +719,7 @@ export class TaxiService {
           setTimeout(resolve, 1000)
         })
 
-        TaxiService.updatePatch(accountService)
+        await TaxiService.updatePatch(accountService)
 
         accountService.currentTimeout = accountService.client.setTimeout(
           () => {
@@ -880,7 +880,7 @@ export class TaxiService {
     )
   }
 
-  private static updatePatch(accountService: AccountService) {
+  private static async updatePatch(accountService: AccountService) {
     const isHigh =
       TaxiService._accounts.get(accountService.accountId)?.actions.high ??
       true
@@ -944,6 +944,22 @@ export class TaxiService {
           teamTech_Phoenix: 0,
         },
       }),
+      'Default:PackedState_j': JSON.stringify({
+        PackedState: {
+          subGame: 'Campaign',
+          location: 'PreLobby',
+          gameMode: 'None',
+          voiceChatStatus: 'PartyVoice',
+          hasCompletedSTWTutorial: true,
+          hasPurchasedSTW: true,
+          platformSupportsSTW: true,
+          bReturnToLobbyAndReadyUp: false,
+          bHideReadyUp: false,
+          bDownloadOnDemandActive: false,
+          bIsPartyLFG: false,
+          bShouldRecordPartyChannel: false,
+        },
+      }),
       ...newMetaInfo,
     }
 
@@ -952,7 +968,11 @@ export class TaxiService {
       metaInfo['Default:CampaignBackpackRating_d'] = '999.000000'
     }
 
-    accountService.client.party?.me?.sendPatch(metaInfo).catch(() => {})
+    try {
+      await accountService.client.party?.me?.sendPatch(metaInfo)
+    } catch (error) {
+      //
+    }
   }
 
   private static async refreshData(

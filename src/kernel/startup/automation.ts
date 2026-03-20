@@ -364,13 +364,10 @@ export class Automation {
         return
       }
 
-      const defaultCampaignInfo = JSON.parse(
-        meta['Default:CampaignInfo_j'] ?? '{}',
-      )
-      const campaignInfo = defaultCampaignInfo?.CampaignInfo
+      const partyState = meta['Default:PartyState_s'] ?? ''
 
-      if (campaignInfo) {
-        if (campaignInfo.matchmakingState === 'JoiningExistingSession') {
+      if (partyState) {
+        if (partyState === 'PostMatchmaking') {
           if (Automation._missionActive[accountId]) {
             return
           }
@@ -509,16 +506,9 @@ export class Automation {
               const party = response.data.current?.[0]
 
               if (party) {
-                const defaultCampaignInfo = JSON.parse(
-                  meta['Default:CampaignInfo_j'] ?? '{}',
-                )
-                const campaignInfo = defaultCampaignInfo?.CampaignInfo
+                const partyState = meta['Default:PartyState_s'] ?? ''
 
-                if (
-                  campaignInfo &&
-                  campaignInfo.matchmakingState ===
-                    'JoiningExistingSession'
-                ) {
+                if (partyState === 'PostMatchmaking') {
                   return false
                 }
               }

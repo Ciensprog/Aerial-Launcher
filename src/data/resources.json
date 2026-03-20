@@ -1,4 +1,8 @@
 {
+  "peoplexp": {
+    "name": "People XP",
+    "type": "xp"
+  },
   "heroxp": {
     "name": "Hero XP",
     "type": "xp"
@@ -49,6 +53,10 @@
   },
   "reagent_people": {
     "name": "Training Manual",
+    "type": "evo"
+  },
+  "reagent_schematic": {
+    "name": "Schematic Manual",
     "type": "evo"
   },
   "reagent_traps": {

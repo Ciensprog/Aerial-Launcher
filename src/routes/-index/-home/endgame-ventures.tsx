@@ -45,7 +45,7 @@ export function EndgameVenturesSection({
                         if (
                           reward.itemId.includes('eventscaling') ||
                           reward.itemId.includes(
-                            'campaign_event_currency'
+                            'campaign_event_currency',
                           ) ||
                           reward.itemId.includes('phoenixxp')
                         ) {
@@ -58,7 +58,7 @@ export function EndgameVenturesSection({
                               'flex flex-shrink-0 items-center rounded',
                               {
                                 'border px-1': reward.type === 'trap',
-                              }
+                              },
                             )}
                             key={reward.itemId}
                           >
@@ -78,9 +78,9 @@ export function EndgameVenturesSection({
                       (reward) =>
                         !reward.itemId.includes('eventscaling') ||
                         reward.itemId.includes(
-                          'campaign_event_currency'
+                          'campaign_event_currency',
                         ) ||
-                        reward.itemId.includes('phoenixxp')
+                        reward.itemId.includes('phoenixxp'),
                     ).length > 0 && '•'}
                   </>
                 )}
