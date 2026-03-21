@@ -193,6 +193,22 @@ export function AppSettingsBaseForm() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="funnyLaunch"
+            render={({ field }) => (
+              <FormItem className="flex items-center space-y-0">
+                <FormLabel>{t('app-settings.form.funny-launch.label')}</FormLabel>
+                <FormControl className="ml-auto">
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <Button
           type="submit"

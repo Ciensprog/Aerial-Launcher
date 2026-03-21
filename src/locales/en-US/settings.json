@@ -43,6 +43,9 @@
       },
       "tray": {
         "label": "Hide to system tray"
+      },
+      "funny-launch": {
+        "label": "FunnyLaunch"
       }
     }
   },

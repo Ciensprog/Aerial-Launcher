@@ -37,6 +37,7 @@ export const settingsSchema = z.object({
     defaultValue: defaultMissionInterval,
     range: missionIntervalRange,
   }),
+  funnyLaunch: z.boolean().default(false),
   path: z.string().trim().min(1),
   systemTray: z.boolean().default(false),
   userAgent: z.string().trim().min(1),

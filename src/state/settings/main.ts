@@ -21,6 +21,7 @@ export const useSettingsStore = create<SettingsState>()(
     autoDailyQuests: true,
     claimingRewards: '',
     customProcess: '',
+    funnyLaunch: false,
     missionInterval: '',
     path: '',
     systemTray: false,
@@ -39,6 +40,10 @@ export const useSettingsStore = create<SettingsState>()(
 
       if (settings.claimingRewards !== undefined) {
         newData.claimingRewards = settings.claimingRewards
+      }
+
+      if (settings.funnyLaunch !== undefined) {
+        newData.funnyLaunch = settings.funnyLaunch
       }
 
       if (settings.missionInterval !== undefined) {

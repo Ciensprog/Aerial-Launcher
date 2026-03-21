@@ -15,6 +15,7 @@ export function useSetupForm() {
   const {
     claimingRewards,
     customProcess,
+    funnyLaunch,
     missionInterval,
     path,
     systemTray,
@@ -23,6 +24,7 @@ export function useSetupForm() {
     useShallow((state) => ({
       claimingRewards: state.claimingRewards,
       customProcess: state.customProcess,
+      funnyLaunch: state.funnyLaunch,
       missionInterval: state.missionInterval,
       path: state.path,
       systemTray: state.systemTray,
@@ -34,6 +36,7 @@ export function useSetupForm() {
     values: {
       claimingRewards,
       customProcess,
+      funnyLaunch,
       missionInterval,
       path,
       systemTray,

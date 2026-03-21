@@ -79,10 +79,14 @@ export class FortniteLauncher {
         return
       }
 
+      const executableName = settings.funnyLaunch
+        ? 'NoFortniteClient-Win64-Shipping_EAC_EOS.exe'
+        : 'FortniteLauncher.exe'
+
       const command = [
         'start',
         '""',
-        'FortniteLauncher.exe',
+        executableName,
         // `${manifest.LaunchCommand}`,
         '-AUTH_LOGIN=unused',
         `-AUTH_PASSWORD=${launcherExchangeCode.data.code}`,
