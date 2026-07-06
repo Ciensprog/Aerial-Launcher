@@ -8,6 +8,7 @@ import { app, nativeImage } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
+import { getLauncherExchangeCode } from '../../lib/epic/launcher-exchange'
 import { getIconCandidates, isImageIcon } from '../../lib/games-launcher/icons'
 import { scanEpicGames } from '../../lib/games-launcher/scanner'
 import { parseCustomDisplayName } from '../../lib/utils'
@@ -15,8 +16,6 @@ import { parseCustomDisplayName } from '../../lib/utils'
 import { MainWindow } from '../startup/windows/main'
 import { DataDirectory } from '../startup/data-directory'
 import { Authentication } from './authentication'
-
-import { getExchangeCodeUsingAccessToken } from '../../services/endpoints/oauth'
 
 export class GamesLauncher {
   static async scan(): Promise<EpicGameEntry[]> {
@@ -73,8 +72,8 @@ export class GamesLauncher {
         return
       }
 
-      const exchange = await getExchangeCodeUsingAccessToken(accessToken)
-      if (!exchange.data.code) {
+      const exchangeCode = await getLauncherExchangeCode(accessToken)
+      if (!exchangeCode) {
         sendResult(false)
         return
       }
@@ -86,7 +85,7 @@ export class GamesLauncher {
         '""',
         `"${exeName}"`,
         '-AUTH_LOGIN=unused',
-        `-AUTH_PASSWORD=${exchange.data.code}`,
+        `-AUTH_PASSWORD=${exchangeCode}`,
         '-AUTH_TYPE=exchangecode',
         `-epicapp=${game.appName}`,
         '-epicenv=Prod',
