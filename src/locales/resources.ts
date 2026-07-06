@@ -31,10 +31,12 @@ import enUS_myAccounts_AuthCode from './en-US/accounts/auth-code.json'
 import enUS_myAccounts_ExchangeCode from './en-US/accounts/exchange-code.json'
 import enUS_myAccounts_DeviceAuth from './en-US/accounts/device-auth.json'
 import enUS_myAccounts_RemoveAccount from './en-US/accounts/remove-account.json'
+import enUS_gamesLauncher from './en-US/games-launcher.json'
 
 const enUS = {
   sidebar: enUS_sidebar,
   general: enUS_general,
+  'games-launcher': enUS_gamesLauncher,
   history: enUS_history,
   settings: enUS_settings,
   alerts: enUS_alerts,
@@ -106,6 +108,7 @@ import es419_myAccounts_RemoveAccount from './es-419/accounts/remove-account.jso
 const es419 = {
   sidebar: es419_sidebar,
   general: es419_general,
+  'games-launcher': enUS_gamesLauncher,
   history: es419_history,
   settings: es419_settings,
   alerts: es419_alerts,
@@ -177,6 +180,7 @@ import zhCN_myAccounts_RemoveAccount from './zh-CN/accounts/remove-account.json'
 const zhCN = {
   sidebar: zhCN_sidebar,
   general: zhCN_general,
+  'games-launcher': enUS_gamesLauncher,
   history: zhCN_history,
   settings: zhCN_settings,
   alerts: zhCN_alerts,
@@ -248,6 +252,7 @@ import ruRU_myAccounts_RemoveAccount from './ru-RU/accounts/remove-account.json'
 const ruRU = {
   sidebar: ruRU_sidebar,
   general: ruRU_general,
+  'games-launcher': enUS_gamesLauncher,
   history: ruRU_history,
   settings: ruRU_settings,
   alerts: ruRU_alerts,
@@ -319,6 +324,7 @@ import ptBR_myAccounts_RemoveAccount from './pt-BR/accounts/remove-account.json'
 const ptBR = {
   sidebar: ptBR_sidebar,
   general: ptBR_general,
+  'games-launcher': enUS_gamesLauncher,
   history: ptBR_history,
   settings: ptBR_settings,
   alerts: ptBR_alerts,
@@ -386,10 +392,12 @@ import plPL_myAccounts_AuthCode from './pl-PL/accounts/auth-code.json'
 import plPL_myAccounts_ExchangeCode from './pl-PL/accounts/exchange-code.json'
 import plPL_myAccounts_DeviceAuth from './pl-PL/accounts/device-auth.json'
 import plPL_myAccounts_RemoveAccount from './pl-PL/accounts/remove-account.json'
+import plPL_gamesLauncher from './pl-PL/games-launcher.json'
 
 const plPL = {
   sidebar: plPL_sidebar,
   general: plPL_general,
+  'games-launcher': plPL_gamesLauncher,
   history: plPL_history,
   settings: plPL_settings,
   alerts: plPL_alerts,
@@ -461,6 +469,7 @@ import itIT_myAccounts_RemoveAccount from './it-IT/accounts/remove-account.json'
 const itIT = {
   sidebar: itIT_sidebar,
   general: itIT_general,
+  'games-launcher': enUS_gamesLauncher,
   history: itIT_history,
   settings: itIT_settings,
   alerts: itIT_alerts,

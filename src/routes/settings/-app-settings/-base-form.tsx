@@ -39,6 +39,19 @@ export function AppSettingsBaseForm() {
         <div className="grid gap-4">
           <FormField
             control={form.control}
+            name="epicGamesDir"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('app-settings.form.epic-games-dir.label')}</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="path"
             render={({ field }) => (
               <FormItem>

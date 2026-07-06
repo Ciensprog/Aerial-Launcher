@@ -108,6 +108,10 @@ export enum ElectronAPIEventKeys {
   LauncherStart = 'launcher:start',
   LauncherNotification = 'launcher:notification',
 
+  GamesLauncherScan = 'games-launcher:scan',
+  GamesLauncherStart = 'games-launcher:start',
+  GamesLauncherNotification = 'games-launcher:notification',
+
   /**
    * STW Operations
    */

@@ -19,6 +19,9 @@
       "path": {
         "label": "Custom path"
       },
+      "epic-games-dir": {
+        "label": "Epic Games folder"
+      },
       "user-agent": {
         "label": "Custom User Agent",
         "note": "Only is applied if you don't have Fortnite installed."

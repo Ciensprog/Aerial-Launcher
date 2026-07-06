@@ -1,0 +1,14 @@
+{
+  "title": "Games Launcher",
+  "description": "Launch Epic games using the account selected in the header.",
+  "loading": "Scanning installed games...",
+  "empty": "No games found. Set the Epic Games folder in Settings.",
+  "launch": "Launch",
+  "launching": "Launching...",
+  "notifications": {
+    "scan-error": "Failed to scan Epic games.",
+    "no-account": "Select an account in the header first.",
+    "launch-success": "Launched {{game}} as {{account}}.",
+    "launch-error": "Failed to launch {{game}}."
+  }
+}

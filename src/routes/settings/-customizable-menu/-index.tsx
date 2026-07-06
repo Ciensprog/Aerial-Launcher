@@ -34,6 +34,7 @@ export function CustomizableMenu() {
         )}
       >
         <CurrentAlertsSection />
+        <GamesLauncherSection />
         <STWOperationsSection />
         <AccountManagementSection />
         <AdvancedModeSection />
@@ -63,6 +64,32 @@ function CurrentAlertsSection() {
           id="current-alerts"
           checked={getMenuOptionVisibility('currentAlerts')}
           onCheckedChange={updateMenuOption('currentAlerts')}
+        />
+      </div>
+    </div>
+  )
+}
+
+function GamesLauncherSection() {
+  const { t } = useTranslation(['sidebar'])
+
+  const { getMenuOptionVisibility } =
+    useCustomizableMenuSettingsVisibility()
+  const { updateMenuOption } = useCustomizableMenuSettingsActions()
+
+  return (
+    <div className="category">
+      <div className="item main">
+        <Label
+          className="title text-lg"
+          htmlFor="games-launcher"
+        >
+          {t('games-launcher.title')}
+        </Label>
+        <Switch
+          id="games-launcher"
+          checked={getMenuOptionVisibility('gamesLauncher')}
+          onCheckedChange={updateMenuOption('gamesLauncher')}
         />
       </div>
     </div>

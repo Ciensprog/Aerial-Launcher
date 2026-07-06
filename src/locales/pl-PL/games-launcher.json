@@ -1,0 +1,14 @@
+{
+  "title": "Games Launcher",
+  "description": "Uruchamiaj gry Epic na koncie wybranym w nagłówku.",
+  "loading": "Skanowanie zainstalowanych gier...",
+  "empty": "Brak gier. Ustaw folder Epic Games w Ustawieniach.",
+  "launch": "Uruchom",
+  "launching": "Uruchamianie...",
+  "notifications": {
+    "scan-error": "Nie udało się przeskanować gier Epic.",
+    "no-account": "Najpierw wybierz konto w nagłówku.",
+    "launch-success": "Uruchomiono {{game}} jako {{account}}.",
+    "launch-error": "Nie udało się uruchomić {{game}}."
+  }
+}

@@ -40,6 +40,7 @@ import { ClaimRewards } from './core/claim-rewards'
 import { DevicesAuthManager } from './core/devices-auth'
 import { EULATracking } from './core/eula-tracking'
 import { FortniteLauncher } from './core/launcher'
+import { GamesLauncher } from './core/games-launcher'
 import {
   MCPClientQuestLogin,
   MCPDailyQuests,
@@ -373,6 +374,17 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.LauncherStart,
       async (_, account: AccountData) => {
         await FortniteLauncher.start(account)
+      },
+    )
+
+    ipcMain.handle(ElectronAPIEventKeys.GamesLauncherScan, async () => {
+      return GamesLauncher.scan()
+    })
+
+    ipcMain.on(
+      ElectronAPIEventKeys.GamesLauncherStart,
+      async (_, payload) => {
+        await GamesLauncher.launch(payload.account, payload.game)
       },
     )
 
