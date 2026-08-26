@@ -7,6 +7,7 @@ import { Language } from '../locales/resources'
 export function changeDateLocale(language: Language) {
   const locales: Partial<Record<Language, () => void>> = {
     [Language.Spanish]: () => dayjs.locale('es'),
+    [Language.Japanese]: () => dayjs.locale('ja'),
   }
   const current = locales[language]
 

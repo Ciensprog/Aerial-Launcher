@@ -1,0 +1,40 @@
+{
+  "form": {
+    "save": "ローカルに保存",
+    "refetch": "データを再取得"
+  },
+  "search": {
+    "input": {
+      "placeholder": "{{total}}件のファイルから検索"
+    },
+    "include-data": "ファイルデータを含める",
+    "no-files": "ファイルが見つかりません"
+  },
+  "file": {
+    "input": {
+      "placeholder": "デフォルト名: {{filename}}"
+    }
+  },
+  "notifications": {
+    "save": {
+      "success": "ファイルを保存しました",
+      "error": "ファイルを保存できません。後でもう一度お試しください"
+    },
+    "delete": {
+      "success": "ファイル「{{filename}}」を削除しました",
+      "error": "ファイル「{{filename}}」を削除できません。後でもう一度お試しください"
+    },
+    "export": {
+      "success": "ファイルをエクスポートしました",
+      "error": "ファイルをエクスポートできません。後でもう一度お試しください"
+    },
+    "open": {
+      "success": "ファイル「{{filename}}」を開きました",
+      "error": "ファイル「{{filename}}」を開けません。後でもう一度お試しください"
+    },
+    "rename": {
+      "success": "ファイル名を変更しました",
+      "error": "ファイル名を変更できません。後でもう一度お試しください"
+    }
+  }
+}

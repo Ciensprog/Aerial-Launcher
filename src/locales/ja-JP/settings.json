@@ -1,0 +1,80 @@
+{
+  "app-settings": {
+    "title": "アプリ設定",
+    "form": {
+      "language": {
+        "label": "言語",
+        "input": {
+          "placeholder": "言語を選択"
+        },
+        "dialog": {
+          "title": "使用する言語を選択してください",
+          "notes": {
+            "1": "この通知は選択後に表示されなくなります。",
+            "2": "設定ページでこの選択を変更できます。"
+          },
+          "submit-button": "選択を保存"
+        }
+      },
+      "path": {
+        "label": "カスタムパス"
+      },
+      "user-agent": {
+        "label": "カスタムユーザーエージェント",
+        "note": "Fortniteがインストールされていない場合にのみ適用されます。"
+      },
+      "custom-process": {
+        "label": "カスタムプロセス"
+      },
+      "claiming-rewards": {
+        "label": "報酬受け取りのカスタム遅延",
+        "note": "{{min}}から{{max}}秒の間の値。デフォルト: {{default}}。",
+        "input": {
+          "placeholder": "例: 0, 1, 1.5, 3, 4, 4.2 または 5"
+        }
+      },
+      "mission-interval": {
+        "label": "現在のミッションを確認するカスタム間隔時間",
+        "note1": "{{value}}秒ごとにミッション中かどうかを確認することを意味します。これは自動化機能で使用されます。",
+        "note2": "{{min}}から{{max}}秒の間の値。デフォルト: {{default}}。",
+        "input": {
+          "placeholder": "例: 1, 3, 4 または 5"
+        }
+      },
+      "tray": {
+        "label": "システムトレイに隠す"
+      }
+    }
+  },
+  "custom-menu": {
+    "title": "カスタマイズ可能なメニュー",
+    "description": "メニューのセクション/オプションの表示・非表示をカスタマイズできます。"
+  },
+  "tags-management": {
+    "title": "タグ管理",
+    "description": "タグを作成してアカウントを簡単にグループ化し、より整理された方法で一括操作を実行できます。",
+    "form": {
+      "input": {
+        "placeholder": "タグ名を入力"
+      }
+    },
+    "search": {
+      "input": {
+        "placeholder": "{{total}}件のタグから検索"
+      },
+      "empty": "タグが見つかりません"
+    }
+  },
+  "account-customization": {
+    "title": "アカウントカスタマイズ",
+    "description": "アカウントを識別するために特定の表示名が必要になることがあります。その場合、現在の表示名を好きなカスタム名に変更できます。",
+    "note": "注: これはAerial上の見た目にのみ適用されます。"
+  },
+  "form": {
+    "submit": {
+      "status": {
+        "success": "情報を更新しました"
+      }
+    }
+  }
+}

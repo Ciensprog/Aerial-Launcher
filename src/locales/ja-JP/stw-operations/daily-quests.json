@@ -1,0 +1,61 @@
+{
+  "description": "選択したアカウントのデイリークエストを取得し、リロールを管理します。",
+  "form": {
+    "submit-button": "デイリークエストを読み込む",
+    "replace-button": "交換する"
+  },
+  "list": {
+    "description": "選択したアカウントの有効なデイリークエスト。",
+    "empty": "まだデータが読み込まれていません。",
+    "no-quests": "有効なデイリークエストが見つかりません。",
+    "rerolls": "リロール回数: {{count}}",
+    "state": "状態: {{state}}"
+  },
+  "progress": {
+    "empty": "進捗データがありません。"
+  },
+  "notifications": {
+    "rerolled": "デイリークエストを交換しました。",
+    "failed": "デイリークエストの交換に失敗しました。"
+  },
+  "quests": {
+    "daily_destroyarcademachines": "デイリー破壊(アーケード機)",
+    "daily_destroybears": "デイリー破壊(テディベア)",
+    "daily_destroyfiretrucks": "デイリー破壊(消防車)",
+    "daily_destroygnomes": "デイリー破壊(ガーデンノーム)",
+    "daily_destroypropanetanks": "デイリー破壊(プロパンタンク)",
+    "daily_destroyseesaws": "デイリー破壊(公園のシーソー)",
+    "daily_destroyserverracks": "デイリー破壊(サーバーラック)",
+    "daily_destroytransformers": "デイリー破壊(変圧器)",
+    "daily_destroytvs": "デイリー破壊(テレビ)",
+    "daily_discovery_industriallocations": "デイリー偵察(工業地帯)",
+    "daily_discovery_rurallocations": "デイリー偵察(農村地帯)",
+    "daily_discovery_shelters": "デイリー偵察(シェルター)",
+    "daily_discovery_suburbanlocations": "デイリー偵察(郊外)",
+    "daily_discovery_urbanlocations": "デイリー偵察(都市部)",
+    "daily_explorezones": "探索パーティー",
+    "daily_high_priority": "みんなで一緒に",
+    "daily_huskextermination_anyhero": "ハスク駆除(任意のヒーロー)",
+    "daily_huskextermination_constructor": "ハスク駆除(コンストラクター)",
+    "daily_huskextermination_melee": "ハスク駆除(近接)",
+    "daily_huskextermination_ninja": "ハスク駆除(ニンジャ)",
+    "daily_huskextermination_outlander": "ハスク駆除(アウトランダー)",
+    "daily_huskextermination_ranged_assault": "ハスク駆除(アサルトライフル)",
+    "daily_huskextermination_ranged_pistol": "ハスク駆除(ピストル)",
+    "daily_huskextermination_ranged_shotgun": "ハスク駆除(ショットガン)",
+    "daily_huskextermination_ranged_smg": "ハスク駆除(SMG)",
+    "daily_huskextermination_ranged_sniper": "ハスク駆除(スナイパーライフル)",
+    "daily_huskextermination_soldier": "ハスク駆除(ソルジャー)",
+    "daily_huskextermination_trap": "ハスク駆除(トラップ)",
+    "daily_mission_buildradar": "レーダータワーを建設",
+    "daily_mission_specialist_anyhero_1": "ミッションスペシャリスト(任意のヒーロー)",
+    "daily_mission_specialist_anyhero_2": "ミッションベテラン(任意のヒーロー)",
+    "daily_mission_specialist_constructor": "ミッションスペシャリスト(コンストラクター)",
+    "daily_mission_specialist_ninja": "ミッションスペシャリスト(ニンジャ)",
+    "daily_mission_specialist_outlander": "ミッションスペシャリスト(アウトランダー)",
+    "daily_mission_specialist_soldier": "ミッションスペシャリスト(ソルジャー)",
+    "daily_partyof50": "25人パーティー",
+    "daily_safes": "安全第一",
+    "daily_treasurechests": "失われた財宝"
+  }
+}

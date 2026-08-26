@@ -1,0 +1,18 @@
+{
+  "description": "アカウントを選択して、作成済みのデバイス認証を管理します。ユーザーエージェント、作成日時、最終アクセスと共に、場所・IPアドレス・日付の情報が表示されます。",
+  "form": {
+    "submit-button": "デバイス認証をリクエスト"
+  },
+  "results": {
+    "title": "見つかったデバイス数: <1>{{total}}</1>",
+    "item": {
+      "created": "作成日時",
+      "last-access": "最終アクセス"
+    }
+  },
+  "notifications": {
+    "no-devices": "デバイスが見つかりません",
+    "success": "デバイスID {{deviceId}} は正常に削除されました",
+    "error": "デバイスIDの削除中にエラーが発生しました: {{deviceId}}"
+  }
+}
