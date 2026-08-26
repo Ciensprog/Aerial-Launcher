@@ -1,0 +1,60 @@
+{
+  "kick": {
+    "form": {
+      "submit-button": "パーティー全員をキック"
+    },
+    "notifications": {
+      "success": "{{total}}人のユーザーをキックしました",
+      "nothing": "キックされたユーザーはいません"
+    }
+  },
+  "leave": {
+    "form": {
+      "submit-button": "パーティーを離れる"
+    }
+  },
+  "claim": {
+    "title": "ミッション終了後に報酬を受け取る",
+    "form": {
+      "submit-button": "報酬を受け取る"
+    },
+    "notifications": {
+      "success": "報酬を受け取りました"
+    }
+  },
+  "friends": {
+    "note": "招待されたプレイヤーがフレンドでない場合、ランチャーが自動的にフレンドリクエストを送信します。",
+    "form": {
+      "select": {
+        "placeholder": "フレンドを選択",
+        "search": {
+          "placeholder": "招待する人を検索"
+        },
+        "empty": {
+          "placeholder": "フレンドがいません",
+          "options": "入力してリストに追加してください"
+        }
+      },
+      "submit-button": "招待"
+    },
+    "notifications": {
+      "added": {
+        "success": "{{name}} をフレンドに追加しました",
+        "default-error": "{{name}} の追加中にエラーが発生しました"
+      },
+      "remove": {
+        "success": "{{name}} をリストから削除しました",
+        "default-error": "{{name}} の削除中にエラーが発生しました"
+      },
+      "invite": {
+        "sent_one": "{{count}}件の招待を送信しました",
+        "sent_other": "{{count}}件の招待を送信しました",
+        "error": "招待の送信中にエラーが発生しました"
+      },
+      "request": {
+        "sent_one": "{{count}}件のフレンドリクエストを送信しました",
+        "sent_other": "{{count}}件のフレンドリクエストを送信しました"
+      }
+    }
+  }
+}

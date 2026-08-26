@@ -1,0 +1,165 @@
+{
+  "actions": {
+    "add": "追加",
+    "change": "変更",
+    "create": "作成",
+    "login": "ログイン",
+    "revert": "元に戻す",
+    "search": "検索",
+    "success": "成功",
+    "update": "更新",
+    "accepted": "承認済み",
+    "verify": "確認",
+    "detect": "検出"
+  },
+  "form": {
+    "credentials": {
+      "account-id": "アカウントID",
+      "device-id": "デバイスID",
+      "secret": "シークレット",
+      "login": {
+        "label": "コードを貼り付けてください",
+        "input": {
+          "placeholder": "例: {{code}}"
+        },
+        "get-code": "<0>コードを取得</0> <1 />"
+      }
+    },
+    "accounts": {
+      "placeholder": "{{total}}件のアカウントから検索",
+      "placeholder_private": "自分のアカウントから検索",
+      "search-empty": "アカウントが見つかりません",
+      "select": "アカウントを選択",
+      "selected": "選択済みアカウント",
+      "no-available": "利用可能なアカウントがありません",
+      "no-linked": "連携されたアカウントがありません",
+      "no-options": "アカウントがありません",
+      "no-registered-accounts": "まだ登録されたアカウントがありません"
+    },
+    "multi": {
+      "select": {
+        "accounts": "アカウントを選択",
+        "tags": "タグを選択",
+        "bulk-note": "一括タグが選択されました。すべてのランチャーアカウントが使用されます。"
+      }
+    },
+    "player": {
+      "search-empty": "プレイヤーが見つかりません",
+      "recently": {
+        "empty-placeholder": "最近のプレイヤーがいません",
+        "search-placeholder": "{{total}}人のプレイヤーから検索",
+        "select-placeholder": "最近のプレイヤーを選択"
+      }
+    },
+    "search-account": {
+      "label": "accountIdまたは表示名(epic、xblまたはpsn)でプレイヤーを検索",
+      "input": {
+        "placeholder": "例: Sample"
+      }
+    }
+  },
+  "information": {
+    "account-id": "アカウントID:",
+    "power-level": "パワーレベル:",
+    "commander-level": "コマンダーレベル:",
+    "boosted-xp": "ブーストされたXP:",
+    "days-logged-in": "ログイン日数:",
+    "collection-book-level": "コレクションブックレベル:",
+    "personal-xp-boosts": "個人XPブースト:",
+    "teammate-xp-boosts": "チームメイトXPブースト:",
+    "founder-status": "ファウンダーステータス:"
+  },
+  "version": {
+    "title": "新しいバージョン {{version}}",
+    "description": "新しいバージョン(.exeファイル)はこちらからダウンロードできます:"
+  },
+  "community-info": {
+    "message": "今後のアップデート情報を知るために、<2>Discordコミュニティ<1/></2>に参加しましょう!!!"
+  },
+  "founder": {
+    "non-founder": "非ファウンダー",
+    "founder": "ファウンダー",
+    "standard": "スタンダードエディション",
+    "deluxe": "デラックスエディション",
+    "super-deluxe": "スーパーデラックスエディション",
+    "limited": "リミテッドエディション",
+    "ultimate": "アルティメットエディション"
+  },
+  "launch-game": {
+    "button": "ゲームを起動",
+    "notifications": {
+      "success": "アカウント {{name}} でゲームを起動しました",
+      "error": "アカウント {{name}} でのゲーム起動中にエラーが発生しました。後でもう一度お試しください"
+    }
+  },
+  "close-game": {
+    "button": "ゲームを終了"
+  },
+  "separators": {
+    "or": "または"
+  },
+  "sort": {
+    "newest": "新しい順に並び替え"
+  },
+  "statuses": {
+    "error": "エラー",
+    "loading": "読み込み中",
+    "not-found": "見つかりません",
+    "owned": "所有済み",
+    "claimed": "受け取り済み",
+    "used": "使用済み"
+  },
+  "validations": {
+    "form": {
+      "input": {
+        "account-id": {
+          "invalid": "❌ 無効なaccountId"
+        },
+        "device-id": {
+          "invalid": "❌ 無効なdeviceId"
+        },
+        "secret": {
+          "invalid": "❌ 無効なsecret"
+        },
+        "code": {
+          "invalid": "❌ 無効なcode"
+        }
+      }
+    },
+    "screenshot": {
+      "success": "スクリーンショットを生成し、クリップボードにコピーしました",
+      "error": "スクリーンショットを生成できませんでした。後でもう一度お試しください"
+    }
+  },
+  "account-selected": "選択済みアカウント: <2>{{name}}</2>",
+  "boosts": "ブースト",
+  "credits": "クレジット",
+  "current": "現在",
+  "date": "日付",
+  "first-claim": "初回受け取り: {{date}}",
+  "go-to-current-alerts": "現在のアラートへ移動",
+  "go-to-top": "トップへ移動",
+  "history": "履歴",
+  "hide-information": "情報を隠す",
+  "note": "注",
+  "show-information": "非表示の情報を表示",
+  "ip-address": "IPアドレス",
+  "is-running": "アプリは実行中です",
+  "is-not-running": "アプリは実行されていません",
+  "last-played": "最終プレイ日時: {{date}}",
+  "location": "場所",
+  "missions": "ミッション",
+  "no-item-found": "アイテムが見つかりません",
+  "no-options": "オプションがありません",
+  "no-placeholder-select-options": "オプションを選択",
+  "placeholder": "プレースホルダー",
+  "public-stats": "注: このユーザーは「パブリックゲーム統計」を無効にしているため、これ以上の情報は表示できません。",
+  "settings": "設定",
+  "summary": "サマリー",
+  "unknown-user": "不明なユーザー",
+  "unknown": "不明",
+  "update-information": "情報を更新",
+  "user-agent": "ユーザーエージェント",
+  "generate-screenshot": "スクリーンショットを生成",
+  "under-translation": "(翻訳中)"
+}

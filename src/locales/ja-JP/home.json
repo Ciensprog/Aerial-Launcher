@@ -1,0 +1,90 @@
+{
+  "heading": {
+    "title": "知っておくと良いこと:",
+    "items": {
+      "1": "Aerialのロゴ(左上)をクリックすると、ここに戻ります。",
+      "2": "他のミッション/アラートを読み込むには、ワールド情報ファイルをページにドラッグ&ドロップしてください。"
+    }
+  },
+  "tabs": {
+    "home": "ホーム",
+    "overview": "アラート概要",
+    "done": "完了したアラート"
+  },
+  "sections": {
+    "vbucks": {
+      "title": "V-Bucks"
+    },
+    "twine-peaks": {
+      "title-endgame": "ツワインピークス ⚡160",
+      "mid": "中間"
+    },
+    "ventures": {
+      "title-endgame": "ベンチャーズ ⚡140"
+    },
+    "survivors": {
+      "title": "伝説/神話級サバイバー",
+      "empty": "救出可能なサバイバーがいません"
+    },
+    "llamas": {
+      "title": "アップグレードラマトークン"
+    },
+    "uc-perk": {
+      "title": "アンコモンPERK-UP!"
+    }
+  },
+  "information": {
+    "missions": "{{total}}件のミッション",
+    "tile-index": "タイルインデックス:",
+    "alert-guid": "ミッションアラートGuid:",
+    "mission-guid": "ミッションGuid:",
+    "alert-rewards": "アラート報酬:",
+    "base-rewards": "基本報酬:",
+    "modifiers": "モディファイア:",
+    "first-claim": "初回受け取り:",
+    "last-played": "最終プレイ日時:",
+    "alerts-completed": "完了したアラート",
+    "rewards-summary": "報酬サマリー"
+  },
+  "pagination": {
+    "results": "結果",
+    "actions": {
+      "previous": "表示を減らす",
+      "next": "もっと見る"
+    }
+  },
+  "filters": {
+    "search": {
+      "input": {
+        "placeholder": "検索: ミッション/アラートGuid、タイルインデックスまたは報酬ID"
+      },
+      "submit-button": "フィルターを表示"
+    },
+    "sections": {
+      "zones": "ゾーンを選択",
+      "types": "ミッションタイプを選択",
+      "rarities": "レアリティを選択",
+      "rewards": "報酬を選択"
+    },
+    "actions": {
+      "back": "アラートに戻る",
+      "clear": "選択をクリア"
+    }
+  },
+  "world-info": {
+    "dnd": {
+      "title": ".jsonファイルをドロップ"
+    },
+    "notifications": {
+      "error": "ワールド情報ファイルを読み込めません。正しいファイルか、データが欠落していないか確認してください"
+    }
+  },
+  "results": {
+    "empty": {
+      "alerts-done": "見つかったアラートは本日のミッションと一致しません",
+      "vbucks": "本日のV-Bucksはありません",
+      "missions": "利用可能なミッションがありません",
+      "rewards": "利用可能な報酬がありません"
+    }
+  }
+}

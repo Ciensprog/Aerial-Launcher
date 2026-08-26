@@ -1,0 +1,9 @@
+{
+  "description": "選択した各アカウントのV-Bucks情報。",
+  "form": {
+    "submit-button": "情報を表示"
+  },
+  "results": {
+    "title": "{{total}}件のアカウントのV-Bucksサマリー"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "stw-operations": {
+    "title": "STW操作",
+    "options": {
+      "auto-kick": "オートキック",
+      "taxi-service": "タクシーサービス",
+      "party": "パーティー",
+      "save-quests": "クエストを保存",
+      "daily-quests": "デイリークエスト",
+      "homebase-name": "ホームベース名",
+      "xp-boosts": "XPブースト",
+      "auto-pin-urns": "壺の自動ピン留め",
+      "auto-llamas": "オートラマ",
+      "unlock": "SSD報酬をアンロック"
+    },
+    "auto-kick-status": {
+      "issue": "問題あり",
+      "active": "有効"
+    }
+  },
+  "account-management": {
+    "title": "アカウント管理",
+    "options": {
+      "vbucks-information": "V-Bucks情報",
+      "redeem-codes": "コードの引き換え",
+      "devices-auth": "デバイス認証",
+      "epic-settings": "Epic Games設定"
+    }
+  },
+  "advanced-mode": {
+    "title": "詳細モード",
+    "options": {
+      "matchmaking-track": "マッチメイキング追跡",
+      "world-info": "ワールド情報"
+    }
+  },
+  "accounts": {
+    "title": "マイアカウント",
+    "options": {
+      "show-total-accounts": "アカウント総数を表示",
+      "auth": "認証コード",
+      "exchange": "交換コード",
+      "device": "デバイス認証",
+      "remove": "アカウントを削除"
+    }
+  },
+  "links": {
+    "discord": "Discordサーバー",
+    "github": "GitHubで見る",
+    "credits": "クレジット"
+  },
+  "version": {
+    "release": "リリース v{{version}}",
+    "all-releases": "すべてのリリース"
+  }
+}

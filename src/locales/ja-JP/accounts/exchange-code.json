@@ -1,0 +1,17 @@
+{
+  "form": {
+    "generate-code": {
+      "input": {
+        "placeholder": "生成されたコードがここに表示されます"
+      },
+      "submit-button": "交換コードを生成"
+    }
+  },
+  "notifications": {
+    "generate-code": {
+      "success": "交換コードを生成し、クリップボードにコピーしました",
+      "error": "交換コードの生成中にエラーが発生しました。後でもう一度お試しください"
+    },
+    "clipboard": "交換コードをクリップボードにコピーしました"
+  }
+}
