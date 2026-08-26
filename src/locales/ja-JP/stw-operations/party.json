@@ -1,7 +1,11 @@
 {
+  "note": {
+    "title": "注意:",
+    "description": "これらの機能でバグや不具合が発生した場合は、Discordサーバーで報告できます。また、よろしければプロジェクトへの貢献(コントリビュート)もご検討ください。"
+  },
   "kick": {
     "form": {
-      "submit-button": "パーティー全員をキック"
+      "submit-button": "全員キック"
     },
     "notifications": {
       "success": "{{total}}人のユーザーをキックしました",
@@ -10,7 +14,7 @@
   },
   "leave": {
     "form": {
-      "submit-button": "パーティーを離れる"
+      "submit-button": "離脱"
     }
   },
   "claim": {

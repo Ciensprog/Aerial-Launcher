@@ -16,14 +16,14 @@
       "title": "V-Bucks"
     },
     "twine-peaks": {
-      "title-endgame": "ツワインピークス ⚡160",
+      "title-endgame": "トワインピークス ⚡160",
       "mid": "中間"
     },
     "ventures": {
       "title-endgame": "ベンチャーズ ⚡140"
     },
     "survivors": {
-      "title": "伝説/神話級サバイバー",
+      "title": "レジェンド/ミシックサバイバー",
       "empty": "救出可能なサバイバーがいません"
     },
     "llamas": {
@@ -81,7 +81,7 @@
   },
   "results": {
     "empty": {
-      "alerts-done": "見つかったアラートは本日のミッションと一致しません",
+      "alerts-done": "見つかったアラートは本日のミッションと一致しませんでした",
       "vbucks": "本日のV-Bucksはありません",
       "missions": "利用可能なミッションがありません",
       "rewards": "利用可能な報酬がありません"
