@@ -1,6 +1,8 @@
 import type { AccountData } from '../../types/accounts'
 
 import childProcess from 'node:child_process'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { launcherAppClient2 } from '../../config/fortnite/clients'
@@ -79,10 +81,21 @@ export class FortniteLauncher {
         return
       }
 
+      // Epic Games Launcher v2 replaced EOSH; without these args Fortnite
+      // can't load its install bundles and fails with "Pak is invalid"
+      const eglv2ApiPath = path.join(
+        `${process.env.LOCALAPPDATA}`,
+        'com.epicgames.eglv2',
+        'api.json'
+      )
+
       const command = [
         'start',
         '""',
         'FortniteLauncher.exe',
+        ...(existsSync(eglv2ApiPath)
+          ? ['-eglv2', `-eglv2apipath="${eglv2ApiPath}"`]
+          : []),
         // `${manifest.LaunchCommand}`,
         '-AUTH_LOGIN=unused',
         `-AUTH_PASSWORD=${launcherExchangeCode.data.code}`,
