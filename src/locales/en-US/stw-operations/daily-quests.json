@@ -1,8 +1,9 @@
 {
   "description": "Fetch daily quests and manage rerolls for the selected accounts.",
   "form": {
-    "submit-button": "Load Daily Quests",
-    "replace-button": "Replace"
+    "submit-button": "Load",
+    "replace-button": "Replace",
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)"
   },
   "list": {
     "description": "Active daily quests for the selected accounts.",

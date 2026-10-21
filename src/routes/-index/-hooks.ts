@@ -127,7 +127,7 @@ export function useFetchPlayerDataSync() {
 export function useDropzoneConfig() {
   const { i18n, t } = useTranslation(['alerts'])
 
-  const { setWorldInfoData, updateWorldInfoLoading } =
+  const { setWorldInfoData, setRawWorldInfoData, updateWorldInfoLoading } =
     useWorldInfoActions()
   const { initPagination } = useAlertsOverviewPaginationInit()
 
@@ -143,13 +143,13 @@ export function useDropzoneConfig() {
             const blob = new Blob([currentFile], {
               type: 'application/json',
             })
-            const result = worldInfoSchema.parse(
-              JSON.parse(await blob.text()),
-            ) as WorldInfoData
+            const original = JSON.parse(await blob.text()) as WorldInfoData
+            const result = worldInfoSchema.parse(original) as WorldInfoData
             const { worldInfo } = worlInfoParser(result)
 
             initPagination(worldInfo.keys().toArray())
             setWorldInfoData(worldInfo)
+            setRawWorldInfoData(original)
           } catch (error) {
             toast(t('world-info.notifications.error'), {
               duration: 5000,

@@ -15,6 +15,20 @@
   "options": {
     "kick": "踢出",
     "claim": "领取",
+    "claim-party": "领取全队",
     "transfer-mats": "转移材料"
+  },
+  "tabs": {
+    "accounts": "Auto-kick",
+    "logfile": "Logfile"
+  },
+  "logfile": {
+    "description": "Watch FortniteGame.log for End Of Match, then kick, claim, or transfer mats for the account in that instance.",
+    "path": "Log file",
+    "browse": "Browse",
+    "running": "Fortnite running ({{count}})",
+    "not-running": "Fortnite not running",
+    "player": "Playing as {{name}}",
+    "no-player": "No account detected yet"
   }
 }

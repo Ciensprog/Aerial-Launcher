@@ -3,6 +3,18 @@
     "note": "Uwaga: Jest to historia tymczasowa.",
     "empty": "Historia zdobytych nagród"
   },
+  "gifts": {
+    "title": "Sklep",
+    "empty": "Brak prezentów i zakupów",
+    "from": "Z {{name}}",
+    "to": "Do {{name}}",
+    "bought-on": "Kupione na {{name}}",
+    "kind-gift": "Prezent",
+    "kind-purchase": "Zakup",
+    "price": "{{price}} V-Dolców",
+    "creator": "Kod twórcy: {{code}}",
+    "none-creator": "Brak kodu twórcy"
+  },
   "summary": {
     "note": "Uwaga: To podsumowanie opiera się na twojej historii tymczasowej.",
     "empty": "Podsumowanie historii zdobytych nagród",

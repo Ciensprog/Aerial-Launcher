@@ -7,4 +7,9 @@ export type RewardsNotification = {
   createdAt: string
   id: string
   rewards: Record<string, number>
+  /** Highest claimed endurance reward wave per zone. */
+  endurance?: Array<{
+    zone: string
+    wave: number
+  }>
 }

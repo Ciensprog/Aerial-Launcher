@@ -25,10 +25,10 @@ export function ClaimRewardsCard() {
     useCustomizableMenuSettingsVisibility()
 
   return (
-    <Card className="flex flex-col flex-shrink-0 h-36 justify-center max-w-52 w-full">
-      <CardContent className="block pt-6 space-y-4">
-        <div className="flex flex-col gap-4">
+    <Card className="flex min-w-0 flex-1 flex-col justify-center">
+      <CardContent className="flex flex-col gap-2 p-2 pt-2">
           <Combobox
+            className="h-8"
             placeholder={t('form.accounts.select', {
               ns: 'general',
             })}
@@ -49,7 +49,7 @@ export function ClaimRewardsCard() {
             isMulti
           />
           <Button
-            className="px-0.5 w-full"
+            className="relative h-8 w-full px-0.5"
             size="sm"
             onClick={onClaim}
             disabled={!hasValues}
@@ -68,7 +68,6 @@ export function ClaimRewardsCard() {
               {t('party.claim.form.submit-button')}
             </span>
           </Button>
-        </div>
       </CardContent>
     </Card>
   )

@@ -1,7 +1,5 @@
-import type { DailyQuestsAccountData } from '../../../types/daily-quests'
-
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useAccountSelectorData } from '../../../components/selectors/accounts/hooks'
 
@@ -10,23 +8,24 @@ import {
   useGetDailyQuestsData,
 } from '../../../hooks/stw-operations/daily-quests'
 import { useGetAccounts } from '../../../hooks/accounts'
+import { useDailyQuestsStore } from '../../../state/stw-operations/daily-quests'
 
 import { toast } from '../../../lib/notifications'
 
 export function useDailyQuestsData() {
   const { t } = useTranslation(['stw-operations', 'general'])
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [rerollingQuest, setRerollingQuest] = useState<
-    | {
-        accountId: string
-        questId: string
-      }
-    | null
-  >(null)
-  const [dailyQuests, setDailyQuests] = useState<
-    Array<DailyQuestsAccountData>
-  >([])
+  const { dailyQuests, isLoading, rerollingQuest } = useDailyQuestsStore(
+    useShallow((state) => ({
+      dailyQuests: state.dailyQuests,
+      isLoading: state.isLoading,
+      rerollingQuest: state.rerollingQuest,
+    })),
+  )
+  const setLoading = useDailyQuestsStore((state) => state.setLoading)
+  const setRerollingQuest = useDailyQuestsStore(
+    (state) => state.setRerollingQuest,
+  )
 
   const { accountList } = useGetAccounts()
   const { selectedAccounts, selectedTags } = useGetDailyQuestsData()
@@ -50,50 +49,6 @@ export function useDailyQuestsData() {
     isSelectedEmpty || isLoading || !areThereAccounts
   const rerollIsDisabled = rerollingQuest !== null || isLoading
 
-  useEffect(() => {
-    const listener = window.electronAPI.notificationDailyQuests(
-      async (value) => {
-        setIsLoading(false)
-        setDailyQuests(value)
-      }
-    )
-
-    return () => {
-      listener.removeListener()
-    }
-  }, [])
-
-  useEffect(() => {
-    const listener = window.electronAPI.notificationDailyQuestReroll(
-      async (response) => {
-        setRerollingQuest(null)
-
-        if (response.success) {
-          setDailyQuests((current) =>
-            current.map((item) =>
-              item.accountId === response.accountId
-                ? response.data
-                : item
-            )
-          )
-
-          toast(t('daily-quests.notifications.rerolled'))
-
-          return
-        }
-
-        toast(
-          response.errorMessage ??
-            t('daily-quests.notifications.failed')
-        )
-      }
-    )
-
-    return () => {
-      listener.removeListener()
-    }
-  }, [])
-
   const handleFetch = () => {
     if (fetchButtonIsDisabled) {
       return
@@ -105,13 +60,13 @@ export function useDailyQuestsData() {
       toast(
         t('form.accounts.no-linked', {
           ns: 'general',
-        })
+        }),
       )
 
       return
     }
 
-    setIsLoading(true)
+    setLoading(true)
 
     window.electronAPI.requestDailyQuests(selectedAccounts)
   }

@@ -39,6 +39,26 @@ export function kick({
   )
 }
 
+export function promote({
+  accessToken,
+  accountId,
+  partyId,
+}: {
+  accessToken: string
+  accountId: string
+  partyId: string
+}) {
+  return partyService.post(
+    `/parties/${partyId}/members/${accountId}/promote`,
+    {},
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+    }
+  )
+}
+
 export function invite({
   accessToken,
   friendAccountId,

@@ -1,0 +1,29 @@
+{
+  "description": "Download cloud storage files from an account, or pick files on this computer, and apply them to other accounts or groups.",
+  "source": {
+    "title": "Source account",
+    "load": "Load"
+  },
+  "files": {
+    "empty": "Load an account to see its cloud storage files.",
+    "none": "No cloud storage files on this account.",
+    "selected": "{{count}} selected"
+  },
+  "download": {
+    "selected": "Download",
+    "all": "Download all",
+    "saved": "Saved {{done}}/{{total}} files to {{path}}",
+    "failed": "Could not download: {{message}}"
+  },
+  "local": {
+    "browse": "Browse",
+    "empty": "Or pick files from this computer to apply.",
+    "remove": "Remove"
+  },
+  "apply": {
+    "title": "Apply to accounts",
+    "submit": "Apply",
+    "empty": "Select destination accounts, then apply cloud files or local files.",
+    "done": "{{done}}/{{total}} files"
+  }
+}

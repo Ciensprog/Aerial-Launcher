@@ -2,6 +2,7 @@
   "description": "Obtén misiones diarias y administra las repeticiones de las cuentas seleccionadas.",
   "form": {
     "submit-button": "Cargar Misiones Diarias",
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)",
     "replace-button": "Reemplazar"
   },
   "list": {

@@ -2,6 +2,7 @@
   "description": "Получайте ежедневные задания и управляйте заменой для выбранных аккаунтов.",
   "form": {
     "submit-button": "Загрузить ежедневные задания",
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)",
     "replace-button": "Заменить"
   },
   "list": {

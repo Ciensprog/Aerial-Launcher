@@ -1,0 +1,75 @@
+{
+  "title": "Llama Manager",
+  "description": "Buy shop llamas in any quantity, open unopened inventory llamas in bulk, and handle choice packs (CP) with manual selection from the launcher.",
+  "note": "Shop includes Upgrade / Super Ranged X-Ray llamas and daily event llamas (Mini Reward, Troll Stash, Rad, etc.). Inventory covers unopened Lunar, Holiday, Rad and other stored llamas.",
+  "form": {
+    "load": "Load llamas"
+  },
+  "bulk": {
+    "mini": "Mini ×{{count}}",
+    "upgrade": "Upgrade ×{{count}}",
+    "mini-hint": "Buy Mini Reward Llamas on all selected accounts (voucher_basicpack)",
+    "upgrade-hint": "Buy Upgrade / X-Ray llamas on all selected accounts (50 X-Ray tickets each)"
+  },
+  "tabs": {
+    "inventory": "Inventory",
+    "shop": "Shop",
+    "choice": "Choice (CP)"
+  },
+  "inventory": {
+    "summary": "{{total}} packs ({{regular}} regular · {{choice}} choice)",
+    "empty": "No unopened regular llamas on this account.",
+    "count": "{{count}} left",
+    "open-all": "Open all ({{count}})",
+    "open-n": "Open {{count}}",
+    "open-max": "Open max"
+  },
+  "shop": {
+    "empty": "No shop llamas available right now.",
+    "free": "FREE",
+    "price-free": "Free",
+    "price": "{{price}} {{currency}}",
+    "remaining": "{{count}} left",
+    "buy": "Buy {{count}}"
+  },
+  "choice": {
+    "hint": "Choice packs (CP) let you pick a specific reward. Select options in the dialog or open with the default index.",
+    "empty": "No choice packs found.",
+    "options": "{{count}} options",
+    "open": "Choose & open",
+    "open-default": "Open (idx 0)",
+    "open-all": "Open all CP ({{count}})",
+    "open-group-all": "Open all of type",
+    "title": "Select choice pack reward",
+    "manual-index": "Selection index",
+    "manual-hint": "If options are not listed, enter the index manually (usually 0 = first option).",
+    "cancel": "Cancel",
+    "confirm": "Open with selection"
+  },
+  "errors": {
+    "auth": "Auth failed",
+    "fetch": "Load failed",
+    "account": "Account missing"
+  },
+  "toasts": {
+    "success": "Done",
+    "purchased": "Purchased {{count}} llama(s)",
+    "opened": "Opened {{count}} llama(s)",
+    "bulk-mini": "Bought {{count}} mini llama(s) on {{accounts}} account(s) (failed: {{failed}})",
+    "bulk-upgrade": "Bought {{count}} upgrade llama(s) on {{accounts}} account(s) (failed: {{failed}})",
+    "choice-only": "These packs need choice selection — use the Choice (CP) tab.",
+    "choice-empty": "No choice packs to open.",
+    "error": "Action failed ({{context}})",
+    "error_auth": "Authentication failed",
+    "error_purchase": "Purchase failed",
+    "error_open": "Could not open packs",
+    "error_open-choice": "Could not open choice pack",
+    "error_account": "Account not found",
+    "error_accounts": "No accounts selected",
+    "error_no-mini-offer": "Mini Llama offer not found in shop",
+    "error_no-upgrade-offer": "Upgrade Llama offer not found in shop",
+    "error_no-tokens": "Not enough currency / tokens",
+    "error_limit": "Daily limit or not enough currency",
+    "error_unknown": "Unknown error"
+  }
+}

@@ -5,10 +5,6 @@ import { useShallow } from 'zustand/react/shallow'
 import { useTranslation } from 'react-i18next'
 
 import { useGetAutomationActions } from '../../../hooks/stw-operations/automation'
-import {
-  useGetSaveQuestsActions,
-  useGetSaveQuestsData,
-} from '../../../hooks/stw-operations/save-quests'
 import { useGetAutoPinUrnActions } from '../../../hooks/stw-operations/urns'
 import {
   useGetSelectedAccount,
@@ -18,12 +14,18 @@ import { useGetGroups } from '../../../hooks/groups'
 
 import { useHomebaseNameStore } from '../../../state/stw-operations/homebase-name'
 import { useDailyQuestsStore } from '../../../state/stw-operations/daily-quests'
+import { useDqWeaponsStore } from '../../../state/stw-operations/dq-weapons'
+import { useAccountInfoStore } from '../../../state/stw-operations/account-info'
+import { usePartyStatusStore } from '../../../state/stw-operations/party-status'
+import { useStormShieldsStore } from '../../../state/stw-operations/storm-shields'
+import { useCloudStorageStore } from '../../../state/stw-operations/cloud-storage'
+import { useAccountExportStore } from '../../../state/account-management/account-export'
+import { useAlertsDoneCheckStore } from '../../../state/alerts/alerts-done-check'
 import {
   useClaimRewardsSelectorStore,
   useKickAllPartySelectorStore,
   useLeavePartySelectorStore,
 } from '../../../state/stw-operations/party'
-import { useSaveQuestsStore } from '../../../state/stw-operations/save-quests'
 import { useXPBoostsFormStore } from '../../../state/stw-operations/xpboosts/forms/consume-personal'
 
 import { toast } from '../../../lib/notifications'
@@ -36,13 +38,49 @@ function useClearForms() {
       updateAccounts: state.updateAccounts,
     }))
   )
-  const saveQuestsForm = useSaveQuestsStore(
+  const dailyQuestsForm = useDailyQuestsStore(
     useShallow((state) => ({
       accounts: state.accounts,
       updateAccounts: state.updateAccounts,
     }))
   )
-  const dailyQuestsForm = useDailyQuestsStore(
+  const dqWeaponsForm = useDqWeaponsStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      updateAccounts: state.updateAccounts,
+    }))
+  )
+  const accountInfoForm = useAccountInfoStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      updateAccounts: state.updateAccounts,
+    }))
+  )
+  const stormShieldsForm = useStormShieldsStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      updateAccounts: state.updateAccounts,
+    }))
+  )
+  const cloudStorageForm = useCloudStorageStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      updateAccounts: state.updateAccounts,
+    }))
+  )
+  const accountExportForm = useAccountExportStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      updateAccounts: state.updateAccounts,
+    }))
+  )
+  const alertsDoneCheckForm = useAlertsDoneCheckStore(
+    useShallow((state) => ({
+      accounts: state.accounts,
+      updateAccounts: state.updateAccounts,
+    }))
+  )
+  const partyStatusForm = usePartyStatusStore(
     useShallow((state) => ({
       accounts: state.accounts,
       updateAccounts: state.updateAccounts,
@@ -55,7 +93,18 @@ function useClearForms() {
     }))
   )
 
-  return [homebaseNameForm, saveQuestsForm, dailyQuestsForm, xpBoostsForm]
+  return [
+    homebaseNameForm,
+    dailyQuestsForm,
+    dqWeaponsForm,
+    accountInfoForm,
+    stormShieldsForm,
+    cloudStorageForm,
+    accountExportForm,
+    alertsDoneCheckForm,
+    partyStatusForm,
+    xpBoostsForm,
+  ]
 }
 
 function useClearPartySelectors() {
@@ -91,9 +140,6 @@ export function useHandleRemove() {
   const { removeAccount } = useRemoveSelectedAccount()
 
   const { groupList, registerGroups } = useGetGroups()
-
-  const { selectedAccounts } = useGetSaveQuestsData()
-  const { rawSaveQuestsUpdateAccounts } = useGetSaveQuestsActions()
 
   // Clear forms
   const clearPartySelectors = useClearPartySelectors()
@@ -137,11 +183,6 @@ export function useHandleRemove() {
     removeAccountFromAutoKick(selected.accountId)
     removeAccountFromUrns(selected.accountId)
     registerGroups(newGroups)
-    rawSaveQuestsUpdateAccounts(
-      selectedAccounts.filter(
-        (accountId) => accountId !== selected.accountId
-      )
-    )
 
     window.electronAPI.autoPinUrnsRemove(selected.accountId)
     window.electronAPI.onRemoveAccount(selected.accountId)

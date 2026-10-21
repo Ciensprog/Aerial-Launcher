@@ -16,9 +16,33 @@ import {
   useGetDailyQuestsData,
 } from '../../../hooks/stw-operations/daily-quests'
 import {
-  useGetSaveQuestsActions,
-  useGetSaveQuestsData,
-} from '../../../hooks/stw-operations/save-quests'
+  useGetDqWeaponsActions,
+  useGetDqWeaponsData,
+} from '../../../hooks/stw-operations/dq-weapons'
+import {
+  useGetAccountInfoActions,
+  useGetAccountInfoData,
+} from '../../../hooks/stw-operations/account-info'
+import {
+  useGetPartyStatusActions,
+  useGetPartyStatusData,
+} from '../../../hooks/stw-operations/party-status'
+import {
+  useGetStormShieldsActions,
+  useGetStormShieldsData,
+} from '../../../hooks/stw-operations/storm-shields'
+import {
+  useGetCloudStorageActions,
+  useGetCloudStorageData,
+} from '../../../hooks/stw-operations/cloud-storage'
+import {
+  useGetAccountExportActions,
+  useGetAccountExportData,
+} from '../../../hooks/account-management/account-export'
+import {
+  useGetAlertsDoneCheckActions,
+  useGetAlertsDoneCheckData,
+} from '../../../hooks/alerts/alerts-done-check'
 import {
   useGetXPBoostsActions,
   useGetXPBoostsFormData,
@@ -125,11 +149,29 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
 
   const { groupList, registerGroups } = useGetGroups()
 
-  const saveQuestsData = useGetSaveQuestsData()
-  const { rawSaveQuestsUpdateTags } = useGetSaveQuestsActions()
-
   const dailyQuestsData = useGetDailyQuestsData()
   const { rawDailyQuestsUpdateTags } = useGetDailyQuestsActions()
+
+  const dqWeaponsData = useGetDqWeaponsData()
+  const { rawDqWeaponsUpdateTags } = useGetDqWeaponsActions()
+
+  const accountInfoData = useGetAccountInfoData()
+  const { rawAccountInfoUpdateTags } = useGetAccountInfoActions()
+
+  const stormShieldsData = useGetStormShieldsData()
+  const { rawStormShieldsUpdateTags } = useGetStormShieldsActions()
+
+  const cloudStorageData = useGetCloudStorageData()
+  const { rawCloudStorageUpdateTags } = useGetCloudStorageActions()
+
+  const accountExportData = useGetAccountExportData()
+  const { rawAccountExportUpdateTags } = useGetAccountExportActions()
+
+  const alertsDoneCheckData = useGetAlertsDoneCheckData()
+  const { rawAlertsDoneCheckUpdateTags } = useGetAlertsDoneCheckActions()
+
+  const partyStatusData = useGetPartyStatusData()
+  const { rawPartyStatusUpdateTags } = useGetPartyStatusActions()
 
   const homebaseNameData = useGetHomebaseNameData()
   const { rawHomebaseNameUpdateTags } = useGetHomebaseNameActions()
@@ -200,13 +242,43 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
 
     registerGroups(newGroups)
 
-    rawSaveQuestsUpdateTags(
-      saveQuestsData.selectedTags.map((currentTag) =>
+    rawDailyQuestsUpdateTags(
+      dailyQuestsData.selectedTags.map((currentTag) =>
         currentTag === rawData.name ? newData.name : currentTag
       )
     )
-    rawDailyQuestsUpdateTags(
-      dailyQuestsData.selectedTags.map((currentTag) =>
+    rawDqWeaponsUpdateTags(
+      dqWeaponsData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawAccountInfoUpdateTags(
+      accountInfoData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawStormShieldsUpdateTags(
+      stormShieldsData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawCloudStorageUpdateTags(
+      cloudStorageData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawAccountExportUpdateTags(
+      accountExportData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawAlertsDoneCheckUpdateTags(
+      alertsDoneCheckData.selectedTags.map((currentTag) =>
+        currentTag === rawData.name ? newData.name : currentTag
+      )
+    )
+    rawPartyStatusUpdateTags(
+      partyStatusData.selectedTags.map((currentTag) =>
         currentTag === rawData.name ? newData.name : currentTag
       )
     )
@@ -243,13 +315,43 @@ export function useFormUpdate({ rawData }: { rawData: Tag }) {
 
     registerGroups(newGroups)
 
-    rawSaveQuestsUpdateTags(
-      saveQuestsData.selectedTags.filter(
+    rawDailyQuestsUpdateTags(
+      dailyQuestsData.selectedTags.filter(
         (currentTag) => currentTag !== tagName
       )
     )
-    rawDailyQuestsUpdateTags(
-      dailyQuestsData.selectedTags.filter(
+    rawDqWeaponsUpdateTags(
+      dqWeaponsData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawAccountInfoUpdateTags(
+      accountInfoData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawStormShieldsUpdateTags(
+      stormShieldsData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawCloudStorageUpdateTags(
+      cloudStorageData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawAccountExportUpdateTags(
+      accountExportData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawAlertsDoneCheckUpdateTags(
+      alertsDoneCheckData.selectedTags.filter(
+        (currentTag) => currentTag !== tagName
+      )
+    )
+    rawPartyStatusUpdateTags(
+      partyStatusData.selectedTags.filter(
         (currentTag) => currentTag !== tagName
       )
     )

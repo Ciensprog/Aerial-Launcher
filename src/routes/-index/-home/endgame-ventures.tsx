@@ -3,6 +3,7 @@ import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-i
 import { Collection } from '@discordjs/collection'
 import { useTranslation } from 'react-i18next'
 
+import { RewardIcon } from '../../../components/reward-icon'
 import { EmptySection } from '../-components/-empty'
 import {
   MissionItem,
@@ -62,8 +63,10 @@ export function EndgameVenturesSection({
                             )}
                             key={reward.itemId}
                           >
-                            <img
+                            <RewardIcon
                               src={reward.imageUrl}
+                              fallback={reward.fallbackUrl}
+                              title={reward.name}
                               className="img-type"
                             />
                             <SchematicRarity
@@ -101,8 +104,10 @@ export function EndgameVenturesSection({
                         })}
                         key={reward.itemId}
                       >
-                        <img
+                        <RewardIcon
                           src={reward.imageUrl}
+                          fallback={reward.fallbackUrl}
+                          title={reward.name}
                           className="img-type"
                         />
                         {reward.quantity <= 1 ? (

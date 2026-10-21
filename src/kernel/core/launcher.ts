@@ -1,4 +1,5 @@
 import type { AccountData } from '../../types/accounts'
+import type { Settings } from '../../types/settings'
 
 import childProcess from 'node:child_process'
 
@@ -15,7 +16,100 @@ import {
   getExchangeCodeUsingAccessToken,
 } from '../../services/endpoints/oauth'
 
+const DEFAULT_LAUNCH_DIR =
+  'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64'
+
+function getHttpProxyArg(settings: Settings) {
+  if (!settings.customProxyEnabled) {
+    return null
+  }
+
+  const port = Number.parseInt(settings.customProxyPort, 10)
+
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    return null
+  }
+
+  return `-HTTP=127.0.0.1:${port}`
+}
+
 export class FortniteLauncher {
+  static buildLaunchCmd(params: {
+    launchDir: string
+    exchangeCode: string
+    accountId: string
+    httpProxyArg?: string | null
+  }) {
+    const launchDir = params.launchDir.replace(/[/\\]+$/, '') || DEFAULT_LAUNCH_DIR
+    const proxy = params.httpProxyArg ? ` ${params.httpProxyArg}` : ''
+
+    return `start /d "${launchDir}" FortniteLauncher.exe -AUTH_LOGIN=unused -AUTH_PASSWORD=${params.exchangeCode} -AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -EpicPortal -epicuserid=${params.accountId}${proxy} & exit`
+  }
+
+  static async getLauncherExchangeCode(account: AccountData) {
+    const accessToken = await Authentication.verifyAccessToken(account)
+
+    if (!accessToken) {
+      return null
+    }
+
+    const accountExchangeCode =
+      await getExchangeCodeUsingAccessToken(accessToken)
+
+    if (!accountExchangeCode.data.code) {
+      return null
+    }
+
+    const launcherAccessToken = await getAccessTokenUsingExchangeCode(
+      accountExchangeCode.data.code,
+      {
+        headers: {
+          Authorization: `basic ${launcherAppClient2.auth}`,
+        },
+      }
+    )
+
+    if (!launcherAccessToken.data.access_token) {
+      return null
+    }
+
+    const launcherExchangeCode = await getExchangeCodeUsingAccessToken(
+      launcherAccessToken.data.access_token
+    )
+
+    return launcherExchangeCode.data.code ?? null
+  }
+
+  static async generateCmd(account: AccountData) {
+    try {
+      const { settings } = await DataDirectory.getSettingsFile()
+      const exchangeCode =
+        await FortniteLauncher.getLauncherExchangeCode(account)
+
+      if (!exchangeCode) {
+        return {
+          success: false as const,
+          command: null,
+        }
+      }
+
+      return {
+        success: true as const,
+        command: FortniteLauncher.buildLaunchCmd({
+          launchDir: settings.path || DEFAULT_LAUNCH_DIR,
+          exchangeCode,
+          accountId: account.accountId,
+          httpProxyArg: getHttpProxyArg(settings),
+        }),
+      }
+    } catch {
+      return {
+        success: false as const,
+        command: null,
+      }
+    }
+  }
+
   static async start(account: AccountData) {
     const sendError = () => {
       MainWindow.instance.webContents.send(
@@ -28,52 +122,11 @@ export class FortniteLauncher {
     }
 
     try {
-      // const manifest = Manifest.get()
-
-      // if (!manifest) {
-      //   sendError()
-
-      //   return
-      // }
-
       const { settings } = await DataDirectory.getSettingsFile()
-      const accessToken = await Authentication.verifyAccessToken(account)
+      const launcherExchangeCode =
+        await FortniteLauncher.getLauncherExchangeCode(account)
 
-      if (!accessToken) {
-        sendError()
-
-        return
-      }
-
-      const accountExchangeCode =
-        await getExchangeCodeUsingAccessToken(accessToken)
-
-      if (!accountExchangeCode.data.code) {
-        sendError()
-
-        return
-      }
-
-      const launcherAccessToken = await getAccessTokenUsingExchangeCode(
-        accountExchangeCode.data.code,
-        {
-          headers: {
-            Authorization: `basic ${launcherAppClient2.auth}`,
-          },
-        }
-      )
-
-      if (!launcherAccessToken.data.access_token) {
-        sendError()
-
-        return
-      }
-
-      const launcherExchangeCode = await getExchangeCodeUsingAccessToken(
-        launcherAccessToken.data.access_token
-      )
-
-      if (!launcherExchangeCode.data.code) {
+      if (!launcherExchangeCode) {
         sendError()
 
         return
@@ -83,19 +136,18 @@ export class FortniteLauncher {
         'start',
         '""',
         'FortniteLauncher.exe',
-        // `${manifest.LaunchCommand}`,
         '-AUTH_LOGIN=unused',
-        `-AUTH_PASSWORD=${launcherExchangeCode.data.code}`,
+        `-AUTH_PASSWORD=${launcherExchangeCode}`,
         '-AUTH_TYPE=exchangecode',
         '-epicapp=Fortnite',
         '-epicenv=Prod',
         '-EpicPortal',
-        // '-steamimportavailable',
         `-epicusername="${account.displayName}"`,
         `-epicuserid=${account.accountId}`,
-        // '-epiclocale=en',
-        // '-epicsandboxid=fn',
-      ].join(' ')
+        getHttpProxyArg(settings),
+      ]
+        .filter(Boolean)
+        .join(' ')
 
       childProcess.exec(command, {
         cwd: settings.path,

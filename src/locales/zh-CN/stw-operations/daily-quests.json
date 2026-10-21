@@ -2,6 +2,7 @@
   "description": "获取所选账户的每日任务并管理重Roll。",
   "form": {
     "submit-button": "加载每日任务",
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)",
     "replace-button": "替换"
   },
   "list": {

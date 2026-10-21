@@ -2,7 +2,8 @@
   "description": "Pobieraj codzienne zadania i zarządzaj przerzuceniami dla wybranych kont.",
   "form": {
     "submit-button": "Wczytaj Codzienne Zadania",
-    "replace-button": "Zastąp"
+    "replace-button": "Zastąp",
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)"
   },
   "list": {
     "description": "Aktywne codzienne zadania dla wybranych kont.",

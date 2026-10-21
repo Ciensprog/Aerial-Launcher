@@ -25,6 +25,7 @@
   "friends": {
     "note": "Si el jugador invitado no es tu amigo, Aerial automáticamente le enviará una petición de amistad.",
     "form": {
+      "title": "Invitar al grupo",
       "select": {
         "placeholder": "Seleccionar amigos",
         "search": {
@@ -53,8 +54,48 @@
       },
       "request": {
         "sent_one": "{{count}} petición de amistad enviada",
-        "sent_other": "{{count}} peticiones de amistad enviadas"
+        "sent_other": "{{count}} peticiones de amistad enviadas",
+        "error": "Ocurrió un error al enviar peticiones de amistad"
       }
+    }
+  },
+  "friend-requests": {
+    "form": {
+      "submit-button": "Enviar petición"
+    },
+    "sheet": {
+      "title": "Enviar peticiones de amistad",
+      "label": "Busca por nombre Epic, ID de cuenta o prefijo xbl:/psn:",
+      "search-placeholder": "Ejemplo o xbl:mikro900",
+      "send": "Enviar petición",
+      "accept": "Aceptar petición",
+      "waiting": "Esperando aceptación",
+      "already-friends": "Ya son amigos",
+      "accepted": "Petición de amistad aceptada",
+      "friends-since": "Amigos desde {{time}}",
+      "outgoing-sent": "Petición enviada {{time}}",
+      "incoming-received": "Te invitaron {{time}}",
+      "not-friends": "No son amigos",
+      "status-friends": "Amigos",
+      "status-not-friends": "No amigos",
+      "status-outgoing": "Petición enviada",
+      "status-incoming": "Entrante",
+      "gifts-ready": "Regalos disponibles",
+      "gifts-in": "Regalos {{time}}",
+      "last-online": "Última conexión:",
+      "platforms": "Plataformas",
+      "mutual-friends": "Amigos en común",
+      "mutual-empty": "No hay amigos en común en las cuentas seleccionadas",
+      "friends-with-accounts": "Amigos con {{names}}",
+      "selected-accounts": "Cuentas seleccionadas",
+      "friendship-with": "Amistad con las cuentas seleccionadas",
+      "tabs-search": "Search",
+      "tabs-incoming": "Incoming",
+      "incoming-count": "{{count}} incoming",
+      "incoming-loading": "Loading incoming requests",
+      "incoming-empty": "No incoming friend requests",
+      "incoming-accept-all": "Accept all",
+      "incoming-accepted": "Accepted {{count}} friend request(s)"
     }
   }
 }

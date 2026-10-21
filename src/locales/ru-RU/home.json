@@ -9,6 +9,7 @@
   "tabs": {
     "home": "Главная страница",
     "overview": "Обзор Алертов",
+    "swap": "Замена миссий",
     "done": "Выполненные Алерты"
   },
   "sections": {
@@ -78,6 +79,46 @@
     "notifications": {
       "error": "Не удалось загрузить Файл с World Info, проверьте, что выбран правильный файл и в нём нет пропущенных данных"
     }
+  },
+  "swap": {
+    "help": "Today's missions and alerts stay as they are. Load yesterday's World Info file and swap selected missions — same tile, same alert, different mission type (e.g. Repair the Shelter to Deliver the Bomb).",
+    "load-yesterday": "Load yesterday's file",
+    "unload-yesterday": "Remove",
+    "no-yesterday": "No yesterday file loaded",
+    "missing-file": "Yesterday's World Info file is missing. Aerial did not run that day, so there is nothing to swap from.",
+    "yesterday": "Yesterday",
+    "same-mission": "same mission",
+    "rewards-differ": "different rewards",
+    "replace": "Swap",
+    "selected": "In file",
+    "missing-yesterday": "no mission on this tile",
+    "group-mismatch": "different player count",
+    "only-alerts": "Alerts only",
+    "only-different": "Different only",
+    "select-different": "Select different alerts ({{count}})",
+    "clear-selected": "Clear",
+    "save": "Save ({{count}})",
+    "save-as-new": "Save as a new file",
+    "save-overwrite": "Overwrite selected file",
+    "save-folder": "Output folder",
+    "save-file": "File to overwrite",
+    "pick-folder": "Folder",
+    "pick-file": "File",
+    "notifications": {
+      "missing-data": "Need today's World Info, yesterday's file, and at least one selected swap",
+      "missing-output-file": "Pick the file that should be overwritten",
+      "saved": "Saved {{count}} swaps: {{path}}",
+      "save-error": "Could not save: {{message}}"
+    }
+  },
+  "check": {
+    "submit": "Check",
+    "all-vbucks": "All V-Bucks today ({{count}})",
+    "missions-placeholder": "Select missions",
+    "no-missions": "No alerts in today's World Info",
+    "no-vbucks": "No V-Bucks missions today. Turn off All V-Bucks and pick a mission.",
+    "empty": "Select accounts and missions, then check completions.",
+    "summary": "{{done}}/{{total}} done"
   },
   "results": {
     "empty": {

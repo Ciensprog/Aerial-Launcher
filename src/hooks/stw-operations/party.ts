@@ -4,6 +4,7 @@ import {
   useKickAllPartySelectorStore,
   useLeavePartySelectorStore,
   usePartyFriendsStore,
+  useSendFriendRequestSelectorStore,
 } from '../../state/stw-operations/party'
 
 export function useClaimRewardsForm() {
@@ -31,6 +32,18 @@ export function useKickAllPartyForm() {
 
 export function useInviteFriendsForm() {
   const { setValue, value } = useInviteFriendsSelectorStore()
+  const hasValues = value.length > 0
+
+  return {
+    hasValues,
+    value,
+
+    setValue,
+  }
+}
+
+export function useSendFriendRequestForm() {
+  const { setValue, value } = useSendFriendRequestSelectorStore()
   const hasValues = value.length > 0
 
   return {

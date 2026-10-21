@@ -8,6 +8,15 @@ import type { FriendRecord } from '../../types/friends'
 import type {
   AddNewFriendNotification,
   InviteNotification,
+  PartyIncomingFriendRequest,
+  PartyPlayerExternalAuth,
+  PartyPlayerFriendship,
+  PartyPlayerMutualFriend,
+  PartyPlayerLookupResponse,
+  PartyStatusAccountData,
+  PartyStatusAction,
+  PartyStatusActionResponse,
+  PartyStatusMember,
 } from '../../types/party'
 
 import { PartyRole } from '../../config/constants/fortnite/party'
@@ -22,15 +31,25 @@ import { Authentication } from './authentication'
 import { ClaimRewards } from './claim-rewards'
 import { LookupManager } from './lookup'
 
-import { addFriend, getFriend } from '../../services/endpoints/friends'
+import {
+  addFriend,
+  getFriend,
+  getFriendsSummary,
+} from '../../services/endpoints/friends'
+import { findUsersByAccountIds } from '../../services/endpoints/lookup'
+import { getLastOnline } from '../../services/endpoints/presence'
 import {
   removeInvite,
   fetchParty,
   invite,
   kick,
+  promote,
 } from '../../services/endpoints/party'
 
-import { localeCompareForSorting } from '../../lib/utils'
+import {
+  localeCompareForSorting,
+  parseCustomDisplayName,
+} from '../../lib/utils'
 
 export class Party {
   static async kickPartyMembers(
@@ -225,6 +244,60 @@ export class Party {
     MainWindow.instance.webContents.send(kickNotification, 0)
   }
 
+  static async claimPartyMembers(
+    selectedAccount: AccountData,
+    accounts: AccountDataList,
+    config?: Partial<{
+      useGlobalNotification: boolean
+    }>
+  ) {
+    try {
+      const accessToken =
+        await Authentication.verifyAccessToken(selectedAccount)
+
+      if (!accessToken) {
+        await ClaimRewards.start(
+          [selectedAccount],
+          config?.useGlobalNotification
+        )
+
+        return
+      }
+
+      const result = await fetchParty({
+        accessToken,
+        accountId: selectedAccount.accountId,
+      })
+      const party = result.data.current[0]
+
+      if (!party) {
+        await ClaimRewards.start(
+          [selectedAccount],
+          config?.useGlobalNotification
+        )
+
+        return
+      }
+
+      const memberListId = party.members.map(
+        ({ account_id }) => account_id
+      )
+      const inParty = accounts.filter((account) =>
+        memberListId.includes(account.accountId)
+      )
+
+      await ClaimRewards.start(
+        inParty.length > 0 ? inParty : [selectedAccount],
+        config?.useGlobalNotification
+      )
+    } catch {
+      await ClaimRewards.start(
+        [selectedAccount],
+        config?.useGlobalNotification
+      )
+    }
+  }
+
   static async leaveParty(
     selectedAccounts: AccountDataList,
     _accounts: AccountDataList,
@@ -352,6 +425,291 @@ export class Party {
       ElectronAPIEventKeys.PartyLeaveActionNotification,
       total
     )
+  }
+
+  static async requestStatus(accounts: Array<AccountData>) {
+    try {
+      const responses = await Promise.allSettled(
+        accounts.map((account) => Party.buildStatus(account))
+      )
+      const data = responses
+        .filter(
+          (response): response is PromiseFulfilledResult<PartyStatusAccountData> =>
+            response.status === 'fulfilled'
+        )
+        .map((response) => response.value)
+
+      MainWindow.instance.webContents.send(
+        ElectronAPIEventKeys.PartyStatusNotification,
+        data
+      )
+
+      return
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.PartyStatusNotification,
+      []
+    )
+  }
+
+  static async kickStatusMember(
+    account: AccountData,
+    memberAccountId: string
+  ) {
+    await Party.runStatusAction(
+      account,
+      'kick',
+      memberAccountId,
+      async (accessToken, party) => {
+        const you = party.members.find(
+          (member) => member.account_id === account.accountId
+        )
+
+        if (you?.role !== PartyRole.CAPTAIN) {
+          throw new Error('Need party leader')
+        }
+
+        if (memberAccountId === account.accountId) {
+          throw new Error('Need party leader')
+        }
+
+        await kick({
+          accessToken,
+          accountId: memberAccountId,
+          partyId: party.id,
+        })
+      }
+    )
+  }
+
+  static async promoteStatusMember(
+    account: AccountData,
+    memberAccountId: string
+  ) {
+    await Party.runStatusAction(
+      account,
+      'promote',
+      memberAccountId,
+      async (accessToken, party) => {
+        const you = party.members.find(
+          (member) => member.account_id === account.accountId
+        )
+
+        if (you?.role !== PartyRole.CAPTAIN) {
+          throw new Error('Need party leader')
+        }
+
+        if (memberAccountId === account.accountId) {
+          throw new Error('Need party leader')
+        }
+
+        await promote({
+          accessToken,
+          accountId: memberAccountId,
+          partyId: party.id,
+        })
+      }
+    )
+  }
+
+  static async leaveStatus(account: AccountData) {
+    await Party.runStatusAction(
+      account,
+      'leave',
+      account.accountId,
+      async (accessToken, party) => {
+        await kick({
+          accessToken,
+          accountId: account.accountId,
+          partyId: party.id,
+        })
+      }
+    )
+  }
+
+  private static emptyStatus(
+    accountId: string,
+    extra?: Partial<PartyStatusAccountData>
+  ): PartyStatusAccountData {
+    return {
+      accountId,
+      available: true,
+      inParty: false,
+      isLeader: false,
+      partyId: null,
+      memberCount: 0,
+      maxSize: 0,
+      members: [],
+      ...extra,
+    }
+  }
+
+  private static async buildStatus(
+    account: AccountData
+  ): Promise<PartyStatusAccountData> {
+    const result = Party.emptyStatus(account.accountId)
+
+    try {
+      const accessToken = await Authentication.verifyAccessToken(account)
+
+      if (!accessToken) {
+        result.available = false
+        result.errorMessage = 'Unknown Error'
+
+        return result
+      }
+
+      const response = await fetchParty({
+        accessToken,
+        accountId: account.accountId,
+      })
+      const party = response.data.current[0]
+
+      if (!party) {
+        return result
+      }
+
+      const names = await resolvePartyMemberNames(accessToken, party.members)
+      const you = party.members.find(
+        (member) => member.account_id === account.accountId
+      )
+
+      result.inParty = true
+      result.partyId = party.id
+      result.isLeader = you?.role === PartyRole.CAPTAIN
+      result.memberCount = party.members.length
+      result.maxSize = party.config?.max_size ?? 16
+      result.members = party.members
+        .map((member): PartyStatusMember => ({
+          accountId: member.account_id,
+          displayName:
+            names.get(member.account_id) ?? member.account_id.slice(0, 8),
+          role:
+            member.role === PartyRole.CAPTAIN
+              ? 'CAPTAIN'
+              : 'MEMBER',
+          isYou: member.account_id === account.accountId,
+        }))
+        .toSorted((itemA, itemB) => {
+          if (itemA.role === 'CAPTAIN' && itemB.role !== 'CAPTAIN') {
+            return -1
+          }
+
+          if (itemB.role === 'CAPTAIN' && itemA.role !== 'CAPTAIN') {
+            return 1
+          }
+
+          if (itemA.isYou !== itemB.isYou) {
+            return itemA.isYou ? -1 : 1
+          }
+
+          return localeCompareForSorting(itemA.displayName, itemB.displayName)
+        })
+
+      return result
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      result.available = false
+      result.errorMessage =
+        error?.response?.data?.errorMessage ?? 'Unknown Error'
+    }
+
+    return result
+  }
+
+  private static async runStatusAction(
+    account: AccountData,
+    action: PartyStatusAction,
+    memberAccountId: string | null,
+    run: (accessToken: string, party: PartyData) => Promise<void>
+  ) {
+    const send = (payload: PartyStatusActionResponse) => {
+      MainWindow.instance.webContents.send(
+        ElectronAPIEventKeys.PartyStatusActionNotification,
+        payload
+      )
+    }
+
+    try {
+      const accessToken = await Authentication.verifyAccessToken(account)
+
+      if (!accessToken) {
+        send({
+          accountId: account.accountId,
+          success: false,
+          action,
+          errorMessage: 'Unknown Error',
+        })
+
+        return
+      }
+
+      const result = await fetchParty({
+        accessToken,
+        accountId: account.accountId,
+      })
+      const party = result.data.current[0]
+
+      if (!party) {
+        send({
+          accountId: account.accountId,
+          success: false,
+          action,
+          errorMessage: 'Unknown Error',
+          data: Party.emptyStatus(account.accountId),
+        })
+
+        return
+      }
+
+      const names = await resolvePartyMemberNames(
+        accessToken,
+        party.members
+      )
+      const memberName =
+        memberAccountId === null
+          ? undefined
+          : names.get(memberAccountId) ?? memberAccountId.slice(0, 8)
+
+      await run(accessToken, party)
+
+      const data = await Party.buildStatus(account)
+
+      send({
+        accountId: account.accountId,
+        success: true,
+        action,
+        memberName,
+        data,
+      })
+
+      return
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      let data: PartyStatusAccountData | undefined
+
+      try {
+        data = await Party.buildStatus(account)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (statusError) {
+        //
+      }
+
+      send({
+        accountId: account.accountId,
+        success: false,
+        action,
+        errorMessage:
+          error?.response?.data?.errorMessage ??
+          error?.message ??
+          'Unknown Error',
+        data,
+      })
+    }
   }
 
   static async loadFriends() {
@@ -615,6 +973,411 @@ export class Party {
     )
   }
 
+  static async lookupPlayer(
+    accounts: AccountDataList,
+    displayName: string
+  ) {
+    const sendResponse = (value: PartyPlayerLookupResponse) => {
+      MainWindow.instance.webContents.send(
+        ElectronAPIEventKeys.PartyLookupPlayerActionNotification,
+        value
+      )
+    }
+
+    const defaultResponse: PartyPlayerLookupResponse = {
+      data: null,
+      errorMessage: null,
+      success: false,
+    }
+
+    if (accounts.length <= 0 || displayName.trim() === '') {
+      sendResponse(defaultResponse)
+
+      return
+    }
+
+    try {
+      let lookup: Awaited<
+        ReturnType<typeof LookupManager.searchUserByDisplayName>
+      > | null = null
+
+      for (const account of accounts) {
+        lookup = await LookupManager.searchUserByDisplayName({
+          account,
+          displayName,
+        })
+
+        if (lookup.success) {
+          break
+        }
+      }
+
+      if (!lookup?.success) {
+        sendResponse({
+          data: null,
+          errorMessage:
+            lookup?.errorMessage === null || lookup?.errorMessage === undefined
+              ? null
+              : `${lookup.errorMessage}`,
+          success: false,
+        })
+
+        return
+      }
+
+      const targetId = lookup.data.id
+      const friendLists: Array<Array<string>> = []
+      let presenceAccount: AccountData | null = null
+
+      const friendships = await Promise.all(
+        accounts.map(async (account) => {
+          const item: PartyPlayerFriendship = {
+            accountId: account.accountId,
+            displayName: parseCustomDisplayName(account),
+            status: 'not-friends',
+            created: null,
+          }
+
+          try {
+            const accessToken =
+              await Authentication.verifyAccessToken(account)
+
+            if (!accessToken) {
+              return item
+            }
+
+            try {
+              const summary = await getFriendsSummary({
+                accessToken,
+                accountId: account.accountId,
+              })
+              const friends = summary.data.friends ?? []
+              const incoming = summary.data.incoming ?? []
+              const outgoing = summary.data.outgoing ?? []
+
+              const accepted = friends.find(
+                (entry) => entry.accountId === targetId
+              )
+              const sent = outgoing.find(
+                (entry) => entry.accountId === targetId
+              )
+              const received = incoming.find(
+                (entry) => entry.accountId === targetId
+              )
+
+              if (accepted) {
+                item.status = 'friends'
+                item.created = accepted.created ?? null
+                friendLists.push(
+                  friends
+                    .map((entry) => entry.accountId)
+                    .filter((accountId) => accountId !== targetId)
+                )
+                presenceAccount = presenceAccount ?? account
+              } else if (received) {
+                item.status = 'incoming'
+                item.created = received.created ?? null
+              } else if (sent) {
+                item.status = 'outgoing'
+                item.created = sent.created ?? null
+              }
+
+              return item
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (summaryError) {
+              const friend = await getFriend({
+                accessToken,
+                accountId: account.accountId,
+                friendId: targetId,
+              })
+
+              item.status = 'friends'
+              item.created = friend.data.created ?? null
+              presenceAccount = presenceAccount ?? account
+
+              return item
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (error) {
+            return item
+          }
+        })
+      )
+
+      let lastOnline: string | null = null
+      const lastOnlineAccount = presenceAccount ?? accounts[0]
+
+      try {
+        if (lastOnlineAccount) {
+          const accessToken =
+            await Authentication.verifyAccessToken(lastOnlineAccount)
+
+          if (accessToken) {
+            const presence = await getLastOnline({
+              accessToken,
+              accountId: targetId,
+            })
+
+            lastOnline = extractLastOnlineTimestamp(presence.data)
+          }
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        //
+      }
+
+      const { mutualFriends, mutualFriendsTotal } = lastOnlineAccount
+        ? await resolveMutualFriends({
+            account: lastOnlineAccount,
+            friendLists,
+          })
+        : { mutualFriends: [], mutualFriendsTotal: 0 }
+
+      sendResponse({
+        data: {
+          lookup: {
+            id: lookup.data.id,
+            displayName: lookup.data.displayName,
+            externalAuthType: lookup.data.externalAuthType,
+            externalAuths: extractExternalAuths(lookup.data.externalAuths),
+          },
+          friendships,
+          lastOnline,
+          mutualFriends,
+          mutualFriendsTotal,
+        },
+        errorMessage: null,
+        success: true,
+      })
+
+      return
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    sendResponse(defaultResponse)
+  }
+
+  static async sendFriendRequests(
+    accounts: AccountDataList,
+    friendId: string
+  ) {
+    const defaultResponse: Array<InviteNotification> = []
+    const alreadyDoneErrorCodes = new Set([
+      'errors.com.epicgames.friends.duplicate_friendship',
+      'errors.com.epicgames.friends.friend_request_already_sent',
+      'errors.com.epicgames.friends.incoming_friendship_request_exists',
+    ])
+
+    try {
+      const uniqueAccounts = accounts.filter(
+        (account, index, list) =>
+          account.accountId !== friendId &&
+          list.findIndex((item) => item.accountId === account.accountId) ===
+            index
+      )
+
+      const response = await Promise.allSettled(
+        uniqueAccounts.map(async (account) => {
+          const accessToken =
+            await Authentication.verifyAccessToken(account)
+
+          if (!accessToken) {
+            return null
+          }
+
+          try {
+            await addFriend({
+              accessToken,
+              accountId: account.accountId,
+              friendId,
+            })
+
+            return {
+              accountId: account.accountId,
+              type: 'friend-request',
+            } as const
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } catch (error: any) {
+            const errorCode = error?.response?.data?.errorCode as
+              | string
+              | undefined
+
+            if (errorCode && alreadyDoneErrorCodes.has(errorCode)) {
+              return {
+                accountId: account.accountId,
+                type: 'friend-request',
+              } as const
+            }
+
+            return null
+          }
+        })
+      )
+
+      response.forEach((item) => {
+        if (item.status === 'fulfilled' && item.value !== null) {
+          defaultResponse.push(item.value)
+        }
+      })
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.PartySendFriendRequestActionNotification,
+      defaultResponse
+    )
+  }
+
+  static async listIncomingFriendRequests(accounts: AccountDataList) {
+    const uniqueAccounts = accounts.filter(
+      (account, index, list) =>
+        list.findIndex((item) => item.accountId === account.accountId) ===
+        index
+    )
+    const requests: Array<PartyIncomingFriendRequest> = []
+    let lookupToken: string | null = null
+
+    for (const account of uniqueAccounts) {
+      try {
+        const accessToken = await Authentication.verifyAccessToken(account)
+
+        if (!accessToken) {
+          continue
+        }
+
+        lookupToken = lookupToken ?? accessToken
+
+        const summary = await getFriendsSummary({
+          accessToken,
+          accountId: account.accountId,
+        })
+        const incoming = summary.data.incoming ?? []
+        const accountDisplayName = parseCustomDisplayName(account)
+
+        incoming.forEach((entry) => {
+          if (!entry.accountId) {
+            return
+          }
+
+          requests.push({
+            accountDisplayName,
+            accountId: account.accountId,
+            created: entry.created ?? null,
+            friendDisplayName: entry.accountId.slice(0, 8),
+            friendId: entry.accountId,
+          })
+        })
+      } catch {
+        // skip account
+      }
+    }
+
+    if (lookupToken && requests.length > 0) {
+      const names = await lookupAccountNames(
+        lookupToken,
+        requests.map((item) => item.friendId),
+      )
+
+      requests.forEach((item) => {
+        const name = names.get(item.friendId)
+
+        if (name) {
+          item.friendDisplayName = name
+        }
+      })
+    }
+
+    const accountOrder = new Map(
+      uniqueAccounts.map((account, index) => [account.accountId, index]),
+    )
+
+    requests.sort((itemA, itemB) => {
+      const accountDiff =
+        (accountOrder.get(itemA.accountId) ?? 0) -
+        (accountOrder.get(itemB.accountId) ?? 0)
+
+      if (accountDiff !== 0) {
+        return accountDiff
+      }
+
+      return (itemB.created ?? '').localeCompare(itemA.created ?? '')
+    })
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.PartyIncomingFriendRequestsNotification,
+      requests,
+    )
+  }
+
+  static async acceptIncomingFriendRequests(
+    items: Array<{ account: AccountData; friendId: string }>,
+  ) {
+    let total = 0
+
+    const uniqueItems = items.filter(
+      (item, index, list) =>
+        item.account.accountId !== item.friendId &&
+        list.findIndex(
+          (entry) =>
+            entry.account.accountId === item.account.accountId &&
+            entry.friendId === item.friendId,
+        ) === index,
+    )
+
+    const results = await Promise.allSettled(
+      uniqueItems.map(async ({ account, friendId }) => {
+        const accessToken = await Authentication.verifyAccessToken(account)
+
+        if (!accessToken) {
+          return false
+        }
+
+        try {
+          await addFriend({
+            accessToken,
+            accountId: account.accountId,
+            friendId,
+          })
+
+          return true
+        } catch (error: unknown) {
+          const errorCode = (
+            error as { response?: { data?: { errorCode?: string } } }
+          )?.response?.data?.errorCode
+
+          return (
+            errorCode ===
+              'errors.com.epicgames.friends.duplicate_friendship' ||
+            errorCode ===
+              'errors.com.epicgames.friends.friend_request_already_sent' ||
+            errorCode ===
+              'errors.com.epicgames.friends.incoming_friendship_request_exists'
+          )
+        }
+      }),
+    )
+
+    results.forEach((item) => {
+      if (item.status === 'fulfilled' && item.value) {
+        total += 1
+      }
+    })
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.PartyAcceptIncomingFriendRequestsNotification,
+      total,
+    )
+  }
+
   static async removeFriend(data: {
     accountId: string
     displayName: string
@@ -717,4 +1480,202 @@ export class Party {
 
     return true
   }
+}
+
+function extractExternalAuths(
+  externalAuths?: Partial<Record<string, { externalDisplayName?: string }>>
+): Array<PartyPlayerExternalAuth> {
+  if (!externalAuths) {
+    return []
+  }
+
+  return Object.entries(externalAuths)
+    .map(([type, data]) => ({
+      type,
+      displayName: data?.externalDisplayName?.trim() ?? '',
+    }))
+    .filter((item) => item.displayName !== '')
+}
+
+async function resolveMutualFriends({
+  account,
+  friendLists,
+}: {
+  account: AccountData
+  friendLists: Array<Array<string>>
+}): Promise<{
+  mutualFriends: Array<PartyPlayerMutualFriend>
+  mutualFriendsTotal: number
+}> {
+  const empty = {
+    mutualFriends: [] as Array<PartyPlayerMutualFriend>,
+    mutualFriendsTotal: 0,
+  }
+
+  if (friendLists.length < 2) {
+    return empty
+  }
+
+  const [firstList, ...rest] = friendLists
+  const sharedIds = firstList.filter((accountId) =>
+    rest.every((list) => list.includes(accountId))
+  )
+
+  if (sharedIds.length <= 0) {
+    return empty
+  }
+
+  try {
+    const accessToken = await Authentication.verifyAccessToken(account)
+
+    if (!accessToken) {
+      return {
+        mutualFriends: [],
+        mutualFriendsTotal: sharedIds.length,
+      }
+    }
+
+    const previewIds = sharedIds.slice(0, 8)
+    const response = await findUsersByAccountIds({
+      accessToken,
+      accountIds: previewIds,
+    })
+    const names = new Map(
+      (response.data ?? []).map((item) => [item.id, item.displayName])
+    )
+
+    return {
+      mutualFriends: previewIds.map((accountId) => ({
+        accountId,
+        displayName: names.get(accountId) ?? accountId.slice(0, 8),
+      })),
+      mutualFriendsTotal: sharedIds.length,
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      mutualFriends: [],
+      mutualFriendsTotal: sharedIds.length,
+    }
+  }
+}
+
+const FRIEND_LOOKUP_CHUNK = 50
+
+async function lookupAccountNames(
+  accessToken: string,
+  accountIds: Array<string>,
+) {
+  const names = new Map<string, string>()
+  const unique = [...new Set(accountIds)].filter(Boolean)
+
+  for (let index = 0; index < unique.length; index += FRIEND_LOOKUP_CHUNK) {
+    const chunk = unique.slice(index, index + FRIEND_LOOKUP_CHUNK)
+
+    try {
+      const response = await findUsersByAccountIds({
+        accessToken,
+        accountIds: chunk,
+      })
+      const rows = Array.isArray(response.data) ? response.data : []
+
+      rows.forEach((row) => {
+        if (row?.id && row.displayName) {
+          names.set(row.id, row.displayName)
+        }
+      })
+    } catch {
+      // keep ids without names
+    }
+  }
+
+  return names
+}
+
+function extractLastOnlineTimestamp(data: unknown): string | null {
+  const timestamps: Array<string> = []
+
+  const walk = (value: unknown) => {
+    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+      timestamps.push(value)
+
+      return
+    }
+
+    if (value && typeof value === 'object') {
+      Object.values(value).forEach(walk)
+    }
+  }
+
+  walk(data)
+
+  if (timestamps.length <= 0) {
+    return null
+  }
+
+  return timestamps.toSorted().at(-1) ?? null
+}
+
+async function resolvePartyMemberNames(
+  accessToken: string,
+  members: PartyData['members']
+): Promise<Map<string, string>> {
+  const names = new Map<string, string>()
+
+  for (const member of members) {
+    const fromMeta = partyMemberDisplayName(member)
+
+    if (fromMeta) {
+      names.set(member.account_id, fromMeta)
+    }
+
+    const local = AccountsManager.getAccountById(member.account_id)
+
+    if (local) {
+      names.set(member.account_id, parseCustomDisplayName(local))
+    }
+  }
+
+  const missing = members
+    .map((member) => member.account_id)
+    .filter((accountId) => !names.has(accountId))
+
+  if (missing.length > 0) {
+    try {
+      const response = await findUsersByAccountIds({
+        accessToken,
+        accountIds: missing,
+      })
+
+      for (const item of response.data ?? []) {
+        if (item.id && item.displayName) {
+          names.set(item.id, item.displayName)
+        }
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+  }
+
+  for (const member of members) {
+    if (!names.has(member.account_id)) {
+      names.set(member.account_id, member.account_id.slice(0, 8))
+    }
+  }
+
+  return names
+}
+
+function partyMemberDisplayName(
+  member: PartyData['members'][number]
+): string | null {
+  const raw = member.meta?.['urn:epic:member:dn_s']
+
+  if (typeof raw === 'string' && raw.trim() !== '') {
+    return raw.trim()
+  }
+
+  return null
 }

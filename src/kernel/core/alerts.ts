@@ -1,4 +1,6 @@
+import type { AccountData } from '../../types/accounts'
 import type {
+  AlertsDoneCheckAccountData,
   AlertsDoneSearchPlayerConfig,
   AlertsDoneSearchPlayerResponse,
 } from '../../types/alerts'
@@ -11,7 +13,10 @@ import { MainWindow } from '../startup/windows/main'
 import { Authentication } from './authentication'
 import { LookupManager } from './lookup'
 
-import { getQueryPublicProfile } from '../../services/endpoints/mcp'
+import {
+  getQueryProfile,
+  getQueryPublicProfile,
+} from '../../services/endpoints/mcp'
 
 export class AlertsDone {
   static async fetchPlayerData({
@@ -110,5 +115,83 @@ export class AlertsDone {
     }
 
     sendDefaultResponse()
+  }
+
+  static async checkAccounts(accounts: Array<AccountData>) {
+    try {
+      const responses = await Promise.allSettled(
+        accounts.map((account) => AlertsDone.checkAccount(account)),
+      )
+      const data = responses.flatMap((response) =>
+        response.status === 'fulfilled' ? [response.value] : [],
+      )
+
+      MainWindow.instance.webContents.send(
+        ElectronAPIEventKeys.AlertsDoneCheckNotification,
+        data,
+      )
+
+      return
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+    }
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.AlertsDoneCheckNotification,
+      [],
+    )
+  }
+
+  private static async checkAccount(
+    account: AccountData,
+  ): Promise<AlertsDoneCheckAccountData> {
+    const result: AlertsDoneCheckAccountData = {
+      accountId: account.accountId,
+      available: true,
+      claimedAlertIds: [],
+    }
+
+    try {
+      const accessToken = await Authentication.verifyAccessToken(account)
+
+      if (!accessToken) {
+        result.available = false
+        result.errorMessage = 'Unknown Error'
+
+        return result
+      }
+
+      const profileResponse = await getQueryProfile({
+        accessToken,
+        accountId: account.accountId,
+      })
+      const profile =
+        profileResponse.data.profileChanges?.[0]?.profile ?? null
+
+      if (!profile) {
+        result.available = false
+        result.errorMessage = 'Unknown Error'
+
+        return result
+      }
+
+      result.claimedAlertIds = (
+        profile.stats?.attributes?.mission_alert_redemption_record
+          ?.claimData ?? []
+      )
+        .map((item) => item.missionAlertId)
+        .filter((id): id is string => typeof id === 'string' && id.length > 0)
+
+      return result
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      result.available = false
+      result.errorMessage =
+        (error?.response?.data?.errorMessage as string | undefined) ??
+        'Unknown Error'
+
+      return result
+    }
   }
 }

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '../../../components/ui/button'
 
 import { BasicInformation } from './-basic-information'
+import { AlertsDoneCheck } from './-check'
 import { usePlayerData } from './-hooks'
 import { RewardsSummary } from './-rewards-summary'
 import { SearchForm } from './-search-form'
@@ -15,6 +16,7 @@ import { toast } from '../../../lib/notifications'
 export function AlertsDone() {
   return (
     <>
+      <AlertsDoneCheck />
       <SearchForm />
       <ScreenshotGeneration />
       <div

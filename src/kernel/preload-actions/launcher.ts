@@ -14,6 +14,22 @@ export function launcherStart(account: AccountData) {
   ipcRenderer.send(ElectronAPIEventKeys.LauncherStart, account)
 }
 
+export function launcherGenerateCmd(account: AccountData) {
+  return ipcRenderer.invoke(
+    ElectronAPIEventKeys.LauncherGenerateCmd,
+    account,
+  ) as Promise<
+    | {
+        success: true
+        command: string
+      }
+    | {
+        success: false
+        command: null
+      }
+  >
+}
+
 export function onNotificationLauncher(
   callback: (
     data: LauncherNotificationCallbackResponseParam

@@ -1,4 +1,7 @@
-{
+﻿{
+  "games-launcher": {
+    "title": "Games Launcher"
+  },
   "stw-operations": {
     "title": "Operazioni STW",
     "options": {
@@ -7,10 +10,17 @@
       "party": "Party",
       "save-quests": "Salva Sfide",
       "daily-quests": "Missioni Giornaliere",
+      "auto-daily-quests": "Auto Daily Quests",
+      "dq-weapons": "DQ Weapons",
+      "storm-shields": "Storm Shields",
       "homebase-name": "Nome Casabase",
       "xp-boosts": "Incrementi PE",
       "auto-pin-urns": "Auto-fissa Rovine",
       "auto-llamas": "Auto-lama",
+      "llama-manager": "Gestore Llama",
+      "item-shop": "Item Shop",
+      "collection-book": "Libro collezione",
+      "account-info": "Account Information",
       "unlock": "Sblocca Ricompense SSD"
     },
     "auto-kick-status": {
@@ -22,6 +32,8 @@
     "title": "Gestione Account",
     "options": {
       "vbucks-information": "Informazioni V-Bucks",
+      "cloud-storage": "Cloud Storage",
+      "account-export": "Account Export",
       "redeem-codes": "Riscatta Codici",
       "devices-auth": "Autorizzazione Dispositivi",
       "epic-settings": "Impostazioni Epic Games"

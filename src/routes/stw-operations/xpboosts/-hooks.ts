@@ -43,9 +43,12 @@ export function useSearchUser(config?: {
 
   const { selected } = useGetSelectedAccount()
   const { accountsArray } = useGetAccounts()
+  const lookupAccount = selected ?? accountsArray[0] ?? null
 
   const inputSearchButtonIsDisabled =
-    searchUserIsSubmitting || inputSearchDisplayName.trim() === ''
+    searchUserIsSubmitting ||
+    inputSearchDisplayName.trim() === '' ||
+    lookupAccount === null
 
   useEffect(() => {
     const listener =
@@ -73,7 +76,7 @@ export function useSearchUser(config?: {
     setInputSearchDisplayName(value)
   }
   const handleManualChangeSearchDisplayName = (value: string) => {
-    if (!selected || value === '' || searchUserIsSubmitting) {
+    if (!lookupAccount || value.trim() === '' || searchUserIsSubmitting) {
       return
     }
 
@@ -81,7 +84,7 @@ export function useSearchUser(config?: {
     setSearchUserIsSubmitting(true)
 
     window.electronAPI.generalFindAPlayerWhoWillReceiveXPBoosts({
-      account: selected,
+      account: lookupAccount,
       displayName: value.trim(),
       originalAccounts: accountsArray,
     })
@@ -89,19 +92,21 @@ export function useSearchUser(config?: {
 
   const handleSearchUser = () => {
     if (
-      !selected ||
-      inputSearchDisplayName === '' ||
+      !lookupAccount ||
+      inputSearchDisplayName.trim() === '' ||
       searchUserIsSubmitting
     ) {
       return
     }
 
-    setInputSearchDisplayName(inputSearchDisplayName.trim())
+    const displayName = inputSearchDisplayName.trim()
+
+    setInputSearchDisplayName(displayName)
     setSearchUserIsSubmitting(true)
 
     window.electronAPI.generalFindAPlayerWhoWillReceiveXPBoosts({
-      account: selected,
-      displayName: inputSearchDisplayName.trim(),
+      account: lookupAccount,
+      displayName,
       originalAccounts: accountsArray,
     })
   }
@@ -568,20 +573,24 @@ export function useSendBoostsSheet({
   }
 
   const handleSearchUser = () => {
+    const lookupAccount = selected ?? accountsArray[0] ?? null
+
     if (
-      !selected ||
-      inputSearchDisplayName === '' ||
+      !lookupAccount ||
+      inputSearchDisplayName.trim() === '' ||
       searchUserIsSubmitting
     ) {
       return
     }
 
-    setInputSearchDisplayName(inputSearchDisplayName.trim())
+    const displayName = inputSearchDisplayName.trim()
+
+    setInputSearchDisplayName(displayName)
     updateSearchUserIsSubmitting(true)
 
     window.electronAPI.findAPlayerWhoWillReceiveXPBoosts({
-      account: selected,
-      displayName: inputSearchDisplayName.trim(),
+      account: lookupAccount,
+      displayName,
       originalAccounts: accountsArray,
     })
   }

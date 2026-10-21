@@ -1,0 +1,8 @@
+{
+  "description": "Download a recovery snapshot for Epic Support: account details, linked platforms, purchases, locker, friends, and STW data. Device secrets are not included.",
+  "submit": "Export",
+  "empty": "Select accounts or a group, then export.",
+  "saved": "Saved {{done}}/{{total}} files to {{path}}",
+  "failed": "Could not export: {{message}}",
+  "done": "{{done}}/{{total}} files"
+}

@@ -36,31 +36,60 @@ export function LoadWorldInfoData() {
 }
 
 export function LoadHomeWorldInfo() {
-  const { setWorldInfoData, updateWorldInfoLoading } =
+  const { setWorldInfoData, setRawWorldInfoData, updateWorldInfoLoading } =
     useWorldInfoActions()
   const { initPagination } = useAlertsOverviewPaginationInit()
 
   useEffect(() => {
+    let cancelled = false
+    let retries = 0
+    let retryTimer: ReturnType<typeof setTimeout> | undefined
+
+    const isEmpty = (data: {
+      theaters?: unknown[]
+      missions?: unknown[]
+    }) => !data.theaters?.length || !data.missions?.length
+
+    const applyData = (response: WorldInfoData) => {
+      try {
+        const result = worldInfoSchema.parse(response) as WorldInfoData
+        const { worldInfo } = worlInfoParser(result)
+
+        initPagination(worldInfo.keys().toArray())
+        setWorldInfoData(worldInfo)
+        setRawWorldInfoData(response)
+
+        return result
+      } catch {
+        const { worldInfo } = worlInfoParser(
+          defaultWorldInfo as WorldInfoData
+        )
+
+        setWorldInfoData(worldInfo)
+        setRawWorldInfoData(null)
+
+        return defaultWorldInfo
+      }
+    }
+
     const listener = window.electronAPI.responseHomeWorldInfo(
       async (response) => {
-        try {
-          const result = worldInfoSchema.parse(response) as WorldInfoData
-          const { worldInfo } = worlInfoParser(result)
-
-          initPagination(worldInfo.keys().toArray())
-          setWorldInfoData(worldInfo)
-
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-          const { worldInfo } = worlInfoParser(
-            defaultWorldInfo as WorldInfoData
-          )
-
-          setWorldInfoData(worldInfo)
-        } finally {
-          updateWorldInfoLoading('isFetching', false)
-          updateWorldInfoLoading('isReloading', false)
+        if (cancelled) {
+          return
         }
+
+        const parsed = applyData(response)
+
+        if (isEmpty(parsed) && retries < 2) {
+          retries += 1
+          retryTimer = setTimeout(() => {
+            window.electronAPI.requestHomeWorldInfo()
+          }, 500 * retries)
+          return
+        }
+
+        updateWorldInfoLoading('isFetching', false)
+        updateWorldInfoLoading('isReloading', false)
       }
     )
 
@@ -68,7 +97,11 @@ export function LoadHomeWorldInfo() {
     window.electronAPI.requestHomeWorldInfo()
 
     return () => {
+      cancelled = true
       listener.removeListener()
+      if (retryTimer) {
+        clearTimeout(retryTimer)
+      }
     }
   }, [])
 

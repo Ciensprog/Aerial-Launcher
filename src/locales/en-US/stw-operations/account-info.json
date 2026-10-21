@@ -1,0 +1,83 @@
+{
+  "description": "Inspect resources, backpack, storage, Ventures and commander level.",
+  "form": {
+    "submit-button": "Load"
+  },
+  "xp": {
+    "level": "Level {{level}}",
+    "br": "BR | Reload | OG | Lego | Festival",
+    "creative": "Creative",
+    "stw": "STW",
+    "progress": "{{current}} / {{cap}} XP",
+    "resets": "Resets · {{date}}"
+  },
+  "tabs": {
+    "resources": "Resources",
+    "backpack": "Backpack",
+    "storage": "Storage",
+    "ventures-inventory": "Ventures Inv",
+    "ventures": "Ventures",
+    "commander": "Commander"
+  },
+  "ventures": {
+    "level": "Level {{level}}",
+    "xp": "{{current}} / {{next}} XP",
+    "xp-total": "{{xp}} total XP",
+    "rewards": "Rewards",
+    "quests": "Quests",
+    "claimed": "Claimed",
+    "upcoming": "Upcoming",
+    "next": "Next",
+    "quest-active": "To do",
+    "quest-completed": "Complete",
+    "quest-claimed": "Claimed",
+    "quest-locked": "Locked",
+    "quests-empty": "No Ventures quests on this account.",
+    "progress": "{{progress}} / {{goal}}"
+  },
+  "filters": {
+    "all": "All",
+    "weapon": "Weapons",
+    "trap": "Traps",
+    "resource": "Materials",
+    "combine-stacks": "Combine stacks",
+    "separate-stacks": "Separate stacks"
+  },
+  "list": {
+    "empty": "No data loaded yet.",
+    "unavailable": "Could not load this account.",
+    "inventory-empty": "Nothing in here."
+  },
+  "inspect": {
+    "power": "PL {{power}}",
+    "upgrade": "Upgrade",
+    "perks": "Change perks",
+    "recycle": "Recycle",
+    "perks-soon": "Perk editing will be wired on the next pass",
+    "no-perks": "No perks on this item.",
+    "level": "Level {{level}}",
+    "quantity": "x{{count}}",
+    "durability": "Durability {{current}} / {{max}}",
+    "ammo": "Ammo {{count}}",
+    "favorite": "Favorite"
+  },
+  "commander": {
+    "base": "Commander",
+    "pcl": "Past Commander",
+    "overall": "Overall",
+    "cap": "cap",
+    "boosts-left": "{{count}} left",
+    "boosts-personal": "XP Boosts in inventory",
+    "boosts-teammate": "Teammate XP Boosts",
+    "boosts-applied": "{{count}} applied",
+    "boosts-applied-label": "XP Boosts applied",
+    "boosts-xp": "{{xp}} XP",
+    "boosts-xp-label": "Commander XP from boosts",
+    "note": "Normal commander level stops at 310. Extra levels are Past Commander Level. Overall = 310 + PCL. Applied boosts = Token:xpboost / XP from one boost."
+  },
+  "toast": {
+    "recycled": "Item recycled",
+    "upgraded": "Item upgraded",
+    "error": "Action failed"
+  }
+}

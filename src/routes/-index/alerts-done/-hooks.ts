@@ -1,5 +1,6 @@
 import type { ChangeEventHandler, MouseEventHandler } from 'react'
 import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-info'
+import type { RewardsSummary } from '../../../types/data/resources'
 import type {
   ComboboxOption,
   ComboboxProps,
@@ -19,9 +20,11 @@ import { useGetAccounts } from '../../../hooks/accounts'
 import { useGetGroups } from '../../../hooks/groups'
 
 import { checkIfCustomDisplayNameIsValid } from '../../../lib/validations/properties'
-import { sortRewardsSummary } from '../../../lib/parsers/resources'
+import {
+  rewardSummaryKey,
+  sortRewardsSummary,
+} from '../../../lib/parsers/resources'
 import { toDate } from '../../../lib/dates'
-import { assets } from '../../../lib/repository'
 import { parseCustomDisplayName } from '../../../lib/utils'
 
 export function useFormData() {
@@ -141,13 +144,7 @@ export function usePlayerData() {
       playerData?.data?.profileChanges?.profile.stats.attributes
         .mission_alert_redemption_record?.claimData ?? []
 
-    const tmpRewards: Record<
-      string,
-      {
-        imageUrl: string
-        quantity: number
-      }
-    > = {}
+    const tmpRewards: RewardsSummary = {}
     const missions = data
       .entries()
       .reduce(
@@ -177,30 +174,27 @@ export function usePlayerData() {
                   ) {
                     if (!tmpRewards[reward.itemId]) {
                       tmpRewards[reward.itemId] = {
+                        fallbackUrl: reward.fallbackUrl,
                         imageUrl: reward.imageUrl,
+                        name: reward.name,
                         quantity: 0,
                       }
                     }
 
                     tmpRewards[reward.itemId].quantity += reward.quantity
                   } else {
-                    const itemPrefix = itemId.split(':')[0]
+                    const bucket = rewardSummaryKey(itemId)
 
-                    if (!tmpRewards[itemPrefix]) {
-                      const images: Record<string, string> = {
-                        Defender: assets('voucher_generic_defender'),
-                        Hero: assets('voucher_generic_hero'),
-                        Schematic: assets('voucher_generic_schematic_r'),
-                        Worker: assets('voucher_generic_worker'),
-                      }
-
-                      tmpRewards[itemPrefix] = {
-                        imageUrl: images[itemPrefix] ?? assets('question'),
+                    if (!tmpRewards[bucket]) {
+                      tmpRewards[bucket] = {
+                        fallbackUrl: reward.fallbackUrl,
+                        imageUrl: reward.imageUrl,
+                        name: reward.name,
                         quantity: 0,
                       }
                     }
 
-                    tmpRewards[itemPrefix].quantity += reward.quantity
+                    tmpRewards[bucket].quantity += reward.quantity
                   }
                 })
               }

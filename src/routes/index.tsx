@@ -16,6 +16,7 @@ import { LanguageNotification } from '../components/language-notification'
 import { AlertsOverview } from './-index/-alerts-overview/-index'
 import { FetchAlertsButton } from './-index/-components/-fetch-alerts-button'
 import { HomeAlerts } from './-index/-home/-index'
+import { MissionSwap } from './-index/-mission-swap/-index'
 import { CommunityInfo } from './-index/-community-info'
 import { AlertsDone } from './-index/alerts-done'
 // import { HeaderNavigation } from './-index/-header-navigation'
@@ -29,6 +30,7 @@ import { cn } from '../lib/utils'
 enum IndexTabs {
   Home = 'home',
   AlertsOverview = 'alerts-overview',
+  MissionSwap = 'mission-swap',
   AlertsDone = 'alerts-done',
 }
 
@@ -115,6 +117,12 @@ const MainContent = memo(() => {
         </TabsContent>
         <TabsContent
           className="tab-content"
+          value={IndexTabs.MissionSwap}
+        >
+          <MissionSwap />
+        </TabsContent>
+        <TabsContent
+          className="tab-content"
           value={IndexTabs.AlertsDone}
         >
           <AlertsDone />
@@ -143,6 +151,9 @@ function NavigationTab() {
         <TabsTrigger value={IndexTabs.Home}>{t('tabs.home')}</TabsTrigger>
         <TabsTrigger value={IndexTabs.AlertsOverview}>
           {t('tabs.overview')}
+        </TabsTrigger>
+        <TabsTrigger value={IndexTabs.MissionSwap}>
+          {t('tabs.swap')}
         </TabsTrigger>
         <TabsTrigger
           value={IndexTabs.AlertsDone}

@@ -25,6 +25,7 @@
   "friends": {
     "note": "If the invited player is not your friend, the launcher will automatically send him a friend request.",
     "form": {
+      "title": "Invite to party",
       "select": {
         "placeholder": "Select friends",
         "search": {
@@ -53,8 +54,69 @@
       },
       "request": {
         "sent_one": "{{count}} friend request was sent",
-        "sent_other": "{{count}} friend requests were sent"
+        "sent_other": "{{count}} friend requests were sent",
+        "error": "An error occurred while sending friend requests"
       }
     }
+  },
+  "friend-requests": {
+    "form": {
+      "submit-button": "Send Friend Request"
+    },
+    "sheet": {
+      "title": "Send friend requests",
+      "label": "Search by Epic name, account ID, or xbl:/psn: prefix",
+      "search-placeholder": "Sample or xbl:mikro900",
+      "send": "Send request",
+      "accept": "Accept friend request",
+      "waiting": "Waiting for accept",
+      "already-friends": "Already friends",
+      "accepted": "Friend request accepted",
+      "friends-since": "Friends since {{time}}",
+      "outgoing-sent": "Request sent {{time}}",
+      "incoming-received": "They invited you {{time}}",
+      "not-friends": "Not friends",
+      "status-friends": "Friends",
+      "status-not-friends": "Not friends",
+      "status-outgoing": "Request sent",
+      "status-incoming": "Incoming",
+      "gifts-ready": "Gifts available",
+      "gifts-in": "Gifts {{time}}",
+      "last-online": "Last online:",
+      "platforms": "Platforms",
+      "mutual-friends": "Mutual friends",
+      "mutual-empty": "No shared friends on the selected accounts",
+      "friends-with-accounts": "Friends with {{names}}",
+      "selected-accounts": "Selected accounts",
+      "friendship-with": "Friendship with selected accounts",
+      "tabs-search": "Search",
+      "tabs-incoming": "Incoming",
+      "incoming-count": "{{count}} incoming",
+      "incoming-loading": "Loading incoming requests",
+      "incoming-empty": "No incoming friend requests",
+      "incoming-accept-all": "Accept all",
+      "incoming-accepted": "Accepted {{count}} friend request(s)"
+    }
+  },
+  "status": {
+    "form": {
+      "submit-button": "Load"
+    },
+    "empty": "No party data loaded yet.",
+    "not-in-party": "Not in a party",
+    "leader": "Leader",
+    "member": "Member",
+    "you": "You",
+    "size": "{{current}}/{{max}}",
+    "leave": "Leave",
+    "manage": "Manage member",
+    "promote": "Promote to leader",
+    "kick": "Kick from party",
+    "cancel": "Cancel",
+    "need-leader": "Promote and Kick need the party leader added in Aerial.",
+    "kick-success": "Kicked {{name}}",
+    "promote-success": "{{name}} is now party leader",
+    "leave-success": "Left the party",
+    "action-error": "Could not update the party"
   }
 }

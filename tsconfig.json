@@ -1,25 +1,33 @@
-{
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "commonjs",
-    "strict": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "downlevelIteration": true,
-    "allowSyntheticDefaultImports": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "jsx": "react-jsx",
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "exclude": ["node_modules"]
+﻿{
+    "compilerOptions":  {
+                            "target":  "ESNext",
+                            "lib":  [
+                                        "dom",
+                                        "dom.iterable",
+                                        "esnext"
+                                    ],
+                            "module":  "commonjs",
+                            "strict":  true,
+                            "allowJs":  true,
+                            "skipLibCheck":  true,
+                            "esModuleInterop":  true,
+                            "downlevelIteration":  true,
+                            "allowSyntheticDefaultImports":  true,
+                            "strictNullChecks":  true,
+                            "noImplicitAny":  true,
+                            "sourceMap":  true,
+                            "jsx":  "react-jsx",
+                            "outDir":  "dist",
+                            "moduleResolution":  "node",
+                            "resolveJsonModule":  true,
+                            "baseUrl":  ".",
+                            "paths":  {
+                                          "@/*":  [
+                                                      "./src/*"
+                                                  ]
+                                      }
+                        },
+    "exclude":  [
+                    "node_modules"
+                ]
 }

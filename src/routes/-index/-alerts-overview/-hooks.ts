@@ -1,5 +1,6 @@
 import type { ChangeEventHandler } from 'react'
 import type { WorldInfo } from '../../../types/data/advanced-mode/world-info'
+import type { RewardsSummary } from '../../../types/data/resources'
 
 import { Collection } from '@discordjs/collection'
 import { usePagination } from '@mantine/hooks'
@@ -14,8 +15,10 @@ import { useWorldInfo } from '../../../hooks/advanced-mode/world-info'
 import { useAlertsOverviewFiltersData } from '../../../hooks/alerts/filters'
 import { useAlertsOverviewPaginationData } from '../../../hooks/alerts/overview'
 
-import { sortRewardsSummary } from '../../../lib/parsers/resources'
-import { assets } from '../../../lib/repository'
+import {
+  rewardSummaryKey,
+  sortRewardsSummary,
+} from '../../../lib/parsers/resources'
 
 function isVentureZone(theaterId: string) {
   const keys = Object.keys(worldNameByTheaterId)
@@ -180,30 +183,27 @@ export function useAlertsOverviewData() {
             ) {
               if (!accumulator[reward.itemId]) {
                 accumulator[reward.itemId] = {
+                  fallbackUrl: reward.fallbackUrl,
                   imageUrl: reward.imageUrl,
+                  name: reward.name,
                   quantity: 0,
                 }
               }
 
               accumulator[reward.itemId].quantity += reward.quantity
             } else {
-              const itemPrefix = itemId.split(':')[0]
+              const bucket = rewardSummaryKey(itemId)
 
-              if (!accumulator[itemPrefix]) {
-                const images: Record<string, string> = {
-                  Defender: assets('voucher_generic_defender'),
-                  Hero: assets('voucher_generic_hero'),
-                  Schematic: assets('voucher_generic_schematic_r'),
-                  Worker: assets('voucher_generic_worker'),
-                }
-
-                accumulator[itemPrefix] = {
-                  imageUrl: images[itemPrefix] ?? assets('question'),
+              if (!accumulator[bucket]) {
+                accumulator[bucket] = {
+                  fallbackUrl: reward.fallbackUrl,
+                  imageUrl: reward.imageUrl,
+                  name: reward.name,
                   quantity: 0,
                 }
               }
 
-              accumulator[itemPrefix].quantity += reward.quantity
+              accumulator[bucket].quantity += reward.quantity
             }
           })
         }
@@ -211,13 +211,7 @@ export function useAlertsOverviewData() {
 
       return accumulator
     },
-    {} as Record<
-      string,
-      {
-        imageUrl: string
-        quantity: number
-      }
-    >,
+    {} as RewardsSummary,
   )
   const alertRewards = sortRewardsSummary(tmpAlertRewards)
 

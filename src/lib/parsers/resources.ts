@@ -19,12 +19,52 @@ import {
 } from '../../config/constants/resources'
 
 import { assets } from '../repository'
+import { schematicDisplayName, schematicIconUrl } from '../stw/dq-weapons'
+import { gameItemName } from '../stw/display-names'
+import {
+  defenderItemName,
+  itemIconUrl,
+  leadPersonName,
+  distinctHeroName,
+  survivorItemName,
+} from '../stw/item-icons'
 
 export function getKey<Data = unknown>(
   key: string,
   resource: Record<string, Data>,
 ) {
-  return Object.entries(resource).find(([id]) => key.includes(id))
+  const direct = Object.entries(resource).find(([id]) => key.includes(id))
+
+  if (direct) {
+    return direct
+  }
+
+  // ingredient_blastpowder does not contain blast_powder
+  const compactKey = key.toLowerCase().replace(/_/g, '')
+  const compact = Object.entries(resource).filter(([id]) => {
+    const compactId = id.toLowerCase().replace(/_/g, '')
+
+    return compactId.length >= 4 && compactKey.includes(compactId)
+  })
+
+  compact.sort((a, b) => b[0].length - a[0].length)
+
+  return compact[0]
+}
+
+/** Alerts collapse heroes, schematics, survivors and defenders into one pile each. */
+export function rewardSummaryKey(itemId: string) {
+  if (
+    itemId.startsWith('AccountResource:') ||
+    itemId.startsWith('Ingredient:') ||
+    itemId.startsWith('CardPack:')
+  ) {
+    return itemId
+  }
+
+  const colon = itemId.indexOf(':')
+
+  return colon >= 0 ? itemId.slice(0, colon) : itemId
 }
 
 export function parseModifier(key: string) {
@@ -39,6 +79,14 @@ export function parseModifier(key: string) {
   }
 
   return data
+}
+
+function genericVoucher(kind: string, rarity: string) {
+  return (
+    assets(`voucher_generic_${kind}_${rarity}`) ||
+    assets(`voucher_generic_${kind}`) ||
+    assets('question')
+  )
 }
 
 export function parseResource({
@@ -108,9 +156,21 @@ export function parseResource({
   if (survivor || mythicSurvivor || isWorker) {
     if (mythicSurvivor) {
       const [survivorId] = mythicSurvivor
+      const person = leadPersonName(survivorId)
+      const named = gameItemName(`Worker:${survivorId}`)
 
-      data.imgUrl = assets(survivorId)
-      data.name = `${rarities[RarityType.Mythic]} Lead`
+      if (context === 'world-info') {
+        data.imgUrl = genericVoucher('manager', RarityType.Mythic)
+        data.fallbackUrl = data.imgUrl
+        data.name = `${rarities[RarityType.Mythic]} Lead`
+      } else {
+        data.imgUrl = assets(survivorId)
+        data.name =
+          named ||
+          (person
+            ? `${rarities[RarityType.Mythic]} ${person}`
+            : `${rarities[RarityType.Mythic]} Lead`)
+      }
     } else if (survivor) {
       const [survivorId, survivorData] = survivor
 
@@ -130,15 +190,26 @@ export function parseResource({
         isLeader && context === 'world-info'
           ? convertRarity[rarity.rarity as keyof typeof convertRarity]
           : rarity.rarity
-
-      data.imgUrl = assets(
-        `voucher_generic_${isLeader ? 'manager' : 'worker'}_${newRarity}`,
+      const voucher = genericVoucher(
+        isLeader ? 'manager' : 'worker',
+        newRarity,
       )
+
       data.itemType = key.replace(`_${rarity.rarity}_`, `_${newRarity}_`)
-      data.name = `${rarities[newRarity as RarityType]} ${
-        isLeader ? 'Lead ' : ''
-      }Survivor`
+      data.fallbackUrl = voucher
       data.rarity = newRarity
+
+      if (context === 'world-info') {
+        data.imgUrl = voucher
+        data.name = `${rarities[newRarity as RarityType]} ${
+          isLeader ? 'Lead' : 'Survivor'
+        }`
+      } else {
+        data.imgUrl = itemIconUrl(data.itemType) || voucher
+        data.name =
+          gameItemName(data.itemType) ||
+          survivorItemName(data.itemType, rarities[newRarity as RarityType])
+      }
     }
 
     data.type = 'worker'
@@ -149,9 +220,19 @@ export function parseResource({
   const isHero = newKey.startsWith('Hero:')
 
   if (isHero) {
-    data.imgUrl = assets(`voucher_generic_hero_${rarity.rarity}`)
-    data.name = `${rarities[rarity.rarity]} Hero`
+    const voucher = genericVoucher('hero', rarity.rarity)
+
+    data.fallbackUrl = voucher
     data.type = 'hero'
+
+    if (context === 'world-info') {
+      data.imgUrl = voucher
+      data.name = `${rarities[rarity.rarity]} Hero`
+    } else {
+      data.imgUrl = itemIconUrl(newKey) || voucher
+      data.name =
+        gameItemName(newKey) || distinctHeroName(newKey)
+    }
 
     return data
   }
@@ -159,8 +240,15 @@ export function parseResource({
   const isDefender = newKey.startsWith('Defender:')
 
   if (isDefender) {
-    data.imgUrl = assets(`voucher_generic_defender_${rarity.rarity}`)
-    data.name = `${rarities[rarity.rarity]} Defender`
+    const voucher = genericVoucher('defender', rarity.rarity)
+
+    data.imgUrl = voucher
+    data.fallbackUrl = voucher
+    data.name =
+      context === 'world-info'
+        ? `${rarities[rarity.rarity]} Defender`
+        : gameItemName(newKey) ||
+          defenderItemName(newKey, rarities[rarity.rarity])
     data.type = 'defender'
 
     return data
@@ -177,8 +265,19 @@ export function parseResource({
       data.name = `${rarities[rarity.rarity]} ${trapData.name}`
       data.type = 'trap'
     } else {
-      data.imgUrl = assets(`voucher_generic_schematic_${rarity.rarity}`)
-      data.name = `${rarities[rarity.rarity]} Schematic`
+      const voucher = genericVoucher('schematic', rarity.rarity)
+
+      data.fallbackUrl = voucher
+
+      if (context === 'world-info') {
+        data.imgUrl = voucher
+        data.name = `${rarities[rarity.rarity]} Schematic`
+      } else {
+        data.imgUrl = schematicIconUrl(key)
+        data.name =
+          gameItemName(key) ||
+          `${rarities[rarity.rarity]} ${schematicDisplayName(key)}`
+      }
     }
 
     return data
@@ -403,16 +502,15 @@ export function sortRewardsSummary(rewards: RewardsSummary) {
     })
     .reduce(
       (accumulator, [key, reward]) => {
-        accumulator[key] = reward
+        accumulator[key] = {
+          imageUrl: reward.imageUrl,
+          quantity: reward.quantity,
+          ...(reward.name ? { name: reward.name } : {}),
+          ...(reward.fallbackUrl ? { fallbackUrl: reward.fallbackUrl } : {}),
+        }
 
         return accumulator
       },
-      {} as Record<
-        string,
-        {
-          imageUrl: string
-          quantity: number
-        }
-      >,
+      {} as RewardsSummary,
     )
 }

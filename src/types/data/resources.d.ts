@@ -39,6 +39,7 @@ export type TrapData = {
 export type ParseModifierData =
   WorldInfoMission['ui']['mission']['modifiers'][number]
 export type ParseResourceData = {
+  fallbackUrl?: string
   imgUrl: string
   itemType: string
   key: string
@@ -59,7 +60,9 @@ export type ParseResourceData = {
 export type RewardsSummary = Record<
   string,
   {
+    fallbackUrl?: string
     imageUrl: string
+    name?: string
     quantity: number
   }
 >

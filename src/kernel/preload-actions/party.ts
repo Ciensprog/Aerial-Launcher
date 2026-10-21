@@ -4,6 +4,10 @@ import type { FriendRecord } from '../../types/friends'
 import type {
   AddNewFriendNotification,
   InviteNotification,
+  PartyIncomingFriendRequest,
+  PartyPlayerLookupResponse,
+  PartyStatusAccountData,
+  PartyStatusActionResponse,
 } from '../../types/party'
 
 import { ipcRenderer } from 'electron'
@@ -60,11 +64,79 @@ export function invite(account: AccountData, accountIds: Array<string>) {
   )
 }
 
+export function lookupPartyPlayer(
+  accounts: AccountDataList,
+  displayName: string
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartyLookupPlayerAction,
+    accounts,
+    displayName
+  )
+}
+
+export function sendFriendRequests(
+  accounts: AccountDataList,
+  friendId: string
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartySendFriendRequestAction,
+    accounts,
+    friendId
+  )
+}
+
+export function requestIncomingFriendRequests(accounts: AccountDataList) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartyIncomingFriendRequestsRequest,
+    accounts
+  )
+}
+
+export function acceptIncomingFriendRequests(
+  items: Array<{ account: AccountData; friendId: string }>
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartyAcceptIncomingFriendRequests,
+    items
+  )
+}
+
 export function removeFriend(data: {
   accountId: string
   displayName: string
 }) {
   ipcRenderer.send(ElectronAPIEventKeys.PartyRemoveFriendAction, data)
+}
+
+export function requestPartyStatus(accounts: Array<AccountData>) {
+  ipcRenderer.send(ElectronAPIEventKeys.PartyStatusRequest, accounts)
+}
+
+export function kickPartyStatusMember(
+  account: AccountData,
+  memberAccountId: string
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartyStatusKickMember,
+    account,
+    memberAccountId
+  )
+}
+
+export function promotePartyStatusMember(
+  account: AccountData,
+  memberAccountId: string
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.PartyStatusPromoteMember,
+    account,
+    memberAccountId
+  )
+}
+
+export function leavePartyStatus(account: AccountData) {
+  ipcRenderer.send(ElectronAPIEventKeys.PartyStatusLeave, account)
 }
 
 /**
@@ -190,6 +262,141 @@ export function notificationInvite(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.PartyInviteActionNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationLookupPartyPlayer(
+  callback: (value: PartyPlayerLookupResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: PartyPlayerLookupResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyLookupPlayerActionNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyLookupPlayerActionNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationIncomingFriendRequests(
+  callback: (value: Array<PartyIncomingFriendRequest>) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: Array<PartyIncomingFriendRequest>
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyIncomingFriendRequestsNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyIncomingFriendRequestsNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationAcceptIncomingFriendRequests(
+  callback: (total: number) => Promise<void>
+) {
+  const customCallback = (_: IpcRendererEvent, total: number) => {
+    callback(total).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyAcceptIncomingFriendRequestsNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyAcceptIncomingFriendRequestsNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationSendFriendRequests(
+  callback: (value: Array<InviteNotification>) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: Array<InviteNotification>
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartySendFriendRequestActionNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartySendFriendRequestActionNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationPartyStatus(
+  callback: (value: Array<PartyStatusAccountData>) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: Array<PartyStatusAccountData>
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyStatusNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyStatusNotification,
+        customCallback
+      ),
+  }
+}
+
+export function notificationPartyStatusAction(
+  callback: (value: PartyStatusActionResponse) => Promise<void>
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: PartyStatusActionResponse
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.PartyStatusActionNotification,
+    customCallback
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.PartyStatusActionNotification,
         customCallback
       ),
   }

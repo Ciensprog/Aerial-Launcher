@@ -25,6 +25,7 @@
   "friends": {
     "note": "Если приглашенный игрок не является вашим другом, лаунчер автоматически отправит ему запрос на добавление в друзья.",
     "form": {
+      "title": "Пригласить в группу",
       "select": {
         "placeholder": "Выбрать друзей",
         "search": {
@@ -53,8 +54,48 @@
       },
       "request": {
         "sent_one": "{{count}} был отправлен запрос в друзья",
-        "sent_other": "{{count}} были отправлены запросы на добавление в друзья"
+        "sent_other": "{{count}} были отправлены запросы на добавление в друзья",
+        "error": "При отправке запросов в друзья произошла ошибка"
       }
+    }
+  },
+  "friend-requests": {
+    "form": {
+      "submit-button": "Отправить запрос"
+    },
+    "sheet": {
+      "title": "Отправить запросы в друзья",
+      "label": "Поиск по имени Epic, ID аккаунта или префиксу xbl:/psn:",
+      "search-placeholder": "Пример или xbl:mikro900",
+      "send": "Отправить запрос",
+      "accept": "Принять запрос",
+      "waiting": "Ожидает принятия",
+      "already-friends": "Уже в друзьях",
+      "accepted": "Запрос в друзья принят",
+      "friends-since": "В друзьях {{time}}",
+      "outgoing-sent": "Запрос отправлен {{time}}",
+      "incoming-received": "Вас пригласили {{time}}",
+      "not-friends": "Не в друзьях",
+      "status-friends": "Друзья",
+      "status-not-friends": "Не друзья",
+      "status-outgoing": "Запрос отправлен",
+      "status-incoming": "Входящий",
+      "gifts-ready": "Подарки доступны",
+      "gifts-in": "Подарок {{time}}",
+      "last-online": "Был в сети:",
+      "platforms": "Платформы",
+      "mutual-friends": "Общие друзья",
+      "mutual-empty": "Нет общих друзей на выбранных аккаунтах",
+      "friends-with-accounts": "В друзьях с {{names}}",
+      "selected-accounts": "Выбранные аккаунты",
+      "friendship-with": "Дружба с выбранными аккаунтами",
+      "tabs-search": "Search",
+      "tabs-incoming": "Incoming",
+      "incoming-count": "{{count}} incoming",
+      "incoming-loading": "Loading incoming requests",
+      "incoming-empty": "No incoming friend requests",
+      "incoming-accept-all": "Accept all",
+      "incoming-accepted": "Accepted {{count}} friend request(s)"
     }
   }
 }

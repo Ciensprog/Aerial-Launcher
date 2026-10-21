@@ -6,6 +6,7 @@ export const automationServerDataSchema = z.object({
   accountId: z.string().min(1),
   actions: z.object({
     claim: z.boolean().default(false),
+    claimParty: z.boolean().default(false),
     kick: z.boolean().default(false),
     transferMats: z.boolean().default(false),
   }),
@@ -20,6 +21,7 @@ export const automationFileDataSchema = z.object({
   accountId: z.string().min(1),
   actions: z.object({
     claim: z.boolean().default(false),
+    claimParty: z.boolean().default(false),
     kick: z.boolean().default(false),
     transferMats: z.boolean().default(false),
   }),

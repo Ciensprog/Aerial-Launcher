@@ -14,6 +14,20 @@
   "options": {
     "kick": "Wyrzuć",
     "claim": "Odbierz",
+    "claim-party": "Odbierz ekipę",
     "transfer-mats": "Przenieś materiały"
+  },
+  "tabs": {
+    "accounts": "Auto-wyrzucanie",
+    "logfile": "Logfile"
+  },
+  "logfile": {
+    "description": "Watch FortniteGame.log for End Of Match, then kick, claim, or transfer mats for the account in that instance.",
+    "path": "Log file",
+    "browse": "Browse",
+    "running": "Fortnite running ({{count}})",
+    "not-running": "Fortnite not running",
+    "player": "Playing as {{name}}",
+    "no-player": "No account detected yet"
   }
 }

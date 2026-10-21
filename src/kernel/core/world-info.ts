@@ -1,11 +1,13 @@
 import type {
   SaveWorldInfoData,
+  WorldInfoDailyFile,
   WorldInfoDeleteResponse,
   WorldInfoExportResponse,
   WorldInfoFileData,
   WorldInfoOpenResponse,
   WorldInfoParsed,
   WorldInfoResponse,
+  WorldInfoSwapSources,
 } from '../../types/data/advanced-mode/world-info'
 
 import crypto from 'node:crypto'
@@ -22,15 +24,21 @@ import { dialog, shell } from 'electron'
 
 import { defaultWorldInfo } from '../../config/constants/fortnite/world-info'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
-import { defaultFortniteClient } from '../../config/fortnite/clients'
 
 import { MainWindow } from '../startup/windows/main'
 import { DataDirectory } from '../startup/data-directory'
 
 import { getWorldInfoData } from '../../services/endpoints/advanced-mode/world-info'
-import { createAccessTokenUsingClientCredentials } from '../../services/endpoints/oauth'
+import {
+  getFortnitePcUserAccessToken,
+  invalidateFortnitePcUserAccessToken,
+} from '../../lib/epic/mcp-game'
 
 import { localeCompareForSorting } from '../../lib/utils'
+import {
+  getWorldInfoMissionDay,
+  shiftUtcDate,
+} from '../../lib/misje/world-info-day'
 
 export class WorldInfoManager {
   static async requestForHome() {
@@ -80,6 +88,85 @@ export class WorldInfoManager {
         data: null,
         status: false,
       } as WorldInfoResponse
+    )
+  }
+
+  static async getSwapSources(todayDate?: string): Promise<WorldInfoSwapSources> {
+    await DataDirectory.checkOrCreateWorldInfoDirectory()
+    const directory = DataDirectory.getWorldInfoDirectoryPath()
+    const files = await WorldInfoManager.listDailyFiles()
+    const currentDay =
+      todayDate && /^\d{4}-\d{2}-\d{2}$/.test(todayDate)
+        ? todayDate
+        : files.at(-1)?.date
+
+    const today =
+      files.find((file) => file.filename === currentDay) ??
+      files.findLast((file) => file.date === currentDay) ??
+      null
+
+    const yesterdayDate = currentDay
+      ? shiftUtcDate(currentDay, -1)
+      : undefined
+    const yesterday = yesterdayDate
+      ? (files.find((file) => file.filename === yesterdayDate) ??
+        files.findLast((file) => file.date === yesterdayDate) ??
+        null)
+      : null
+
+    return {
+      directory,
+      today,
+      yesterday,
+    }
+  }
+
+  static async autoSaveDaily(data: WorldInfoParsed | typeof defaultWorldInfo) {
+    if (!WorldInfoManager.isPopulated(data)) {
+      return null
+    }
+
+    await DataDirectory.checkOrCreateWorldInfoDirectory()
+    const filename = getWorldInfoMissionDay(data)
+    const filePath = path.join(
+      DataDirectory.getWorldInfoDirectoryPath(),
+      `${filename}.json`,
+    )
+
+    await writeFile(filePath, `${JSON.stringify(data, null, 2)}\n`, {
+      encoding: 'utf8',
+    })
+
+    await WorldInfoManager.pruneOldDailyFiles(filename)
+
+    return filePath
+  }
+
+  private static async pruneOldDailyFiles(today: string) {
+    const yesterday = shiftUtcDate(today, -1)
+    const keep = new Set(
+      [`${today}.json`, `${yesterday}.json`].map((name) => name.toLowerCase()),
+    )
+    const directory = DataDirectory.getWorldInfoDirectoryPath()
+    const names = await readdir(directory)
+
+    await Promise.all(
+      names.map(async (name) => {
+        if (!name.toLowerCase().endsWith('.json')) {
+          return
+        }
+
+        if (keep.has(name.toLowerCase())) {
+          return
+        }
+
+        try {
+          await rm(path.join(directory, name), { force: true })
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+          //
+        }
+      }),
     )
   }
 
@@ -341,35 +428,113 @@ export class WorldInfoManager {
     )
   }
 
+  private static requestInFlight: Promise<
+    WorldInfoParsed | typeof defaultWorldInfo
+  > | null = null
+
   private static async request() {
-    try {
-      const accessToken = await createAccessTokenUsingClientCredentials({
-        authorization: defaultFortniteClient.use.auth,
+    if (WorldInfoManager.requestInFlight) {
+      return WorldInfoManager.requestInFlight
+    }
+
+    WorldInfoManager.requestInFlight = WorldInfoManager.requestWithRetry()
+      .then(async (data) => {
+        if (WorldInfoManager.isPopulated(data)) {
+          await WorldInfoManager.autoSaveDaily(data)
+        }
+
+        return data
+      })
+      .finally(() => {
+        WorldInfoManager.requestInFlight = null
       })
 
-      if (!accessToken.data.access_token) {
-        return defaultWorldInfo
+    return WorldInfoManager.requestInFlight
+  }
+
+  private static async listDailyFiles() {
+    const directory = DataDirectory.getWorldInfoDirectoryPath()
+    const names = await readdir(directory)
+    const files: Array<WorldInfoDailyFile> = []
+
+    for (const name of names) {
+      if (!name.toLowerCase().endsWith('.json')) {
+        continue
       }
 
-      const worldInfoResponse = await getWorldInfoData({
-        accessToken: accessToken.data.access_token,
+      if (name.toLowerCase().includes('swap')) {
+        continue
+      }
+
+      const match = name.match(/^(\d{4}-\d{2}-\d{2})/)
+
+      if (!match) {
+        continue
+      }
+
+      files.push({
+        date: match[1],
+        filename: name.replace(/\.json$/i, ''),
+        path: path.join(directory, name),
       })
+    }
 
-      if (
-        worldInfoResponse.data.missionAlerts?.length <= 0 ||
-        worldInfoResponse.data.missions?.length <= 0 ||
-        worldInfoResponse.data.theaters?.length <= 0
-      ) {
-        return defaultWorldInfo
+    files.sort(
+      (fileA, fileB) =>
+        fileA.date.localeCompare(fileB.date) ||
+        fileA.filename.localeCompare(fileB.filename),
+    )
+
+    return files
+  }
+
+  private static isPopulated(data: WorldInfoParsed | typeof defaultWorldInfo) {
+    return (
+      (data.missionAlerts?.length ?? 0) > 0 &&
+      (data.missions?.length ?? 0) > 0 &&
+      (data.theaters?.length ?? 0) > 0
+    )
+  }
+
+  private static async requestWithRetry() {
+    const delays = [0, 400, 1000]
+
+    for (let index = 0; index < delays.length; index += 1) {
+      if (delays[index] > 0) {
+        await new Promise((resolve) => setTimeout(resolve, delays[index]))
       }
 
-      return worldInfoResponse.data
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      //
+      try {
+        const data = await WorldInfoManager.fetchFromApi()
+        if (WorldInfoManager.isPopulated(data)) {
+          return data
+        }
+      } catch (error) {
+        const status = (error as { response?: { status?: number } }).response
+          ?.status
+        if (status === 401) {
+          invalidateFortnitePcUserAccessToken()
+        }
+      }
     }
 
     return defaultWorldInfo
+  }
+
+  private static async fetchFromApi() {
+    const accessToken = await getFortnitePcUserAccessToken()
+    const worldInfoResponse = await getWorldInfoData({
+      accessToken,
+    })
+
+    if (
+      worldInfoResponse.data.missionAlerts?.length <= 0 ||
+      worldInfoResponse.data.missions?.length <= 0 ||
+      worldInfoResponse.data.theaters?.length <= 0
+    ) {
+      return defaultWorldInfo
+    }
+
+    return worldInfoResponse.data as WorldInfoParsed
   }
 }

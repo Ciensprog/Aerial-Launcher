@@ -1,16 +1,8 @@
-import { createRoute } from '@tanstack/react-router'
+import { createRoute, redirect } from '@tanstack/react-router'
 import { Trash2 } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { Combobox } from '../../../components/ui/extended/combobox'
-import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '../../../components/ui/breadcrumb'
 import { Button } from '../../../components/ui/button'
 import {
   Card,
@@ -34,30 +26,10 @@ import { UpdateIcon } from '@radix-ui/react-icons'
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/auto-llamas',
-  component: () => {
-    const { t } = useTranslation(['sidebar'])
-
-    return (
-      <>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <HomeBreadcrumb />
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {t('stw-operations.options.auto-llamas')}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <Content />
-      </>
-    )
+  beforeLoad: () => {
+    throw redirect({ to: '/stw-operations/llama-manager' })
   },
+  component: () => null,
 })
 
 export function Content() {

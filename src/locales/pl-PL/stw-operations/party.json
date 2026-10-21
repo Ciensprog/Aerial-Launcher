@@ -25,6 +25,7 @@
   "friends": {
     "note": "Jeśli zaproszony gracz nie jest twoim znajomym, launcher automatycznie wyśle mu zaproszenie do znajomych.",
     "form": {
+      "title": "Zaproś do ekipy",
       "select": {
         "placeholder": "Wybierz znajomych",
         "search": {
@@ -57,8 +58,48 @@
         "sent_one": "{{count}} zaproszenie do znajomych zostało wysłane",
         "sent_few": "{{count}} zaproszenia do znajomych zostało wysłane",
         "sent_many": "{{count}} zaproszeń do znajomych zostało wysłanych",
-        "sent_other": "{{count}} zaproszeń do znajomych zostało wysłanych"
+        "sent_other": "{{count}} zaproszeń do znajomych zostało wysłanych",
+        "error": "Wystąpił błąd podczas wysyłania zaproszeń do znajomych"
       }
+    }
+  },
+  "friend-requests": {
+    "form": {
+      "submit-button": "Wyślij zaproszenie"
+    },
+    "sheet": {
+      "title": "Wyślij zaproszenia do znajomych",
+      "label": "Szukaj po nazwie Epic, ID konta albo prefiksie xbl:/psn:",
+      "search-placeholder": "Przykład lub xbl:mikro900",
+      "send": "Wyślij zaproszenie",
+      "accept": "Przyjmij zaproszenie",
+      "waiting": "Czeka na akceptację",
+      "already-friends": "Już jesteście znajomymi",
+      "accepted": "Zaproszenie do znajomych przyjęte",
+      "friends-since": "Znajomi od {{time}}",
+      "outgoing-sent": "Zaproszenie wysłane {{time}}",
+      "incoming-received": "Oni zaprosili cię {{time}}",
+      "not-friends": "Nieznajomi",
+      "status-friends": "Znajomi",
+      "status-not-friends": "Nieznajomi",
+      "status-outgoing": "Wysłane zaproszenie",
+      "status-incoming": "Przychodzące",
+      "gifts-ready": "Można wysłać podarunek",
+      "gifts-in": "Podarunek {{time}}",
+      "last-online": "Ostatnio online:",
+      "platforms": "Platformy",
+      "mutual-friends": "Wspólni znajomi",
+      "mutual-empty": "Brak wspólnych znajomych na wybranych kontach",
+      "friends-with-accounts": "Znajomi z: {{names}}",
+      "selected-accounts": "Wybrane konta",
+      "friendship-with": "Znajomość z wybranymi kontami",
+      "tabs-search": "Szukaj",
+      "tabs-incoming": "Przychodzące",
+      "incoming-count": "{{count}} przychodzących",
+      "incoming-loading": "Ładowanie przychodzących zaproszeń",
+      "incoming-empty": "Brak przychodzących zaproszeń",
+      "incoming-accept-all": "Przyjmij wszystkie",
+      "incoming-accepted": "Przyjęto {{count}} zaproszeń"
     }
   }
 }

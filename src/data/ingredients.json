@@ -113,5 +113,26 @@
   },
   "honey": {
     "name": "Honey"
+  },
+  "planks": {
+    "name": "Planks"
+  },
+  "twine_t01": {
+    "name": "Stringy Twine"
+  },
+  "twine_t02": {
+    "name": "Simple Twine"
+  },
+  "twine_t03": {
+    "name": "Sturdy Twine"
+  },
+  "twine_t04": {
+    "name": "Peaky Twine"
+  },
+  "twine_t05": {
+    "name": "Efficient Twine"
+  },
+  "twine_t06": {
+    "name": "Vindertech Twine"
   }
 }

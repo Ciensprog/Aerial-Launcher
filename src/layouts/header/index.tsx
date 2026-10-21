@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
-import { History, Menu, Minus, Rocket, Settings, X } from 'lucide-react'
+import { History, Menu, Minus, Rocket, Settings, Terminal, X } from 'lucide-react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import imageAerialStwNews from '../../../assets/images/aerial-stwnews.webp'
@@ -24,6 +25,7 @@ import { SidebarMenu } from '../../components/menu/sidebar'
 
 import { useUISidebarHistory } from '../../hooks/ui/sidebars'
 import { useAttributesStates, useHandlers, useWindowEvents } from './hooks'
+import { HiddenSettingsDialog } from './-hidden-settings'
 
 import { whatIsThis } from '../../lib/callbacks'
 import { cn } from '../../lib/utils'
@@ -35,12 +37,15 @@ export function Header() {
     useAttributesStates()
   const {
     handleCloseWindow,
+    handleGenerateLaunchCmd,
     handleKillProcess,
     handleLaunch,
     handleMinimizeWindow,
     handleOpenSTWNewsProfile,
+    isGeneratingCmd,
   } = useHandlers()
   const { isMinWith } = useWindowEvents()
+  const [hiddenSettingsOpen, setHiddenSettingsOpen] = useState(false)
 
   return (
     <>
@@ -121,6 +126,28 @@ export function Header() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
+                  className="leading-4 not-draggable-region px-2 py-1"
+                  size="icon"
+                  variant="outline"
+                  disabled={isButtonDisabled || isGeneratingCmd}
+                  onClick={handleGenerateLaunchCmd}
+                >
+                  <Terminal size={18} />
+                  <span className="sr-only">
+                    {t('launch-game.cmd.button')}
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t('launch-game.cmd.button')}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
                   className={cn(
                     'leading-4 not-draggable-region px-2 py-1',
                     {
@@ -160,11 +187,22 @@ export function Header() {
             onAuxClick={whatIsThis()}
             asChild
           >
-            <Link to="/settings">
+            <Link
+              to="/settings"
+              onContextMenu={(event) => {
+                event.preventDefault()
+                setHiddenSettingsOpen(true)
+              }}
+            >
               <Settings />
               <span className="sr-only">go to settings</span>
             </Link>
           </Button>
+
+          <HiddenSettingsDialog
+            open={hiddenSettingsOpen}
+            onOpenChange={setHiddenSettingsOpen}
+          />
 
           <HistorySheet />
 

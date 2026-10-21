@@ -48,6 +48,13 @@ export const useInviteFriendsSelectorStore =
     setValue: (value) => set({ value }),
   }))
 
+export const useSendFriendRequestSelectorStore =
+  create<PartyCommonSelectorState>()((set) => ({
+    value: [],
+
+    setValue: (value) => set({ value }),
+  }))
+
 export const useLeavePartySelectorStore = create<PartyWithClaimState>()(
   (set) => ({
     claimState: false,

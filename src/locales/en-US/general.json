@@ -87,6 +87,11 @@
   },
   "launch-game": {
     "button": "Launch Game",
+    "cmd": {
+      "button": "Copy launch CMD",
+      "copied": "Launch command copied to clipboard",
+      "error": "Could not generate launch command"
+    },
     "notifications": {
       "success": "The game has been launched with the account {{name}}",
       "error": "An error has occurred launching game with account {{name}}, try again later"

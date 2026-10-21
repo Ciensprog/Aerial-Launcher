@@ -1,4 +1,7 @@
-import type { FetchFriendResponse } from '../../types/services/friends'
+import type {
+  FetchFriendResponse,
+  FriendsSummaryResponse,
+} from '../../types/services/friends'
 
 import { friendsService } from '../config/friends'
 
@@ -39,6 +42,51 @@ export function addFriend({
       },
     },
   )
+}
+
+export function getFriendsSummary({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return friendsService.get<FriendsSummaryResponse>(
+    `/${accountId}/summary`,
+    {
+      headers: {
+        Authorization: `bearer ${accessToken}`,
+      },
+    }
+  )
+}
+
+export function getFriendsBlocklist({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return friendsService.get(`/${accountId}/blocklist`, {
+    headers: {
+      Authorization: `bearer ${accessToken}`,
+    },
+  })
+}
+
+export function getFriendsSettings({
+  accessToken,
+  accountId,
+}: {
+  accessToken: string
+  accountId: string
+}) {
+  return friendsService.get(`/${accountId}/settings`, {
+    headers: {
+      Authorization: `bearer ${accessToken}`,
+    },
+  })
 }
 
 export function removeFriend({

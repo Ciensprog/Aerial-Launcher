@@ -1,0 +1,18 @@
+{
+  "description": "Check Storm Shield Defense progress on each of the four zones.",
+  "form": {
+    "submit-button": "Load"
+  },
+  "list": {
+    "empty": "No data loaded yet.",
+    "ready": "{{total}}/40"
+  },
+  "zones": {
+    "stonewood": "Stonewood",
+    "plankerton": "Plankerton",
+    "canny": "Canny Valley",
+    "twine": "Twine Peaks"
+  },
+  "ssd": "SSD {{level}}/{{max}}",
+  "endurance": "Endurance"
+}

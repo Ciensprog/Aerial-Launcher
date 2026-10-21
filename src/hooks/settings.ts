@@ -1,4 +1,4 @@
-import type { CustomizableMenuSettings } from '../types/settings'
+import type { MenuVisibilityKey } from '../lib/settings/menu-layout'
 
 import { useCallback } from 'react'
 
@@ -21,7 +21,7 @@ export function useCustomizableMenuSettingsVisibility() {
   const data = useCustomizableMenuSettingsStore((state) => state.data)
 
   const getMenuOptionVisibility = useCallback(
-    (key: keyof CustomizableMenuSettings, validateItems?: boolean) => {
+    (key: MenuVisibilityKey, validateItems?: boolean) => {
       const keyValidation = data[key] ?? true
 
       if (validateItems) {
@@ -53,9 +53,13 @@ export function useCustomizableMenuSettingsActions() {
   const updateMenuOption = useCustomizableMenuSettingsStore(
     (state) => state.updateMenuOption,
   )
+  const updateMenuLayout = useCustomizableMenuSettingsStore(
+    (state) => state.updateMenuLayout,
+  )
 
   return {
     updateMenuOption,
+    updateMenuLayout,
   }
 }
 

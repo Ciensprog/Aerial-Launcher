@@ -19,6 +19,9 @@
       "path": {
         "label": "Niestandardowa ścieżka"
       },
+      "epic-games-dir": {
+        "label": "Folder Epic Games"
+      },
       "user-agent": {
         "label": "Niestandardowy User Agent",
         "note": "Jest stosowany tylko wtedy, gdy nie masz zainstalowanego Fortnite."
@@ -46,9 +49,25 @@
       }
     }
   },
+  "swap-file": {
+    "title": "Display name",
+    "display-name": {
+      "label": "Replacement value",
+      "note": "Used when generating Missions files that swap displayName, and on Mission Swap (Normal File :))."
+    }
+  },
   "custom-menu": {
     "title": "Dostosowywane menu",
-    "description": "Możesz dostosować widoczność sekcji/opcji menu."
+    "description": "Możesz dostosować widoczność sekcji i opcji. PPM na puste pole dodaje kategorię, PPM na kategorię pozwala ją zmienić lub usunąć. Przeciągnij zakładkę na inną zakładkę, żeby wstawić ją w to miejsce, albo na kategorię. Chwytak z lewej ustawia kolejność kategorii.",
+    "reorder-category": "Przeciągnij, żeby zmienić kolejność",
+    "add-category": "Dodaj kategorię",
+    "rename-category": "Zmień nazwę",
+    "delete-category": "Usuń",
+    "category-name": "Nazwa kategorii",
+    "category-fallback": "Kategoria",
+    "empty-category": "Przeciągnij tu zakładki.",
+    "save": "Zapisz",
+    "cancel": "Anuluj"
   },
   "tags-management": {
     "title": "Zarządzanie tagami",
@@ -69,6 +88,12 @@
     "title": "Dostosowanie konta",
     "description": "Czasami możesz potrzebować określonej nazwy wyświetlanej do identyfikacji konta. Jeśli chcesz, możesz zmienić obecną nazwę wyświetlaną na niestandardową.",
     "note": "Uwaga: ma to zastosowanie tylko wizualnie do kont Aerial."
+  },
+  "hidden": {
+    "title": "Hidden settings",
+    "description": "Launch Fortnite through a custom HTTP proxy port.",
+    "port": "Port",
+    "enable": "Use proxy"
   },
   "form": {
     "submit": {

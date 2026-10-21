@@ -1,5 +1,9 @@
 import type { IpcRendererEvent } from 'electron'
 import type { CustomizableMenuSettings } from '../../types/settings'
+import type {
+  MenuCategory,
+  MenuVisibilityKey,
+} from '../../lib/settings/menu-layout'
 
 import { ipcRenderer } from 'electron'
 
@@ -10,13 +14,22 @@ export function requestCustomizableMenuData() {
 }
 
 export function customizableMenuDataUpdate(
-  key: keyof CustomizableMenuSettings,
+  key: MenuVisibilityKey,
   visibility: boolean
 ) {
   ipcRenderer.send(
     ElectronAPIEventKeys.CustomizableMenuSettingsUpdate,
     key,
     visibility
+  )
+}
+
+export function customizableMenuDataUpdateLayout(
+  categories: Array<MenuCategory>
+) {
+  ipcRenderer.send(
+    ElectronAPIEventKeys.CustomizableMenuSettingsUpdateLayout,
+    categories
   )
 }
 

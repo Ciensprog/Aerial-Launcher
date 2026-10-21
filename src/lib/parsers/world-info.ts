@@ -281,8 +281,10 @@ export function worlInfoParser(data: WorldInfoData | null) {
                 }
 
                 return {
+                  fallbackUrl: parsedResource.fallbackUrl,
                   imageUrl: parsedResource.imgUrl,
                   itemId: parsedResource.itemType,
+                  name: parsedResource.name,
                   quantity: item.quantity ?? 1,
                   rarity: parsedResource.rarity,
                   type: parsedResource.type,
@@ -329,9 +331,11 @@ export function worlInfoParser(data: WorldInfoData | null) {
 
                 return {
                   isBad,
+                  fallbackUrl: parsedResource.fallbackUrl,
                   imageUrl: parsedResource.imgUrl,
                   itemId: parsedResource.itemType,
                   key: parsedResource.key,
+                  name: parsedResource.name,
                   quantity: item.quantity ?? 1,
                 }
               })

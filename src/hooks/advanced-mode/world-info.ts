@@ -8,6 +8,7 @@ export function useWorldInfo() {
   return useWorldInfoStore(
     useShallow((state) => ({
       data: state.data,
+      rawData: state.rawData,
       isFetching: state.isFetching,
       isReloading: state.isReloading,
     }))
@@ -18,6 +19,7 @@ export function useWorldInfoActions() {
   return useWorldInfoStore(
     useShallow((state) => ({
       setWorldInfoData: state.setWorldInfoData,
+      setRawWorldInfoData: state.setRawWorldInfoData,
       updateWorldInfoLoading: state.updateWorldInfoLoading,
     }))
   )

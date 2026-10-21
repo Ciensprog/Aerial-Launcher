@@ -63,6 +63,10 @@ export const useAutomationStore = create<AutomationState>()(
               defaultConfig?.actions?.claim ??
               current?.actions?.claim ??
               false,
+            claimParty:
+              defaultConfig?.actions?.claimParty ??
+              current?.actions?.claimParty ??
+              false,
             kick:
               defaultConfig?.actions?.kick ??
               current?.actions?.kick ??

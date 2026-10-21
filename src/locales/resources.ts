@@ -1,4 +1,4 @@
-import type { Resource } from 'i18next'
+﻿import type { Resource } from 'i18next'
 
 /**
  * @file en-US
@@ -14,16 +14,24 @@ import enUS_stwOperations_TaxiService from './en-US/stw-operations/taxi-service.
 import enUS_stwOperations_HomebaseName from './en-US/stw-operations/homebase-name.json'
 import enUS_stwOperations_SaveQuests from './en-US/stw-operations/save-quests.json'
 import enUS_stwOperations_DailyQuests from './en-US/stw-operations/daily-quests.json'
+import enUS_stwOperations_DqWeapons from './en-US/stw-operations/dq-weapons.json'
+import enUS_stwOperations_StormShields from './en-US/stw-operations/storm-shields.json'
+import enUS_stwOperations_CloudStorage from './en-US/stw-operations/cloud-storage.json'
 import enUS_stwOperations_Party from './en-US/stw-operations/party.json'
 import enUS_stwOperations_Urns from './en-US/stw-operations/urns.json'
 import enUS_stwOperations_XPBoosts from './en-US/stw-operations/xpboosts.json'
 import enUS_stwOperations_Llamas from './en-US/stw-operations/llamas.json'
+import enUS_stwOperations_LlamaManager from './en-US/stw-operations/llama-manager.json'
+import enUS_stwOperations_CollectionBook from './en-US/stw-operations/collection-book.json'
+import enUS_stwOperations_AccountInfo from './en-US/stw-operations/account-info.json'
+import enUS_stwOperations_ItemShop from './en-US/stw-operations/item-shop.json'
 import enUS_stwOperations_Unlock from './en-US/stw-operations/unlock.json'
 import enUS_accountManagement_VBucksInformation from './en-US/account-management/vbucks-information.json'
 import enUS_accountManagement_EULA from './en-US/account-management/eula.json'
 import enUS_accountManagement_RedeemCodes from './en-US/account-management/redeem-codes.json'
 import enUS_accountManagement_DevicesAuth from './en-US/account-management/devices-auth.json'
 import enUS_accountManagement_EpicSettings from './en-US/account-management/epic-settings.json'
+import enUS_accountManagement_AccountExport from './en-US/account-management/account-export.json'
 import enUS_advancedMode_MatchmakingTrack from './en-US/advanced-mode/matchmaking-track.json'
 import enUS_advancedMode_WorldInfo from './en-US/advanced-mode/world-info.json'
 import enUS_myAccounts_General from './en-US/accounts/general.json'
@@ -31,10 +39,12 @@ import enUS_myAccounts_AuthCode from './en-US/accounts/auth-code.json'
 import enUS_myAccounts_ExchangeCode from './en-US/accounts/exchange-code.json'
 import enUS_myAccounts_DeviceAuth from './en-US/accounts/device-auth.json'
 import enUS_myAccounts_RemoveAccount from './en-US/accounts/remove-account.json'
+import enUS_gamesLauncher from './en-US/games-launcher.json'
 
 const enUS = {
   sidebar: enUS_sidebar,
   general: enUS_general,
+  'games-launcher': enUS_gamesLauncher,
   history: enUS_history,
   settings: enUS_settings,
   alerts: enUS_alerts,
@@ -45,10 +55,17 @@ const enUS = {
     'homebase-name': enUS_stwOperations_HomebaseName,
     'save-quests': enUS_stwOperations_SaveQuests,
     'daily-quests': enUS_stwOperations_DailyQuests,
+    'dq-weapons': enUS_stwOperations_DqWeapons,
+    'storm-shields': enUS_stwOperations_StormShields,
+    'cloud-storage': enUS_stwOperations_CloudStorage,
     party: enUS_stwOperations_Party,
     urns: enUS_stwOperations_Urns,
     xpboosts: enUS_stwOperations_XPBoosts,
     llamas: enUS_stwOperations_Llamas,
+    'llama-manager': enUS_stwOperations_LlamaManager,
+    'collection-book': enUS_stwOperations_CollectionBook,
+    'account-info': enUS_stwOperations_AccountInfo,
+    'item-shop': enUS_stwOperations_ItemShop,
     unlock: enUS_stwOperations_Unlock,
   },
   'account-management': {
@@ -56,6 +73,7 @@ const enUS = {
     'redeem-codes': enUS_accountManagement_RedeemCodes,
     'devices-auth': enUS_accountManagement_DevicesAuth,
     'epic-settings': enUS_accountManagement_EpicSettings,
+    'account-export': enUS_accountManagement_AccountExport,
     eula: enUS_accountManagement_EULA,
   },
   'advanced-mode': {
@@ -106,6 +124,7 @@ import es419_myAccounts_RemoveAccount from './es-419/accounts/remove-account.jso
 const es419 = {
   sidebar: es419_sidebar,
   general: es419_general,
+  'games-launcher': enUS_gamesLauncher,
   history: es419_history,
   settings: es419_settings,
   alerts: es419_alerts,
@@ -116,10 +135,17 @@ const es419 = {
     'homebase-name': es419_stwOperations_HomebaseName,
     'save-quests': es419_stwOperations_SaveQuests,
     'daily-quests': es419_stwOperations_DailyQuests,
+    'dq-weapons': enUS_stwOperations_DqWeapons,
+    'storm-shields': enUS_stwOperations_StormShields,
+    'cloud-storage': enUS_stwOperations_CloudStorage,
     party: es419_stwOperations_Party,
     urns: es419_stwOperations_Urns,
     xpboosts: es419_stwOperations_XPBoosts,
     llamas: es419_stwOperations_Llamas,
+    'llama-manager': enUS_stwOperations_LlamaManager,
+    'collection-book': enUS_stwOperations_CollectionBook,
+    'account-info': enUS_stwOperations_AccountInfo,
+    'item-shop': enUS_stwOperations_ItemShop,
     unlock: es419_stwOperations_Unlock,
   },
   'account-management': {
@@ -127,6 +153,7 @@ const es419 = {
     'redeem-codes': es419_accountManagement_RedeemCodes,
     'devices-auth': es419_accountManagement_DevicesAuth,
     'epic-settings': es419_accountManagement_EpicSettings,
+    'account-export': enUS_accountManagement_AccountExport,
     eula: es419_accountManagement_EULA,
   },
   'advanced-mode': {
@@ -177,6 +204,7 @@ import zhCN_myAccounts_RemoveAccount from './zh-CN/accounts/remove-account.json'
 const zhCN = {
   sidebar: zhCN_sidebar,
   general: zhCN_general,
+  'games-launcher': enUS_gamesLauncher,
   history: zhCN_history,
   settings: zhCN_settings,
   alerts: zhCN_alerts,
@@ -187,10 +215,17 @@ const zhCN = {
     'homebase-name': zhCN_stwOperations_HomebaseName,
     'save-quests': zhCN_stwOperations_SaveQuests,
     'daily-quests': zhCN_stwOperations_DailyQuests,
+    'dq-weapons': enUS_stwOperations_DqWeapons,
+    'storm-shields': enUS_stwOperations_StormShields,
+    'cloud-storage': enUS_stwOperations_CloudStorage,
     party: zhCN_stwOperations_Party,
     urns: zhCN_stwOperations_Urns,
     xpboosts: zhCN_stwOperations_XPBoosts,
     llamas: zhCN_stwOperations_Llamas,
+    'llama-manager': enUS_stwOperations_LlamaManager,
+    'collection-book': enUS_stwOperations_CollectionBook,
+    'account-info': enUS_stwOperations_AccountInfo,
+    'item-shop': enUS_stwOperations_ItemShop,
     unlock: zhCN_stwOperations_Unlock,
   },
   'account-management': {
@@ -198,6 +233,7 @@ const zhCN = {
     'redeem-codes': zhCN_accountManagement_RedeemCodes,
     'devices-auth': zhCN_accountManagement_DevicesAuth,
     'epic-settings': zhCN_accountManagement_EpicSettings,
+    'account-export': enUS_accountManagement_AccountExport,
     eula: zhCN_accountManagement_EULA,
   },
   'advanced-mode': {
@@ -248,6 +284,7 @@ import ruRU_myAccounts_RemoveAccount from './ru-RU/accounts/remove-account.json'
 const ruRU = {
   sidebar: ruRU_sidebar,
   general: ruRU_general,
+  'games-launcher': enUS_gamesLauncher,
   history: ruRU_history,
   settings: ruRU_settings,
   alerts: ruRU_alerts,
@@ -258,10 +295,17 @@ const ruRU = {
     'homebase-name': ruRU_stwOperations_HomebaseName,
     'save-quests': ruRU_stwOperations_SaveQuests,
     'daily-quests': ruRU_stwOperations_DailyQuests,
+    'dq-weapons': enUS_stwOperations_DqWeapons,
+    'storm-shields': enUS_stwOperations_StormShields,
+    'cloud-storage': enUS_stwOperations_CloudStorage,
     party: ruRU_stwOperations_Party,
     urns: ruRU_stwOperations_Urns,
     xpboosts: ruRU_stwOperations_XPBoosts,
     llamas: ruRU_stwOperations_Llamas,
+    'llama-manager': enUS_stwOperations_LlamaManager,
+    'collection-book': enUS_stwOperations_CollectionBook,
+    'account-info': enUS_stwOperations_AccountInfo,
+    'item-shop': enUS_stwOperations_ItemShop,
     unlock: ruRU_stwOperations_Unlock,
   },
   'account-management': {
@@ -269,6 +313,7 @@ const ruRU = {
     'redeem-codes': ruRU_accountManagement_RedeemCodes,
     'devices-auth': ruRU_accountManagement_DevicesAuth,
     'epic-settings': ruRU_accountManagement_EpicSettings,
+    'account-export': enUS_accountManagement_AccountExport,
     eula: ruRU_accountManagement_EULA,
   },
   'advanced-mode': {
@@ -319,6 +364,7 @@ import ptBR_myAccounts_RemoveAccount from './pt-BR/accounts/remove-account.json'
 const ptBR = {
   sidebar: ptBR_sidebar,
   general: ptBR_general,
+  'games-launcher': enUS_gamesLauncher,
   history: ptBR_history,
   settings: ptBR_settings,
   alerts: ptBR_alerts,
@@ -329,10 +375,17 @@ const ptBR = {
     'homebase-name': ptBR_stwOperations_HomebaseName,
     'save-quests': ptBR_stwOperations_SaveQuests,
     'daily-quests': ptBR_stwOperations_DailyQuests,
+    'dq-weapons': enUS_stwOperations_DqWeapons,
+    'storm-shields': enUS_stwOperations_StormShields,
+    'cloud-storage': enUS_stwOperations_CloudStorage,
     party: ptBR_stwOperations_Party,
     urns: ptBR_stwOperations_Urns,
     xpboosts: ptBR_stwOperations_XPBoosts,
     llamas: ptBR_stwOperations_Llamas,
+    'llama-manager': enUS_stwOperations_LlamaManager,
+    'collection-book': enUS_stwOperations_CollectionBook,
+    'account-info': enUS_stwOperations_AccountInfo,
+    'item-shop': enUS_stwOperations_ItemShop,
     unlock: ptBR_stwOperations_Unlock,
   },
   'account-management': {
@@ -340,6 +393,7 @@ const ptBR = {
     'redeem-codes': ptBR_accountManagement_RedeemCodes,
     'devices-auth': ptBR_accountManagement_DevicesAuth,
     'epic-settings': ptBR_accountManagement_EpicSettings,
+    'account-export': enUS_accountManagement_AccountExport,
     eula: ptBR_accountManagement_EULA,
   },
   'advanced-mode': {
@@ -373,6 +427,9 @@ import plPL_stwOperations_Party from './pl-PL/stw-operations/party.json'
 import plPL_stwOperations_Urns from './pl-PL/stw-operations/urns.json'
 import plPL_stwOperations_XPBoosts from './pl-PL/stw-operations/xpboosts.json'
 import plPL_stwOperations_Llamas from './pl-PL/stw-operations/llamas.json'
+import plPL_stwOperations_LlamaManager from './pl-PL/stw-operations/llama-manager.json'
+import plPL_stwOperations_CollectionBook from './pl-PL/stw-operations/collection-book.json'
+import plPL_stwOperations_ItemShop from './pl-PL/stw-operations/item-shop.json'
 import plPL_stwOperations_Unlock from './pl-PL/stw-operations/unlock.json'
 import plPL_accountManagement_VBucksInformation from './pl-PL/account-management/vbucks-information.json'
 import plPL_accountManagement_EULA from './pl-PL/account-management/eula.json'
@@ -386,10 +443,12 @@ import plPL_myAccounts_AuthCode from './pl-PL/accounts/auth-code.json'
 import plPL_myAccounts_ExchangeCode from './pl-PL/accounts/exchange-code.json'
 import plPL_myAccounts_DeviceAuth from './pl-PL/accounts/device-auth.json'
 import plPL_myAccounts_RemoveAccount from './pl-PL/accounts/remove-account.json'
+import plPL_gamesLauncher from './pl-PL/games-launcher.json'
 
 const plPL = {
   sidebar: plPL_sidebar,
   general: plPL_general,
+  'games-launcher': plPL_gamesLauncher,
   history: plPL_history,
   settings: plPL_settings,
   alerts: plPL_alerts,
@@ -400,10 +459,17 @@ const plPL = {
     'homebase-name': plPL_stwOperations_HomebaseName,
     'save-quests': plPL_stwOperations_SaveQuests,
     'daily-quests': plPL_stwOperations_DailyQuests,
+    'dq-weapons': enUS_stwOperations_DqWeapons,
+    'storm-shields': enUS_stwOperations_StormShields,
+    'cloud-storage': enUS_stwOperations_CloudStorage,
     party: plPL_stwOperations_Party,
     urns: plPL_stwOperations_Urns,
     xpboosts: plPL_stwOperations_XPBoosts,
     llamas: plPL_stwOperations_Llamas,
+    'llama-manager': plPL_stwOperations_LlamaManager,
+    'collection-book': plPL_stwOperations_CollectionBook,
+    'account-info': enUS_stwOperations_AccountInfo,
+    'item-shop': plPL_stwOperations_ItemShop,
     unlock: plPL_stwOperations_Unlock,
   },
   'account-management': {
@@ -411,6 +477,7 @@ const plPL = {
     'redeem-codes': plPL_accountManagement_RedeemCodes,
     'devices-auth': plPL_accountManagement_DevicesAuth,
     'epic-settings': plPL_accountManagement_EpicSettings,
+    'account-export': enUS_accountManagement_AccountExport,
     eula: plPL_accountManagement_EULA,
   },
   'advanced-mode': {
@@ -461,6 +528,7 @@ import itIT_myAccounts_RemoveAccount from './it-IT/accounts/remove-account.json'
 const itIT = {
   sidebar: itIT_sidebar,
   general: itIT_general,
+  'games-launcher': enUS_gamesLauncher,
   history: itIT_history,
   settings: itIT_settings,
   alerts: itIT_alerts,
@@ -471,10 +539,17 @@ const itIT = {
     'homebase-name': itIT_stwOperations_HomebaseName,
     'save-quests': itIT_stwOperations_SaveQuests,
     'daily-quests': itIT_stwOperations_DailyQuests,
+    'dq-weapons': enUS_stwOperations_DqWeapons,
+    'storm-shields': enUS_stwOperations_StormShields,
+    'cloud-storage': enUS_stwOperations_CloudStorage,
     party: itIT_stwOperations_Party,
     urns: itIT_stwOperations_Urns,
     xpboosts: itIT_stwOperations_XPBoosts,
     llamas: itIT_stwOperations_Llamas,
+    'llama-manager': enUS_stwOperations_LlamaManager,
+    'collection-book': enUS_stwOperations_CollectionBook,
+    'account-info': enUS_stwOperations_AccountInfo,
+    'item-shop': enUS_stwOperations_ItemShop,
     unlock: itIT_stwOperations_Unlock,
   },
   'account-management': {
@@ -482,6 +557,7 @@ const itIT = {
     'redeem-codes': itIT_accountManagement_RedeemCodes,
     'devices-auth': itIT_accountManagement_DevicesAuth,
     'epic-settings': itIT_accountManagement_EpicSettings,
+    'account-export': enUS_accountManagement_AccountExport,
     eula: itIT_accountManagement_EULA,
   },
   'advanced-mode': {

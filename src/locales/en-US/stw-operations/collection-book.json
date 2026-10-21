@@ -1,0 +1,100 @@
+{
+  "title": "Collection Book",
+  "description": "Same pages as the in-game book. Click an item to level it and see the cost. Right-click a tab to level that whole category.",
+  "note": "One card per item and rarity. Copies in the armory are not repeated. Slotted items upgrade inside the book. Defender portraits stay the class voucher.",
+  "form": {
+    "load": "Load",
+    "filter": "Search items…",
+    "hide-maxed": "Hide maxed"
+  },
+  "stats": {
+    "book": "{{count}} in book",
+    "armory": "{{count}} in armory",
+    "below": "{{count}} below max",
+    "cb-level": "CB level {{level}}",
+    "to-max": "To max",
+    "short": "Missing"
+  },
+  "nav": {
+    "heroes": "Heroes",
+    "heroes-soldiers": "Soldiers",
+    "heroes-constructors": "Constructors",
+    "heroes-ninjas": "Ninjas",
+    "heroes-outlanders": "Outlanders",
+    "personnel": "Personnel",
+    "personnel-defenders": "Defenders",
+    "personnel-survivors": "Survivors",
+    "personnel-leads": "Leads",
+    "ranged": "Ranged Weapons",
+    "ranged-assault": "Assault Rifles",
+    "ranged-shotgun": "Shotguns",
+    "ranged-sniper": "Snipers",
+    "ranged-pistol": "Pistols",
+    "ranged-explosive": "Explosives",
+    "melee": "Melee Weapons",
+    "melee-sword": "Swords",
+    "melee-axe": "Axes",
+    "melee-scythe": "Scythes",
+    "melee-spear": "Spears",
+    "melee-hardware": "Hardware",
+    "traps": "Traps",
+    "traps-wall": "Wall",
+    "traps-ceiling": "Ceiling",
+    "traps-floor": "Floor",
+    "starter-packs": "Starter Packs",
+    "event-people": "Event People",
+    "event-schematics": "Event Schematics",
+    "expansion-people": "Expansion People",
+    "expansion-schematics": "Expansion Schematics",
+    "other": "Other"
+  },
+  "state": {
+    "book": "In the book",
+    "armory": "In armory, not in the book",
+    "missing": "Not owned"
+  },
+  "upgrade": {
+    "title": "Upgrade",
+    "level": "Level {{level}}",
+    "confirm": "Upgrade",
+    "empty": "Nothing in this category can be upgraded.",
+    "cost": "Cost",
+    "items": "{{count}} items",
+    "slot": "Slot into book",
+    "have": "Have {{count}}",
+    "short": "Missing {{amount}}"
+  },
+  "resources": {
+    "peopleXp": "People XP",
+    "schematicXp": "Schematic XP",
+    "rain": "Pure Drop of Rain",
+    "lightning": "Lightning in a Bottle",
+    "eye": "Eye of the Storm",
+    "shard": "Storm Shard",
+    "trainingManuals": "Training Manual",
+    "schematicManuals": "Schematic Manual",
+    "heroSupercharger": "Hero Supercharger",
+    "survivorSupercharger": "Survivor Supercharger",
+    "weaponSupercharger": "Weapon Supercharger",
+    "trapSupercharger": "Trap Supercharger"
+  },
+  "actions": {
+    "empty": "No items on this page."
+  },
+  "errors": {
+    "auth": "Auth failed",
+    "fetch": "Load failed"
+  },
+  "toasts": {
+    "success": "Done",
+    "upgraded": "Applied {{count}} level-up(s) (failed: {{failed}})",
+    "slotted": "Slotted {{count}} item(s)",
+    "error": "Action failed ({{context}})",
+    "error_auth": "Authentication failed",
+    "error_upgrade": "Upgrade failed (not enough XP or item locked)",
+    "error_slot": "Could not slot into Collection Book",
+    "error_nothing": "Nothing to upgrade at this level",
+    "error_account": "Account not found",
+    "error_unknown": "Unknown error"
+  }
+}

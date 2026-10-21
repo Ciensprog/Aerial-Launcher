@@ -36,6 +36,10 @@ export function MainLayout({ children }: PropsWithChildren) {
         </div>
       </div>
       <div className="flex flex-col">
+        <div
+          id="select-portal-root"
+          className="not-draggable-region"
+        />
         <Header />
         <ScrollArea
           className="h-[calc(100vh-var(--header-height))]"

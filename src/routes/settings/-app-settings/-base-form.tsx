@@ -27,7 +27,8 @@ import { useSetupForm } from '../-hooks'
 export function AppSettingsBaseForm() {
   const { t } = useTranslation(['settings', 'general'])
 
-  const { form, onDetectPath, onSubmit } = useSetupForm()
+  const { form, onDetectPath, onSubmit, persistSettings, debouncedPersistSettings } =
+    useSetupForm()
   const [$detectPathInput, $detectPathButton] = useInputPaddingButton()
 
   return (
@@ -37,6 +38,31 @@ export function AppSettingsBaseForm() {
         className="w-full"
       >
         <div className="grid gap-4">
+          <FormField
+            control={form.control}
+            name="epicGamesDir"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('app-settings.form.epic-games-dir.label')}</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    onChange={(event) => {
+                      const value = event.target.value
+                      field.onChange(value)
+                      debouncedPersistSettings({ epicGamesDir: value })
+                    }}
+                    onBlur={(event) => {
+                      field.onBlur()
+                      debouncedPersistSettings.flush()
+                      persistSettings({ epicGamesDir: event.target.value })
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="path"
@@ -50,6 +76,16 @@ export function AppSettingsBaseForm() {
                       className="pr-[var(--pr-button-width)]"
                       id="path"
                       ref={$detectPathInput}
+                      onChange={(event) => {
+                        const value = event.target.value
+                        field.onChange(value)
+                        debouncedPersistSettings({ path: value })
+                      }}
+                      onBlur={(event) => {
+                        field.onBlur()
+                        debouncedPersistSettings.flush()
+                        persistSettings({ path: event.target.value })
+                      }}
                     />
                     <Button
                       type="button"

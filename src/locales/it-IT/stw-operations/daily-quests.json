@@ -2,6 +2,7 @@
   "description": "Recupera le missioni giornaliere e gestisci i reroll per gli account selezionati.",
   "form": {
     "submit-button": "Carica Missioni Giornaliere",
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)",
     "replace-button": "Sostituisci"
   },
   "list": {

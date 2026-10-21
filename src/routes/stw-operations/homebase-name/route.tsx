@@ -1,18 +1,10 @@
 import { UpdateIcon } from '@radix-ui/react-icons'
-import { createRoute } from '@tanstack/react-router'
+import { createRoute, redirect } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
-import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
 import { AccountSelectors } from '../../../components/selectors/accounts'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '../../../components/ui/breadcrumb'
 import { Button } from '../../../components/ui/button'
 import {
   Card,
@@ -28,34 +20,13 @@ import { useHomebaseNameData } from './-hooks'
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/homebase-name',
-  component: () => {
-    const { t } = useTranslation(['sidebar'])
-
-    return (
-      <>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <HomeBreadcrumb />
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{t('stw-operations.title')}</BreadcrumbPage>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {t('stw-operations.options.homebase-name')}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-        <Content />
-      </>
-    )
+  beforeLoad: () => {
+    throw redirect({ to: '/stw-operations/storm-shields' })
   },
+  component: () => null,
 })
 
-function Content() {
+export function Content() {
   const { t } = useTranslation(['stw-operations'])
 
   const {

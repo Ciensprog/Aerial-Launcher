@@ -4,6 +4,10 @@ import type {
   LanguageResponse,
   Settings,
 } from '../../types/settings'
+import type {
+  MenuCategory,
+  MenuVisibilityKey,
+} from '../../lib/settings/menu-layout'
 
 import { writeFile } from 'node:fs/promises'
 import { readFileSync } from 'node:fs'
@@ -94,21 +98,38 @@ export class SettingsManager {
         result.settings.missionInterval ??
         defaultSettingsData.missionInterval,
       path: result.settings.path ?? defaultSettingsData.path,
+      epicGamesDir:
+        result.settings.epicGamesDir ?? defaultSettingsData.epicGamesDir,
+      epicGamesExtraDirs:
+        result.settings.epicGamesExtraDirs ??
+        defaultSettingsData.epicGamesExtraDirs,
       systemTray:
         result.settings.systemTray ?? defaultSettingsData.systemTray,
       userAgent:
         result.settings.userAgent ?? defaultSettingsData.userAgent,
+      customProxyEnabled:
+        result.settings.customProxyEnabled ??
+        defaultSettingsData.customProxyEnabled,
+      customProxyPort:
+        result.settings.customProxyPort ??
+        defaultSettingsData.customProxyPort,
     }
 
     return settings
   }
 
-  static async update(settings: Settings) {
+  static async update(settings: Partial<Settings>) {
+    const currentSettings = await SettingsManager.getData()
+    const mergedSettings: Required<Settings> = {
+      ...currentSettings,
+      ...settings,
+    }
+
     if (
-      settings.systemTray !== undefined &&
-      SystemTray.isActive !== settings.systemTray
+      mergedSettings.systemTray !== undefined &&
+      SystemTray.isActive !== mergedSettings.systemTray
     ) {
-      SystemTray.setIsActive(settings.systemTray)
+      SystemTray.setIsActive(mergedSettings.systemTray)
 
       if (SystemTray.isActive) {
         SystemTray.create({
@@ -121,13 +142,13 @@ export class SettingsManager {
       }
     }
 
-    CustomProcess.setName(settings.customProcess)
+    CustomProcess.setName(mergedSettings.customProcess)
 
-    await DataDirectory.updateSettingsFile(settings)
+    await DataDirectory.updateSettingsFile(mergedSettings)
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnLoadSettings,
-      settings,
+      mergedSettings,
     )
   }
 
@@ -220,7 +241,7 @@ export class CustomizableMenuSettingsManager {
   }
 
   static async update(
-    key: keyof CustomizableMenuSettings,
+    key: MenuVisibilityKey,
     visibility: boolean,
   ) {
     const customizableMenuSettings =
@@ -228,6 +249,22 @@ export class CustomizableMenuSettingsManager {
     const newData: CustomizableMenuSettings = {
       ...customizableMenuSettings,
       [key]: visibility,
+    }
+
+    await DataDirectory.updateCustomizableMenuSettingsFile(newData)
+
+    MainWindow.instance.webContents.send(
+      ElectronAPIEventKeys.CustomizableMenuSettingsResponse,
+      newData,
+    )
+  }
+
+  static async updateLayout(categories: Array<MenuCategory>) {
+    const customizableMenuSettings =
+      await CustomizableMenuSettingsManager.getData()
+    const newData: CustomizableMenuSettings = {
+      ...customizableMenuSettings,
+      categories,
     }
 
     await DataDirectory.updateCustomizableMenuSettingsFile(newData)

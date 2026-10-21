@@ -7,6 +7,7 @@ import { useClaimedRewards } from '../../hooks/stw-operations/claimed-rewards'
 import { useTaxiServiceNotifications } from '../../hooks/stw-operations/taxi-service'
 
 import { useAutomationStore } from '../../state/stw-operations/automation'
+import { useAutomationLogFileStore } from '../../state/stw-operations/automation-logfile'
 import { useTaxiServiceStore } from '../../state/stw-operations/taxi-service'
 
 import { toast } from '../../lib/notifications'
@@ -93,12 +94,20 @@ export function LoadAutomation() {
         },
       )
 
+    const logFileListener = window.electronAPI.notificationAutomationLogFile(
+      async (status) => {
+        useAutomationLogFileStore.getState().setStatus(status)
+      },
+    )
+
     window.electronAPI.automationServiceRequestData()
     window.electronAPI.taxiServiceServiceRequestData()
+    window.electronAPI.requestAutomationLogFile()
 
     return () => {
       listener.removeListener()
       tsListener.removeListener()
+      logFileListener.removeListener()
     }
   }, [])
 

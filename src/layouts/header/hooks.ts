@@ -27,6 +27,7 @@ export function useAttributesStates() {
 
 export function useHandlers() {
   const { t } = useTranslation(['general'])
+  const [isGeneratingCmd, setIsGeneratingCmd] = useState(false)
 
   const { selected } = useGetSelectedAccount()
 
@@ -56,6 +57,30 @@ export function useHandlers() {
     window.electronAPI.launcherStart(selected)
   }
 
+  const handleGenerateLaunchCmd = async () => {
+    if (!selected || isGeneratingCmd) {
+      return
+    }
+
+    setIsGeneratingCmd(true)
+
+    try {
+      const result = await window.electronAPI.launcherGenerateCmd(selected)
+
+      if (!result.success || !result.command) {
+        toast(t('launch-game.cmd.error'))
+        return
+      }
+
+      await window.navigator.clipboard.writeText(result.command)
+      toast(t('launch-game.cmd.copied'))
+    } catch {
+      toast(t('launch-game.cmd.error'))
+    } finally {
+      setIsGeneratingCmd(false)
+    }
+  }
+
   const handleKillProcess = () => {
     window.electronAPI.killProcess()
   }
@@ -80,10 +105,12 @@ export function useHandlers() {
 
   return {
     handleCloseWindow,
+    handleGenerateLaunchCmd,
     handleKillProcess,
     handleLaunch,
     handleMinimizeWindow,
     handleOpenSTWNewsProfile,
+    isGeneratingCmd,
   }
 }
 

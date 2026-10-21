@@ -16,6 +16,7 @@ import { AutoPinUrns } from '../startup/auto-pin-urns'
 import { Automation } from '../startup/automation'
 import { SettingsManager } from '../startup/settings'
 import { MCPClaimRewards } from './mcp/claim-rewards'
+import { OverlayToasts } from './overlay-toasts'
 import { MCPStorageTransfer } from './mcp/storage-transfer'
 import { Authentication } from './authentication'
 
@@ -25,28 +26,32 @@ import {
 } from '../../services/endpoints/mcp'
 
 import { getDateWithDefaultFormat } from '../../lib/dates'
+import {
+  completedEnduranceTemplates,
+  enduranceWavesFromTemplates,
+} from '../../lib/stw/endurance-waves'
 
 export class ClaimRewards {
   static async start(
     accounts: AccountDataList,
     useGlobalNotification?: boolean,
   ) {
-    ClaimRewards.core(accounts).then((response) => {
-      if (response) {
-        MainWindow.instance.webContents.send(
-          useGlobalNotification
-            ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
-            : ElectronAPIEventKeys.ClaimRewardsClientNotification,
-          response,
-        )
-      }
+    const response = await ClaimRewards.core(accounts)
 
+    if (response) {
       MainWindow.instance.webContents.send(
         useGlobalNotification
-          ? ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
-          : ElectronAPIEventKeys.PartyClaimActionNotification,
+          ? ElectronAPIEventKeys.ClaimRewardsClientGlobalSyncNotification
+          : ElectronAPIEventKeys.ClaimRewardsClientNotification,
+        response,
       )
-    })
+    }
+
+    MainWindow.instance.webContents.send(
+      useGlobalNotification
+        ? ElectronAPIEventKeys.ClaimRewardsClientGlobalAutoClaimedNotification
+        : ElectronAPIEventKeys.PartyClaimActionNotification,
+    )
   }
 
   static async core(accounts: AccountDataList) {
@@ -275,6 +280,10 @@ export class ClaimRewards {
             totalQuestXPRedeemed: 0,
           }
 
+          const endurance = enduranceWavesFromTemplates(
+            completedEnduranceTemplates(profileChanges?.profile.items),
+          )
+
           const rewards: RewardsNotification['rewards'] = {}
 
           notifications.forEach(({ itemType, quantity }) => {
@@ -296,6 +305,7 @@ export class ClaimRewards {
           const result: RewardsNotification = {
             accolades,
             rewards,
+            endurance,
             createdAt: getDateWithDefaultFormat(),
             id: crypto.randomUUID(),
             accountId: account.accountId,
@@ -308,9 +318,16 @@ export class ClaimRewards {
       const records = response.map((item) =>
         item.status === 'fulfilled' ? item.value : null,
       )
-      const newNotifications = records.filter(
-        (item) => item !== null && Object.keys(item.rewards).length > 0,
-      ) as Array<RewardsNotification>
+      const claimed = records.filter(
+        (item): item is RewardsNotification => item !== null,
+      )
+      const newNotifications = claimed.filter(
+        (item) =>
+          Object.keys(item.rewards).length > 0 ||
+          (item.endurance?.length ?? 0) > 0,
+      )
+
+      OverlayToasts.show(claimed)
 
       return newNotifications.length > 0 ? newNotifications : null
 

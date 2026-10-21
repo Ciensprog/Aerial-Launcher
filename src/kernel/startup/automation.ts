@@ -12,6 +12,7 @@ import { AutomationStatusType } from '../../config/constants/automation'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { AccountService } from '../core/automation/account-service'
+import { AutomationLogFile } from '../core/automation/log-file'
 import { MCPStorageTransfer } from '../core/mcp/storage-transfer'
 import { Authentication } from '../core/authentication'
 import { ClaimRewards } from '../core/claim-rewards'
@@ -65,6 +66,8 @@ export class Automation {
       automation,
       false,
     )
+
+    await AutomationLogFile.start()
   }
 
   static async addAccount(accountId: string) {
@@ -73,6 +76,7 @@ export class Automation {
       accountId,
       actions: {
         claim: false,
+        claimParty: false,
         kick: false,
         transferMats: false,
       },
@@ -448,29 +452,24 @@ export class Automation {
                   automationAccount.actions.kick ||
                   automationAccount.actions.claim
                 ) {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const tasks: Array<Promise<any>> = []
-
-                  if (automationAccount.actions.kick) {
-                    const accounts = AccountsManager.getAccounts()
-
-                    tasks.push(
-                      Party.kickPartyMembers(
-                        account,
-                        [...accounts.values()],
-                        automationAccount.actions.claim ?? false,
-                        {
-                          useGlobalNotification: true,
-                        },
-                      ),
-                    )
-                  }
+                  const accounts = [...AccountsManager.getAccounts().values()]
 
                   if (automationAccount.actions.claim) {
-                    tasks.push(ClaimRewards.start([account], true))
+                    if (automationAccount.actions.claimParty) {
+                      await Party.claimPartyMembers(account, accounts, {
+                        useGlobalNotification: true,
+                      })
+                    } else {
+                      await ClaimRewards.start([account], true)
+                    }
                   }
 
-                  await Promise.allSettled(tasks)
+                  if (automationAccount.actions.kick) {
+                    await Party.kickPartyMembers(account, accounts, false, {
+                      useGlobalNotification: true,
+                    })
+                  }
+
                   this.clearActiveChecks([accountId])
                 } else if (automationAccount.actions.transferMats) {
                   this.clearActiveChecks([accountId])
@@ -594,6 +593,10 @@ export class Automation {
     if (automationAccount) {
       const actionsNewValueClaim =
         data.actions?.claim ?? automationAccount.actions.claim
+      const actionsNewValueClaimParty =
+        data.actions?.claimParty ??
+        automationAccount.actions.claimParty ??
+        false
       const actionsNewValueKick =
         data.actions?.kick ?? automationAccount.actions.kick
       const actionsNewValueTransferMats =
@@ -651,6 +654,7 @@ export class Automation {
         accountId,
         actions: {
           claim: actionsNewValueClaim,
+          claimParty: actionsNewValueClaimParty,
           kick: actionsNewValueKick,
           transferMats: actionsNewValueTransferMats,
         },

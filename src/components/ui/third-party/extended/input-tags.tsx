@@ -2,7 +2,6 @@ import type { FilterOptionOption } from 'react-select/dist/declarations/src/filt
 import type { StylesConfig } from 'react-select'
 
 import chroma, { contrast } from 'chroma-js'
-import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import Select, { components } from 'react-select'
 
@@ -45,17 +44,10 @@ export function InputTags({
 }) {
   const { t } = useTranslation(['general'])
 
-  const $menuPortalTarget = useRef<HTMLElement>()
-
-  useEffect(() => {
-    if (menuPortalTarget) {
-      const $element = document.getElementById(menuPortalTarget)
-
-      if ($element) {
-        $menuPortalTarget.current = $element
-      }
-    }
-  }, [value])
+  const portalNode =
+    menuPortalTarget && typeof document !== 'undefined'
+      ? document.getElementById(menuPortalTarget)
+      : null
 
   return (
     <Select
@@ -112,7 +104,7 @@ export function InputTags({
       filterOption={customFilter}
       closeMenuOnSelect={false}
       isDisabled={isDisabled}
-      menuPortalTarget={$menuPortalTarget.current ?? document.body}
+      menuPortalTarget={portalNode ?? document.body}
       menuPosition="fixed"
       isMulti
       unstyled

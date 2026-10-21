@@ -1,4 +1,5 @@
 import type { CustomizableMenuSettings } from '../../types/settings'
+import type { MenuCategory, MenuVisibilityKey } from '../../lib/settings/menu-layout'
 
 import { immer } from 'zustand/middleware/immer'
 import { create } from 'zustand'
@@ -8,14 +9,15 @@ export type CustomizableMenuSettingsState = {
 
   syncMenuOptions: (data: CustomizableMenuSettings) => void
   updateMenuOption: (
-    key: keyof CustomizableMenuSettings,
+    key: MenuVisibilityKey,
   ) => (visibility: boolean) => void
+  updateMenuLayout: (categories: Array<MenuCategory>) => void
 }
 
 export const customizableMenuSettingsRelations: Record<
   keyof Pick<
     CustomizableMenuSettings,
-    | 'currentAlerts'
+    | 'general'
     | 'stwOperations'
     | 'accountManagement'
     | 'advancedMode'
@@ -24,29 +26,37 @@ export const customizableMenuSettingsRelations: Record<
   Array<
     keyof Omit<
       CustomizableMenuSettings,
-      | 'currentAlerts'
+      | 'general'
       | 'stwOperations'
       | 'accountManagement'
       | 'advancedMode'
       | 'myAccounts'
+      | 'categories'
     >
   >
 > = {
-  currentAlerts: [],
+  general: [
+    'currentAlerts',
+    'gamesLauncher',
+  ],
   stwOperations: [
     'autoKick',
     'taxiService',
     'party',
-    'saveQuests',
     'dailyQuests',
-    'homebaseName',
+    'dqWeapons',
+    'stormShields',
     'xpBoosts',
     'autoPinUrns',
-    'autoLlamas',
-    'unlock',
+    'llamaManager',
+    'itemShop',
+    'collectionBook',
+    'accountInfo',
   ],
   accountManagement: [
     'vbucksInformation',
+    'cloudStorage',
+    'accountExport',
     'redeemCodes',
     'devicesAuth',
     'epicGamesSettings',
@@ -75,6 +85,13 @@ export const useCustomizableMenuSettingsStore =
 
           window.electronAPI.customizableMenuDataUpdate(key, visibility)
         })
+      },
+      updateMenuLayout: (categories) => {
+        set((state) => {
+          state.data.categories = categories
+        })
+
+        window.electronAPI.customizableMenuDataUpdateLayout(categories)
       },
     })),
   )

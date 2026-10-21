@@ -87,6 +87,11 @@
   },
   "launch-game": {
     "button": "Uruchom Grę",
+    "cmd": {
+      "button": "Kopiuj launch CMD",
+      "copied": "Komenda launch skopiowana do schowka",
+      "error": "Nie udało się wygenerować komendy launch"
+    },
     "notifications": {
       "success": "Gra została uruchomiona na koncie {{name}}",
       "error": "Wystąpił błąd podczas uruchamiania gry na koncie {{name}}, spróbuj ponownie później"

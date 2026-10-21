@@ -1,4 +1,7 @@
-{
+﻿{
+  "games-launcher": {
+    "title": "Games Launcher"
+  },
   "stw-operations": {
     "title": "Operacje w RŚ",
     "options": {
@@ -7,10 +10,17 @@
       "party": "Ekipa",
       "save-quests": "Zapisz Postęp Zadań",
       "daily-quests": "Dzienne Zadania",
+      "auto-daily-quests": "Auto Dzienne Zadania",
+      "dq-weapons": "Bronie DQ",
+      "storm-shields": "Burzówki",
       "homebase-name": "Nazwa Bazy Głównej",
       "xp-boosts": "Wzmocnienia PD",
       "auto-pin-urns": "Aut-przypinanie Urn",
       "auto-llamas": "Auto-llamy",
+      "llama-manager": "Menedżer lam",
+      "item-shop": "Sklep",
+      "collection-book": "Księga kolekcji",
+      "account-info": "Informacje o koncie",
       "unlock": "Odblokuj nagrody Burzowej Tarczy"
     },
     "auto-kick-status": {
@@ -22,6 +32,8 @@
     "title": "Zarządzanie kontem",
     "options": {
       "vbucks-information": "Informacje o V-Dolcach",
+      "cloud-storage": "Cloud Storage",
+      "account-export": "Account Export",
       "redeem-codes": "Zrealizuj kody",
       "devices-auth": "Urządzenia autoryzowane",
       "epic-settings": "Ustawienia Epic Games"

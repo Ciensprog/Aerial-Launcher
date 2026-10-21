@@ -1,6 +1,11 @@
 # Custom files
 ignore-*
 
+# Local helper scripts (not for repo)
+*.bat
+PR_BODY.md
+release-notes-*.md
+
 # Logs
 logs
 *.log
@@ -93,3 +98,7 @@ typings/
 
 # Electron-Forge
 out/
+
+# Private standalone fork (fortnite-tools Misje + UTOC)
+/V2/
+

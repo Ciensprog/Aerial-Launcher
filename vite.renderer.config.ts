@@ -32,6 +32,11 @@ export default defineConfig((env) => {
     resolve: {
       preserveSymlinks: true,
     },
+    server: {
+      watch: {
+        ignored: ['**/out/**', '**/.git/**'],
+      },
+    },
     clearScreen: false,
   } as UserConfig
 })

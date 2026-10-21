@@ -61,14 +61,49 @@
 :root {
   --header-height: 3.5rem;
 
-  --sidebar-width-md: 13.75rem;
-  --sidebar-width-lg: 17.5rem;
+  --sidebar-width-md: 12.75rem;
+  --sidebar-width-lg: 16.5rem;
 
   --zone-color-stonewood: #34d375;
   --zone-color-plankerton: #4da2dd;
   --zone-color-canny-valley: #dfa12a;
   --zone-color-twine-peaks: #9c72f7;
   --zone-color-ventures: #3cd8e3; /* #20b2bd; */ /* #51e3ef; */
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--foreground) / 0.22) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--foreground) / 0.2);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--foreground) / 0.38);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+[data-radix-scroll-area-viewport] {
+  scrollbar-width: none;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar {
+  display: none;
 }
 
 img {

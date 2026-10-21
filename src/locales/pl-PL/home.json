@@ -9,6 +9,7 @@
   "tabs": {
     "home": "Strona główna",
     "overview": "Przegląd misji alarmowych",
+    "swap": "Podmiana misji",
     "done": "Wykonane misje alarmowe"
   },
   "sections": {
@@ -78,6 +79,46 @@
     "notifications": {
       "error": "Nie można załadować pliku World Info, sprawdź czy jest to poprawny plik i nie ma brakujących danych"
     }
+  },
+  "swap": {
+    "help": "Dzisiejsze misje i alerty zostają jak są. Wczytaj wczorajszy plik World Info i podmień wybrane misje na tym samym kafelku. Można podmienić nawet ten sam typ, jeśli wczorajsze nagrody są lepsze.",
+    "load-yesterday": "Wczytaj wczorajszy plik",
+    "unload-yesterday": "Usuń",
+    "no-yesterday": "Brak wczorajszego pliku",
+    "missing-file": "Brak wczorajszego pliku World Info. Aerial nie był uruchomiony tego dnia, więc nie ma czego podmieniać.",
+    "yesterday": "Wczoraj",
+    "same-mission": "taka sama misja",
+    "rewards-differ": "inne nagrody",
+    "replace": "Podmień",
+    "selected": "Do pliku",
+    "missing-yesterday": "brak misji na tym kafelku",
+    "group-mismatch": "inna liczba graczy",
+    "only-alerts": "Tylko z alertem",
+    "only-different": "Tylko różne",
+    "select-different": "Zaznacz różne alerty ({{count}})",
+    "clear-selected": "Odznacz",
+    "save": "Zapisz ({{count}})",
+    "save-as-new": "Zapisz jako nowy plik",
+    "save-overwrite": "Nadpisz wybrany plik",
+    "save-folder": "Folder zapisu",
+    "save-file": "Plik do nadpisania",
+    "pick-folder": "Folder",
+    "pick-file": "Plik",
+    "notifications": {
+      "missing-data": "Potrzebny jest dzisiejszy World Info, wczorajszy plik i przynajmniej jedna zaznaczona podmiana",
+      "missing-output-file": "Wybierz plik, który ma zostać nadpisany",
+      "saved": "Zapisano {{count}} podmian: {{path}}",
+      "save-error": "Nie udało się zapisać: {{message}}"
+    }
+  },
+  "check": {
+    "submit": "Sprawdź",
+    "all-vbucks": "Wszystkie V-Dolce dziś ({{count}})",
+    "missions-placeholder": "Wybierz misje",
+    "no-missions": "Brak alertów w dzisiejszym World Info",
+    "no-vbucks": "Dziś nie ma misji na V-Dolce. Wyłącz Wszystkie V-Dolce i wybierz misję.",
+    "empty": "Wybierz konta i misje, potem sprawdź ukończenie.",
+    "summary": "{{done}}/{{total}} zrobione"
   },
   "results": {
     "empty": {

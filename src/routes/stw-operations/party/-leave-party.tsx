@@ -29,56 +29,54 @@ export function LeavePartyCard() {
     useCustomizableMenuSettingsVisibility()
 
   return (
-    <Card className="flex flex-col flex-shrink-0 h-36 justify-center max-w-72 w-full">
-      <CardContent className="block pt-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="pr-5">{t('party.claim.title')}</span>
-          <Switch
-            onCheckedChange={changeClaimState}
-            checked={claimState}
-            disabled={!hasValues}
-          />
-        </div>
-        <div className="flex gap-4">
-          <Combobox
-            className="max-w-40"
-            placeholder={t('form.accounts.select', {
-              ns: 'general',
+    <Card className="w-full">
+      <CardContent className="grid grid-cols-[8.5rem_auto_minmax(0,1fr)_8rem] items-center gap-2 p-2 pt-2">
+        <span className="text-xs leading-tight">
+          {t('party.claim.title')}
+        </span>
+        <Switch
+          onCheckedChange={changeClaimState}
+          checked={claimState}
+          disabled={!hasValues}
+        />
+        <Combobox
+          className="h-8 min-w-0 w-full"
+          placeholder={t('form.accounts.select', {
+            ns: 'general',
+          })}
+          placeholderSearch={t('form.accounts.placeholder', {
+            ns: 'general',
+            context: !getMenuOptionVisibility('showTotalAccounts')
+              ? 'private'
+              : undefined,
+            total: options.length,
+          })}
+          emptyContent={t('form.accounts.search-empty', {
+            ns: 'general',
+          })}
+          options={options}
+          value={value}
+          customFilter={customFilter}
+          onChange={setValue}
+          isMulti
+        />
+        <Button
+          className="relative h-8 w-full px-2"
+          size="sm"
+          onClick={onKick(true)}
+          disabled={!hasValues}
+        >
+          <span className={cn('absolute', { hidden: !isPending })}>
+            <UpdateIcon className="animate-spin" />
+          </span>
+          <span
+            className={cn('whitespace-nowrap leading-4', {
+              'opacity-0 select-none': isPending,
             })}
-            placeholderSearch={t('form.accounts.placeholder', {
-              ns: 'general',
-              context: !getMenuOptionVisibility('showTotalAccounts')
-                ? 'private'
-                : undefined,
-              total: options.length,
-            })}
-            emptyContent={t('form.accounts.search-empty', {
-              ns: 'general',
-            })}
-            options={options}
-            value={value}
-            customFilter={customFilter}
-            onChange={setValue}
-            isMulti
-          />
-          <Button
-            className="leading-none"
-            size="sm"
-            onClick={onKick(true)}
-            disabled={!hasValues}
           >
-            <span className={cn('absolute', { hidden: !isPending })}>
-              <UpdateIcon className="animate-spin" />
-            </span>
-            <span
-              className={cn('max-w-12 text-balance truncate', {
-                'opacity-0 select-none': isPending,
-              })}
-            >
-              {t('party.leave.form.submit-button')}
-            </span>
-          </Button>
-        </div>
+            {t('party.leave.form.submit-button')}
+          </span>
+        </Button>
       </CardContent>
     </Card>
   )

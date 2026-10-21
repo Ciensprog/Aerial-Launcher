@@ -6,6 +6,7 @@ import type {
   WorldInfoFileData,
   WorldInfoOpenResponse,
   WorldInfoResponse,
+  WorldInfoSwapSources,
 } from '../../types/data/advanced-mode/world-info'
 import type { WorldInfoData } from '../../types/services/advanced-mode/world-info'
 
@@ -23,6 +24,13 @@ export function requestWorldInfoData() {
 
 export function requestWorldInfoFiles() {
   ipcRenderer.send(ElectronAPIEventKeys.WorldInfoRequestFiles)
+}
+
+export function worldInfoGetSwapSources(todayDate?: string) {
+  return ipcRenderer.invoke(
+    ElectronAPIEventKeys.WorldInfoGetSwapSources,
+    todayDate,
+  ) as Promise<WorldInfoSwapSources>
 }
 
 export function saveWorldInfoData(data: SaveWorldInfoData) {

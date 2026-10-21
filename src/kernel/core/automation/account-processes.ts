@@ -145,28 +145,23 @@ export class AccountProcess {
           automationAccount.actions.claim
         ) {
           this.clearMissionIntervalId()
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const tasks: Promise<any>[] = []
-
-          if (automationAccount.actions.kick) {
-            const accounts = AccountsManager.getAccounts()
-            tasks.push(
-              Party.kickPartyMembers(
-                currentAccount,
-                [...accounts.values()],
-                automationAccount.actions.claim ?? false,
-                {
-                  useGlobalNotification: true,
-                },
-              ),
-            )
-          }
+          const accounts = [...AccountsManager.getAccounts().values()]
 
           if (automationAccount.actions.claim) {
-            tasks.push(ClaimRewards.start([currentAccount], true))
+            if (automationAccount.actions.claimParty) {
+              await Party.claimPartyMembers(currentAccount, accounts, {
+                useGlobalNotification: true,
+              })
+            } else {
+              await ClaimRewards.start([currentAccount], true)
+            }
           }
 
-          await Promise.all(tasks)
+          if (automationAccount.actions.kick) {
+            await Party.kickPartyMembers(currentAccount, accounts, false, {
+              useGlobalNotification: true,
+            })
+          }
           this.preInit({ timeout: 1_000 })
 
           this.setMatchmaking({

@@ -12,6 +12,7 @@ export type AutomationAccountData = {
   accountId: string
   actions: {
     claim: boolean
+    claimParty: boolean
     kick: boolean
     transferMats: boolean
   }
@@ -51,4 +52,26 @@ export type AutomationServiceStatusResponse = {
 export type AutomationServiceActionConfig = {
   type: keyof AutomationAccountData['actions']
   value: boolean
+}
+
+export type AutomationLogFileSettings = {
+  logPath: string
+  kick: boolean
+  claim: boolean
+  claimParty: boolean
+  transferMats: boolean
+}
+
+export type AutomationLogFilePlayer = {
+  file: string
+  displayName: string | null
+  accountId?: string | null
+}
+
+export type AutomationLogFileStatus = AutomationLogFileSettings & {
+  fortniteRunning: boolean
+  instanceCount: number
+  players: Array<AutomationLogFilePlayer>
+  lastEvent: string | null
+  stamp: number
 }

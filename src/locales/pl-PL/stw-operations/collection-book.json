@@ -1,0 +1,100 @@
+{
+  "title": "Księga kolekcji",
+  "description": "Te same strony co w grze. Kliknij przedmiot, żeby podnieść poziom i zobaczyć koszt. Prawy przycisk na zakładce ulepsza całą kategorię.",
+  "note": "Jedna karta na przedmiot i rzadkość. Kopie ze zbrojowni się nie powtarzają. Przedmioty w księdze ulepszają się w księdze. Obrońcy zostają przy ikonie klasy.",
+  "form": {
+    "load": "Wczytaj",
+    "filter": "Szukaj…",
+    "hide-maxed": "Ukryj max"
+  },
+  "stats": {
+    "book": "{{count}} w księdze",
+    "armory": "{{count}} w zbrojowni",
+    "below": "{{count}} poniżej max",
+    "cb-level": "KK poz. {{level}}",
+    "to-max": "Na max",
+    "short": "Brakuje"
+  },
+  "nav": {
+    "heroes": "Heroes",
+    "heroes-soldiers": "Soldiers",
+    "heroes-constructors": "Constructors",
+    "heroes-ninjas": "Ninjas",
+    "heroes-outlanders": "Outlanders",
+    "personnel": "Personnel",
+    "personnel-defenders": "Defenders",
+    "personnel-survivors": "Survivors",
+    "personnel-leads": "Leads",
+    "ranged": "Ranged Weapons",
+    "ranged-assault": "Assault Rifles",
+    "ranged-shotgun": "Shotguns",
+    "ranged-sniper": "Snipers",
+    "ranged-pistol": "Pistols",
+    "ranged-explosive": "Explosives",
+    "melee": "Melee Weapons",
+    "melee-sword": "Swords",
+    "melee-axe": "Axes",
+    "melee-scythe": "Scythes",
+    "melee-spear": "Spears",
+    "melee-hardware": "Hardware",
+    "traps": "Traps",
+    "traps-wall": "Wall",
+    "traps-ceiling": "Ceiling",
+    "traps-floor": "Floor",
+    "starter-packs": "Starter Packs",
+    "event-people": "Event People",
+    "event-schematics": "Event Schematics",
+    "expansion-people": "Expansion People",
+    "expansion-schematics": "Expansion Schematics",
+    "other": "Other"
+  },
+  "state": {
+    "book": "W księdze",
+    "armory": "W zbrojowni, nie w księdze",
+    "missing": "Nie masz"
+  },
+  "upgrade": {
+    "title": "Ulepsz",
+    "level": "Poziom {{level}}",
+    "confirm": "Ulepsz",
+    "empty": "W tej kategorii nie ma czego ulepszać.",
+    "cost": "Koszt",
+    "items": "{{count}} przedmiotów",
+    "slot": "Włóż do księgi",
+    "have": "Masz {{count}}",
+    "short": "Brakuje {{amount}}"
+  },
+  "resources": {
+    "peopleXp": "People XP",
+    "schematicXp": "Schematic XP",
+    "rain": "Pure Drop of Rain",
+    "lightning": "Lightning in a Bottle",
+    "eye": "Eye of the Storm",
+    "shard": "Storm Shard",
+    "trainingManuals": "Training Manual",
+    "schematicManuals": "Schematic Manual",
+    "heroSupercharger": "Hero Supercharger",
+    "survivorSupercharger": "Survivor Supercharger",
+    "weaponSupercharger": "Weapon Supercharger",
+    "trapSupercharger": "Trap Supercharger"
+  },
+  "actions": {
+    "empty": "Brak przedmiotów na tej stronie."
+  },
+  "errors": {
+    "auth": "Logowanie nieudane",
+    "fetch": "Nie udało się wczytać"
+  },
+  "toasts": {
+    "success": "Gotowe",
+    "upgraded": "Podniesiono poziom {{count}} razy (błędy: {{failed}})",
+    "slotted": "Włożono {{count}}",
+    "error": "Akcja nieudana ({{context}})",
+    "error_auth": "Logowanie nieudane",
+    "error_upgrade": "Ulepszenie nieudane (za mało PD albo przedmiot zablokowany)",
+    "error_slot": "Nie udało się włożyć do księgi",
+    "error_nothing": "Nie ma czego ulepszać na ten poziom",
+    "error_account": "Nie ma konta",
+    "error_unknown": "Nieznany błąd"
+  }
+}

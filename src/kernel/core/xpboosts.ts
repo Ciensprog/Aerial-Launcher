@@ -336,69 +336,82 @@ export class XPBoostsManager {
       MainWindow.instance.webContents.send(notificationId, defaultResponse)
     }
 
-    const response = await LookupManager.searchUserByDisplayName({
-      ...config,
-    })
+    const accountsToTry = [
+      config.account,
+      ...config.originalAccounts.filter(
+        (item) => item.accountId !== config.account.accountId
+      ),
+    ]
 
-    if (response.success) {
-      defaultResponse.data = {
-        lookup: response.data,
+    let lookup: Awaited<
+      ReturnType<typeof LookupManager.searchUserByDisplayName>
+    > | null = null
+
+    for (const account of accountsToTry) {
+      lookup = await LookupManager.searchUserByDisplayName({
+        account,
+        displayName: config.displayName,
+      })
+
+      if (lookup.success) {
+        break
+      }
+    }
+
+    if (!lookup?.success) {
+      const message = lookup?.errorMessage
+
+      defaultResponse.errorMessage =
+        message === null || message === undefined ? null : `${message}`
+      sendDefaultResponse()
+
+      return
+    }
+
+    defaultResponse.data = {
+      lookup: lookup.data,
+    }
+
+    try {
+      const accountDestinationInLauncher = config.originalAccounts.find(
+        (item) => item.accountId === lookup.data.id
+      )
+      const accessToken = await Authentication.verifyAccessToken(
+        accountDestinationInLauncher ?? config.account
+      )
+
+      if (!accessToken) {
+        defaultResponse.isPrivate = true
+        sendDefaultResponse()
+
+        return
       }
 
-      try {
-        const accountDestinationInLauncher = config.originalAccounts.find(
-          (item) => item.accountId === response.data.id
-        )
-        const accessToken = await Authentication.verifyAccessToken(
-          accountDestinationInLauncher ?? config.account
-        )
+      const queryProfileResponse = await getQueryPublicProfile({
+        accessToken,
+        accountId: lookup.data.id,
+      })
+      const profileChanges =
+        queryProfileResponse.data.profileChanges[0] ?? null
 
-        if (!accessToken) {
-          sendDefaultResponse()
+      if (profileChanges) {
+        MainWindow.instance.webContents.send(notificationId, {
+          data: {
+            profileChanges,
+            lookup: lookup.data,
+          },
+          errorMessage: null,
+          isPrivate: false,
+          success: true,
+        } as XPBoostsSearchUserResponse)
 
-          return
-        }
-
-        const queryProfileResponse = await getQueryPublicProfile({
-          accessToken,
-          accountId: response.data.id,
-        })
-        const profileChanges =
-          queryProfileResponse.data.profileChanges[0] ?? null
-
-        if (profileChanges) {
-          MainWindow.instance.webContents.send(notificationId, {
-            data: {
-              profileChanges,
-              lookup: response.data,
-            },
-            errorMessage: null,
-            isPrivate: false,
-            success: true,
-          } as XPBoostsSearchUserResponse)
-
-          return
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        const response =
-          (error?.response?.data as Record<string, number | string>) ?? {}
-
-        if (
-          response.errorCode ===
-          'errors.com.epicgames.fortnite.operation_forbidden'
-        ) {
-          defaultResponse.isPrivate = true
-        } else {
-          defaultResponse.data = null
-          defaultResponse.errorMessage = null
-          defaultResponse.isPrivate = false
-          defaultResponse.success = false
-        }
+        return
       }
-    } else {
-      defaultResponse.errorMessage = `${response.errorMessage}`
+
+      defaultResponse.isPrivate = true
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      defaultResponse.isPrivate = true
     }
 
     sendDefaultResponse()

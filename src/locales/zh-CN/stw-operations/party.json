@@ -25,6 +25,7 @@
   "friends": {
     "note": "如果邀请的玩家不是您的好友，启动器将自动向他发送好友请求。",
     "form": {
+      "title": "邀请加入队伍",
       "select": {
         "placeholder": "选择好友",
         "search": {
@@ -53,8 +54,48 @@
       },
       "request": {
         "sent_one": "已发送 {{count}} 个好友请求",
-        "sent_other": "已发送 {{count}} 个好友请求"
+        "sent_other": "已发送 {{count}} 个好友请求",
+        "error": "发送好友请求时发生错误"
       }
+    }
+  },
+  "friend-requests": {
+    "form": {
+      "submit-button": "发送好友请求"
+    },
+    "sheet": {
+      "title": "发送好友请求",
+      "label": "按 Epic 名称、账号 ID 或 xbl:/psn: 前缀搜索",
+      "search-placeholder": "例如 Sample 或 xbl:mikro900",
+      "send": "发送请求",
+      "accept": "接受好友请求",
+      "waiting": "等待对方接受",
+      "already-friends": "已经是好友",
+      "accepted": "已接受好友请求",
+      "friends-since": "成为好友 {{time}}",
+      "outgoing-sent": "请求已发送 {{time}}",
+      "incoming-received": "对方邀请了你 {{time}}",
+      "not-friends": "还不是好友",
+      "status-friends": "好友",
+      "status-not-friends": "非好友",
+      "status-outgoing": "已发送",
+      "status-incoming": "待接受",
+      "gifts-ready": "可以送礼",
+      "gifts-in": "送礼 {{time}}",
+      "last-online": "最近在线：",
+      "platforms": "平台",
+      "mutual-friends": "共同好友",
+      "mutual-empty": "所选账号没有共同好友",
+      "friends-with-accounts": "已与 {{names}} 成为好友",
+      "selected-accounts": "所选账号",
+      "friendship-with": "与所选账号的好友关系",
+      "tabs-search": "Search",
+      "tabs-incoming": "Incoming",
+      "incoming-count": "{{count}} incoming",
+      "incoming-loading": "Loading incoming requests",
+      "incoming-empty": "No incoming friend requests",
+      "incoming-accept-all": "Accept all",
+      "incoming-accepted": "Accepted {{count}} friend request(s)"
     }
   }
 }

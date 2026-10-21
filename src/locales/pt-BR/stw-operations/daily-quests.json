@@ -2,6 +2,7 @@
   "description": "Buscar missões diárias e gerenciar novas tentativas para as contas selecionadas.",
   "form": {
     "submit-button": "Carregar Missões Diárias",
+    "auto-daily-quests": "Auto Daily Quests (on app start & daily reset)",
     "replace-button": "Substituir"
   },
   "list": {

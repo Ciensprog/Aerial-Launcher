@@ -11,11 +11,36 @@ import type {
 } from '../types/accounts'
 import type { AlertsDoneSearchPlayerConfig } from '../types/alerts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
-import type { AutomationServiceActionConfig } from '../types/automation'
+import type {
+  AutomationLogFileSettings,
+  AutomationServiceActionConfig,
+} from '../types/automation'
 import type { GroupRecord } from '../types/groups'
 import type { CustomizableMenuSettings, Settings } from '../types/settings'
+import type { MenuCategory, MenuVisibilityKey } from '../lib/settings/menu-layout'
 import type { TagRecord } from '../types/tags'
 import type { TaxiServiceServiceActionConfig } from '../types/taxi-service'
+import type {
+  CollectionBookSlotRequest,
+  CollectionBookUpgradeRequest,
+} from '../types/collection-book'
+import type {
+  ItemShopCreatorCodeRequest,
+  ItemShopGiftRequest,
+  ItemShopPurchaseRequest,
+} from '../types/item-shop'
+import type {
+  LlamaManagerBulkPurchaseRequest,
+  LlamaManagerOpenChoiceRequest,
+  LlamaManagerOpenRequest,
+  LlamaManagerPurchaseRequest,
+} from '../types/llama-manager'
+import type { AccountExportRequest } from '../types/account-export'
+import type { AccountInfoProfileId } from '../types/account-info'
+import type {
+  CloudStorageApplyRequest,
+  CloudStorageDownloadRequest,
+} from '../types/cloud-storage'
 import type {
   XPBoostsConsumePersonalData,
   XPBoostsConsumeTeammateData,
@@ -35,15 +60,30 @@ import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
 import { AlertsDone } from './core/alerts'
 // import { AntiCheatProvider } from './core/anti-cheat-provider'
+import { AccountExport } from './core/account-export'
 import { Authentication } from './core/authentication'
+import { AutomationLogFile } from './core/automation/log-file'
+import { CloudStorage } from './core/cloud-storage'
 import { ClaimRewards } from './core/claim-rewards'
+import { CollectionBookManager } from './core/collection-book'
 import { DevicesAuthManager } from './core/devices-auth'
 import { EULATracking } from './core/eula-tracking'
 import { FortniteLauncher } from './core/launcher'
+import { GamesLauncher } from './core/games-launcher'
+import { ItemShop } from './core/item-shop'
 import {
+  registerItemShopProtocol,
+  registerItemShopScheme,
+} from './core/item-shop-protocol'
+import { LlamaManager } from './core/llama-manager'
+import { registerFortniteToolsHandlers } from './core/fortnite-tools/register-handlers'
+import {
+  MCPAccountInfo,
   MCPClientQuestLogin,
   MCPDailyQuests,
+  MCPDqWeapons,
   MCPHomebaseName,
+  MCPStormShields,
 } from './core/mcp'
 import { MatchmakingTrack } from './core/matchmaking-track'
 import { Manifest } from './core/manifest'
@@ -82,6 +122,7 @@ import {
 
 import { Language } from '../locales/resources'
 import { CustomProcess } from './core/custom-process'
+import { OverlayToasts } from './core/overlay-toasts'
 
 dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)
@@ -96,7 +137,11 @@ if (require('electron-squirrel-startup')) {
 
 const gotTheLock = app.requestSingleInstanceLock()
 
-;(() => {
+if (gotTheLock) {
+  registerItemShopScheme()
+}
+
+void (() => {
   if (!gotTheLock) {
     return app.quit()
   }
@@ -122,6 +167,29 @@ const gotTheLock = app.requestSingleInstanceLock()
     if (manifest) {
       mainWindow.webContents.setUserAgent(manifest.UserAgent)
     }
+
+    const browserUserAgent =
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+
+    mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
+      {
+        urls: [
+          'https://fortnite-api.com/*',
+          'https://*.fortnite-api.com/*',
+          'https://api.miadsc.xyz/*',
+        ],
+      },
+      (details, callback) => {
+        details.requestHeaders['User-Agent'] = browserUserAgent
+        callback({ requestHeaders: details.requestHeaders })
+      },
+    )
+
+    MainWindow.setInstance(mainWindow)
+
+    mainWindow.on('closed', () => {
+      OverlayToasts.destroy()
+    })
 
     // and load the index.html of the app.
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -165,7 +233,26 @@ const gotTheLock = app.requestSingleInstanceLock()
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', async () => {
-    DataDirectory.createDataResources().catch(() => {})
+    try {
+      await DataDirectory.createDataResources()
+      await AccountsManager.loadFromDisk()
+    } catch {
+      //
+    }
+
+    registerItemShopProtocol()
+
+    ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
+      await AccountsManager.load()
+    })
+
+    ipcMain.on(ElectronAPIEventKeys.HomeWorldInfoRequest, async () => {
+      await WorldInfoManager.requestForHome()
+    })
+
+    ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestData, async () => {
+      await WorldInfoManager.requestForAdvanceSection()
+    })
 
     MainWindow.setInstance(await createWindow())
 
@@ -194,10 +281,6 @@ const gotTheLock = app.requestSingleInstanceLock()
         await AppLanguage.update(language)
       },
     )
-
-    ipcMain.on(ElectronAPIEventKeys.RequestAccounts, async () => {
-      await AccountsManager.load()
-    })
 
     ipcMain.on(ElectronAPIEventKeys.RequestSettings, async () => {
       await SettingsManager.load()
@@ -246,10 +329,17 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.CustomizableMenuSettingsUpdate,
       async (
         _,
-        key: keyof CustomizableMenuSettings,
+        key: MenuVisibilityKey,
         visibility: boolean,
       ) => {
         await CustomizableMenuSettingsManager.update(key, visibility)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CustomizableMenuSettingsUpdateLayout,
+      async (_, categories: Array<MenuCategory>) => {
+        await CustomizableMenuSettingsManager.updateLayout(categories)
       },
     )
 
@@ -376,6 +466,30 @@ const gotTheLock = app.requestSingleInstanceLock()
       },
     )
 
+    ipcMain.handle(
+      ElectronAPIEventKeys.LauncherGenerateCmd,
+      async (_, account: AccountData) => {
+        return FortniteLauncher.generateCmd(account)
+      },
+    )
+
+    ipcMain.handle(ElectronAPIEventKeys.GamesLauncherScan, async () => {
+      return GamesLauncher.scan()
+    })
+
+    ipcMain.handle(ElectronAPIEventKeys.GamesLauncherPickDir, async () => {
+      return GamesLauncher.pickEpicDir()
+    })
+
+    registerFortniteToolsHandlers(ipcMain)
+
+    ipcMain.on(
+      ElectronAPIEventKeys.GamesLauncherStart,
+      async (_, payload) => {
+        await GamesLauncher.launch(payload.account, payload.game)
+      },
+    )
+
     /**
      * STW Operations
      */
@@ -398,6 +512,93 @@ const gotTheLock = app.requestSingleInstanceLock()
       ElectronAPIEventKeys.DailyQuestReroll,
       async (_, account: AccountData, questId: string) => {
         await MCPDailyQuests.reroll(account, questId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.DqWeaponsRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await MCPDqWeapons.request(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.DqWeaponsFavoriteRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await MCPDqWeapons.favorite(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.StormShieldsRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await MCPStormShields.request(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AccountInfoRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await MCPAccountInfo.request(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AccountInfoRecycleRequest,
+      async (
+        _,
+        account: AccountData,
+        itemId: string,
+        profileId?: AccountInfoProfileId,
+      ) => {
+        await MCPAccountInfo.recycle(account, itemId, profileId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AccountInfoUpgradeRequest,
+      async (
+        _,
+        account: AccountData,
+        itemId: string,
+        profileId?: AccountInfoProfileId,
+      ) => {
+        await MCPAccountInfo.upgrade(account, itemId, profileId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CloudStorageListRequest,
+      async (_, account: AccountData) => {
+        await CloudStorage.list(account)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CloudStorageDownloadRequest,
+      async (_, payload: CloudStorageDownloadRequest) => {
+        await CloudStorage.download(payload)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CloudStoragePickRequest,
+      async () => {
+        await CloudStorage.pick()
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CloudStorageApplyRequest,
+      async (_, payload: CloudStorageApplyRequest) => {
+        await CloudStorage.apply(payload)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AccountExportRequest,
+      async (_, payload: AccountExportRequest['accounts']) => {
+        await AccountExport.exportAccounts({ accounts: payload })
       },
     )
 
@@ -514,6 +715,45 @@ const gotTheLock = app.requestSingleInstanceLock()
     )
 
     ipcMain.on(
+      ElectronAPIEventKeys.PartyLookupPlayerAction,
+      async (
+        _,
+        accounts: AccountDataList,
+        displayName: string,
+      ) => {
+        await Party.lookupPlayer(accounts, displayName)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.PartySendFriendRequestAction,
+      async (
+        _,
+        accounts: AccountDataList,
+        friendId: string,
+      ) => {
+        await Party.sendFriendRequests(accounts, friendId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.PartyIncomingFriendRequestsRequest,
+      async (_, accounts: AccountDataList) => {
+        await Party.listIncomingFriendRequests(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.PartyAcceptIncomingFriendRequests,
+      async (
+        _,
+        items: Array<{ account: AccountData; friendId: string }>,
+      ) => {
+        await Party.acceptIncomingFriendRequests(items)
+      },
+    )
+
+    ipcMain.on(
       ElectronAPIEventKeys.PartyRemoveFriendAction,
       async (
         _,
@@ -523,6 +763,42 @@ const gotTheLock = app.requestSingleInstanceLock()
         },
       ) => {
         await Party.removeFriend(data)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.PartyStatusRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await Party.requestStatus(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.PartyStatusKickMember,
+      async (
+        _,
+        account: AccountData,
+        memberAccountId: string,
+      ) => {
+        await Party.kickStatusMember(account, memberAccountId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.PartyStatusPromoteMember,
+      async (
+        _,
+        account: AccountData,
+        memberAccountId: string,
+      ) => {
+        await Party.promoteStatusMember(account, memberAccountId)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.PartyStatusLeave,
+      async (_, account: AccountData) => {
+        await Party.leaveStatus(account)
       },
     )
 
@@ -537,13 +813,12 @@ const gotTheLock = app.requestSingleInstanceLock()
       },
     )
 
-    ipcMain.on(ElectronAPIEventKeys.HomeWorldInfoRequest, async () => {
-      await WorldInfoManager.requestForHome()
-    })
-
-    ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestData, async () => {
-      await WorldInfoManager.requestForAdvanceSection()
-    })
+    ipcMain.on(
+      ElectronAPIEventKeys.AlertsDoneCheckRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await AlertsDone.checkAccounts(accounts)
+      },
+    )
 
     ipcMain.on(
       ElectronAPIEventKeys.WorldInfoSaveFile,
@@ -555,6 +830,13 @@ const gotTheLock = app.requestSingleInstanceLock()
     ipcMain.on(ElectronAPIEventKeys.WorldInfoRequestFiles, async () => {
       await WorldInfoManager.requestFiles()
     })
+
+    ipcMain.handle(
+      ElectronAPIEventKeys.WorldInfoGetSwapSources,
+      async (_, todayDate?: string) => {
+        return WorldInfoManager.getSwapSources(todayDate)
+      },
+    )
 
     ipcMain.on(
       ElectronAPIEventKeys.WorldInfoDeleteFile,
@@ -633,6 +915,27 @@ const gotTheLock = app.requestSingleInstanceLock()
         await Automation.updateAction(accountId, config)
       },
     )
+
+    ipcMain.on(ElectronAPIEventKeys.AutomationLogFileRequest, async () => {
+      const status = await AutomationLogFile.getStatus()
+
+      MainWindow.instance.webContents.send(
+        ElectronAPIEventKeys.AutomationLogFileNotification,
+        status,
+      )
+      await AutomationLogFile.start()
+    })
+
+    ipcMain.on(
+      ElectronAPIEventKeys.AutomationLogFileUpdate,
+      async (_, partial: Partial<AutomationLogFileSettings>) => {
+        await AutomationLogFile.updateSettings(partial)
+      },
+    )
+
+    ipcMain.on(ElectronAPIEventKeys.AutomationLogFilePick, async () => {
+      await AutomationLogFile.pickLogFile()
+    })
 
     /**
      * Taxi Service
@@ -767,6 +1070,127 @@ const gotTheLock = app.requestSingleInstanceLock()
     ipcMain.on(ElectronAPIEventKeys.AutoLlamasAccountCheck, async () => {
       await AutoLlamas.check()
     })
+
+    /**
+     * Llama Manager
+     */
+
+    ipcMain.on(
+      ElectronAPIEventKeys.LlamaManagerRequestData,
+      async (_, accounts: Array<AccountData>) => {
+        await LlamaManager.requestBulk(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.LlamaManagerPurchase,
+      async (_, data: LlamaManagerPurchaseRequest) => {
+        await LlamaManager.purchase(data)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.LlamaManagerBulkPurchase,
+      async (_, data: LlamaManagerBulkPurchaseRequest) => {
+        await LlamaManager.bulkPurchase(data)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.LlamaManagerBulkPurchaseMini,
+      async (_, data: LlamaManagerBulkPurchaseRequest) => {
+        await LlamaManager.bulkPurchase({
+          ...data,
+          kind: data.kind ?? 'mini',
+        })
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.LlamaManagerOpenPacks,
+      async (_, data: LlamaManagerOpenRequest) => {
+        await LlamaManager.openPacks(data)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.LlamaManagerOpenChoice,
+      async (_, data: LlamaManagerOpenChoiceRequest) => {
+        await LlamaManager.openChoicePack(data)
+      },
+    )
+
+    /**
+     * Item Shop
+     */
+
+    ipcMain.on(ElectronAPIEventKeys.ItemShopLoadCache, async () => {
+      await ItemShop.loadCachedCatalog()
+    })
+
+    ipcMain.on(ElectronAPIEventKeys.ItemShopGiftHistoryRequest, async () => {
+      await ItemShop.loadGiftHistory()
+    })
+
+    ipcMain.on(
+      ElectronAPIEventKeys.ItemShopCatalogRequest,
+      async (_, account: AccountData) => {
+        await ItemShop.requestCatalog(account)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.ItemShopAccountsRequest,
+      async (_, accounts: Array<AccountData>) => {
+        await ItemShop.requestAccounts(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.ItemShopCreatorCode,
+      async (_, data: ItemShopCreatorCodeRequest) => {
+        await ItemShop.applyCreatorCode(data)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.ItemShopPurchase,
+      async (_, data: ItemShopPurchaseRequest) => {
+        await ItemShop.purchase(data)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.ItemShopGift,
+      async (_, data: ItemShopGiftRequest) => {
+        await ItemShop.gift(data)
+      },
+    )
+
+    /**
+     * Collection Book Manager
+     */
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CollectionBookRequestData,
+      async (_, accounts: Array<AccountData>) => {
+        await CollectionBookManager.requestBulk(accounts)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CollectionBookUpgrade,
+      async (_, data: CollectionBookUpgradeRequest) => {
+        await CollectionBookManager.upgrade(data)
+      },
+    )
+
+    ipcMain.on(
+      ElectronAPIEventKeys.CollectionBookSlot,
+      async (_, data: CollectionBookSlotRequest) => {
+        await CollectionBookManager.slotItems(data)
+      },
+    )
 
     /**
      * V-Bucks Information

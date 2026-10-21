@@ -31,3 +31,10 @@ export type AlertsDoneSearchPlayerData = {
     }>
   profileChanges: MCPQueryProfileChanges
 }
+
+export type AlertsDoneCheckAccountData = {
+  accountId: string
+  available: boolean
+  claimedAlertIds: Array<string>
+  errorMessage?: string
+}

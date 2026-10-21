@@ -3,6 +3,18 @@
     "note": "Note: This is a temporal history.",
     "empty": "Claimed Rewards History"
   },
+  "gifts": {
+    "title": "Shop",
+    "empty": "No gifts or purchases yet",
+    "from": "From {{name}}",
+    "to": "To {{name}}",
+    "bought-on": "Bought on {{name}}",
+    "kind-gift": "Gift",
+    "kind-purchase": "Purchase",
+    "price": "{{price}} V-Bucks",
+    "creator": "Creator code: {{code}}",
+    "none-creator": "No creator code"
+  },
   "summary": {
     "note": "Note: This summary is based on your temporal history.",
     "empty": "Summary Of Claimed Rewards History",

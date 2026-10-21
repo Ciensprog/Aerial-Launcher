@@ -17,27 +17,68 @@ import { DataDirectory } from './data-directory'
 export class AccountsManager {
   private static _accounts: Collection<string, AccountData> =
     new Collection()
+  private static _loaded = false
+  private static _loadPromise: Promise<AccountDataRecord> | null = null
+  private static _waiters: Array<() => void> = []
+
+  static waitUntilLoaded(): Promise<void> {
+    if (AccountsManager._loaded) {
+      return Promise.resolve()
+    }
+
+    return new Promise((resolve) => {
+      AccountsManager._waiters.push(resolve)
+    })
+  }
+
+  private static markLoaded() {
+    AccountsManager._loaded = true
+    const waiters = AccountsManager._waiters.splice(0)
+    waiters.forEach((resolve) => resolve())
+  }
+
+  static async loadFromDisk(): Promise<AccountDataRecord> {
+    if (AccountsManager._loadPromise) {
+      return AccountsManager._loadPromise
+    }
+
+    AccountsManager._loadPromise = (async () => {
+      const result = await DataDirectory.getAccountsFile()
+      const accounts: AccountDataList = result.accounts.map((account) => {
+        const data: AccountData = {
+          ...account,
+          accessToken: undefined,
+          customDisplayName: account.customDisplayName ?? '',
+          provider: undefined,
+        }
+
+        return data
+      })
+
+      const accountsRecord = accounts.reduce((accumulator, current) => {
+        accumulator[current.accountId] = current
+
+        AccountsManager._accounts.set(current.accountId, current)
+
+        return accumulator
+      }, {} as AccountDataRecord)
+
+      AccountsManager.markLoaded()
+
+      return accountsRecord
+    })()
+
+    try {
+      return await AccountsManager._loadPromise
+    } catch (error) {
+      AccountsManager._loadPromise = null
+      AccountsManager.markLoaded()
+      throw error
+    }
+  }
 
   static async load() {
-    const result = await DataDirectory.getAccountsFile()
-    const accounts: AccountDataList = result.accounts.map((account) => {
-      const data: AccountData = {
-        ...account,
-        accessToken: undefined,
-        customDisplayName: account.customDisplayName ?? '',
-        provider: undefined,
-      }
-
-      return data
-    })
-
-    const accountsRecord = accounts.reduce((accumulator, current) => {
-      accumulator[current.accountId] = current
-
-      AccountsManager._accounts.set(current.accountId, current)
-
-      return accumulator
-    }, {} as AccountDataRecord)
+    const accountsRecord = await AccountsManager.loadFromDisk()
 
     MainWindow.instance.webContents.send(
       ElectronAPIEventKeys.OnAccountsLoaded,

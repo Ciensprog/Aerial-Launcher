@@ -1,5 +1,7 @@
 import type { IpcRendererEvent } from 'electron'
 import type {
+  AutomationLogFileSettings,
+  AutomationLogFileStatus,
   AutomationServiceActionConfig,
   AutomationServiceStatusResponse,
 } from '../../types/automation'
@@ -129,6 +131,43 @@ export function notificationAutomationServiceRemove(
     removeListener: () =>
       rendererInstance.removeListener(
         ElectronAPIEventKeys.AutomationServiceRemoveNotification,
+        customCallback,
+      ),
+  }
+}
+
+export function requestAutomationLogFile() {
+  ipcRenderer.send(ElectronAPIEventKeys.AutomationLogFileRequest)
+}
+
+export function updateAutomationLogFile(
+  partial: Partial<AutomationLogFileSettings>,
+) {
+  ipcRenderer.send(ElectronAPIEventKeys.AutomationLogFileUpdate, partial)
+}
+
+export function pickAutomationLogFile() {
+  ipcRenderer.send(ElectronAPIEventKeys.AutomationLogFilePick)
+}
+
+export function notificationAutomationLogFile(
+  callback: (value: AutomationLogFileStatus) => Promise<void>,
+) {
+  const customCallback = (
+    _: IpcRendererEvent,
+    value: AutomationLogFileStatus,
+  ) => {
+    callback(value).catch(() => {})
+  }
+  const rendererInstance = ipcRenderer.on(
+    ElectronAPIEventKeys.AutomationLogFileNotification,
+    customCallback,
+  )
+
+  return {
+    removeListener: () =>
+      rendererInstance.removeListener(
+        ElectronAPIEventKeys.AutomationLogFileNotification,
         customCallback,
       ),
   }

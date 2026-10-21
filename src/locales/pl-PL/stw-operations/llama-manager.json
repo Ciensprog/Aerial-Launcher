@@ -1,0 +1,75 @@
+{
+  "title": "Menedżer lam",
+  "description": "Kupuj lamy ze sklepu w dowolnej ilości, otwieraj nieotwarte lamy z ekwipunku hurtowo i obsługuj choice packi (CP) z ręcznym wyborem z launchera.",
+  "note": "Sklep obejmuje lamy Upgrade / Super Ranged (X-Ray) oraz dzienne eventowe (Mini Reward, Troll Stash, Rad itd.). Ekwipunek to nieotwarte Lunar, Holiday, Rad i inne przechowywane lamy.",
+  "form": {
+    "load": "Wczytaj lamy"
+  },
+  "bulk": {
+    "mini": "Mini ×{{count}}",
+    "upgrade": "Upgrade ×{{count}}",
+    "mini-hint": "Kup Mini Reward Llama na wszystkich wybranych kontach (tokeny voucher_basicpack)",
+    "upgrade-hint": "Kup Upgrade / X-Ray lamy na wszystkich wybranych kontach (po 50 ticketów X-Ray)"
+  },
+  "tabs": {
+    "inventory": "Ekwipunek",
+    "shop": "Sklep",
+    "choice": "Choice (CP)"
+  },
+  "inventory": {
+    "summary": "{{total}} paczek ({{regular}} zwykłych · {{choice}} choice)",
+    "empty": "Brak nieotwartych zwykłych lam na tym koncie.",
+    "count": "{{count}} szt.",
+    "open-all": "Otwórz wszystkie ({{count}})",
+    "open-n": "Otwórz {{count}}",
+    "open-max": "Otwórz max"
+  },
+  "shop": {
+    "empty": "Brak lam w sklepie w tej chwili.",
+    "free": "ZA DARMO",
+    "price-free": "Za darmo",
+    "price": "{{price}} {{currency}}",
+    "remaining": "zostało {{count}}",
+    "buy": "Kup {{count}}"
+  },
+  "choice": {
+    "hint": "Choice packi (CP) pozwalają wybrać konkretną nagrodę. Wybierz opcję w oknie lub otwórz z domyślnym indeksem.",
+    "empty": "Brak choice packów.",
+    "options": "{{count}} opcji",
+    "open": "Wybierz i otwórz",
+    "open-default": "Otwórz (idx 0)",
+    "open-all": "Otwórz wszystkie CP ({{count}})",
+    "open-group-all": "Otwórz cały typ",
+    "title": "Wybierz nagrodę z choice packa",
+    "manual-index": "Indeks wyboru",
+    "manual-hint": "Jeśli opcje nie są widoczne, wpisz indeks ręcznie (zwykle 0 = pierwsza opcja).",
+    "cancel": "Anuluj",
+    "confirm": "Otwórz z wyborem"
+  },
+  "errors": {
+    "auth": "Błąd logowania",
+    "fetch": "Błąd wczytywania",
+    "account": "Brak konta"
+  },
+  "toasts": {
+    "success": "Gotowe",
+    "purchased": "Kupiono {{count}} lam(y)",
+    "opened": "Otwarto {{count}} lam(y)",
+    "bulk-mini": "Kupiono {{count}} minilam(y) na {{accounts}} koncie/kontach (błędy: {{failed}})",
+    "bulk-upgrade": "Kupiono {{count}} upgrade lam(y) na {{accounts}} koncie/kontach (błędy: {{failed}})",
+    "choice-only": "Te paczki wymagają wyboru — użyj zakładki Choice (CP).",
+    "choice-empty": "Brak choice packów do otwarcia.",
+    "error": "Akcja nieudana ({{context}})",
+    "error_auth": "Błąd uwierzytelniania",
+    "error_purchase": "Zakup nieudany",
+    "error_open": "Nie udało się otworzyć paczek",
+    "error_open-choice": "Nie udało się otworzyć choice packa",
+    "error_account": "Nie znaleziono konta",
+    "error_accounts": "Nie wybrano kont",
+    "error_no-mini-offer": "Brak oferty Mini Llama w sklepie",
+    "error_no-upgrade-offer": "Brak oferty Upgrade Llama w sklepie",
+    "error_no-tokens": "Za mało waluty / tokenów",
+    "error_limit": "Limit dzienny lub za mało waluty",
+    "error_unknown": "Nieznany błąd"
+  }
+}

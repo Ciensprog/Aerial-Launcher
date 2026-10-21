@@ -15,6 +15,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../../../components/ui/accordion'
+import { RewardIcon } from '../../../components/reward-icon'
 import { Button } from '../../../components/ui/button'
 
 import { useAlertsDoneMarkedActions } from '../../../hooks/alerts/alerts-done'
@@ -25,6 +26,100 @@ import { numberWithCommaSeparator } from '../../../lib/parsers/numbers'
 import { toast } from '../../../lib/notifications'
 import { assets } from '../../../lib/repository'
 import { cn } from '../../../lib/utils'
+
+export function MissionRewardsPreview({
+  mission,
+}: {
+  mission: WorldInfoMission
+}) {
+  const { t } = useTranslation(['alerts'])
+
+  return (
+    <>
+      {mission.ui.alert.rewards.length > 0 && (
+        <>
+          {mission.ui.alert.rewards
+            .map((reward) => {
+              if (
+                reward.itemId.includes('eventscaling') ||
+                reward.itemId.includes('campaign_event_currency') ||
+                reward.itemId.includes('phoenixxp')
+              ) {
+                return null
+              }
+
+              return (
+                <span
+                  className={cn(
+                    'flex flex-shrink-0 items-center rounded',
+                    {
+                      'border px-1': reward.type === 'trap',
+                    },
+                  )}
+                  key={reward.itemId}
+                >
+                  <RewardIcon
+                    src={reward.imageUrl}
+                    fallback={reward.fallbackUrl}
+                    title={reward.name}
+                    className="img-type"
+                  />
+                  <SchematicRarity
+                    reward={reward}
+                    preview
+                  />
+                </span>
+              )
+            })
+            .slice(0, 3)}{' '}
+          {mission.ui.mission.rewards.filter(
+            (reward) =>
+              !reward.itemId.includes('eventscaling') ||
+              reward.itemId.includes('campaign_event_currency') ||
+              reward.itemId.includes('phoenixxp'),
+          ).length > 0 && '•'}
+        </>
+      )}
+      {mission.ui.mission.rewards
+        .map((reward) => {
+          if (reward.itemId.includes('eventscaling')) {
+            return null
+          }
+
+          return (
+            <span
+              className={cn('flex flex-shrink-0 items-center rounded', {
+                'gap mx-0.5 px-1 py-0.5 outline outline-[#ff6868]/50 outline-2':
+                  reward.isBad,
+              })}
+              key={reward.itemId}
+            >
+              <RewardIcon
+                src={reward.imageUrl}
+                fallback={reward.fallbackUrl}
+                title={reward.name}
+                className="img-type"
+              />
+              {reward.quantity <= 1 ? (
+                ''
+              ) : (
+                <span className="ml-0.5 text-sm">
+                  {numberWithCommaSeparator(reward.quantity)}x
+                </span>
+              )}
+              {reward.isBad && (
+                <span className="font-medium ml-1 px-1 rounded text-[#ff6868] text-[0.625rem] uppercase">
+                  {t('sections.twine-peaks.mid')}
+                </span>
+              )}
+            </span>
+          )
+        })
+        .slice(0, 3)}
+      <Modifiers data={mission.ui.mission.modifiers} />
+    </>
+  )
+}
 
 export function MissionsContainer({
   children,
@@ -183,8 +278,10 @@ export function MissionItem({
                           className="img-alert"
                         />
                         <div className="flex gap-1 items-center">
-                          <img
+                          <RewardIcon
                             src={reward.imageUrl}
+                            fallback={reward.fallbackUrl}
+                            title={reward.name}
                             className="img-type"
                           />
                           {reward.quantity <= 1
@@ -208,8 +305,10 @@ export function MissionItem({
                           className="flex gap-1 items-center"
                           key={reward.itemId}
                         >
-                          <img
+                          <RewardIcon
                             src={reward.imageUrl}
+                            fallback={reward.fallbackUrl}
+                            title={reward.name}
                             className="img-type"
                           />
                           {reward.quantity > 1

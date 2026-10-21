@@ -21,12 +21,19 @@ import {
   CardHeader,
 } from '../../../components/ui/card'
 import { Switch } from '../../../components/ui/switch'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '../../../components/ui/tabs'
 import { GoToTop } from '../../../components/go-to-top'
 
 import { Route as RootRoute } from '../../__root'
 
 import { useCustomizableMenuSettingsVisibility } from '../../../hooks/settings'
 import { useAutomationData } from './-hooks'
+import { AutomationLogFileContent } from './-logfile'
 
 import { cn, parseCustomDisplayName } from '../../../lib/utils'
 import { useTranslation } from 'react-i18next'
@@ -35,7 +42,7 @@ export const Route = createRoute({
   getParentRoute: () => RootRoute,
   path: '/stw-operations/automation',
   component: () => {
-    const { t } = useTranslation(['sidebar'])
+    const { t } = useTranslation(['sidebar', 'stw-operations'])
 
     return (
       <>
@@ -54,7 +61,33 @@ export const Route = createRoute({
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <Content />
+        <Tabs
+          defaultValue="accounts"
+          className="flex flex-grow flex-col"
+        >
+          <div className="flex justify-center px-2">
+            <TabsList>
+              <TabsTrigger value="accounts">
+                {t('stw-operations.options.auto-kick')}
+              </TabsTrigger>
+              <TabsTrigger value="logfile">
+                {t('auto-kick.tabs.logfile', { ns: 'stw-operations' })}
+              </TabsTrigger>
+            </TabsList>
+          </div>
+          <TabsContent
+            value="accounts"
+            className="mt-4 flex-grow"
+          >
+            <Content />
+          </TabsContent>
+          <TabsContent
+            value="logfile"
+            className="mt-4 flex-grow"
+          >
+            <AutomationLogFileContent />
+          </TabsContent>
+        </Tabs>
       </>
     )
   },
@@ -314,6 +347,21 @@ export function Content() {
                             : undefined
                         }
                         disabled={disabledActions}
+                      />
+                    </div>
+                    <div className="flex flex-grow items-center justify-between">
+                      <span>{t('auto-kick.options.claim-party')}</span>
+                      <Switch
+                        checked={Boolean(current.actions.claimParty)}
+                        onCheckedChange={
+                          !isLoading
+                            ? handleUpdateClaimAction(
+                                'claimParty',
+                                account.accountId,
+                              )
+                            : undefined
+                        }
+                        disabled={disabledActions || !current.actions.claim}
                       />
                     </div>
                     <div className="flex flex-grow items-center justify-between">

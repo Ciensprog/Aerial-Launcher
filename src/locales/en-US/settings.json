@@ -19,6 +19,9 @@
       "path": {
         "label": "Custom path"
       },
+      "epic-games-dir": {
+        "label": "Epic Games folder"
+      },
       "user-agent": {
         "label": "Custom User Agent",
         "note": "Only is applied if you don't have Fortnite installed."
@@ -46,9 +49,25 @@
       }
     }
   },
+  "swap-file": {
+    "title": "Display name",
+    "display-name": {
+      "label": "Replacement value",
+      "note": "Used when generating Missions files that swap displayName, and on Mission Swap (Normal File :))."
+    }
+  },
   "custom-menu": {
     "title": "Customizable Menu",
-    "description": "You can customize menu sections/options visibility."
+    "description": "You can customize menu sections/options visibility. Right-click empty space to add a category. Right-click a category to rename or delete it. Drag a tab onto another tab to place it there, or onto a category to move it. Drag the grip on a category to change order.",
+    "reorder-category": "Drag to reorder",
+    "add-category": "Add category",
+    "rename-category": "Rename",
+    "delete-category": "Delete",
+    "category-name": "Category name",
+    "category-fallback": "Category",
+    "empty-category": "Drag features here.",
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "tags-management": {
     "title": "Tags Management",
@@ -69,6 +88,12 @@
     "title": "Account Customization",
     "description": "Sometimes you could need a specific display name for identifying an account. If you want, you can change the current display name with a custom name.",
     "note": "Note: this only applies visually to the Aerial accounts."
+  },
+  "hidden": {
+    "title": "Hidden settings",
+    "description": "Launch Fortnite through a custom HTTP proxy port.",
+    "port": "Port",
+    "enable": "Use proxy"
   },
   "form": {
     "submit": {

@@ -1,4 +1,7 @@
-{
+﻿{
+  "games-launcher": {
+    "title": "Games Launcher"
+  },
   "stw-operations": {
     "title": "STW 操作",
     "options": {
@@ -7,10 +10,17 @@
       "party": "队伍",
       "save-quests": "保存任务",
       "daily-quests": "每日任务",
+      "auto-daily-quests": "Auto Daily Quests",
+      "dq-weapons": "DQ Weapons",
+      "storm-shields": "Storm Shields",
       "homebase-name": "主基地名称",
       "xp-boosts": "经验加成",
       "auto-pin-urns": "自动标记宝箱",
       "auto-llamas": "自动羊驼",
+      "llama-manager": "羊驼管理",
+      "item-shop": "商店",
+      "collection-book": "收藏书",
+      "account-info": "Account Information",
       "unlock": "解锁 SSD 奖励"
     },
     "auto-kick-status": {
@@ -22,6 +32,8 @@
     "title": "账户管理",
     "options": {
       "vbucks-information": "V币信息",
+      "cloud-storage": "Cloud Storage",
+      "account-export": "Account Export",
       "redeem-codes": "兑换码",
       "devices-auth": "设备授权",
       "epic-settings": "Epic 游戏设置"

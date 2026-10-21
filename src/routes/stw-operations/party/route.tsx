@@ -1,15 +1,9 @@
 import { createRoute } from '@tanstack/react-router'
-import { Info } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { Route as RootRoute } from '../../__root'
 
 import { HomeBreadcrumb } from '../../../components/navigations/breadcrumb/home'
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from '../../../components/ui/alert'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,12 +11,12 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '../../../components/ui/breadcrumb'
-// import { Button } from '../../../components/ui/button'
-
 import { KickAllPartyCard } from './-kick-all-party'
 import { ClaimRewardsCard } from './-claim-rewards'
+import { FriendRequestCard } from './-friend-request'
 import { InviteCard } from './-invite'
 import { LeavePartyCard } from './-leave-party'
+import { PartyStatusCard } from './-status'
 
 import { useClaimedRewardsNotifications } from './-hooks'
 
@@ -55,27 +49,16 @@ export function RouteComponent() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex flex-grow">
-        <div className="flex items-center justify-center w-full">
-          <div className="flex flex-col items-center space-y-5 w-full">
-            <KickAllPartyCard />
-            <div className="flex gap-5 items-center justify-center">
-              <ClaimRewardsCard />
-              <LeavePartyCard />
-            </div>
-
-            <InviteCard />
-
-            <Alert className="border-0 border-l-4 max-w-lg rounded-none w-full">
-              <Info className="h-4 w-4" />
-              <AlertTitle>Note:</AlertTitle>
-              <AlertDescription>
-                If you get some bug/issues with these features you can
-                report in the Discord Server. Or you can consider
-                contributing if you like.
-              </AlertDescription>
-            </Alert>
+      <div className="flex items-start justify-center w-full">
+        <div className="flex w-full max-w-lg flex-col items-stretch gap-2">
+          <PartyStatusCard />
+          <KickAllPartyCard />
+          <LeavePartyCard />
+          <div className="flex gap-2">
+            <ClaimRewardsCard />
+            <FriendRequestCard />
           </div>
+          <InviteCard />
         </div>
       </div>
     </>

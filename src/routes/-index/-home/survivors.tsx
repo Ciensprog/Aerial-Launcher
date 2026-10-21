@@ -3,6 +3,7 @@ import type { WorldInfoMission } from '../../../types/data/advanced-mode/world-i
 import { Collection } from '@discordjs/collection'
 import { useTranslation } from 'react-i18next'
 
+import { RewardIcon } from '../../../components/reward-icon'
 import { EmptySection } from '../-components/-empty'
 import {
   MissionItem,
@@ -53,8 +54,10 @@ export function SurvivorsSection({
                 key={mission.raw.mission.missionGuid}
               >
                 <>
-                  <img
+                  <RewardIcon
                     src={baseReward.imageUrl}
+                    fallback={baseReward.fallbackUrl}
+                    title={baseReward.name}
                     className="img-type"
                   />
                   {baseReward.quantity > 1

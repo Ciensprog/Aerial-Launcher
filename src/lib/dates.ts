@@ -46,9 +46,17 @@ export function relativeTime(config?: ConfigType) {
 }
 
 export function getExtendedDateFormat(config?: ConfigType) {
-  return getDateWithFormat(config, 'dddd, MMMM D, YYYY h:mm:ss A')
+  return getDateWithFormat(config, 'dddd, MMMM D, YYYY HH:mm:ss')
 }
 
 export function getShortDateFormat(config?: ConfigType) {
-  return getDateWithFormat(config, 'ddd, MMM D, YYYY h:mm:ss A')
+  return getDateWithFormat(config, 'ddd, MMM D, YYYY HH:mm:ss')
+}
+
+/** Next local calendar date of a weekday (0 Sunday … 6 Saturday), including today. */
+export function nextWeekdayDate(weekday: number, config?: ConfigType) {
+  const date = dayjs(config).startOf('day')
+  const delta = (weekday - date.day() + 7) % 7
+
+  return date.add(delta, 'day').toDate()
 }
