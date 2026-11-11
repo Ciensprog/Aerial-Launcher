@@ -1,3 +1,4 @@
+import type { AccountData } from '../../types/accounts'
 import type {
   SaveWorldInfoData,
   WorldInfoDeleteResponse,
@@ -25,7 +26,9 @@ import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 import { defaultFortniteClient } from '../../config/fortnite/clients'
 
 import { MainWindow } from '../startup/windows/main'
+import { AccountsManager } from '../startup/accounts'
 import { DataDirectory } from '../startup/data-directory'
+import { Authentication } from './authentication'
 
 import { getWorldInfoData } from '../../services/endpoints/advanced-mode/world-info'
 import { createAccessTokenUsingClientCredentials } from '../../services/endpoints/oauth'
@@ -341,35 +344,117 @@ export class WorldInfoManager {
     )
   }
 
+  /**
+   * Max accounts to try before giving up, so one account with a broken
+   * device auth doesn't leave the home tab empty
+   */
+  private static readonly maxAccountAttempts = 3
+
   private static async request() {
+    // Since late 2026 Epic rejects client-credentials tokens on /world/info
+    // (403 errors.com.epicgames.fortnite.client_token.forbidden: "Client
+    // credentials must hold dedicated-server permission"), so the home tab
+    // got an empty world info. Request it with a logged-in account instead.
+    const accounts = await WorldInfoManager.getAccountsForRequest()
+
+    for (const account of accounts.slice(
+      0,
+      WorldInfoManager.maxAccountAttempts,
+    )) {
+      try {
+        const accessToken = await Authentication.verifyAccessToken(account)
+
+        if (!accessToken) {
+          continue
+        }
+
+        const data = await WorldInfoManager.fetchWorldInfo(accessToken)
+
+        if (data) {
+          return data
+        }
+      } catch (error) {
+        console.error(
+          `[WorldInfo] Request failed using account ${account.accountId}:`,
+          WorldInfoManager.describeError(error),
+        )
+      }
+    }
+
+    // Fallback (no accounts added yet, or every account failed): keep the
+    // old anonymous request in case Epic restores access for it
     try {
       const accessToken = await createAccessTokenUsingClientCredentials({
         authorization: defaultFortniteClient.use.auth,
       })
 
-      if (!accessToken.data.access_token) {
-        return defaultWorldInfo
+      if (accessToken.data.access_token) {
+        const data = await WorldInfoManager.fetchWorldInfo(
+          accessToken.data.access_token,
+        )
+
+        if (data) {
+          return data
+        }
       }
-
-      const worldInfoResponse = await getWorldInfoData({
-        accessToken: accessToken.data.access_token,
-      })
-
-      if (
-        worldInfoResponse.data.missionAlerts?.length <= 0 ||
-        worldInfoResponse.data.missions?.length <= 0 ||
-        worldInfoResponse.data.theaters?.length <= 0
-      ) {
-        return defaultWorldInfo
-      }
-
-      return worldInfoResponse.data
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      //
+      console.error(
+        '[WorldInfo] Request failed using client credentials:',
+        WorldInfoManager.describeError(error),
+      )
     }
 
     return defaultWorldInfo
+  }
+
+  private static async fetchWorldInfo(accessToken: string) {
+    const worldInfoResponse = await getWorldInfoData({
+      accessToken,
+    })
+
+    if (
+      !(worldInfoResponse.data.missionAlerts?.length > 0) ||
+      !(worldInfoResponse.data.missions?.length > 0) ||
+      !(worldInfoResponse.data.theaters?.length > 0)
+    ) {
+      return null
+    }
+
+    return worldInfoResponse.data
+  }
+
+  /**
+   * The renderer asks for world info on mount, which can happen before it
+   * asked the main process to load accounts, so read the file if needed
+   */
+  private static async getAccountsForRequest(): Promise<Array<AccountData>> {
+    const loaded = [...AccountsManager.getAccounts().values()]
+
+    if (loaded.length > 0) {
+      return loaded
+    }
+
+    try {
+      const { accounts } = await DataDirectory.getAccountsFile()
+
+      return accounts.map((account) => ({
+        ...account,
+        accessToken: undefined,
+      }))
+    } catch (error) {
+      console.error('[WorldInfo] Could not read accounts file:', error)
+    }
+
+    return []
+  }
+
+  private static describeError(error: unknown) {
+    const response = (
+      error as { response?: { status?: number; data?: unknown } }
+    )?.response
+
+    return response
+      ? `${response.status} ${JSON.stringify(response.data)}`
+      : error
   }
 }
