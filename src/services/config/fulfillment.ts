@@ -7,6 +7,8 @@ import { Manifest } from '../../kernel/core/manifest'
  */
 
 export const fulfillmentService = axios.create({
+  // Without a timeout a hung request blocks bulk operations forever
+  timeout: 30_000,
   baseURL:
     'https://fulfillment-public-service-prod.ol.epicgames.com/fulfillment/api/public',
 })

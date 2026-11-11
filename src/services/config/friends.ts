@@ -7,6 +7,8 @@ import { Manifest } from '../../kernel/core/manifest'
  */
 
 export const friendsService = axios.create({
+  // Without a timeout a hung request blocks bulk operations forever
+  timeout: 30_000,
   baseURL:
     'https://friends-public-service-prod.ol.epicgames.com/friends/api/v1',
 })
