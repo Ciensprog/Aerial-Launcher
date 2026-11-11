@@ -4,17 +4,23 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     name: Create release
     runs-on: windows-2022
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@master
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20.12.0
+          node-version: 22
+          cache: npm
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+      - name: Type check
+        run: npm run typecheck
       - name: Publishing
         run: npm run publish
         env:
