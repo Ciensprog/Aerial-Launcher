@@ -27,6 +27,7 @@ export class AccountProcess {
 
   private missionIntervalId: NodeJS.Timeout | null = null
   private missionTimeout: NodeJS.Timeout | null = null
+  private tickInProgress = false
 
   constructor(config: { accessToken: string; account: AccountData }) {
     this._accountId = config.account.accountId
@@ -93,121 +94,159 @@ export class AccountProcess {
     }
 
     const settings = await SettingsManager.getData()
-    const missionInterval = Number(settings.missionInterval)
+    const missionInterval = Automation.parseMissionInterval(
+      settings.missionInterval,
+    )
 
     this.missionIntervalId = setInterval(async () => {
-      const currentAccount = AccountsManager.getAccountById(this.accountId)
-      const automationAccount = Automation.getAccountById(this.accountId)
-
-      if (!currentAccount || !automationAccount) {
-        this.clearMissionIntervalId()
-        this._lastRemoteStartedState = null
+      // Requests can take longer than the interval (rate limits, slow
+      // network). Skip overlapping ticks instead of stacking requests.
+      if (this.tickInProgress) {
         return
       }
 
-      const accessToken = await Authentication.verifyAccessToken(
-        this.account,
-      )
+      this.tickInProgress = true
 
-      if (!accessToken) {
-        this.clearMissionIntervalId()
-        this._lastRemoteStartedState = null
-        return
-      }
-
-      const response = await findPlayer({
-        accessToken,
-        accountId: this.account.accountId,
-      })
-      const responseData = response.data
-      const matchmacking: MatchmakingTrack | undefined = responseData?.[0]
-
-      const isEmptyArray =
-        Array.isArray(responseData) && responseData.length === 0
-      let remoteStarted: boolean | undefined = undefined
-
-      if (isEmptyArray) {
-        remoteStarted = false
-      } else {
-        remoteStarted = matchmacking?.started
-      }
-
-      if (remoteStarted === undefined) {
-        return
-      }
-
-      const lastStateWasInMission = this._lastRemoteStartedState === true
-      const currentStateIsInLobby = remoteStarted === false
-
-      if (lastStateWasInMission && currentStateIsInLobby) {
-        if (
-          automationAccount.actions.kick ||
-          automationAccount.actions.claim
-        ) {
-          this.clearMissionIntervalId()
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const tasks: Promise<any>[] = []
-
-          if (automationAccount.actions.kick) {
-            const accounts = AccountsManager.getAccounts()
-            tasks.push(
-              Party.kickPartyMembers(
-                currentAccount,
-                [...accounts.values()],
-                automationAccount.actions.claim ?? false,
-                {
-                  useGlobalNotification: true,
-                },
-              ),
-            )
-          }
-
-          if (automationAccount.actions.claim) {
-            tasks.push(ClaimRewards.start([currentAccount], true))
-          }
-
-          await Promise.all(tasks)
-          this.preInit({ timeout: 1_000 })
-
-          this.setMatchmaking({
-            partyState: PartyState.MATCHMAKING,
-            started: false,
-          })
-
-          this._lastRemoteStartedState = remoteStarted
-          return
-        }
-      }
-
-      if (remoteStarted !== this._matchmaking.started) {
-        this.setMatchmaking({
-          started: remoteStarted,
-          partyState: remoteStarted
-            ? PartyState.POST_MATCHMAKING
-            : PartyState.MATCHMAKING,
-        })
-      }
-
-      if (remoteStarted === undefined) {
-        return
-      }
-
-      this._lastRemoteStartedState = remoteStarted
-
-      if (
-        !(
-          automationAccount.actions.kick || automationAccount.actions.claim
-        ) &&
-        automationAccount.actions.transferMats === true
-      ) {
-        if (!remoteStarted) {
-          this.clearMissionIntervalId()
-          MCPStorageTransfer.buildingMaterials(currentAccount).catch(
-            () => {},
-          )
-        }
+      try {
+        await this.missionTick()
+      } catch (error) {
+        // A failed request (429, network error, etc.) must not kill the
+        // tracking loop; the next tick simply tries again
+        console.error(
+          `[Automation] Mission check failed for ${this.accountId}:`,
+          error,
+        )
+      } finally {
+        this.tickInProgress = false
       }
     }, missionInterval * 1_000)
+  }
+
+  private async missionTick() {
+    const currentAccount = AccountsManager.getAccountById(this.accountId)
+    const automationAccount = Automation.getAccountById(this.accountId)
+
+    if (!currentAccount || !automationAccount) {
+      this.clearMissionIntervalId()
+      this._lastRemoteStartedState = null
+      return
+    }
+
+    const accessToken =
+      await Authentication.verifyAccessToken(currentAccount)
+
+    if (!accessToken) {
+      this.clearMissionIntervalId()
+      this._lastRemoteStartedState = null
+      return
+    }
+
+    const response = await findPlayer({
+      accessToken,
+      accountId: currentAccount.accountId,
+    })
+    const responseData = response.data
+    const matchmacking: MatchmakingTrack | undefined = responseData?.[0]
+
+    const isEmptyArray =
+      Array.isArray(responseData) && responseData.length === 0
+    let remoteStarted: boolean | undefined = undefined
+
+    if (isEmptyArray) {
+      remoteStarted = false
+    } else {
+      remoteStarted = matchmacking?.started
+    }
+
+    if (remoteStarted === undefined) {
+      return
+    }
+
+    const lastStateWasInMission = this._lastRemoteStartedState === true
+    const currentStateIsInLobby = remoteStarted === false
+
+    if (lastStateWasInMission && currentStateIsInLobby) {
+      if (
+        automationAccount.actions.kick ||
+        automationAccount.actions.claim
+      ) {
+        this.clearMissionIntervalId()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const tasks: Promise<any>[] = []
+
+        if (automationAccount.actions.kick) {
+          const accounts = AccountsManager.getAccounts()
+          tasks.push(
+            Party.kickPartyMembers(
+              currentAccount,
+              [...accounts.values()],
+              automationAccount.actions.claim ?? false,
+              {
+                useGlobalNotification: true,
+              },
+            ),
+          )
+        }
+
+        if (automationAccount.actions.claim) {
+          tasks.push(ClaimRewards.start([currentAccount], true))
+        }
+
+        // allSettled + always re-arming: previously a single failed kick
+        // or claim rejected Promise.all before preInit() ran, which
+        // silently stopped automation for this account until restart
+        const results = await Promise.allSettled(tasks)
+
+        results.forEach((result) => {
+          if (result.status === 'rejected') {
+            console.error(
+              `[Automation] Kick/claim failed for ${this.accountId}:`,
+              result.reason,
+            )
+          }
+        })
+
+        this.preInit({ timeout: 1_000 })
+
+        this.setMatchmaking({
+          partyState: PartyState.MATCHMAKING,
+          started: false,
+        })
+
+        this._lastRemoteStartedState = remoteStarted
+        return
+      }
+    }
+
+    if (remoteStarted !== this._matchmaking.started) {
+      this.setMatchmaking({
+        started: remoteStarted,
+        partyState: remoteStarted
+          ? PartyState.POST_MATCHMAKING
+          : PartyState.MATCHMAKING,
+      })
+    }
+
+    this._lastRemoteStartedState = remoteStarted
+
+    if (
+      !(
+        automationAccount.actions.kick || automationAccount.actions.claim
+      ) &&
+      automationAccount.actions.transferMats === true
+    ) {
+      if (!remoteStarted) {
+        this.clearMissionIntervalId()
+        MCPStorageTransfer.buildingMaterials(currentAccount).catch(
+          (error) => {
+            console.error(
+              `[Automation] Materials transfer failed for ${this.accountId}:`,
+              error,
+            )
+          },
+        )
+      }
+    }
   }
 
   async checkMatchAtStartUp() {
