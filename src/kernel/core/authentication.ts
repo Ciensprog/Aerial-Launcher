@@ -163,7 +163,7 @@ export class Authentication {
     }
 
     MainWindow.instance.webContents.send(
-      ElectronAPIEventKeys.ResponseAuthWithAuthorization,
+      ElectronAPIEventKeys.ResponseAuthWithExchange,
       {
         accessToken: null,
         data: null,
@@ -277,7 +277,7 @@ export class Authentication {
         displayName: data.displayName ?? currentAccount.displayName,
       }
 
-      AccountsManager.syncAccount(currentAccount.accountId, data)
+      AccountsManager.syncAccount(currentAccount.accountId, newData)
 
       MainWindow.instance.webContents.send(
         ElectronAPIEventKeys.SyncAccessToken,
