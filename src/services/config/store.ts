@@ -7,6 +7,8 @@ import { Manifest } from '../../kernel/core/manifest'
  */
 
 export const storeAccessService = axios.create({
+  // Without a timeout a hung request blocks bulk operations forever
+  timeout: 30_000,
   baseURL:
     'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/storeaccess/v1',
 })

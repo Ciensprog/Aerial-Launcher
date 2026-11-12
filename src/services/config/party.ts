@@ -7,6 +7,8 @@ import { Manifest } from '../../kernel/core/manifest'
  */
 
 export const partyService = axios.create({
+  // Without a timeout a hung request blocks bulk operations forever
+  timeout: 30_000,
   baseURL:
     'https://party-service-prod.ol.epicgames.com/party/api/v1/Fortnite',
 })
