@@ -8,7 +8,11 @@ import type {
 
 import { Collection } from '@discordjs/collection'
 
-import { AutomationStatusType } from '../../config/constants/automation'
+import {
+  AutomationStatusType,
+  defaultMissionInterval,
+  missionIntervalRange,
+} from '../../config/constants/automation'
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { AccountService } from '../core/automation/account-service'
@@ -45,6 +49,23 @@ export class Automation {
 
   private static _activeChecks: Record<string, NodeJS.Timeout | null> = {}
   private static _missionActive: Record<string, boolean> = {}
+
+  /**
+   * The settings file is user-editable: never trust it blindly. A NaN or 0
+   * here would turn setInterval into a tight loop hammering Epic's API.
+   */
+  static parseMissionInterval(value: unknown) {
+    const parsed = Number(value)
+
+    if (!Number.isFinite(parsed)) {
+      return defaultMissionInterval
+    }
+
+    return Math.min(
+      Math.max(parsed, missionIntervalRange.min),
+      missionIntervalRange.max,
+    )
+  }
 
   static async load() {
     const { automation } = await DataDirectory.getAutomationFile()
@@ -377,7 +398,13 @@ export class Automation {
           }
 
           const settings = await SettingsManager.getData()
-          const missionInterval = Number(settings.missionInterval)
+          const missionInterval = Automation.parseMissionInterval(
+            settings.missionInterval,
+          )
+
+          // Never overwrite a live handle: that would leak an interval that
+          // keeps polling forever and can no longer be cleared
+          this.clearActiveChecks([accountId])
 
           Automation._missionActive[accountId] = true
           Automation._activeChecks[accountId] = setInterval(async () => {
@@ -607,7 +634,9 @@ export class Automation {
           (!automationAccount.actions.transferMats &&
             actionsNewValueTransferMats)
         ) {
-          if (typeof Automation._activeChecks[accountId] !== 'number') {
+          // Node timers are Timeout objects, not numbers: the previous
+          // `typeof !== 'number'` check was always true
+          if (!Automation._activeChecks[accountId]) {
             const check = async () => {
               try {
                 const account = AccountsManager.getAccountById(accountId)

@@ -7,7 +7,6 @@ import { Header } from './header'
 import { SidebarMenu } from '../components/menu/sidebar'
 import { ScrollArea } from '../components/ui/scroll-area'
 
-// @ts-expect-error assets/image
 import logoLaucher from '../_assets/aerial-launcher-transparent.png'
 
 import { whatIsThis } from '../lib/callbacks'
