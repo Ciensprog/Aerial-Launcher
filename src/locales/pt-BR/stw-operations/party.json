@@ -56,5 +56,9 @@
         "sent_other": "{{count}} solicitações de amizade foram enviadas"
       }
     }
+  },
+  "note": {
+    "title": "Nota:",
+    "description": "Se você encontrar algum bug ou problema com esses recursos, pode reportar no servidor do Discord. Ou pode considerar contribuir, se quiser."
   }
 }

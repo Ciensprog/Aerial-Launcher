@@ -1,4 +1,33 @@
 {
+  "appearance": {
+    "title": "Wygląd",
+    "theme": {
+      "label": "Motyw",
+      "options": {
+        "dark": "Ciemny",
+        "black": "Czarny",
+        "slate": "Grafitowy"
+      }
+    },
+    "accent": {
+      "label": "Kolor akcentu",
+      "description": "Używany dla przycisków, wyróżnień i aktywnej pozycji menu.",
+      "options": {
+        "default": "Domyślny",
+        "stonewood": "Kamienny Las",
+        "plankerton": "Deskogród",
+        "canny-valley": "Dolina Samowitości",
+        "twine-peaks": "Twine Peaks",
+        "ventures": "Wyprawy"
+      }
+    },
+    "sidebar": {
+      "label": "Pasek boczny",
+      "compact": "Kompaktowy pasek boczny",
+      "order-description": "Przeciągnij, aby zmienić kolejność sekcji.",
+      "reset": "Przywróć"
+    }
+  },
   "app-settings": {
     "title": "Ustawienia Aplikacji",
     "form": {
@@ -18,6 +47,9 @@
       },
       "path": {
         "label": "Niestandardowa ścieżka"
+      },
+      "epic-games-dir": {
+        "label": "Folder Epic Games"
       },
       "user-agent": {
         "label": "Niestandardowy User Agent",

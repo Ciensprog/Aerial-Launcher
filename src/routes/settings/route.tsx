@@ -21,6 +21,7 @@ import {
 } from '../../components/ui/breadcrumb'
 
 import { AccountCustomization } from './-account-customization/-index'
+import { Appearance } from './-appearance/-index'
 import { AppSettings } from './-app-settings/-index'
 import { CustomizableMenu } from './-customizable-menu/-index'
 import { TagsManagement } from './-tags-management/-index'
@@ -30,6 +31,7 @@ import { useGetAccounts } from '../../hooks/accounts'
 import { cn } from '../../lib/utils'
 
 enum SettingsSections {
+  Appearance = 'appearance',
   AppSettings = 'app-settings',
   CustomizableMenu = 'customizable-menu',
   TagsManagement = 'tags-management',
@@ -79,6 +81,24 @@ function Content() {
             type="multiple"
             defaultValue={[SettingsSections.AccountCustomization]}
           >
+            <AccordionItem
+              className="border-none"
+              value={SettingsSections.Appearance}
+            >
+              <AccordionTrigger
+                className="section-trigger"
+                hideIcon
+              >
+                <SeparatorWithTitle className="section-title">
+                  {t('appearance.title')}{' '}
+                  <ChevronDown className="section-icon" />
+                </SeparatorWithTitle>
+              </AccordionTrigger>
+              <AccordionContent className="section-content">
+                <Appearance />
+              </AccordionContent>
+            </AccordionItem>
+
             <AccordionItem
               className="border-none"
               value={SettingsSections.AppSettings}

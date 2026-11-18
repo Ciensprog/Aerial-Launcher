@@ -1,0 +1,24 @@
+{
+  "title": "Lanzador de juegos",
+  "description": "Inicia juegos de Epic y el editor de Unreal Engine con la cuenta seleccionada en la cabecera.",
+  "loading": "Buscando juegos instalados...",
+  "empty": "No se encontraron juegos en la carpeta de Epic Games indicada arriba.",
+  "editor-badge": "Editor",
+  "epic-dir": {
+    "label": "Carpeta de Epic Games",
+    "placeholder": "C:\\Program Files\\Epic Games",
+    "browse": "Examinar",
+    "extra-label": "Carpetas adicionales",
+    "extra-note": "Juegos instalados fuera de la carpeta anterior.",
+    "add": "Añadir carpeta",
+    "remove": "Quitar"
+  },
+  "launch": "Iniciar",
+  "launching": "Iniciando...",
+  "notifications": {
+    "scan-error": "No se pudieron buscar los juegos de Epic.",
+    "no-account": "Primero selecciona una cuenta en la cabecera.",
+    "launch-success": "{{game}} iniciado como {{account}}.",
+    "launch-error": "No se pudo iniciar {{game}}."
+  }
+}

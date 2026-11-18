@@ -60,5 +60,9 @@
         "sent_other": "{{count}} zaproszeń do znajomych zostało wysłanych"
       }
     }
+  },
+  "note": {
+    "title": "Uwaga:",
+    "description": "Jeśli napotkasz błędy lub problemy z tymi funkcjami, możesz je zgłosić na serwerze Discord. Możesz też rozważyć współtworzenie projektu."
   }
 }

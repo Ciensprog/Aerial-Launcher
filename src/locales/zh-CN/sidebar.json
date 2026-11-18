@@ -1,4 +1,7 @@
 {
+  "games-launcher": {
+    "title": "Games Launcher"
+  },
   "stw-operations": {
     "title": "STW 操作",
     "options": {
@@ -52,5 +55,6 @@
   "version": {
     "release": "版本 v{{version}}",
     "all-releases": "所有版本"
-  }
+  },
+  "current-alerts": "当前警报"
 }

@@ -56,5 +56,9 @@
         "sent_other": "Sono state inviate {{count}} richieste di amicizia"
       }
     }
+  },
+  "note": {
+    "title": "Nota:",
+    "description": "Se riscontri bug o problemi con queste funzioni puoi segnalarli nel server Discord. Oppure puoi valutare di contribuire, se ti va."
   }
 }

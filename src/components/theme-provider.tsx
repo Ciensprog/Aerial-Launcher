@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
+import { useAppearanceStore } from '../state/settings/appearance'
+
 type Theme = 'dark' | 'light' | 'system'
 
 type ThemeProviderProps = {
@@ -48,6 +50,26 @@ export function ThemeProvider({
 
     root.classList.add(theme)
   }, [theme])
+
+  const accent = useAppearanceStore((state) => state.accent)
+  const background = useAppearanceStore((state) => state.background)
+
+  // Settings > Appearance (styles in globals.css)
+  useEffect(() => {
+    const root = window.document.documentElement
+
+    if (accent === 'default') {
+      root.removeAttribute('data-accent')
+    } else {
+      root.setAttribute('data-accent', accent)
+    }
+
+    if (background === 'dark') {
+      root.removeAttribute('data-background')
+    } else {
+      root.setAttribute('data-background', background)
+    }
+  }, [accent, background])
 
   const value = {
     theme,

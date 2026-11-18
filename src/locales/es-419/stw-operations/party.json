@@ -56,5 +56,9 @@
         "sent_other": "{{count}} peticiones de amistad enviadas"
       }
     }
+  },
+  "note": {
+    "title": "Nota:",
+    "description": "Si encuentras algún error o problema con estas funciones, puedes reportarlo en el servidor de Discord. O puedes considerar contribuir si quieres."
   }
 }

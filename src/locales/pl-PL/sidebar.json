@@ -1,4 +1,7 @@
 {
+  "games-launcher": {
+    "title": "Games Launcher"
+  },
   "stw-operations": {
     "title": "Operacje w RŚ",
     "options": {
@@ -52,5 +55,6 @@
   "version": {
     "release": "Wersja v{{version}}",
     "all-releases": "Wszystkie Wydania"
-  }
+  },
+  "current-alerts": "Aktualne alerty"
 }

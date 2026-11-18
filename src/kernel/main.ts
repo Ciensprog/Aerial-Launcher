@@ -40,6 +40,7 @@ import { ClaimRewards } from './core/claim-rewards'
 import { DevicesAuthManager } from './core/devices-auth'
 import { EULATracking } from './core/eula-tracking'
 import { FortniteLauncher } from './core/launcher'
+import { GamesLauncher } from './core/games-launcher'
 import {
   MCPClientQuestLogin,
   MCPDailyQuests,
@@ -375,6 +376,21 @@ const gotTheLock = app.requestSingleInstanceLock()
         await FortniteLauncher.start(account)
       },
     )
+
+    ipcMain.handle(ElectronAPIEventKeys.GamesLauncherScan, async () => {
+      return GamesLauncher.scan()
+    })
+
+    ipcMain.on(
+      ElectronAPIEventKeys.GamesLauncherStart,
+      async (_, payload) => {
+        await GamesLauncher.launch(payload.account, payload.game)
+      },
+    )
+
+    ipcMain.handle(ElectronAPIEventKeys.GamesLauncherPickDir, async () => {
+      return GamesLauncher.pickEpicDir()
+    })
 
     /**
      * STW Operations

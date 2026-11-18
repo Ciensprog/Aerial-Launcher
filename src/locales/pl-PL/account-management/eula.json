@@ -1,4 +1,5 @@
 {
   "good-to-know": "Warto wiedzieć:",
-  "link": "Możesz przejść do <2>https://www.epicgames.com/account/eula-history</2> i kliknąć przycisk \"Zgadzam się\" na dole strony:"
+  "link": "Możesz przejść do <2>https://www.epicgames.com/account/eula-history</2> i kliknąć przycisk \"Zgadzam się\" na dole strony:",
+  "placeholder": "Wygenerowany link do EULA"
 }

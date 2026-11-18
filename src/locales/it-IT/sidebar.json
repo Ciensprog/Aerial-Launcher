@@ -1,4 +1,7 @@
 {
+  "games-launcher": {
+    "title": "Games Launcher"
+  },
   "stw-operations": {
     "title": "Operazioni STW",
     "options": {
@@ -52,5 +55,6 @@
   "version": {
     "release": "Rilascio v{{version}}",
     "all-releases": "Tutti I Rilasci"
-  }
+  },
+  "current-alerts": "Allerte attuali"
 }

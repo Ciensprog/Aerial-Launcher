@@ -79,8 +79,10 @@ export class DataDirectory {
     customProcess: 'FortniteClient-Win64-Shipping.exe',
     missionInterval: `${defaultMissionInterval}`,
     path: 'C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64',
+    epicGamesDir: 'C:\\Program Files\\Epic Games',
+    epicGamesExtraDirs: [],
     systemTray: false,
-    userAgent: 'Fortnite/++Fortnite+Release-34.40-CL-41753727-Windows',
+    userAgent: 'Fortnite/++Fortnite+Release-43.10-CL-60118918-Windows',
   }
 
   private static devSettingsFilePath = path.join(

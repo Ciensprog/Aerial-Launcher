@@ -1,4 +1,7 @@
 {
+  "games-launcher": {
+    "title": "Games Launcher"
+  },
   "stw-operations": {
     "title": "ПВЕ Операции",
     "options": {
@@ -52,5 +55,6 @@
   "version": {
     "release": "Релиз v{{version}}",
     "all-releases": "Все версии"
-  }
+  },
+  "current-alerts": "Текущие оповещения"
 }

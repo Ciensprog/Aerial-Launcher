@@ -39,6 +39,12 @@ export const settingsSchema = z.object({
     range: missionIntervalRange,
   }),
   path: z.string().trim().min(1),
+  epicGamesDir: z
+    .string()
+    .trim()
+    .min(1)
+    .default('C:\\Program Files\\Epic Games'),
+  epicGamesExtraDirs: z.array(z.string().trim()).default([]),
   systemTray: z.boolean().default(false),
   userAgent: z.string().trim().min(1),
 })
@@ -52,6 +58,7 @@ export const devSettingsSchema = z
 export const customizableMenuSettingsSchema = z
   .object({
     currentAlerts: z.boolean().default(true),
+    gamesLauncher: z.boolean().default(true),
 
     stwOperations: z.boolean().default(true),
     autoKick: z.boolean().default(true),
@@ -63,7 +70,7 @@ export const customizableMenuSettingsSchema = z
     xpBoosts: z.boolean().default(true),
     autoPinUrns: z.boolean().default(true),
     autoLlamas: z.boolean().default(true),
-    unlock: z.boolean().default(true),
+    unlock: z.boolean().default(false),
 
     accountManagement: z.boolean().default(true),
     vbucksInformation: z.boolean().default(true),
