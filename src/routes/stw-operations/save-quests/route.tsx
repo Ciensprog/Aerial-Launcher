@@ -169,6 +169,7 @@ function AutoDailyQuestsSwitch() {
       missionInterval: settings.missionInterval,
       path: settings.path,
       epicGamesDir: settings.epicGamesDir,
+      epicGamesExtraDirs: settings.epicGamesExtraDirs,
       systemTray: settings.systemTray,
       userAgent: settings.userAgent,
     }

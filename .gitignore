@@ -93,7 +93,3 @@ typings/
 
 # Electron-Forge
 out/
-
-# Private standalone fork (fortnite-tools Misje + UTOC)
-/V2/
-

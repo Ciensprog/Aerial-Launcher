@@ -22,6 +22,13 @@ const EMS_NAME_HINTS: [RegExp, string][] = [
   [/grand theft auto/i, 'gta'],
   [/rocket league/i, 'rocket'],
   [/farming simulator/i, 'farming'],
+  [/unreal engine/i, 'ue_logo'],
+  [/unreal editor/i, 'ue_logo'],
+]
+
+const UNREAL_ICON_CANDIDATES = [
+  ['Engine', 'Content', 'Slate', 'Starship', 'Common', 'UELogo.png'],
+  ['Engine', 'Content', 'Editor', 'Slate', 'Old', 'UnrealEd_icon.png'],
 ]
 
 export function findEpicEmsIcon(displayName: string): string | undefined {
@@ -78,13 +85,26 @@ export function getIconCandidates(game: ScannedGame): string[] {
 
   const name = game.displayName.toLowerCase()
   const launchName = path.basename(game.launchExe).toLowerCase()
+  const app = game.appName.toLowerCase()
   const isGta = name.includes('grand theft auto')
     || launchName.includes('playgtav')
     || launchName.includes('rockstar')
+  const isUnreal = game.editor
+    || name.includes('unreal')
+    || launchName.includes('unrealeditor')
+    || app.startsWith('ue_')
 
   if (isGta) {
     for (const fileName of GTA_ICON_CANDIDATES) {
       add(path.join(game.installDir, fileName))
+    }
+  }
+
+  if (isUnreal) {
+    add(path.join(EMS_DIR, 'ue_logo.png'))
+    add(path.join(EMS_DIR, 'Poodle_Logo.png'))
+    for (const parts of UNREAL_ICON_CANDIDATES) {
+      add(path.join(game.installDir, ...parts))
     }
   }
 

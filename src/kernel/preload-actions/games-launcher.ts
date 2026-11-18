@@ -1,5 +1,4 @@
 import type { IpcRendererEvent } from 'electron'
-import type { AccountData } from '../../types/accounts'
 import type {
   EpicGameEntry,
   GamesLauncherNotificationPayload,
@@ -14,6 +13,12 @@ export function gamesLauncherScan() {
   return ipcRenderer.invoke(
     ElectronAPIEventKeys.GamesLauncherScan,
   ) as Promise<EpicGameEntry[]>
+}
+
+export function gamesLauncherPickDir() {
+  return ipcRenderer.invoke(
+    ElectronAPIEventKeys.GamesLauncherPickDir,
+  ) as Promise<string | null>
 }
 
 export function gamesLauncherStart(payload: GamesLauncherStartPayload) {

@@ -5,6 +5,9 @@ export type EpicGameEntry = {
   workingDir: string
   launchExe: string
   exchangeLaunch: boolean
+  editor?: boolean
+  catalogNamespace?: string
+  launchCommand?: string
   icon?: string
 }
 

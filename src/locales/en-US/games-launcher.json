@@ -1,8 +1,18 @@
 {
   "title": "Games Launcher",
-  "description": "Launch Epic games using the account selected in the header.",
+  "description": "Launch Epic games and Unreal Engine editor using the account selected in the header.",
   "loading": "Scanning installed games...",
-  "empty": "No games found. Set the Epic Games folder in Settings.",
+  "empty": "No games found in the Epic Games folder above.",
+  "editor-badge": "Editor",
+  "epic-dir": {
+    "label": "Epic Games folder",
+    "placeholder": "C:\\Program Files\\Epic Games",
+    "browse": "Browse",
+    "extra-label": "Additional folders",
+    "extra-note": "Games installed outside the folder above.",
+    "add": "Add folder",
+    "remove": "Remove"
+  },
   "launch": "Launch",
   "launching": "Launching...",
   "notifications": {

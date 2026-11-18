@@ -43,6 +43,7 @@ export const settingsSchema = z.object({
     .trim()
     .min(1)
     .default('C:\\Program Files\\Epic Games'),
+  epicGamesExtraDirs: z.array(z.string().trim()).default([]),
   systemTray: z.boolean().default(false),
   userAgent: z.string().trim().min(1),
 })

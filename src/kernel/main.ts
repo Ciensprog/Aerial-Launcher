@@ -388,6 +388,10 @@ const gotTheLock = app.requestSingleInstanceLock()
       },
     )
 
+    ipcMain.handle(ElectronAPIEventKeys.GamesLauncherPickDir, async () => {
+      return GamesLauncher.pickEpicDir()
+    })
+
     /**
      * STW Operations
      */

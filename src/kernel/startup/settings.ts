@@ -96,6 +96,9 @@ export class SettingsManager {
       path: result.settings.path ?? defaultSettingsData.path,
       epicGamesDir:
         result.settings.epicGamesDir ?? defaultSettingsData.epicGamesDir,
+      epicGamesExtraDirs:
+        result.settings.epicGamesExtraDirs ??
+        defaultSettingsData.epicGamesExtraDirs,
       systemTray:
         result.settings.systemTray ?? defaultSettingsData.systemTray,
       userAgent:
