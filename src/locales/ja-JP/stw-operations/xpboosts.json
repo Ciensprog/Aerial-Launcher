@@ -1,0 +1,46 @@
+{
+  "description": "選択したアカウントのXPブーストを管理します。",
+  "form": {
+    "label": "送信するXPブーストの数({{limit}}まで)",
+    "input": {
+      "placeholder": "例: 123"
+    },
+    "refetch": "ブーストデータを再取得",
+    "see-boosts": "ブーストを見る",
+    "send-boosts": "ブーストを送信"
+  },
+  "top-search": {
+    "description": "プレイヤーの基本情報を表示します。"
+  },
+  "sidebar": {
+    "title": "どのXPブーストを使用しますか?",
+    "personal": {
+      "description": "これらすべてのアカウントがXPブーストを使用します:",
+      "submit-button": "各アカウントで{{total}}個のXPブーストを消費"
+    },
+    "teammate": {
+      "note": "回線が不安定な場合、一部のブーストが送信されないことがあります。",
+      "submit-button": "<3>{{name}}</3> に <1>{{total}}</1> 個を送信"
+    },
+    "errors": {
+      "valid-amount": "有効な数量を入力してください"
+    }
+  },
+  "results": {
+    "summary": {
+      "title": "{{total}}件のアカウントのサマリー"
+    },
+    "options": {
+      "description": "使用するチームメイトのXPブースト:",
+      "information": "合計{{amount}}中 {{current}}/{{total}}"
+    }
+  },
+  "notifications": {
+    "success": {
+      "personal_one": "合計{{current}}/{{expected}}個のXPブーストを消費しました。{{totalAccounts}}件のアカウントのサマリー",
+      "personal_other": "合計{{current}}/{{expected}}個のXPブーストを消費しました。{{totalAccounts}}件のアカウントのサマリー",
+      "teammate_one": "{{name}}に合計{{current}}/{{expected}}個のXPブーストを送信しました。{{totalAccounts}}件のアカウントのサマリー",
+      "teammate_other": "{{name}}に合計{{current}}/{{expected}}個のXPブーストを送信しました。{{totalAccounts}}件のアカウントのサマリー"
+    }
+  }
+}

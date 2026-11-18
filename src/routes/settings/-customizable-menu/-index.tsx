@@ -44,7 +44,7 @@ export function CustomizableMenu() {
 }
 
 function CurrentAlertsSection() {
-  // const { t } = useTranslation(['sidebar'])
+  const { t } = useTranslation(['sidebar'])
 
   const { getMenuOptionVisibility } =
     useCustomizableMenuSettingsVisibility()
@@ -57,7 +57,7 @@ function CurrentAlertsSection() {
           className="title text-lg"
           htmlFor="current-alerts"
         >
-          Current Alerts
+          {t('current-alerts')}
         </Label>
         <Switch
           id="current-alerts"
@@ -110,7 +110,7 @@ function STWOperationsSection() {
             className="title"
             htmlFor="taxi-service"
           >
-            Taxi Service
+            {t('stw-operations.options.taxi-service')}
           </Label>
           <Switch
             id="taxi-service"

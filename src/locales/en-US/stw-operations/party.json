@@ -1,4 +1,8 @@
 {
+  "note": {
+    "title": "Note:",
+    "description": "If you get some bug/issues with these features you can report in the Discord Server. Or you can consider contributing if you like."
+  },
   "kick": {
     "form": {
       "submit-button": "Kick All Party"

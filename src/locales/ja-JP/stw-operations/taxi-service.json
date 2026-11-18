@@ -1,0 +1,31 @@
+{
+  "main": {
+    "actions": {
+      "restart-all": "すべてのタクシーを再起動",
+      "remove-all": "すべてのタクシーを削除"
+    },
+    "search": {
+      "input": {
+        "placeholder": "例: sample;john;Jane または sample"
+      },
+      "send": "フレンドリクエストを送信"
+    },
+    "show-notifications": "通知を表示"
+  },
+  "card": {
+    "power-level": "リバース/140",
+    "deny-requests": "フレンドリクエストを拒否",
+    "status": {
+      "active": "アクティブ状態",
+      "busy": "取り込み中状態"
+    }
+  },
+  "notifications": {
+    "clear-logs": "ログをクリア",
+    "party-member-joined": "<0>{{me}}</0> が{{total}}人のパーティーに参加 <4>一 {{createdAt}}</4>",
+    "party-invite": "<0>{{friend}}</0> が <3>{{me}}</3> に招待 <5>一 {{createdAt}}</5>",
+    "friend-added": "<0>{{friend}}</0> を <3>{{me}}</3> に追加",
+    "friend-request-send": "<0>{{me}}</0> が {{initial}}<4 />{{total}}件のフレンドリクエストを送信",
+    "friend-request-send-with-errors": "<0>{{name}}</0> でエラー <3>{{error}}</3>"
+  }
+}

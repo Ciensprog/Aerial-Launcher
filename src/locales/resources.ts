@@ -498,6 +498,77 @@ const itIT = {
 }
 
 /**
+ * @file ja-JP
+ */
+import jaJP_sidebar from './ja-JP/sidebar.json'
+import jaJP_general from './ja-JP/general.json'
+import jaJP_history from './ja-JP/history.json'
+import jaJP_settings from './ja-JP/settings.json'
+import jaJP_alerts from './ja-JP/home.json'
+import jaJP_zones from './ja-JP/zones.json'
+import jaJP_stwOperations_AutoKick from './ja-JP/stw-operations/auto-kick.json'
+import jaJP_stwOperations_TaxiService from './ja-JP/stw-operations/taxi-service.json'
+import jaJP_stwOperations_HomebaseName from './ja-JP/stw-operations/homebase-name.json'
+import jaJP_stwOperations_SaveQuests from './ja-JP/stw-operations/save-quests.json'
+import jaJP_stwOperations_DailyQuests from './ja-JP/stw-operations/daily-quests.json'
+import jaJP_stwOperations_Party from './ja-JP/stw-operations/party.json'
+import jaJP_stwOperations_Urns from './ja-JP/stw-operations/urns.json'
+import jaJP_stwOperations_XPBoosts from './ja-JP/stw-operations/xpboosts.json'
+import jaJP_stwOperations_Llamas from './ja-JP/stw-operations/llamas.json'
+import jaJP_stwOperations_Unlock from './ja-JP/stw-operations/unlock.json'
+import jaJP_accountManagement_VBucksInformation from './ja-JP/account-management/vbucks-information.json'
+import jaJP_accountManagement_EULA from './ja-JP/account-management/eula.json'
+import jaJP_accountManagement_RedeemCodes from './ja-JP/account-management/redeem-codes.json'
+import jaJP_accountManagement_DevicesAuth from './ja-JP/account-management/devices-auth.json'
+import jaJP_accountManagement_EpicSettings from './ja-JP/account-management/epic-settings.json'
+import jaJP_advancedMode_MatchmakingTrack from './ja-JP/advanced-mode/matchmaking-track.json'
+import jaJP_advancedMode_WorldInfo from './ja-JP/advanced-mode/world-info.json'
+import jaJP_myAccounts_General from './ja-JP/accounts/general.json'
+import jaJP_myAccounts_AuthCode from './ja-JP/accounts/auth-code.json'
+import jaJP_myAccounts_ExchangeCode from './ja-JP/accounts/exchange-code.json'
+import jaJP_myAccounts_DeviceAuth from './ja-JP/accounts/device-auth.json'
+import jaJP_myAccounts_RemoveAccount from './ja-JP/accounts/remove-account.json'
+
+const jaJP = {
+  sidebar: jaJP_sidebar,
+  general: jaJP_general,
+  history: jaJP_history,
+  settings: jaJP_settings,
+  alerts: jaJP_alerts,
+  zones: jaJP_zones,
+  'stw-operations': {
+    'auto-kick': jaJP_stwOperations_AutoKick,
+    'taxi-service': jaJP_stwOperations_TaxiService,
+    'homebase-name': jaJP_stwOperations_HomebaseName,
+    'save-quests': jaJP_stwOperations_SaveQuests,
+    'daily-quests': jaJP_stwOperations_DailyQuests,
+    party: jaJP_stwOperations_Party,
+    urns: jaJP_stwOperations_Urns,
+    xpboosts: jaJP_stwOperations_XPBoosts,
+    llamas: jaJP_stwOperations_Llamas,
+    unlock: jaJP_stwOperations_Unlock,
+  },
+  'account-management': {
+    'vbucks-information': jaJP_accountManagement_VBucksInformation,
+    'redeem-codes': jaJP_accountManagement_RedeemCodes,
+    'devices-auth': jaJP_accountManagement_DevicesAuth,
+    'epic-settings': jaJP_accountManagement_EpicSettings,
+    eula: jaJP_accountManagement_EULA,
+  },
+  'advanced-mode': {
+    'matchmaking-track': jaJP_advancedMode_MatchmakingTrack,
+    'world-info': jaJP_advancedMode_WorldInfo,
+  },
+  accounts: {
+    general: jaJP_myAccounts_General,
+    'auth-code': jaJP_myAccounts_AuthCode,
+    'exchange-code': jaJP_myAccounts_ExchangeCode,
+    'device-auth': jaJP_myAccounts_DeviceAuth,
+    'remove-account': jaJP_myAccounts_RemoveAccount,
+  },
+}
+
+/**
  * Export resources
  */
 
@@ -509,6 +580,7 @@ export enum Language {
   Portuguese = 'pt-BR',
   Polish = 'pl-PL',
   Italian = 'it-IT',
+  Japanese = 'ja-JP',
 }
 
 export const resources: Resource = {
@@ -519,4 +591,5 @@ export const resources: Resource = {
   [Language.Portuguese]: ptBR,
   [Language.Polish]: plPL,
   [Language.Italian]: itIT,
+  [Language.Japanese]: jaJP,
 }
