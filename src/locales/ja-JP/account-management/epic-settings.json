@@ -1,0 +1,11 @@
+{
+  "form": {
+    "generate-button": "リンクを生成",
+    "open-button": "<0>アカウント設定を開く</0> <1 />"
+  },
+  "notifications": {
+    "clipboard": "リンクをクリップボードにコピーしました",
+    "success": "Epic Gamesの設定リンクを生成しました",
+    "error": "リクエストの処理中にエラーが発生しました"
+  }
+}

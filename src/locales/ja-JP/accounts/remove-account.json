@@ -1,0 +1,11 @@
+{
+  "form": {
+    "label": "<2>{{name}}</2> アカウントを削除しますか?",
+    "submit-button": "はい、選択したアカウントを削除します"
+  },
+  "notifications": {
+    "remove": {
+      "success": "アカウント {{name}} を削除しました"
+    }
+  }
+}

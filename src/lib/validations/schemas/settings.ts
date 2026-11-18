@@ -21,6 +21,7 @@ export const appLanguageSchema = z.object({
       Language.Portuguese,
       Language.Polish,
       Language.Italian,
+      Language.Japanese,
     ])
     .default(Language.English),
 })

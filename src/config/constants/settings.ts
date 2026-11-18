@@ -34,4 +34,8 @@ export const availableLanguages: Array<{
     id: Language.Italian,
     title: 'Italian',
   },
+  {
+    id: Language.Japanese,
+    title: '日本語',
+  },
 ]

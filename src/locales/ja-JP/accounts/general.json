@@ -1,0 +1,9 @@
+{
+  "notifications": {
+    "new-account": {
+      "success": "新しいアカウントを追加しました: {{name}}",
+      "error": "不明なエラー",
+      "launcher-auth-login": "アカウントを追加できません。認証情報が有効か確認してください"
+    }
+  }
+}
