@@ -34,9 +34,9 @@ export function CustomizableMenu() {
         )}
       >
         <CurrentAlertsSection />
-        <GamesLauncherSection />
         <STWOperationsSection />
         <AccountManagementSection />
+        <GamesLauncherSection />
         <AdvancedModeSection />
         <MyAccountsSection />
       </CardContent>

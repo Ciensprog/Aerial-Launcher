@@ -69,7 +69,7 @@ export const customizableMenuSettingsSchema = z
     xpBoosts: z.boolean().default(true),
     autoPinUrns: z.boolean().default(true),
     autoLlamas: z.boolean().default(true),
-    unlock: z.boolean().default(true),
+    unlock: z.boolean().default(false),
 
     accountManagement: z.boolean().default(true),
     vbucksInformation: z.boolean().default(true),

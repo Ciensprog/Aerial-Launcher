@@ -105,22 +105,6 @@ export function SidebarMenu({
             </Link>
           )}
 
-          {getMenuOptionVisibility('gamesLauncher') && (
-            <Link
-              to="/games-launcher"
-              className={cn(
-                'pl-3 py-2 text-muted-foreground',
-                currentClassNameHover,
-              )}
-              activeProps={{
-                className: cn(activeClassName),
-              }}
-              onClick={goToPage}
-            >
-              {t('games-launcher.title')}
-            </Link>
-          )}
-
           {getMenuOptionVisibility('stwOperations', true) && (
             <>
               <Title className="pb-0">{t('stw-operations.title')}</Title>
@@ -439,6 +423,22 @@ export function SidebarMenu({
                 </ul>
               </div>
             </>
+          )}
+
+          {getMenuOptionVisibility('gamesLauncher') && (
+            <Link
+              to="/games-launcher"
+              className={cn(
+                'pl-3 py-2 text-muted-foreground',
+                currentClassNameHover,
+              )}
+              activeProps={{
+                className: cn(activeClassName),
+              }}
+              onClick={goToPage}
+            >
+              {t('games-launcher.title')}
+            </Link>
           )}
 
           {getMenuOptionVisibility('advancedMode', true) && (

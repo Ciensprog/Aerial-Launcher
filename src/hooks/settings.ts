@@ -17,12 +17,25 @@ export function useDevSettingsData() {
   return settings
 }
 
+/**
+ * Menu options hidden until the user turns them on
+ * (the menu file only stores options the user has toggled)
+ */
+const hiddenByDefaultMenuOptions: Array<keyof CustomizableMenuSettings> = [
+  // Unlock SSD Rewards no longer works
+  'unlock',
+]
+
+function getMenuOptionDefault(key: keyof CustomizableMenuSettings) {
+  return !hiddenByDefaultMenuOptions.includes(key)
+}
+
 export function useCustomizableMenuSettingsVisibility() {
   const data = useCustomizableMenuSettingsStore((state) => state.data)
 
   const getMenuOptionVisibility = useCallback(
     (key: keyof CustomizableMenuSettings, validateItems?: boolean) => {
-      const keyValidation = data[key] ?? true
+      const keyValidation = data[key] ?? getMenuOptionDefault(key)
 
       if (validateItems) {
         const childItems =
@@ -32,7 +45,7 @@ export function useCustomizableMenuSettingsVisibility() {
 
         if (childItems !== undefined) {
           const childValidations = childItems.map(
-            (item) => data[item] ?? true,
+            (item) => data[item] ?? getMenuOptionDefault(item),
           )
 
           return childValidations.includes(true) && keyValidation
