@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from 'node:fs'
+import { existsSync, readdirSync, statSync } from 'node:fs'
 import path from 'node:path'
 
 import type { ScannedGame } from './scanner'
@@ -108,8 +108,44 @@ export function getIconCandidates(game: ScannedGame): string[] {
     }
   }
 
+  // Some games launch through a tiny stub exe with no icon (e.g.
+  // TheEscapists.exe next to TheEscapists_EFIGS.exe), so prefer bigger
+  // sibling executables sharing the same name
+  for (const sibling of findLargerSiblingExecutables(game.launchExe)) {
+    add(sibling)
+  }
+
   add(game.launchExe)
   return candidates
+}
+
+const STUB_EXE_MAX_BYTES = 1024 * 1024
+
+function findLargerSiblingExecutables(launchExe: string): string[] {
+  try {
+    const launchSize = statSync(launchExe).size
+    if (launchSize > STUB_EXE_MAX_BYTES) return []
+
+    const directory = path.dirname(launchExe)
+    const baseName = path.basename(launchExe, path.extname(launchExe)).toLowerCase()
+
+    return readdirSync(directory)
+      .filter((file) => {
+        const lower = file.toLowerCase()
+        return lower.endsWith('.exe')
+          && lower.startsWith(baseName)
+          && lower !== path.basename(launchExe).toLowerCase()
+      })
+      .map((file) => {
+        const filePath = path.join(directory, file)
+        return { filePath, size: statSync(filePath).size }
+      })
+      .filter((item) => item.size > launchSize)
+      .sort((a, b) => b.size - a.size)
+      .map((item) => item.filePath)
+  } catch {
+    return []
+  }
 }
 
 export function isImageIcon(filePath: string) {

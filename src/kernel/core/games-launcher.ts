@@ -3,7 +3,7 @@ import type { EpicGameEntry } from '../../types/games-launcher'
 
 import childProcess from 'node:child_process'
 
-import { app, dialog, nativeImage } from 'electron'
+import { app, dialog, nativeImage, type NativeImage } from 'electron'
 
 import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
@@ -40,7 +40,7 @@ export class GamesLauncher {
             ? nativeImage.createFromPath(iconPath)
             : await app.getFileIcon(iconPath, { size: 'large' })
           if (fileIcon.isEmpty()) continue
-          icon = fileIcon.resize({ width: 64, height: 64 }).toDataURL()
+          icon = fitIcon(fileIcon).toDataURL()
           break
         } catch {
           //
@@ -145,4 +145,22 @@ function splitLaunchCommand(value?: string) {
   return (value.match(/(?:[^\s"]+|"[^"]*")+/g) ?? []).map((part) =>
     part.replace(/"/g, ''),
   )
+}
+
+const ICON_MAX_SIZE = 64
+
+/**
+ * Shrinks an icon to fit ICON_MAX_SIZE keeping its aspect ratio
+ * (never upscales, so small exe icons don't get blurry)
+ */
+function fitIcon(image: NativeImage) {
+  const { width, height } = image.getSize()
+
+  if (width <= ICON_MAX_SIZE && height <= ICON_MAX_SIZE) {
+    return image
+  }
+
+  return width >= height
+    ? image.resize({ width: ICON_MAX_SIZE, quality: 'best' })
+    : image.resize({ height: ICON_MAX_SIZE, quality: 'best' })
 }
