@@ -49,6 +49,76 @@
   }
 }
 
+/**
+ * Accent colours (Settings > Appearance), named after the STW zones.
+ * Dark text on top keeps buttons readable on these bright colours.
+ */
+@layer base {
+  html.dark[data-accent='stonewood'] {
+    --primary: 145 64% 52%;
+    --primary-foreground: 0 0% 9%;
+    --ring: 145 64% 52%;
+  }
+
+  html.dark[data-accent='plankerton'] {
+    --primary: 205 68% 58%;
+    --primary-foreground: 0 0% 9%;
+    --ring: 205 68% 58%;
+  }
+
+  html.dark[data-accent='canny-valley'] {
+    --primary: 40 75% 52%;
+    --primary-foreground: 0 0% 9%;
+    --ring: 40 75% 52%;
+  }
+
+  html.dark[data-accent='twine-peaks'] {
+    --primary: 259 89% 71%;
+    --primary-foreground: 0 0% 9%;
+    --ring: 259 89% 71%;
+  }
+
+  html.dark[data-accent='ventures'] {
+    --primary: 184 75% 56%;
+    --primary-foreground: 0 0% 9%;
+    --ring: 184 75% 56%;
+  }
+}
+
+/**
+ * Background variants (Settings > Appearance > Theme)
+ */
+@layer base {
+  html.dark[data-background='black'] {
+    --background: 0 0% 0%;
+    --card: 0 0% 0%;
+    --popover: 0 0% 4%;
+    --secondary: 0 0% 10%;
+    --muted: 0 0% 10%;
+    --accent: 0 0% 10%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+  }
+
+  html.dark[data-background='slate'] {
+    --background: 222 47% 8%;
+    --card: 222 47% 8%;
+    --popover: 222 47% 9%;
+    --secondary: 217 33% 16%;
+    --muted: 217 33% 16%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 16%;
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+  }
+}
+
+/* Native checkboxes/radios follow the accent colour when one is chosen */
+html[data-accent] input[type='checkbox'],
+html[data-accent] input[type='radio'] {
+  accent-color: hsl(var(--primary));
+}
+
 @layer base {
   * {
     @apply border-border;
