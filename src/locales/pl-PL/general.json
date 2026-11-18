@@ -157,5 +157,9 @@
   "update-information": "Aktualizacja informacji",
   "user-agent": "User Agent",
   "generate-screenshot": "Generuj zrzut ekranu",
-  "under-translation": "(W trakcie tłumaczenia)"
+  "under-translation": "(W trakcie tłumaczenia)",
+  "no-item-found": "Nie znaleziono elementu",
+  "no-options": "Brak opcji",
+  "no-placeholder-select-options": "Wybierz opcje",
+  "placeholder": "Wpisz tutaj"
 }

@@ -1,4 +1,33 @@
 {
+  "appearance": {
+    "title": "Aparência",
+    "theme": {
+      "label": "Tema",
+      "options": {
+        "dark": "Escuro",
+        "black": "Preto",
+        "slate": "Ardósia"
+      }
+    },
+    "accent": {
+      "label": "Cor de destaque",
+      "description": "Usada em botões, destaques e no item ativo do menu.",
+      "options": {
+        "default": "Padrão",
+        "stonewood": "Floresta Pétra",
+        "plankerton": "Plankerton",
+        "canny-valley": "Canny Valley",
+        "twine-peaks": "Twine Peaks",
+        "ventures": "Aventura"
+      }
+    },
+    "sidebar": {
+      "label": "Barra lateral",
+      "compact": "Barra lateral compacta",
+      "order-description": "Arraste para mudar a ordem das seções.",
+      "reset": "Redefinir"
+    }
+  },
   "app-settings": {
     "title": "Configurações do Aplicativo",
     "form": {
@@ -43,6 +72,9 @@
       },
       "tray": {
         "label": "Ocultar na bandeja do sistema"
+      },
+      "epic-games-dir": {
+        "label": "Pasta da Epic Games"
       }
     }
   },

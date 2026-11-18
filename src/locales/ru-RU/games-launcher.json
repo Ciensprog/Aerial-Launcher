@@ -1,0 +1,24 @@
+{
+  "title": "Запуск игр",
+  "description": "Запускайте игры Epic и редактор Unreal Engine с аккаунтом, выбранным в шапке.",
+  "loading": "Поиск установленных игр...",
+  "empty": "В указанной выше папке Epic Games игры не найдены.",
+  "editor-badge": "Редактор",
+  "epic-dir": {
+    "label": "Папка Epic Games",
+    "placeholder": "C:\\Program Files\\Epic Games",
+    "browse": "Обзор",
+    "extra-label": "Дополнительные папки",
+    "extra-note": "Игры, установленные вне папки выше.",
+    "add": "Добавить папку",
+    "remove": "Удалить"
+  },
+  "launch": "Запустить",
+  "launching": "Запуск...",
+  "notifications": {
+    "scan-error": "Не удалось найти игры Epic.",
+    "no-account": "Сначала выберите аккаунт в шапке.",
+    "launch-success": "{{game}} запущена от имени {{account}}.",
+    "launch-error": "Не удалось запустить {{game}}."
+  }
+}

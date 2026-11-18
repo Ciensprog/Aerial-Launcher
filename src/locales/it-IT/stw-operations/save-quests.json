@@ -1,7 +1,8 @@
 {
   "description": "Salva il progresso fatto nelle sfide degli account selezionati.",
   "form": {
-    "submit-button": "Salva Sfide"
+    "submit-button": "Salva Sfide",
+    "auto-daily-quests": "Missioni giornaliere automatiche (all'avvio dell'app e al reset giornaliero)"
   },
   "notifications": {
     "saved": "Il progresso è stato salvato"

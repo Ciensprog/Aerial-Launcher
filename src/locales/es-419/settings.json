@@ -14,11 +14,11 @@
       "description": "Se usa en botones, resaltados y el elemento activo del menú.",
       "options": {
         "default": "Predeterminado",
-        "stonewood": "Stonewood",
-        "plankerton": "Plankerton",
-        "canny-valley": "Canny Valley",
-        "twine-peaks": "Twine Peaks",
-        "ventures": "Ventures"
+        "stonewood": "Bosque Pedregoso",
+        "plankerton": "Villa Tablón",
+        "canny-valley": "Valle Latoso",
+        "twine-peaks": "Cumbres Leñosas",
+        "ventures": "Aventuras"
       }
     },
     "sidebar": {
@@ -72,6 +72,9 @@
       },
       "tray": {
         "label": "Ocultar en la bandeja del sistema"
+      },
+      "epic-games-dir": {
+        "label": "Carpeta de Epic Games"
       }
     }
   },

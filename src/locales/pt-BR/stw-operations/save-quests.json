@@ -1,7 +1,8 @@
 {
   "description": "Salvar o progresso das missões das contas selecionadas.",
   "form": {
-    "submit-button": "Salvar Missões"
+    "submit-button": "Salvar Missões",
+    "auto-daily-quests": "Missões diárias automáticas (ao iniciar o app e no reset diário)"
   },
   "notifications": {
     "saved": "O progresso das missões foi salvo"

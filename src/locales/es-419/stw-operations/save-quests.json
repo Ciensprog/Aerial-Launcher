@@ -1,7 +1,8 @@
 {
   "description": "Guardar progreso de misiones de las cuentas seleccionadas.",
   "form": {
-    "submit-button": "Guardar Misiones"
+    "submit-button": "Guardar Misiones",
+    "auto-daily-quests": "Misiones diarias automáticas (al iniciar la app y en el reinicio diario)"
   },
   "notifications": {
     "saved": "Progreso de misiones guardado"

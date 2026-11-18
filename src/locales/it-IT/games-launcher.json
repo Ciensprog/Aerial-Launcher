@@ -1,0 +1,24 @@
+{
+  "title": "Avvio giochi",
+  "description": "Avvia i giochi Epic e l'editor di Unreal Engine con l'account selezionato nell'intestazione.",
+  "loading": "Ricerca dei giochi installati...",
+  "empty": "Nessun gioco trovato nella cartella di Epic Games indicata sopra.",
+  "editor-badge": "Editor",
+  "epic-dir": {
+    "label": "Cartella di Epic Games",
+    "placeholder": "C:\\Program Files\\Epic Games",
+    "browse": "Sfoglia",
+    "extra-label": "Cartelle aggiuntive",
+    "extra-note": "Giochi installati fuori dalla cartella sopra.",
+    "add": "Aggiungi cartella",
+    "remove": "Rimuovi"
+  },
+  "launch": "Avvia",
+  "launching": "Avvio in corso...",
+  "notifications": {
+    "scan-error": "Impossibile cercare i giochi Epic.",
+    "no-account": "Seleziona prima un account nell'intestazione.",
+    "launch-success": "{{game}} avviato come {{account}}.",
+    "launch-error": "Impossibile avviare {{game}}."
+  }
+}

@@ -53,5 +53,8 @@
   "version": {
     "release": "リリース v{{version}}",
     "all-releases": "すべてのリリース"
+  },
+  "games-launcher": {
+    "title": "ゲームランチャー"
   }
 }

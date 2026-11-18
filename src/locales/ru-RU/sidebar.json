@@ -55,5 +55,6 @@
   "version": {
     "release": "Релиз v{{version}}",
     "all-releases": "Все версии"
-  }
+  },
+  "current-alerts": "Текущие оповещения"
 }

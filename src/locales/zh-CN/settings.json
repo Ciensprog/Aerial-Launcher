@@ -1,4 +1,33 @@
 {
+  "appearance": {
+    "title": "外观",
+    "theme": {
+      "label": "主题",
+      "options": {
+        "dark": "深色",
+        "black": "纯黑",
+        "slate": "石板灰"
+      }
+    },
+    "accent": {
+      "label": "强调色",
+      "description": "用于按钮、高亮和当前菜单项。",
+      "options": {
+        "default": "默认",
+        "stonewood": "荒木石林",
+        "plankerton": "普兰克顿",
+        "canny-valley": "坎尼山谷",
+        "twine-peaks": "麻峰",
+        "ventures": "冒险"
+      }
+    },
+    "sidebar": {
+      "label": "侧边栏",
+      "compact": "紧凑侧边栏",
+      "order-description": "拖动以调整各部分的顺序。",
+      "reset": "重置"
+    }
+  },
   "app-settings": {
     "title": "应用设置",
     "form": {
@@ -43,6 +72,9 @@
       },
       "tray": {
         "label": "隐藏到系统托盘"
+      },
+      "epic-games-dir": {
+        "label": "Epic Games 文件夹"
       }
     }
   },

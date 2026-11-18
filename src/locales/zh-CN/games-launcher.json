@@ -1,0 +1,24 @@
+{
+  "title": "游戏启动器",
+  "description": "使用顶部选中的账号启动 Epic 游戏和 Unreal Engine 编辑器。",
+  "loading": "正在扫描已安装的游戏...",
+  "empty": "在上方的 Epic Games 文件夹中未找到游戏。",
+  "editor-badge": "编辑器",
+  "epic-dir": {
+    "label": "Epic Games 文件夹",
+    "placeholder": "C:\\Program Files\\Epic Games",
+    "browse": "浏览",
+    "extra-label": "其他文件夹",
+    "extra-note": "安装在上述文件夹之外的游戏。",
+    "add": "添加文件夹",
+    "remove": "移除"
+  },
+  "launch": "启动",
+  "launching": "正在启动...",
+  "notifications": {
+    "scan-error": "扫描 Epic 游戏失败。",
+    "no-account": "请先在顶部选择一个账号。",
+    "launch-success": "已以 {{account}} 身份启动 {{game}}。",
+    "launch-error": "启动 {{game}} 失败。"
+  }
+}

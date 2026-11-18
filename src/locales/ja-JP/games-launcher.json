@@ -1,0 +1,24 @@
+{
+  "title": "ゲームランチャー",
+  "description": "ヘッダーで選択したアカウントで Epic のゲームや Unreal Engine エディターを起動します。",
+  "loading": "インストール済みのゲームを検索中...",
+  "empty": "上記の Epic Games フォルダーにゲームが見つかりません。",
+  "editor-badge": "エディター",
+  "epic-dir": {
+    "label": "Epic Games フォルダー",
+    "placeholder": "C:\\Program Files\\Epic Games",
+    "browse": "参照",
+    "extra-label": "追加フォルダー",
+    "extra-note": "上記フォルダー以外にインストールされたゲーム。",
+    "add": "フォルダーを追加",
+    "remove": "削除"
+  },
+  "launch": "起動",
+  "launching": "起動中...",
+  "notifications": {
+    "scan-error": "Epic ゲームの検索に失敗しました。",
+    "no-account": "先にヘッダーでアカウントを選択してください。",
+    "launch-success": "{{account}} で {{game}} を起動しました。",
+    "launch-error": "{{game}} の起動に失敗しました。"
+  }
+}

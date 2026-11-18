@@ -80,6 +80,7 @@ import es419_sidebar from './es-419/sidebar.json'
 import es419_general from './es-419/general.json'
 import es419_history from './es-419/history.json'
 import es419_settings from './es-419/settings.json'
+import es419_gamesLauncher from './es-419/games-launcher.json'
 import es419_alerts from './es-419/home.json'
 import es419_zones from './es-419/zones.json'
 import es419_stwOperations_AutoKick from './es-419/stw-operations/auto-kick.json'
@@ -108,7 +109,7 @@ import es419_myAccounts_RemoveAccount from './es-419/accounts/remove-account.jso
 const es419 = {
   sidebar: es419_sidebar,
   general: es419_general,
-  'games-launcher': enUS_gamesLauncher,
+  'games-launcher': es419_gamesLauncher,
   history: es419_history,
   settings: es419_settings,
   alerts: es419_alerts,
@@ -152,6 +153,7 @@ import zhCN_sidebar from './zh-CN/sidebar.json'
 import zhCN_general from './zh-CN/general.json'
 import zhCN_history from './zh-CN/history.json'
 import zhCN_settings from './zh-CN/settings.json'
+import zhCN_gamesLauncher from './zh-CN/games-launcher.json'
 import zhCN_alerts from './zh-CN/home.json'
 import zhCN_zones from './zh-CN/zones.json'
 import zhCN_stwOperations_AutoKick from './zh-CN/stw-operations/auto-kick.json'
@@ -180,7 +182,7 @@ import zhCN_myAccounts_RemoveAccount from './zh-CN/accounts/remove-account.json'
 const zhCN = {
   sidebar: zhCN_sidebar,
   general: zhCN_general,
-  'games-launcher': enUS_gamesLauncher,
+  'games-launcher': zhCN_gamesLauncher,
   history: zhCN_history,
   settings: zhCN_settings,
   alerts: zhCN_alerts,
@@ -224,6 +226,7 @@ import ruRU_sidebar from './ru-RU/sidebar.json'
 import ruRU_general from './ru-RU/general.json'
 import ruRU_history from './ru-RU/history.json'
 import ruRU_settings from './ru-RU/settings.json'
+import ruRU_gamesLauncher from './ru-RU/games-launcher.json'
 import ruRU_alerts from './ru-RU/home.json'
 import ruRU_zones from './ru-RU/zones.json'
 import ruRU_stwOperations_AutoKick from './ru-RU/stw-operations/auto-kick.json'
@@ -252,7 +255,7 @@ import ruRU_myAccounts_RemoveAccount from './ru-RU/accounts/remove-account.json'
 const ruRU = {
   sidebar: ruRU_sidebar,
   general: ruRU_general,
-  'games-launcher': enUS_gamesLauncher,
+  'games-launcher': ruRU_gamesLauncher,
   history: ruRU_history,
   settings: ruRU_settings,
   alerts: ruRU_alerts,
@@ -296,6 +299,7 @@ import ptBR_sidebar from './pt-BR/sidebar.json'
 import ptBR_general from './pt-BR/general.json'
 import ptBR_history from './pt-BR/history.json'
 import ptBR_settings from './pt-BR/settings.json'
+import ptBR_gamesLauncher from './pt-BR/games-launcher.json'
 import ptBR_alerts from './pt-BR/home.json'
 import ptBR_zones from './pt-BR/zones.json'
 import ptBR_stwOperations_AutoKick from './pt-BR/stw-operations/auto-kick.json'
@@ -324,7 +328,7 @@ import ptBR_myAccounts_RemoveAccount from './pt-BR/accounts/remove-account.json'
 const ptBR = {
   sidebar: ptBR_sidebar,
   general: ptBR_general,
-  'games-launcher': enUS_gamesLauncher,
+  'games-launcher': ptBR_gamesLauncher,
   history: ptBR_history,
   settings: ptBR_settings,
   alerts: ptBR_alerts,
@@ -441,6 +445,7 @@ import itIT_sidebar from './it-IT/sidebar.json'
 import itIT_general from './it-IT/general.json'
 import itIT_history from './it-IT/history.json'
 import itIT_settings from './it-IT/settings.json'
+import itIT_gamesLauncher from './it-IT/games-launcher.json'
 import itIT_alerts from './it-IT/home.json'
 import itIT_zones from './it-IT/zones.json'
 import itIT_stwOperations_AutoKick from './it-IT/stw-operations/auto-kick.json'
@@ -469,7 +474,7 @@ import itIT_myAccounts_RemoveAccount from './it-IT/accounts/remove-account.json'
 const itIT = {
   sidebar: itIT_sidebar,
   general: itIT_general,
-  'games-launcher': enUS_gamesLauncher,
+  'games-launcher': itIT_gamesLauncher,
   history: itIT_history,
   settings: itIT_settings,
   alerts: itIT_alerts,
@@ -513,6 +518,7 @@ import jaJP_sidebar from './ja-JP/sidebar.json'
 import jaJP_general from './ja-JP/general.json'
 import jaJP_history from './ja-JP/history.json'
 import jaJP_settings from './ja-JP/settings.json'
+import jaJP_gamesLauncher from './ja-JP/games-launcher.json'
 import jaJP_alerts from './ja-JP/home.json'
 import jaJP_zones from './ja-JP/zones.json'
 import jaJP_stwOperations_AutoKick from './ja-JP/stw-operations/auto-kick.json'
@@ -543,6 +549,7 @@ const jaJP = {
   general: jaJP_general,
   history: jaJP_history,
   settings: jaJP_settings,
+  'games-launcher': jaJP_gamesLauncher,
   alerts: jaJP_alerts,
   zones: jaJP_zones,
   'stw-operations': {

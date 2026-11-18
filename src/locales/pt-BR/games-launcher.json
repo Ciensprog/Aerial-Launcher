@@ -1,0 +1,24 @@
+{
+  "title": "Iniciador de jogos",
+  "description": "Inicie jogos da Epic e o editor da Unreal Engine com a conta selecionada no cabeçalho.",
+  "loading": "Procurando jogos instalados...",
+  "empty": "Nenhum jogo encontrado na pasta da Epic Games acima.",
+  "editor-badge": "Editor",
+  "epic-dir": {
+    "label": "Pasta da Epic Games",
+    "placeholder": "C:\\Program Files\\Epic Games",
+    "browse": "Procurar",
+    "extra-label": "Pastas adicionais",
+    "extra-note": "Jogos instalados fora da pasta acima.",
+    "add": "Adicionar pasta",
+    "remove": "Remover"
+  },
+  "launch": "Iniciar",
+  "launching": "Iniciando...",
+  "notifications": {
+    "scan-error": "Falha ao procurar jogos da Epic.",
+    "no-account": "Selecione uma conta no cabeçalho primeiro.",
+    "launch-success": "{{game}} iniciado como {{account}}.",
+    "launch-error": "Falha ao iniciar {{game}}."
+  }
+}

@@ -1,4 +1,33 @@
 {
+  "appearance": {
+    "title": "外観",
+    "theme": {
+      "label": "テーマ",
+      "options": {
+        "dark": "ダーク",
+        "black": "ブラック",
+        "slate": "スレート"
+      }
+    },
+    "accent": {
+      "label": "アクセントカラー",
+      "description": "ボタン、ハイライト、選択中のメニュー項目に使用されます。",
+      "options": {
+        "default": "デフォルト",
+        "stonewood": "ストーンウッド",
+        "plankerton": "プランカートン",
+        "canny-valley": "キャニーバレー",
+        "twine-peaks": "トワインピークス",
+        "ventures": "ベンチャーズ"
+      }
+    },
+    "sidebar": {
+      "label": "サイドバー",
+      "compact": "コンパクトなサイドバー",
+      "order-description": "ドラッグしてセクションの順番を変更できます。",
+      "reset": "リセット"
+    }
+  },
   "app-settings": {
     "title": "アプリ設定",
     "form": {
@@ -43,6 +72,9 @@
       },
       "tray": {
         "label": "システムトレイに隠す"
+      },
+      "epic-games-dir": {
+        "label": "Epic Games フォルダー"
       }
     }
   },

@@ -1,4 +1,33 @@
 {
+  "appearance": {
+    "title": "Aspetto",
+    "theme": {
+      "label": "Tema",
+      "options": {
+        "dark": "Scuro",
+        "black": "Nero",
+        "slate": "Ardesia"
+      }
+    },
+    "accent": {
+      "label": "Colore di accento",
+      "description": "Usato per pulsanti, evidenziazioni e la voce attiva del menu.",
+      "options": {
+        "default": "Predefinito",
+        "stonewood": "Pietralegno",
+        "plankerton": "Tavolaccia",
+        "canny-valley": "Vallarguta",
+        "twine-peaks": "Montespago",
+        "ventures": "Venture"
+      }
+    },
+    "sidebar": {
+      "label": "Barra laterale",
+      "compact": "Barra laterale compatta",
+      "order-description": "Trascina per cambiare l'ordine delle sezioni.",
+      "reset": "Ripristina"
+    }
+  },
   "app-settings": {
     "title": "Impostazioni App",
     "form": {
@@ -43,6 +72,9 @@
       },
       "tray": {
         "label": "Nascondi in background"
+      },
+      "epic-games-dir": {
+        "label": "Cartella di Epic Games"
       }
     }
   },
