@@ -1,8 +1,4 @@
 import type {
-  SaveWorldInfoData,
-  WorldInfoFileData,
-} from '../types/data/advanced-mode/world-info'
-import type {
   AccountBasicInfo,
   AccountData,
   AccountDataList,
@@ -12,6 +8,10 @@ import type {
 import type { AlertsDoneSearchPlayerConfig } from '../types/alerts'
 import type { AuthenticationByDeviceProperties } from '../types/authentication'
 import type { AutomationServiceActionConfig } from '../types/automation'
+import type {
+  SaveWorldInfoData,
+  WorldInfoFileData,
+} from '../types/data/advanced-mode/world-info'
 import type { GroupRecord } from '../types/groups'
 import type { CustomizableMenuSettings, Settings } from '../types/settings'
 import type { TagRecord } from '../types/tags'
@@ -22,14 +22,13 @@ import type {
   XPBoostsSearchUserConfig,
 } from '../types/xpboosts'
 
-import path from 'node:path'
+import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
-import dayjs from 'dayjs'
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron'
-import schedule from 'node-schedule'
+import path from 'node:path'
 
 import { ElectronAPIEventKeys } from '../config/constants/main-process'
 
@@ -39,22 +38,22 @@ import { Authentication } from './core/authentication'
 import { ClaimRewards } from './core/claim-rewards'
 import { DevicesAuthManager } from './core/devices-auth'
 import { EULATracking } from './core/eula-tracking'
-import { FortniteLauncher } from './core/launcher'
 import { GamesLauncher } from './core/games-launcher'
+import { FortniteLauncher } from './core/launcher'
+import { Manifest } from './core/manifest'
+import { MatchmakingTrack } from './core/matchmaking-track'
 import {
   MCPClientQuestLogin,
   MCPDailyQuests,
   MCPHomebaseName,
 } from './core/mcp'
-import { MatchmakingTrack } from './core/matchmaking-track'
-import { Manifest } from './core/manifest'
 import { Party } from './core/party'
 import { RedeemCodes } from './core/redeem-codes'
+import { Schedules } from './core/schedules'
 import { Unlock } from './core/unlock'
 import { VBucksInformation } from './core/vbucks-information'
 import { WorldInfoManager } from './core/world-info'
 import { XPBoostsManager } from './core/xpboosts'
-import { MainWindow } from './startup/windows/main'
 import { AccountsManager } from './startup/accounts'
 import { Application } from './startup/application'
 import {
@@ -75,6 +74,7 @@ import {
 import { SystemTray } from './startup/system-tray'
 import { TagsManager } from './startup/tags'
 import { TaxiService } from './startup/taxi-service'
+import { MainWindow } from './startup/windows/main'
 
 import {
   AutoLlamasAccountAddParams,
@@ -845,40 +845,28 @@ const gotTheLock = app.requestSingleInstanceLock()
      * Schedules
      */
 
-    schedule.scheduleJob(
-      {
-        /**
-         * Executes in every reset at time: 00:00:10 AM
-         * Hour: 00
-         * Minute: 00
-         * Second: 10
-         */
-        rule: '10 0 0 * * *',
-        /**
-         * Time zone
-         */
-        tz: 'UTC',
-      },
-      () => {
+    /**
+     * Executes in every reset at time: 00:00:10 AM
+     * Hour: 00
+     * Minute: 00
+     * Second: 10
+     */
+    Schedules.add({
+      cronTime: '10 0 0 * * *',
+      onTick: () => {
         WorldInfoManager.requestForHome().catch(() => {})
         WorldInfoManager.requestForAdvanceSection().catch(() => {})
       },
-    )
+    })
 
-    schedule.scheduleJob(
-      {
-        /**
-         * Runs: daily every hour
-         * Hour: every hour
-         * Minute: 1
-         */
-        rule: '1 * * * *',
-        /**
-         * Time zone
-         */
-        tz: 'UTC',
-      },
-      () => {
+    Schedules.add({
+      /**
+       * Runs: daily every hour
+       * Hour: every hour
+       * Minute: 1
+       */
+      cronTime: '1 * * * *',
+      onTick: () => {
         ProcessAutoLlamas.start({
           selected: AutoLlamas.getAccounts({
             type: ProcessLlamaType.FreeUpgrade,
@@ -886,22 +874,16 @@ const gotTheLock = app.requestSingleInstanceLock()
           type: ProcessLlamaType.FreeUpgrade,
         })
       },
-    )
+    })
 
-    schedule.scheduleJob(
-      {
-        /**
-         * Runs: every reset at time: 00:01:00 AM
-         * Hour: 0 AM (midnight)
-         * Minute: 1
-         */
-        rule: '1 0 * * *',
-        /**
-         * Time zone
-         */
-        tz: 'UTC',
-      },
-      () => {
+    Schedules.add({
+      /**
+       * Runs: every reset at time: 00:01:00 AM
+       * Hour: 0 AM (midnight)
+       * Minute: 1
+       */
+      cronTime: '1 0 * * *',
+      onTick: () => {
         ProcessAutoLlamas.start({
           selected: AutoLlamas.getAccounts({
             type: ProcessLlamaType.Survivor,
@@ -909,7 +891,7 @@ const gotTheLock = app.requestSingleInstanceLock()
           type: ProcessLlamaType.Survivor,
         })
       },
-    )
+    })
 
     /**
      * Auto Daily Quests (ClientQuestLogin)
@@ -929,22 +911,16 @@ const gotTheLock = app.requestSingleInstanceLock()
       }
     }
 
-    schedule.scheduleJob(
-      {
-        /**
-         * Runs: every reset at time: 00:01:00 AM
-         * Hour: 0 AM (midnight)
-         * Minute: 1
-         * Second: 0
-         */
-        rule: '0 1 0 * * *',
-        /**
-         * Time zone
-         */
-        tz: 'UTC',
-      },
-      runAutoDailyQuests
-    )
+    Schedules.add({
+      /**
+       * Runs: every reset at time: 00:01:00 AM
+       * Hour: 0 AM (midnight)
+       * Minute: 1
+       * Second: 0
+       */
+      cronTime: '0 1 0 * * *',
+      onTick: runAutoDailyQuests,
+    })
 
     // Startup trigger: run once after accounts have loaded
     setTimeout(runAutoDailyQuests, 30_000)
