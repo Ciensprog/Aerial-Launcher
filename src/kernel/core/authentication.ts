@@ -346,7 +346,7 @@ export class Authentication {
           accountId: accountData.accountId,
         })
       }
-    } catch (error) {
+    } catch {
       //
     }
   }

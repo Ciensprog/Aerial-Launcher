@@ -208,7 +208,6 @@ export const useTaxiServiceStore = create<TaxiServiceState>()(
     },
     updateAccountAction: (type, config) => {
       set((state) => {
-        // eslint-disable-next-line no-extra-semi
         ;(
           state.accounts[config.accountId].actions as Record<
             string,

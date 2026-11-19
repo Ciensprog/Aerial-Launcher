@@ -6,10 +6,10 @@ import { useEffect, useRef } from 'react'
 export function useInputPaddingButton(
   config?: Partial<{
     deps: Array<unknown>
-    customInputRef: RefObject<HTMLInputElement>
-    customButtonRef: RefObject<HTMLButtonElement>
+    customInputRef: RefObject<HTMLInputElement | null>
+    customButtonRef: RefObject<HTMLButtonElement | null>
   }>
-): [RefObject<HTMLInputElement>, RefObject<HTMLButtonElement>] {
+): [RefObject<HTMLInputElement | null>, RefObject<HTMLButtonElement | null>] {
   const { i18n } = useTranslation()
 
   const $input = useRef<HTMLInputElement>(null)

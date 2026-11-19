@@ -150,7 +150,7 @@ export function useDropzoneConfig() {
 
             initPagination(worldInfo.keys().toArray())
             setWorldInfoData(worldInfo)
-          } catch (error) {
+          } catch {
             toast(t('world-info.notifications.error'), {
               duration: 5000,
             })

@@ -464,11 +464,6 @@ export class TaxiService {
     accountService.client.on('disconnected', () => {
       disconnect()
     })
-    accountService.client.on('party:member:disconnected', (member) => {
-      if (member.id === accountService.accountId) {
-        disconnect()
-      }
-    })
     accountService.client.on('party:member:expired', (member) => {
       if (member.id === accountService.accountId) {
         disconnect()
@@ -537,7 +532,7 @@ export class TaxiService {
 
           return
         }
-      } catch (error) {
+      } catch {
         //
       }
 
@@ -561,7 +556,7 @@ export class TaxiService {
             if (currentClient) {
               try {
                 await currentClient.client.party?.leave()
-              } catch (error) {
+              } catch {
                 //
               }
 
@@ -663,7 +658,7 @@ export class TaxiService {
       /**
        * Client can not join to a team when total maximum members is full
        */
-      const maxMembers = invitation.party.members.size >= 4
+      const maxMembers = (invitation.party?.members.size ?? 0) >= 4
       /**
        * If client is in a team, decline invitation
        */
@@ -682,9 +677,12 @@ export class TaxiService {
       const accountsId = TaxiService._accounts.map(
         ({ accountId }) => accountId,
       )
-      const filteredMembersId = invitation.party.members
-        .filter(({ id }) => accountsId.includes(id))
-        .map(({ id }) => id)
+      const partyMembers = invitation.party?.members
+      const filteredMembersId = partyMembers
+        ? partyMembers
+            .filter(({ id }) => accountsId.includes(id))
+            .map(({ id }) => id)
+        : []
       const otherClientHasPreviouslyJoined = filteredMembersId.length > 0
 
       if (otherClientHasPreviouslyJoined) {
@@ -704,7 +702,7 @@ export class TaxiService {
 
           return
         }
-      } catch (error) {
+      } catch {
         //
       }
 
@@ -733,7 +731,7 @@ export class TaxiService {
                 defaultStatuses.active(),
                 'away',
               )
-            } catch (_error) {
+            } catch {
               //
             }
           },
@@ -970,7 +968,7 @@ export class TaxiService {
 
     try {
       await accountService.client.party?.me?.sendPatch(metaInfo)
-    } catch (error) {
+    } catch {
       //
     }
   }

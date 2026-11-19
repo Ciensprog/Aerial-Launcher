@@ -1,5 +1,4 @@
-import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters'
-import type { StylesConfig } from 'react-select'
+import type { FilterOptionOption, StylesConfig } from 'react-select'
 
 import chroma, { contrast } from 'chroma-js'
 import { useEffect, useRef } from 'react'
@@ -45,7 +44,7 @@ export function InputTags({
 }) {
   const { t } = useTranslation(['general'])
 
-  const $menuPortalTarget = useRef<HTMLElement>()
+  const $menuPortalTarget = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (menuPortalTarget) {
@@ -80,7 +79,7 @@ export function InputTags({
         option: () => 'overflow-hidden px-2 py-1 text-ellipsis',
         placeholder: () => 'text-muted-foreground text-sm',
         valueContainer: () => 'gap-1',
-        menuPortal: () => '!z-40',
+        menuPortal: () => 'z-40!',
       }}
       components={{
         Option: (props) => {

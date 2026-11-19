@@ -1,5 +1,4 @@
 import { useTheme } from 'next-themes'
-// eslint-disable-next-line import/no-unresolved
 import { Toaster as Sonner } from 'sonner'
 
 type ToasterProps = React.ComponentProps<typeof Sonner>

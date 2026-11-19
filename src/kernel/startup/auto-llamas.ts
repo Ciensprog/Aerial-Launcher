@@ -304,7 +304,6 @@ export class ProcessAutoLlamas {
             return
           }
 
-          // eslint-disable-next-line no-constant-condition
           while (true) {
             let success = true
 

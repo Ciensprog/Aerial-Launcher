@@ -35,7 +35,11 @@ export function useSetupForm() {
       userAgent: state.userAgent,
     })),
   )
-  const form = useForm<z.infer<typeof settingsSchema>>({
+  const form = useForm<
+    z.input<typeof settingsSchema>,
+    unknown,
+    z.output<typeof settingsSchema>
+  >({
     resolver: zodResolver(settingsSchema),
     values: {
       // Must be included: the settings file is overwritten on save, so
@@ -61,7 +65,7 @@ export function useSetupForm() {
       shouldValidate: true,
     })
     onSubmit({
-      ...form.getValues(),
+      ...(form.getValues() as z.output<typeof settingsSchema>),
       path: result.path,
     })
   }
