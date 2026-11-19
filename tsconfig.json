@@ -2,21 +2,19 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "commonjs",
+    "module": "ESNext",
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "sourceMap": true,
     "jsx": "react-jsx",
     "outDir": "dist",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
