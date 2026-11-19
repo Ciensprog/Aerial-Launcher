@@ -90,9 +90,9 @@ export function MissionItem({
         {selected !== null && !hideCompletedCheck && (
           <Button
             className={cn(
-              'shrink-0 size-7 text-muted-foreground/60 hover:!bg-transparent',
+              'shrink-0 size-7 text-muted-foreground/60 hover:bg-transparent!',
               {
-                '!text-[var(--zone-color-stonewood)]': isCompleted,
+                'text-[var(--zone-color-stonewood)]!': isCompleted,
               },
             )}
             size="icon"

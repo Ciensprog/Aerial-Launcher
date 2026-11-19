@@ -522,7 +522,7 @@ export function SidebarMenu({
             'grid items-start p-2 text-sm font-medium select-none lg:p-4 lg:pb-2',
             {
               // Compact: tighter rows so more of the menu fits
-              'text-[13px] leading-[18px] [&>a]:!py-1 [&>div:not([data-orientation])]:!py-1':
+              'text-[13px] leading-[18px] [&>a]:py-1! [&>div:not([data-orientation])]:py-1!':
                 compactSidebar,
             },
           )}

@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Mantine ships its global CSS unlayered; without this it would override
+   Tailwind 4, which does use native layers. Putting it in base keeps it
+   below utilities and, inside base, our rules come after. */
+@layer theme, base, components, utilities;
+@import '@mantine/core/styles.css' layer(base);
+@import 'tailwindcss';
+@config '../tailwind.config.js';
 
 @layer base {
   :root {
