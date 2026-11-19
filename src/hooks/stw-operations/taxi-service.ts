@@ -87,11 +87,11 @@ export function useGetTaxiServiceActions() {
 
 export function useTaxiServiceNotifications() {
   const { data, clearData, updateData } = useTaxiServiceNotificationsStore(
-    (state) => ({
+    useShallow((state) => ({
       data: state.data,
       clearData: state.clearData,
       updateData: state.updateData,
-    }),
+    })),
   )
 
   return {
