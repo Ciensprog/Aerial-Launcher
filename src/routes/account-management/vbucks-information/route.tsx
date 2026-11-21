@@ -1,7 +1,7 @@
 import { createRoute } from '@tanstack/react-router'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { useTranslation } from 'react-i18next'
-import Masonry from 'react-responsive-masonry'
+import { Masonry } from 'react-responsive-masonry'
 
 import { Route as RootRoute } from '../../__root'
 
