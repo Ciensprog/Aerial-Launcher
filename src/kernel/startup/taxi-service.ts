@@ -15,9 +15,9 @@ import { ElectronAPIEventKeys } from '../../config/constants/main-process'
 
 import { Authentication } from '../core/authentication'
 import { LookupManager } from '../core/lookup'
-import { MainWindow } from './windows/main'
 import { AccountsManager } from './accounts'
 import { DataDirectory } from './data-directory'
+import { MainWindow } from './windows/main'
 
 import {
   TaxiServiceNotificationEventFriendAdded,
@@ -234,22 +234,10 @@ export class TaxiService {
   }
 
   static async removeAccount(accountId: string) {
-    const currentTimeout =
-      TaxiService.getServiceByAccountId(accountId)?.currentTimeout
-
-    if (currentTimeout !== null && currentTimeout !== undefined) {
-      TaxiService.getServiceByAccountId(accountId)?.client.clearTimeout(
-        currentTimeout,
-      )
-    }
-
     TaxiService.updateAccountData(accountId, {
       status: AutomationStatusType.LOADING,
     })
-    TaxiService.getServiceByAccountId(
-      accountId,
-    )?.client.removeAllListeners()
-    TaxiService.getServiceByAccountId(accountId)?.client.xmpp.disconnect()
+
     TaxiService.getServiceByAccountId(accountId)?.client.logout()
 
     await TaxiService.refreshData(accountId, true)
@@ -366,13 +354,12 @@ export class TaxiService {
     }
 
     const clearCurrentTimeout = () => {
-      if (
-        accountService.currentTimeout !== null &&
-        accountService.currentTimeout !== undefined
-      ) {
+      if (accountService.currentTimeout) {
         accountService.client.clearTimeout(accountService.currentTimeout)
+        accountService.currentTimeout = null
       }
     }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const reAuth = (error: any) => {
       const restartErrors = [
@@ -396,6 +383,7 @@ export class TaxiService {
         }
       }
     }
+
     const disconnect = () => {
       setNewStatus(AutomationStatusType.DISCONNECTED)
 
@@ -418,7 +406,7 @@ export class TaxiService {
       disconnect()
     }, 10_000) // 10 seconds
 
-    accountService.client.once('ready', () => {
+    accountService.client.once('ready', async () => {
       setNewStatus(AutomationStatusType.LISTENING)
       accountService.status = AccountPresence.Active
       clearTimeout(initTimeout)
@@ -427,12 +415,11 @@ export class TaxiService {
         TaxiService._accounts.get(accountService.accountId)?.actions
           .denyFriendsRequests ?? true
 
-      if (denyFriendsRequests) {
-        const pendingList =
-          accountService.client.friend.pendingList.filter(
-            (item) => item.direction === 'INCOMING',
-          )
+      const pendingList = accountService.client.friend.pendingList.filter(
+        (item) => item.direction === 'INCOMING',
+      )
 
+      if (denyFriendsRequests && pendingList.size > 0) {
         Authentication.verifyAccessToken(account).then((accessToken) => {
           if (!accessToken) {
             return
@@ -448,27 +435,34 @@ export class TaxiService {
         })
       }
 
-      if (TaxiService._reJoinTo.has(account.accountId)) {
-        accountService.client.friend
-          .resolve(TaxiService._reJoinTo.get(account.accountId)!)
-          ?.sendJoinRequest()
-          .catch(() => {})
+      if (!TaxiService._reJoinTo.has(account.accountId)) return
+
+      try {
+        const friendToJoin = accountService.client.friend.resolve(
+          TaxiService._reJoinTo.get(account.accountId)!,
+        )
+
+        await friendToJoin?.sendJoinRequest()
+      } finally {
         TaxiService._reJoinTo.delete(account.accountId)
       }
     })
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    accountService.client.on('xmpp:message:error', (error: any) => {
+    accountService.client.on('stomp:message:error', (error: any) => {
       reAuth(error)
     })
+
     accountService.client.on('disconnected', () => {
       disconnect()
     })
+
     accountService.client.on('party:member:expired', (member) => {
       if (member.id === accountService.accountId) {
         disconnect()
       }
     })
+
     accountService.client.on('party:member:kicked', (member) => {
       if (member.id === accountService.accountId) {
         clearCurrentTimeout()
@@ -476,6 +470,7 @@ export class TaxiService {
         accountService.client.setStatus(defaultStatuses.active(), 'away')
       }
     })
+
     accountService.client.on('party:member:left', (member) => {
       if (
         member.id === accountService.accountId ||
@@ -666,9 +661,11 @@ export class TaxiService {
         (invitation.client.party?.members.size ?? 1) > 1
 
       if (isDnD || maxMembers || currentMembers) {
-        invitation.decline().catch(() => {})
-
-        return
+        try {
+          await invitation.decline()
+        } finally {
+          return
+        }
       }
 
       /**
@@ -686,30 +683,34 @@ export class TaxiService {
       const otherClientHasPreviouslyJoined = filteredMembersId.length > 0
 
       if (otherClientHasPreviouslyJoined) {
-        invitation.decline().catch(() => {})
-
-        return
-      }
-
-      try {
-        /**
-         * Client can not join if matchmaking is changing
-         */
-        const { isPlaying, sessionId } = invitation.sender.presence ?? {}
-
-        if (isPlaying || Boolean(sessionId)) {
-          invitation.decline().catch(() => {})
-
+        try {
+          await invitation.decline()
+        } finally {
           return
         }
-      } catch {
-        //
       }
 
       try {
         accountService.status = AccountPresence.DnD
 
         await invitation.accept()
+
+        const campaignInfo = accountService.client.party?.meta.get(
+          'Default:CampaignInfo_j',
+        )
+        const partyState = accountService.client.party?.meta.get(
+          'Default:PartyState_s',
+        )
+
+        if (campaignInfo && partyState) {
+          if (!(
+            partyState === 'WorldView' || partyState === 'TheaterView'
+          )) {
+            accountService.client.leaveParty(false)
+            accountService.status = AccountPresence.Active
+            return
+          }
+        }
 
         accountService.client.setStatus(defaultStatuses.busy(), 'away')
 
@@ -748,28 +749,19 @@ export class TaxiService {
       }
     })
 
-    accountService.client.on(
-      'party:member:matchstate:updated',
-      async (member, value, previousValue) => {
-        const previousLocation = `${previousValue?.location}`
-        const currentLocation = `${value?.location}`
+    accountService.client.on('party:updated', async (party) => {
+      const partyState = party.meta.get('Default:PartyState_s')
 
-        if (
-          previousLocation === 'Lobby' &&
-          currentLocation === 'JoiningGame'
-        ) {
-          accountService.client.setTimeout(() => {
-            member.client.leaveParty().catch(() => {})
-            clearCurrentTimeout()
+      if (partyState === 'PostMatchmaking') {
+        accountService.client.leaveParty().catch(() => {})
+        clearCurrentTimeout()
 
-            accountService.status = AccountPresence.Active
-            member.client.setStatus(defaultStatuses.active(), 'away')
-          }, 1000 * 10) // 10 seconds
+        accountService.status = AccountPresence.Active
+        accountService.client.setStatus(defaultStatuses.active(), 'away')
 
-          return
-        }
-      },
-    )
+        return
+      }
+    })
 
     accountService.client.on('friend:added', (friend) => {
       const data = {
@@ -821,15 +813,6 @@ export class TaxiService {
 
       setNewStatus(AutomationStatusType.LOADING)
 
-      if (
-        current.currentTimeout !== null &&
-        current.currentTimeout !== undefined
-      ) {
-        current.client.clearTimeout(current.currentTimeout)
-      }
-
-      current.client.removeAllListeners()
-      current.client.xmpp.disconnect()
       current.client.logout()
 
       TaxiService._accounts.delete(accountId)
@@ -940,6 +923,67 @@ export class TaxiService {
           teamOffense_Phoenix: 0,
           teamResistance_Phoenix: 0,
           teamTech_Phoenix: 0,
+        },
+      }),
+      'Default:MatchmakingInfo_j': JSON.stringify({
+        MatchmakingInfo: {
+          currentIsland: {
+            island: JSON.stringify({
+              LinkId: 'campaign',
+              Session: {
+                iD: '',
+                joinInfo: {
+                  joinability: 'Joinable',
+                  sessionKey: '',
+                },
+              },
+              MatchmakingSettingsV2: {
+                '/Fortnite.com/Matchmaking:Region': 'EU',
+                'STW:Type': 'StormShield',
+                'STW:MatchType': 'NewMatch',
+                'STW:Theater': '',
+                'STW:WUID': '',
+              },
+            }),
+            timestamp: 0,
+            bUsingGracefulUpgrade: false,
+            matchmakingId: '',
+            bBackfill: false,
+            bForceFreshSession: false,
+          },
+          bIsEligible: false,
+          islandSelection: {
+            island: JSON.stringify({
+              LinkId: 'campaign',
+              Session: {
+                iD: '',
+                joinInfo: {
+                  joinability: 'Joinable',
+                  sessionKey: '',
+                },
+              },
+              MatchmakingSettingsV2: {
+                '/Fortnite.com/Matchmaking:Region': 'EU',
+                'STW:Type': 'StormShield',
+                'STW:MatchType': 'NewMatch',
+                'STW:Theater': '',
+                'STW:WUID': '',
+              },
+            }),
+            timestamp: 1795312589,
+            bUsingGracefulUpgrade: false,
+            matchmakingId: '',
+            bBackfill: false,
+            bForceFreshSession: true,
+          },
+          readyStatus: 'NotReady',
+          result: 'CanceledUser',
+          bHasOwnerStartedMM: false,
+          flags: 0,
+          priority: 1,
+          stayTogetherHash: 0,
+          forkHandle: '',
+          forkAccess: '',
         },
       }),
       'Default:PackedState_j': JSON.stringify({
