@@ -238,7 +238,7 @@ export class Automation {
                   meta: party.meta,
                 })
               }
-            } catch (error) {
+            } catch {
               //
             }
           })
@@ -271,7 +271,7 @@ export class Automation {
                 accountId: account.accountId,
                 meta: value.party_state_updated,
               })
-            } catch (errro) {
+            } catch {
               //
             }
           })
@@ -311,7 +311,7 @@ export class Automation {
                       meta: party.meta,
                     })
                   }
-                } catch (error) {
+                } catch {
                   //
                 }
               }, 8000)
@@ -506,7 +506,7 @@ export class Automation {
                   )
                 }
               }
-            } catch (error) {
+            } catch {
               //
             }
           }, missionInterval * 1_000)
@@ -539,7 +539,7 @@ export class Automation {
                   return false
                 }
               }
-            } catch (error) {
+            } catch {
               //
             }
 
@@ -555,7 +555,7 @@ export class Automation {
           }
         }
       }
-    } catch (error) {
+    } catch {
       //
     }
   }
@@ -664,7 +664,7 @@ export class Automation {
                     meta: party.meta,
                   })
                 }
-              } catch (error) {
+              } catch {
                 //
               }
             }

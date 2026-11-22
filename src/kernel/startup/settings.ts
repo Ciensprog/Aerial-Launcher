@@ -180,7 +180,7 @@ export class SettingsManager {
 
         appVersion = asset.data.buildVersion
         name = asset.data.appName
-      } catch (error) {
+      } catch {
         //
       }
 
@@ -334,7 +334,7 @@ function detectGameData({ namespaceId }: GameContext): DetectGameResult {
       name: defaultGamePath[namespaceId]?.name ?? 'Epic',
       path: currentPath,
     }
-  } catch (error) {
+  } catch {
     //
   }
 

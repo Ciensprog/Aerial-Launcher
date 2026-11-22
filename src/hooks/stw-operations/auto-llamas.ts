@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 import {
   AutoLlamasBulkAction,
@@ -8,12 +9,14 @@ import {
 export function useAutoLlamaData() {
   const [checkLoading, setCheckLoading] = useState(false)
   const { selected, addAccounts, removeAccounts, updateAccounts } =
-    useAutoLlamaStore((state) => ({
-      selected: state.accounts,
-      addAccounts: state.addAccounts,
-      removeAccounts: state.removeAccounts,
-      updateAccounts: state.updateAccounts,
-    }))
+    useAutoLlamaStore(
+      useShallow((state) => ({
+        selected: state.accounts,
+        addAccounts: state.addAccounts,
+        removeAccounts: state.removeAccounts,
+        updateAccounts: state.updateAccounts,
+      })),
+    )
 
   const totalEnabled = Object.values(selected).filter(
     (current) => current.actions['free-llamas']

@@ -150,7 +150,7 @@ export class AccountProcess {
 
     const isEmptyArray =
       Array.isArray(responseData) && responseData.length === 0
-    let remoteStarted: boolean | undefined = undefined
+    let remoteStarted: boolean | undefined
 
     if (isEmptyArray) {
       remoteStarted = false

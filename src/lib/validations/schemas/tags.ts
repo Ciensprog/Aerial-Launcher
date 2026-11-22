@@ -1,7 +1,11 @@
 import Color from 'color'
 import { z } from 'zod'
 
-export const colorSchema = z.custom<`#${string}`>((value: string) => {
+export const colorSchema = z.custom<`#${string}`>((value: unknown) => {
+  if (typeof value !== 'string') {
+    return false
+  }
+
   try {
     Color(value).hex()
 

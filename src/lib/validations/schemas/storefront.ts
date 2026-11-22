@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const storefrontCatalogSchema = z.object({
   refreshIntervalHrs: z.number(),
   dailyPurchaseHrs: z.number(),
-  expiration: z.string().datetime(),
+  expiration: z.iso.datetime(),
   storefronts: z.array(
     z.object({
       name: z.union([
@@ -38,7 +38,7 @@ export const storefrontCatalogSchema = z.object({
                 z.string().and(z.object({})),
                 z.enum(['PercentOff', 'Strikethrough']).optional(),
               ]),
-              saleExpiration: z.string().datetime(),
+              saleExpiration: z.iso.datetime(),
               basePrice: z.number(),
             })
           ),

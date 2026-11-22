@@ -40,7 +40,8 @@ const root = createRoot(document.getElementById('app')!)
 const router = createRouter({ routeTree })
 
 const theme = createTheme({
-  /** Put your mantine theme override here */
+  // Mantine 9 changed the default radius from sm to md; keep the previous
+  defaultRadius: 'sm',
 })
 
 root.render(

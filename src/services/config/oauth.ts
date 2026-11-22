@@ -1,8 +1,6 @@
-import type { AxiosRetry } from 'axios-retry'
+import type { AxiosError, InternalAxiosRequestConfig } from 'axios'
 
 import axios from 'axios'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const axiosRetry = require('axios-retry').default as AxiosRetry
 
 import {
   defaultFortniteClient,
@@ -22,24 +20,31 @@ export const oauthService = axios.create({
     'https://account-public-service-prod.ol.epicgames.com/account/api/oauth',
 })
 
-axiosRetry(oauthService, {
-  retries: 1,
-  retryCondition(error) {
-    const response =
-      (error.response?.data as Record<string, number | string>) ?? {}
+type RetriableRequestConfig = InternalAxiosRequestConfig & {
+  grantSwapRetried?: boolean
+}
 
-    return (
-      response.error === 'invalid_grant' &&
-      response.numericErrorCode === 18031
-    )
-  },
-  onRetry(_retryCount, _error, requestConfig) {
-    if (requestConfig.headers) {
-      requestConfig.headers.Authorization = `basic ${fortniteIOSGameClient.auth}`
-    }
+oauthService.interceptors.response.use(undefined, async (error: AxiosError) => {
+  const config = error.config as RetriableRequestConfig | undefined
 
-    return
-  },
+  const response = (error.response?.data ?? {}) as Record<
+    string,
+    number | string
+  >
+
+  if (
+    !config ||
+    config.grantSwapRetried ||
+    response.error !== 'invalid_grant' ||
+    response.numericErrorCode !== 18031
+  ) {
+    throw error
+  }
+
+  config.grantSwapRetried = true
+  config.headers.setAuthorization(`basic ${fortniteIOSGameClient.auth}`)
+
+  return oauthService.request(config)
 })
 
 oauthService.interceptors.request.use(async (config) => {

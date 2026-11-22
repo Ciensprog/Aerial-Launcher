@@ -63,7 +63,6 @@ export function AuthorizationCodePage() {
                       values={{
                         url: epicGamesLoginURL,
                       }}
-                      shouldUnescape
                     >
                       <span className="font-bold">Step 1:</span> You must
                       sign in to your Epic Games account:{' '}

@@ -13,7 +13,7 @@ export function useDebouncedPersist<T extends (...args: never[]) => void>(
 ): DebouncedPersist<T> {
   const callbackRef = useRef(callback)
   const timerRef = useRef(0)
-  const argsRef = useRef<Parameters<T>>()
+  const argsRef = useRef<Parameters<T> | undefined>(undefined)
 
   useEffect(() => {
     callbackRef.current = callback

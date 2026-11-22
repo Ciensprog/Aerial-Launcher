@@ -11,6 +11,15 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     icon: 'icon-transparent.ico',
+    // Forge 8 dropped the Vite plugin's automatic dependency copy and
+    // its filter only lets /.vite through. Main deps are still
+    // externalized in vite.base.config.ts (node-process-watcher is
+    // native), so we widen the filter to node_modules.
+    ignore: (file) => {
+      if (!file) return false
+      if (file.startsWith('/node_modules/.vite')) return true
+      return !file.startsWith('/.vite') && !file.startsWith('/node_modules')
+    },
   },
   rebuildConfig: {},
   makers: [
